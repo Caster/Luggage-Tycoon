@@ -1,0 +1,44 @@
+% Useful packages
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{geometry}
+
+\usepackage{graphicx}
+
+\usepackage{wasysym}
+
+\usepackage{framed}
+
+\usepackage{tabu}
+
+% Microtypografie
+\usepackage[protrusion,stretch=20]{microtype}
+\microtypecontext{spacing=nonfrench}
+
+% Commands for the standard number classes
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+\newcommand{\rationals}{\mathbb{Q}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\complex}{\mathbb{C}}
+
+% Commands for standard functions
+\newcommand{\prob}[2][\relax]{\text{P}#1[#2#1]}
+\newcommand{\expectation}[2][\relax]{\text{E}#1[#2#1]}
+
+% Various mathematical commands
+\newcommand{\qed}{\hfill $\blacksquare$}
+
+% Algorithms
+\newenvironment{algorithm}[1]{
+\begin{tabu} spread \linewidth {rX[l]}
+\multicolumn{2}{l}{\textbf{Algorithm} #1}\\
+}{
+\end{tabu}
+}
+\newcommand{\algrightalign}[1]{\multicolumn{1}{r}{#1}}
+
+% Yes / no
+\newcommand{\yes}{$\checkmark$}
+\newcommand{\no}{$\times$}

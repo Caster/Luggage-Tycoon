@@ -1,3 +1,8 @@
 code/lib/
 code/build/
 code/accg.jar
+*.aux
+*.log
+*.out
+*.pdf
+*.pyg
