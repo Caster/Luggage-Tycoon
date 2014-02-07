@@ -6,3 +6,5 @@ code/accg.jar
 *.out
 *.pdf
 *.pyg
+*.kilepr
+*.backup
