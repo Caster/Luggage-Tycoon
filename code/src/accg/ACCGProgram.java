@@ -66,9 +66,6 @@ public class ACCGProgram {
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 			camera.setLookAt();
-			//gluLookAt(30f * (float) Math.cos(s.frame / 250.0), 30f * (float) Math.sin(s.frame / 250.0), 15f,
-			//		0, 0, 0,
-			//		0, 0, 1);
 
 			world.draw(s);
 			
