@@ -11,8 +11,8 @@ public class Floor extends DrawableObject {
 		glColor4f(0.3f, 0.7f, 0.2f, 1f);
 		glBegin(GL_QUADS);
 		{
-			for (int x = -10; x < 10; x++) {
-				for (int y = -10; y < 10; y++) {
+			for (int x = 0; x < 16; x++) {
+				for (int y = 0; y < 16; y++) {
 					glNormal3d(0, 0, 1);
 					
 					glVertex3d(x, y, 0);
@@ -28,8 +28,8 @@ public class Floor extends DrawableObject {
 		glColor4f(0.2f, 0.5f, 0.14f, 1f);
 		glBegin(GL_QUADS);
 		{
-			for (int x = -10; x < 10; x++) {
-				for (int y = -10; y < 10; y++) {
+			for (int x = 0; x < 16; x++) {
+				for (int y = 0; y < 16; y++) {
 					glNormal3d(0, 0, 1);
 					
 					glVertex3d(x, y, 0);

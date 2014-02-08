@@ -52,6 +52,7 @@ public class ACCGProgram {
 			
 			// handle events
 			handleKeyEvents();
+			handlePressedKeys();
 			
 			// render stuff here
 			s.frame++;
@@ -100,19 +101,22 @@ public class ACCGProgram {
 			case Keyboard.KEY_ESCAPE:
 				escPressed = true;
 				break;
-			case Keyboard.KEY_LEFT:
-				camera.moveLeft();
-				break;
-			case Keyboard.KEY_RIGHT:
-				camera.moveRight();
-				break;
-			case Keyboard.KEY_UP:
-				camera.moveForward();
-				break;
-			case Keyboard.KEY_DOWN:
-				camera.moveBackward();
-				break;
 			}
+		}
+	}
+	
+	public void handlePressedKeys() {
+		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+			camera.moveLeft();
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+			camera.moveRight();
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+			camera.moveForward();
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+			camera.moveBackward();
 		}
 	}
 }

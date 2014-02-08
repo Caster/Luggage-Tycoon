@@ -38,9 +38,9 @@ public class Camera {
 	public void setLookAt() {
 		// Use saved position and viewing direction
 		Vector3f camPos = sphericalToCartesian(camSpherical, camLookPos);
-		System.out.println("camPos = " + camPos);
-		System.out.println("camLookPos = " + camLookPos);
-		System.out.println("camUpPos = " + camUpPos);
+		//System.out.println("camPos = " + camPos);
+		//System.out.println("camLookPos = " + camLookPos);
+		//System.out.println("camUpPos = " + camUpPos);
 		gluLookAt(camPos.x, camPos.y, camPos.z,
 					camLookPos.x, camLookPos.y, camLookPos.z,
 					camUpPos.x, camUpPos.y, camUpPos.z);
