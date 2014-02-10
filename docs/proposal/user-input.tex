@@ -1,38 +1,11 @@
 \subsection{Editor}
 \label{subsec:editor}
-\input{editor}
+\input{user-input.editor}
 
 \subsection{Program modes}
 \label{subsec:program-modes}
-There are two modes in the program. In the first mode, the \textit{building mode}, the user can place conveyor belts and scanners. The program will behave as an editor in this mode. The user will be able to place blocks in the scene by first clicking the type of block to build (or pressing \textbf{C}) and then clicking at the position where the block should be placed. After the user has clicked a certain block type, this type will be shown less opaque or greyed out when the user hovers the scene again, at the position where the block would be placed if the user would click.
-
-To make a conveyor belt it is convenient to place a line of blocks in one go. This can be done by clicking at the starting position of the line of blocks and then dragging in the direction in which the conveyor belt should run.
-
-Blocks can be selected by clicking on them. This is only possible if no blocks are being built at the moment. If that is the case, the user has to click the selection tool first before he or she can select blocks. Selecting multiple blocks is possible by holding the \textbf{Ctrl} key down while clicking other blocks. It is also possible to drag a box around a number of blocks with the mouse to select all blocks within the selection box. When one or more blocks are selected, they can all be rotated by pressing \textbf{R}. The blocks are all rotated in place, so relative to their own position. When multiple blocks are selected, they are \emph{not} rotated relative to each other in some way.
-
-The user can enter the \textit{simulation mode} by pressing a button on screen, most likely we will use a green play symbol for this. In that mode, luggage will enter the screen at a predefined position (or from multiple positions), some special type of block. This luggage should move to some other predefined position (or one of a few possible positions), also special type of blocks. The luggage will move over the conveyor belts that are placed in the room by the user. The user cannot build or remove blocks in this mode, but is still able to move the camera around freely. As soon as luggage enters the wrong exit block or would fall from a conveyor belt, the simulation/animation is paused and the spot where it went wrong is indicated. The user can then go back to the \textit{building mode} and try to fix the issue.
+\input{user-input.program-modes}
 
 \subsection{User input}
 \label{subsec:user-input}
-The user will be able to interact with our program in the following ways.
-
-\begin{center}
-  \newcommand{\mc}[1]{\multicolumn{2}{c}{#1}}
-  \begin{tabu} to 0.9\linewidth {c@{~~or}cX<{\strut}}
-  \toprule
-  \mc{\textbf{Keystroke}} & \textbf{Response} \\
-  \midrule
-  \textbf{W} & $\boldsymbol{\uparrow}$     & Move the camera ``to the north''. The notion of upwards may depend on how the user has rotated his or her view. \\
-  \textbf{A} & $\boldsymbol{\leftarrow}$   & Move the camera ``to the west''. \\
-  \textbf{S} & $\boldsymbol{\downarrow}$   & Move the camera ``to the south''. \\
-  \textbf{D} & $\boldsymbol{\rightarrow}$  & Move the camera ``to the east''. \\
-  \mc{scrollwheel}                    & Zoom in or out (basically, move the camera upwards or away from the floor to zoom out and downwards or to the floor to zoom in). \\
-  \mc{\textbf{C}}                     & Start building conveyor belts (only in \textit{building mode}, see below). \\
-  \mc{\textbf{R}}                     & Rotate the selected blocks $90$ degrees in clockwise direction, in place (only in \textit{building mode}). See below for a more detailed explanation. \\
-  \mc{\textbf{Del}}                   & Delete the selected blocks (only in \textit{building mode}). \\
-  \mc{\textbf{Alt} + \textbf{Enter}}  & Toggle full screen mode. \\
-  \mc{\textbf{Esc}}                   & Exit the program. \\
-  \bottomrule
-\end{tabu}\end{center}
-
-\noindent Instead of using the keys mentioned above to move the camera around, the user may also move the mouse pointer to one of the four edges of the screen to move the camera in the corresponding position. We think that this is intuitive for most users.
+\input{user-input.user-input}
