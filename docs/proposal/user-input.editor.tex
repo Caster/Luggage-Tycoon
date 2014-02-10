@@ -1,4 +1,4 @@
-The floor on which the user can build is divided into squares of $1 \times 1$ unit, in which the user can build conveyor belts and scanners. We will call such objects \textit{blocks}. The blocks also have size $1 \times 1$, and the user can only put a block exactly inside a square. There are several blocks for conveyor belts, for example a block with a horizontal conveyor belt, a block with a sloped conveyor belt and a block with a bended conveyor belt. The user does not explicitly have to choose between those conveyor belt blocks, but this is chosen automatically most of the time. The user is able to change the orientation of blocks manually however (but only in steps of $90\,^\circ$), thus changing the type of block and possibly that of the neighbouring blocks too.
+The floor on which the user can build is divided into squares of $1 \times 1$ unit, in which the user can build conveyor belts and scanners. We will call such objects \textit{blocks}. The blocks also have size $1 \times 1$, and the user can only put a block exactly inside a square. There are several blocks for conveyor belts, for example a block with a horizontal conveyor belt, a block with a sloped conveyor belt and a block with a bended conveyor belt (see Figure~\ref{fig:block-types}). The user does not explicitly have to choose between those conveyor belt blocks, but this is chosen automatically most of the time. The user is able to change the orientation of blocks manually however (but only in steps of $90\,^\circ$), thus changing the type of block and possibly that of the neighbouring blocks too.
 
 \begin{figure}
   \begin{center}
@@ -8,7 +8,7 @@ The floor on which the user can build is divided into squares of $1 \times 1$ un
   \end{center}
 \end{figure}
 
-The user can also stack blocks. Every block has a height of $1/2$ unit \textbf{(dat is niet waar, stijgende blokken hebben een hoogte van $1$ unit)}.
+The user can also set the elevation of a block. Every block has a height of $1$ unit. The user can set the height of blocks, however, in increments of $1/4$ unit. This way, sloped blocks can be put together (see Figure~\ref{fig:block-types} again).
 
 If the user places two blocks with the same orientation adjacent to each other, they will be drawn as one long conveyor belt. This also happens when a horizontal block is joined with a sloped block. See Figure~\ref{fig:blocks}.
 
