@@ -14,6 +14,9 @@ public class ConveyorBlock extends Block {
 	@Override
 	public void draw(State s) {
 		
+		setAlreadyDrawn(true);
+		
+		// gray plane (temporary)
 		glColor3d(0.7, 0.7, 0.65);
 		
 		glBegin(GL_QUADS);
@@ -26,25 +29,31 @@ public class ConveyorBlock extends Block {
 		}
 		glEnd();
 		
+		// arrow (temporary)
 		glColor3d(0.5, 0.5, 0.47);
 		
-		glBegin(GL_QUADS);
+		glPushMatrix();
 		{
-			glNormal3d(0, 0, 1);
-			glVertex3d(x + 0.4, y + 0.1, z + 0.02);
-			glVertex3d(x + 0.4, y + 0.6, z + 0.02);
-			glVertex3d(x + 0.6, y + 0.6, z + 0.02);
-			glVertex3d(x + 0.6, y + 0.1, z + 0.02);
+			glTranslatef(0, (s.frame / 100f) % 1 - 0.5f, 0);
+			glBegin(GL_QUADS);
+			{
+				glNormal3d(0, 0, 1);
+				glVertex3d(x + 0.4, y + 0.1, z + 0.02);
+				glVertex3d(x + 0.4, y + 0.6, z + 0.02);
+				glVertex3d(x + 0.6, y + 0.6, z + 0.02);
+				glVertex3d(x + 0.6, y + 0.1, z + 0.02);
+			}
+			glEnd();
+			
+			glBegin(GL_TRIANGLES);
+			{
+				glNormal3d(0, 0, 1);
+				glVertex3d(x + 0.2, y + 0.6, z + 0.02);
+				glVertex3d(x + 0.5, y + 0.9, z + 0.02);
+				glVertex3d(x + 0.8, y + 0.6, z + 0.02);
+			}
+			glEnd();
 		}
-		glEnd();
-		
-		glBegin(GL_TRIANGLES);
-		{
-			glNormal3d(0, 0, 1);
-			glVertex3d(x + 0.2, y + 0.6, z + 0.02);
-			glVertex3d(x + 0.5, y + 0.9, z + 0.02);
-			glVertex3d(x + 0.8, y + 0.6, z + 0.02);
-		}
-		glEnd();
+		glPopMatrix();
 	}
 }
