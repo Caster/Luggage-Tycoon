@@ -11,7 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 public class Camera {
 	
 	// Private constants
-	private static final Vector3f INITIAL_CAM_POS = new Vector3f(10, (float) (Math.PI / 4), (float) (Math.PI / 4));
+	private static final Vector3f INITIAL_CAM_POS = new Vector3f(10, (float) (Math.PI / 3), (float) (Math.PI / 3));
 	private static final Vector3f INITIAL_CAM_LOOK_POS = new Vector3f(0, 0, 0);
 	private static final Vector3f INITIAL_CAM_UP = new Vector3f(0, 0, 1);
 	
@@ -75,26 +75,31 @@ public class Camera {
 	}
 	
 	public void moveForward() {
-		camLookPos.x += 0.1;
+		Vector3f addVector = sphericalToCartesian(camSpherical, new Vector3f(0, 0, 0));
+		addVector.z = 0;
+		addVector.normalise().scale(-0.1f);
+		Vector3f.add(camLookPos, addVector, camLookPos);
 	}
 
 	public void moveBackward() {
-		camLookPos.x -= 0.1;
-		//Vector3f lookPos = sphericalToCartesian(camLookPosSpherical, new Vector3f(0, 0, 0));
-		//Vector3f.add(camPos, (Vector3f) lookPos.scale(-1.0f), camPos);
+		Vector3f addVector = sphericalToCartesian(camSpherical, new Vector3f(0, 0, 0));
+		addVector.z = 0;
+		addVector.normalise().scale(0.1f);
+		Vector3f.add(camLookPos, addVector, camLookPos);
 	}
 	
 	public void moveLeft() {
-		camLookPos.y += 0.1;
+		Vector3f addVector = sphericalToCartesian(camSpherical, new Vector3f(0, 0, 0));
+		Vector3f.cross(addVector, camUpPos, addVector);
+		addVector.normalise().scale(0.1f);
+		Vector3f.add(camLookPos, addVector, camLookPos);
 	}
 	
 	public void moveRight() {
-		camLookPos.y -= 0.1;
-		//Vector3f viewVector = new Vector3f();
-		//Vector3f.sub(sphericalToCartesian(camLookPosSpherical, camPos), camPos, viewVector);
-		//Vector3f sideVector = new Vector3f();
-		//Vector3f.cross(viewVector, camUpPos, sideVector);
-		//Vector3f.add(camPos, (Vector3f) sideVector.normalise(), camPos);
+		Vector3f addVector = sphericalToCartesian(camSpherical, new Vector3f(0, 0, 0));
+		Vector3f.cross(addVector, camUpPos, addVector);
+		addVector.normalise().scale(-0.1f);
+		Vector3f.add(camLookPos, addVector, camLookPos);
 	}
 	
 	public void moveUp() {
