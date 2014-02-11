@@ -11,7 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 public class Camera {
 	
 	// Private constants
-	private static final Vector3f INITIAL_CAM_POS = new Vector3f(10, (float) (Math.PI / 3), (float) (Math.PI / 3));
+	private static final Vector3f INITIAL_CAM_POS = new Vector3f(4, (float) (Math.PI / 3), (float) (Math.PI / 3));
 	private static final Vector3f INITIAL_CAM_LOOK_POS = new Vector3f(0, 0, 0);
 	private static final Vector3f INITIAL_CAM_UP = new Vector3f(0, 0, 1);
 	
