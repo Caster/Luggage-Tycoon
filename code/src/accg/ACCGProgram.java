@@ -81,30 +81,38 @@ public class ACCGProgram {
 		Display.destroy();
 	}
 	
+	/**
+	 * Handles pressed / released key events.
+	 */
 	public void handleKeyEvents() {
 		while (Keyboard.next()) {
-			switch (Keyboard.getEventKey()) {
-			case Keyboard.KEY_F:
-				try {
-					if (Display.isFullscreen()) {
-						Display.setDisplayMode(windowedMode);
-						Display.setFullscreen(false);
-					} else {
-						Display.setDisplayMode(fullScreenMode);
-						Display.setFullscreen(true);
+			if (Keyboard.getEventKeyState()) {
+				switch (Keyboard.getEventKey()) {
+				case Keyboard.KEY_F:
+					try {
+						if (Display.isFullscreen()) {
+							Display.setDisplayMode(windowedMode);
+							Display.setFullscreen(false);
+						} else {
+							Display.setDisplayMode(fullScreenMode);
+							Display.setFullscreen(true);
+						}
+					} catch (LWJGLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-				} catch (LWJGLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					break;
+				case Keyboard.KEY_ESCAPE:
+					escPressed = true;
+					break;
 				}
-				break;
-			case Keyboard.KEY_ESCAPE:
-				escPressed = true;
-				break;
 			}
 		}
 	}
 	
+	/**
+	 * Handles keys that are pressed.
+	 */
 	public void handlePressedKeys() {
 		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 			camera.moveLeft();
