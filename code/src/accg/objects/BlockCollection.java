@@ -90,28 +90,11 @@ public class BlockCollection extends DrawableObject {
 	@Override
 	public void draw(State s) {
 		
-		resetAlreadyDrawn();
-		
-		for (Block[][] blockX : blocks) {
-			for (Block[] blockXY : blockX) {
-				for (Block block : blockXY) {
-					if (block != null && !block.isAlreadyDrawn()) {
-						block.draw(s);
-					}
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Resets the {@link Block#isAlreadyDrawn()} flags for all of the blocks.
-	 */
-	private void resetAlreadyDrawn() {
 		for (Block[][] blockX : blocks) {
 			for (Block[] blockXY : blockX) {
 				for (Block block : blockXY) {
 					if (block != null) {
-						block.setAlreadyDrawn(false);
+						block.draw(s);
 					}
 				}
 			}

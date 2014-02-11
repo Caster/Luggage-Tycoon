@@ -7,13 +7,6 @@ import accg.State;
  * 
  * A block has a position, which is indicated by three integers ({@link #x},
  * {@link #y} and {@link #z}).
- * 
- * The {@link #draw(State)} method of a {@link Block} may also draw
- * other blocks. Therefore, {@link Block} contains a variable
- * {@link #alreadyDrawn} that indicates whether the block has already been
- * drawn, either by its own {@link #draw(State)} method, or by another
- * block's {@link #draw(State)} method. This prevents blocks from being drawn
- * multiple times.
  */
 public abstract class Block extends DrawableObject {
 	
@@ -36,11 +29,6 @@ public abstract class Block extends DrawableObject {
 	 * The orientation of this block.
 	 */
 	protected Orientation orientation;
-	
-	/**
-	 * Whether this block is already drawn.
-	 */
-	protected boolean alreadyDrawn;
 	
 	/**
 	 * Possible orientations for a block.
@@ -85,24 +73,6 @@ public abstract class Block extends DrawableObject {
 		this.y = y;
 		this.z = z;
 		this.orientation = orientation;
-		
-		this.alreadyDrawn = false;
-	}
-	
-	/**
-	 * Returns whether this block is already drawn.
-	 * @return Whether this block is already drawn.
-	 */
-	public boolean isAlreadyDrawn() {
-		return alreadyDrawn;
-	}
-
-	/**
-	 * Sets whether this block is already drawn.
-	 * @param alreadyDrawn Whether this block is already drawn.
-	 */
-	public void setAlreadyDrawn(boolean alreadyDrawn) {
-		this.alreadyDrawn = alreadyDrawn;
 	}
 	
 	/**

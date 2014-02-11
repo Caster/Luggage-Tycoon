@@ -14,8 +14,6 @@ public class ConveyorBlock extends Block {
 	@Override
 	public void draw(State s) {
 		
-		setAlreadyDrawn(true);
-		
 		// gray plane (temporary)
 		glColor3d(0.7, 0.7, 0.65);
 		
