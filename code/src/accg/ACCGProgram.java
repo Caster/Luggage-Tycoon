@@ -75,6 +75,7 @@ public class ACCGProgram {
 			handleKeyEvents();
 			handlePressedKeys();
 			handleScrollEvents();
+			handleMouseEvents();
 			
 			// render stuff here
 			s.frame++;
@@ -181,6 +182,31 @@ public class ACCGProgram {
 			camera.moveUp();
 		} else if (dWheel > 0) {
 			camera.moveDown();
+		}
+	}
+	
+	/**
+	 * Handles mouse move events and such.
+	 */
+	public void handleMouseEvents() {
+		while (Mouse.next()) {
+			if (!Mouse.getEventButtonState()) {
+				if (Mouse.isButtonDown(2)) {
+					int dx = Mouse.getEventDX();
+					int dy = Mouse.getEventDY();
+					
+					if (dx < 0) {
+						camera.turnRight();
+					} else if (dx > 0) {
+						camera.turnLeft();
+					}
+					if (dy < 0) {
+						camera.turnDown();
+					} else if (dy > 0) {
+						camera.turnUp();
+					}
+				}
+			}
 		}
 	}
 }
