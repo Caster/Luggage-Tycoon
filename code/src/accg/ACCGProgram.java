@@ -60,6 +60,7 @@ public class ACCGProgram {
 		
 		// initialize stuff here
 		State s = new State();
+		s.textures = new Textures();
 		World world = new World();
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);

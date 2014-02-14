@@ -14,4 +14,10 @@ public class State {
 	 * The current simulation time in seconds.
 	 */
 	public double time;
+	
+	/**
+	 * The {@link Textures} object that contains the textures for the
+	 * application.
+	 */
+	public Textures textures;
 }
