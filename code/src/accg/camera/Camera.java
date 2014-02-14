@@ -11,7 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 public class Camera {
 	
 	// Private constants
-	private static final Vector3f INITIAL_CAM_POS = new Vector3f(4, (float) (Math.PI / 3), (float) (Math.PI / 3));
+	private static final Vector3f INITIAL_CAM_POS = new Vector3f(10, (float) (Math.PI / 4), 0);
 	private static final Vector3f INITIAL_CAM_LOOK_POS = new Vector3f(0, 0, 0);
 	private static final Vector3f INITIAL_CAM_UP = new Vector3f(0, 0, 1);
 	
@@ -122,8 +122,8 @@ public class Camera {
 	private Vector3f sphericalToCartesian(Vector3f spherical, Vector3f origin) {
 		Vector3f result = new Vector3f (
 				(float) (spherical.x * Math.sin(spherical.y) * Math.cos(spherical.z)) + origin.x,
-				(float) (spherical.x * Math.cos(spherical.y)) + origin.y,
-			    (float) (spherical.x * Math.sin(spherical.y) * Math.sin(spherical.z) + origin.z)
+			    (float) (spherical.x * Math.sin(spherical.y) * Math.sin(spherical.z)) + origin.y,
+						(float) (spherical.x * Math.cos(spherical.y)) + origin.z
 		);
 		return result;
 	}
