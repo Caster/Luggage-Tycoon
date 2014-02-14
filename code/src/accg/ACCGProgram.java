@@ -22,6 +22,7 @@ import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
@@ -72,6 +73,7 @@ public class ACCGProgram {
 			// handle events
 			handleKeyEvents();
 			handlePressedKeys();
+			handleScrollEvents();
 			
 			// render stuff here
 			s.frame++;
@@ -166,6 +168,18 @@ public class ACCGProgram {
 			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) || Keyboard.isKeyDown(Keyboard.KEY_S)) {
 				camera.moveBackward();
 			}
+		}
+	}
+	
+	/**
+	 * Handles scrollwheel events from the mouse.
+	 */
+	public void handleScrollEvents() {
+		int dWheel = Mouse.getDWheel();
+		if (dWheel < 0) {
+			camera.moveUp();
+		} else if (dWheel > 0) {
+			camera.moveDown();
 		}
 	}
 }
