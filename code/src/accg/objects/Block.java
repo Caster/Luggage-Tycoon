@@ -39,25 +39,31 @@ public abstract class Block extends DrawableObject {
 		 * This block is oriented towards the left (that is, towards the
 		 * decreasing x-axis).
 		 */
-		LEFT,
+		LEFT(270),
 		
 		/**
 		 * This block is oriented upwards (that is, towards the
 		 * increasing y-axis).
 		 */
-		UP,
+		UP(180),
 		
 		/**
 		 * This block is oriented towards the right (that is, towards the
 		 * increasing x-axis).
 		 */
-		RIGHT,
+		RIGHT(90),
 		
 		/**
 		 * This block is oriented downwards (that is, towards the
 		 * decreasing y-axis).
 		 */
-		DOWN,
+		DOWN(0);
+		
+		public double angle;
+		
+		Orientation(double angle) {
+			this.angle = angle;
+		}
 	}
 	
 	/**

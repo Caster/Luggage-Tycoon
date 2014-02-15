@@ -1,14 +1,15 @@
 package accg.objects.blocks;
 
+import static org.lwjgl.opengl.GL11.*;
+
 import org.lwjgl.util.glu.Cylinder;
 
 import accg.State;
 import accg.objects.Block;
-import static org.lwjgl.opengl.GL11.*;
 
-public class ConveyorBlock extends Block {
+public class DescendingConveyorBlock extends Block {
 
-	public ConveyorBlock(int x, int y, int z, Orientation orientation) {
+	public DescendingConveyorBlock(int x, int y, int z, Orientation orientation) {
 		super(x, y, z, orientation);
 	}
 
@@ -23,7 +24,7 @@ public class ConveyorBlock extends Block {
 
 		glColor3d(0.7, 0.7, 0.65);
 		glPushMatrix();
-		glTranslated(-0.375,-0.375, 0.25);
+		glTranslated(-0.375,-0.375, 0.5);
 		glRotated(90, 0, 1, 0);
 		c1.draw(0.125f, 0.125f, 0.75f, 16, 1);
 		glPopMatrix();
@@ -41,23 +42,23 @@ public class ConveyorBlock extends Block {
 		{
 			glNormal3d(0, 0, 1);
 			glTexCoord2d(-s.frame / 50.0, 0);
-			glVertex3d(-0.375, -0.375, 0.375);
+			glVertex3d(-0.375, -0.375, 0.625);
 			glTexCoord2d(2 - s.frame / 50.0, 0);
 			glVertex3d(-0.375, 0.375, 0.375);
 			glTexCoord2d(2 - s.frame / 50.0, 1);
 			glVertex3d(0.375, 0.375, 0.375);
 			glTexCoord2d(-s.frame / 50.0, 1);
-			glVertex3d(0.375, -0.375, 0.375);
+			glVertex3d(0.375, -0.375, 0.625);
 			
 			glNormal3d(0, 0, -1);
 			glTexCoord2d(2 - s.frame / 50.0, 1);
-			glVertex3d(-0.375, -0.375, 0.125);
+			glVertex3d(-0.375, -0.375, 0.375);
 			glTexCoord2d(-s.frame / 50.0, 1);
 			glVertex3d(-0.375, 0.375, 0.125);
 			glTexCoord2d(-s.frame / 50.0, 0);
 			glVertex3d(0.375, 0.375, 0.125);
 			glTexCoord2d(2 - s.frame / 50.0, 0);
-			glVertex3d(0.375, -0.375, 0.125);
+			glVertex3d(0.375, -0.375, 0.375);
 		}
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
