@@ -23,8 +23,7 @@ public class World extends Container<DrawableObject> {
 	 */
 	public World() {
 		addObject(new Floor());
-		
-		// TODO add other stuff here, like walls
+		addObject(new Walls());
 		
 		bc = new BlockCollection(16);
 		bc.setBlock(new StraightConveyorBlock(1, 5, 0, Orientation.DOWN), 1, 5, 0);
