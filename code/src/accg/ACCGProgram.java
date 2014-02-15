@@ -35,7 +35,7 @@ public class ACCGProgram {
 	
 	private boolean escPressed = false;
 	private DisplayMode windowedMode, fullScreenMode;
-	private Camera camera = new Camera();
+	private Camera camera;
 	
 	public static void main(String[] args) {
 		ACCGProgram p = new ACCGProgram();
@@ -63,6 +63,8 @@ public class ACCGProgram {
 		State s = new State();
 		s.textures = new Textures();
 		World world = new World();
+		camera = new Camera(s);
+		
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
 		glEnable(GL_COLOR_MATERIAL);

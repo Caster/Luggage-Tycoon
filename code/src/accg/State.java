@@ -20,6 +20,13 @@ public class State {
 	public int fieldWidth = 16;
 	
 	/**
+	 * Height of the field, in number of grid squares.
+	 * 
+	 * <p>This is the allowed height to build.</p>
+	 */
+	public int fieldHeight = 20;
+	
+	/**
 	 * The current frame number.
 	 */
 	public int frame;
