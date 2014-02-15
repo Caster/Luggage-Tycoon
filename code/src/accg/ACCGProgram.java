@@ -1,24 +1,10 @@
 package accg;
 
-import static org.lwjgl.opengl.GL11.GL_AMBIENT_AND_DIFFUSE;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_COLOR_MATERIAL;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_FRONT;
-import static org.lwjgl.opengl.GL11.GL_LIGHT0;
-import static org.lwjgl.opengl.GL11.GL_LIGHTING;
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
-import static org.lwjgl.opengl.GL11.GL_PROJECTION;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glColorMaterial;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glFlush;
-import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glMatrixMode;
-import static org.lwjgl.opengl.GL11.glViewport;
-import static org.lwjgl.util.glu.GLU.gluPerspective;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.util.glu.GLU.*;
+
+import java.awt.Font;
+import java.io.InputStream;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -28,8 +14,15 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.opengl.Util;
+import org.lwjgl.util.Point;
+import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.util.ResourceLoader;
 
 import accg.camera.Camera;
+import accg.gui.MenuBar;
+import accg.gui.MenuBarItem;
+import accg.gui.MenuBar.Alignment;
+import accg.gui.MenuBar.Position;
 import accg.objects.Luggage;
 import accg.objects.World;
 
@@ -38,6 +31,8 @@ public class ACCGProgram {
 	private boolean escPressed = false;
 	private DisplayMode windowedMode, fullScreenMode;
 	private Camera camera;
+	private MenuBar menuBar;
+	private Point clickedPoint;
 	
 	public static void main(String[] args) {
 		ACCGProgram p = new ACCGProgram();
@@ -66,8 +61,16 @@ public class ACCGProgram {
 		s.textures = new Textures();
 		s.world = new World();
 		s.simulation = new Simulation();
+		initialiseFonts(s);
 		s.startTime = Sys.getTime() / Sys.getTimerResolution();
 		camera = new Camera(s);
+		clickedPoint = null;
+		
+		// intialise GUI stuff
+		menuBar = new MenuBar(s, Position.RIGHT, Alignment.CENTER);
+		initialiseMenu(menuBar, s);
+		
+		// enable some GL stuff
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
 		glEnable(GL_COLOR_MATERIAL);
@@ -103,7 +106,11 @@ public class ACCGProgram {
 			glLoadIdentity();
 			camera.setLookAt();
 
+			// draw the scene
 			s.world.draw(s);
+			
+			// draw the menu bar
+			menuBar.draw(s);
 			
 			// check for errors
 			Util.checkGLError();
@@ -205,13 +212,40 @@ public class ACCGProgram {
 		// was handled or not. This is needed because LWJGL's API for the
 		// mouse is slightly weird. Or I just don't get it.
 		boolean[] handledButton = new boolean[] {false, false, false};
+		boolean handledMouseMove = false;
 		
 		while (Mouse.next()) {
+			// handle click
+			int eventButton;
+			if ((eventButton = Mouse.getEventButton()) != -1) {
+				if (eventButton == 0) {
+					if (Mouse.getEventButtonState()) {
+						clickedPoint = new Point(Mouse.getX(), Mouse.getY());
+					} else {
+						if (clickedPoint != null) {
+							if (Math.abs(clickedPoint.getX() - Mouse.getX()) < 3 &&
+									Math.abs(clickedPoint.getY() - Mouse.getY()) < 3) {
+								menuBar.handleMouseClickEvent(Mouse.getX(), Mouse.getY());
+							}
+							
+							clickedPoint = null;
+						}
+					}
+				}
+			}
+			
 			if (!Mouse.getEventButtonState()) {
 				int dx = Mouse.getEventDX();
 				int dy = Mouse.getEventDY();
 				
-				// handle left mouse button: mouse button 1
+				// handle general mouse move
+				if (!handledMouseMove) {
+					menuBar.handleMouseMoveEvent(Mouse.getX(), Mouse.getY());
+					
+					handledMouseMove = true;
+				}
+				
+				// handle left mouse button: mouse button 0
 				if (!handledButton[0] && Mouse.isButtonDown(0)) {
 					camera.moveByMouse(dx, dy);
 					
@@ -226,5 +260,58 @@ public class ACCGProgram {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Load fonts and set them in the given state.
+	 * 
+	 * @param s State to set fonts in.
+	 */
+	private void initialiseFonts(State s) {
+		try {
+			InputStream russoOneFontStream =
+					ResourceLoader.getResourceAsStream("res/fonts/RussoOne-Regular.ttf");
+			Font russoOneAwt = Font.createFont(Font.TRUETYPE_FONT, russoOneFontStream);
+			russoOneAwt = russoOneAwt.deriveFont(14f);
+			s.fontMenu = new TrueTypeFont(russoOneAwt, true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Create some menu items and add those to the given menu bar.
+	 * 
+	 * @param mb Menu bar to add menu items to.
+	 * @param s State to read icon textures from.
+	 */
+	private void initialiseMenu(MenuBar mb, State s) {
+		mb.addMenuBarItem(new MenuBarItem("Simulate", s.textures.iconStart) {
+			@Override
+			public void onClick() {
+				System.out.println("Start simulation mode!");
+			}
+		});
+		
+		mb.addMenuBarItem(new MenuBarItem("Open", s.textures.iconOpen) {
+			@Override
+			public void onClick() {
+				System.out.println("Open!");
+			}
+		});
+		
+		mb.addMenuBarItem(new MenuBarItem("Save", s.textures.iconSave) {
+			@Override
+			public void onClick() {
+				System.out.println("Save!");
+			}
+		});
+		
+		mb.addMenuBarItem(new MenuBarItem("Exit", s.textures.iconExit) {
+			@Override
+			public void onClick() {
+				escPressed = true;
+			}
+		});
 	}
 }

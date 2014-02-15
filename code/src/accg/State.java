@@ -1,5 +1,7 @@
 package accg;
 
+import org.newdawn.slick.Font;
+
 import accg.objects.World;
 
 /**
@@ -58,4 +60,9 @@ public class State {
 	 * The simulation.
 	 */
 	public Simulation simulation;
+	
+	/**
+	 * Font that is used in all menus.
+	 */
+	public Font fontMenu;
 }
