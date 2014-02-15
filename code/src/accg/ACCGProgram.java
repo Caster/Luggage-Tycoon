@@ -37,7 +37,7 @@ public class ACCGProgram {
 	
 	private boolean escPressed = false;
 	private DisplayMode windowedMode, fullScreenMode;
-	private Camera camera = new Camera();
+	private Camera camera;
 	
 	public static void main(String[] args) {
 		ACCGProgram p = new ACCGProgram();
@@ -67,6 +67,7 @@ public class ACCGProgram {
 		s.world = new World();
 		s.simulation = new Simulation();
 		s.startTime = Sys.getTime() / Sys.getTimerResolution();
+		camera = new Camera(s);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
 		glEnable(GL_COLOR_MATERIAL);
@@ -200,22 +201,28 @@ public class ACCGProgram {
 	 * Handles mouse move events and such.
 	 */
 	public void handleMouseEvents() {
+		// Variable handledButton[i] holds if an event for mouse button i
+		// was handled or not. This is needed because LWJGL's API for the
+		// mouse is slightly weird. Or I just don't get it.
+		boolean[] handledButton = new boolean[] {false, false, false};
+		
 		while (Mouse.next()) {
 			if (!Mouse.getEventButtonState()) {
-				if (Mouse.isButtonDown(2)) {
-					int dx = Mouse.getEventDX();
-					int dy = Mouse.getEventDY();
+				int dx = Mouse.getEventDX();
+				int dy = Mouse.getEventDY();
+				
+				// handle left mouse button: mouse button 1
+				if (!handledButton[0] && Mouse.isButtonDown(0)) {
+					camera.moveByMouse(dx, dy);
 					
-					if (dx < 0) {
-						camera.turnRight();
-					} else if (dx > 0) {
-						camera.turnLeft();
-					}
-					if (dy < 0) {
-						camera.turnDown();
-					} else if (dy > 0) {
-						camera.turnUp();
-					}
+					handledButton[0] = true;
+				}
+				
+				// handle middle mouse button: mouse button 2
+				if (!handledButton[2] && Mouse.isButtonDown(2)) {					
+					camera.turnByMouse(dx, dy);
+					
+					handledButton[2] = true;
 				}
 			}
 		}
