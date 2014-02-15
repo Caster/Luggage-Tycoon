@@ -71,6 +71,7 @@ public class OBJModel {
 				Vector3f.sub(face.get(1), face.get(0), a);
 				Vector3f.sub(face.get(2), face.get(0), b);
 				Vector3f.cross(a, b, normal);
+				normal.normalise();
 				normals.add(normal);
 			}
 		}
