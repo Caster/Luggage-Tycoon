@@ -1,8 +1,7 @@
 package accg.camera;
 
-import static org.lwjgl.util.glu.GLU.*;
+import static org.lwjgl.util.glu.GLU.gluLookAt;
 
-import org.lwjgl.util.vector.Vector;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
@@ -14,6 +13,19 @@ public class Camera {
 	private static final Vector3f INITIAL_CAM_POS = new Vector3f(10, (float) (Math.PI / 4), 0);
 	private static final Vector3f INITIAL_CAM_LOOK_POS = new Vector3f(0, 0, 0);
 	private static final Vector3f INITIAL_CAM_UP = new Vector3f(0, 0, 1);
+	
+	/** How much the camera moves in each direction by default. */
+	private static final float CAM_MOVE = 0.1f;
+	/** How much the camera turns in each direction by default. */
+	private static final float CAM_TURN = (float) (Math.PI / 100);
+	
+	/**
+	 * Factor for multiplying mouse deltas with.
+	 * 
+	 * <p>This basically controls how fast the camera turns and moves in
+	 * response to mouse events.</p>
+	 */
+	private static final float MOUSE_FACTOR = 0.7f;
 	
 	/**
 	 * The camera position relative to {@link #camLookPos}, in spherical coordinates.
@@ -58,47 +70,129 @@ public class Camera {
 					upPos.x, upPos.y, upPos.z);
 	}
 
+	/**
+	 * Turn the camera left a bit.
+	 * 
+	 * @see #turnLeft(float)
+	 */
 	public void turnLeft() {
-		camSpherical.z = (float) (camSpherical.z - (float) (Math.PI / 100) % (2 * Math.PI));
+		turnLeft(1.0f);
+	}
+	
+	/**
+	 * Turn the camera left a bit, where the "default bit" is multiplied
+	 * by the given factor. This can be used for faster or slower turning.
+	 * 
+	 * @param amount The factor for multiplication.
+	 * @see #turnLeft()
+	 */
+	public void turnLeft(float amount) {
+		camSpherical.z = modulo(camSpherical.z - (CAM_TURN * amount));
 	}
 
+	/**
+	 * Turn the camera right a bit.
+	 * 
+	 * @see #turnRight(float)
+	 */
 	public void turnRight() {
-		camSpherical.z = (float) (camSpherical.z + (float) (Math.PI / 100) % (2 * Math.PI));
+		turnRight(1.0f);
+	}
+	
+	/**
+	 * Turn the camera right a bit, where the "default bit" is multiplied
+	 * by the given factor. This can be used for faster or slower turning.
+	 * 
+	 * @param amount The factor for multiplication.
+	 * @see #turnRight()
+	 */
+	public void turnRight(float amount) {
+		camSpherical.z = modulo(camSpherical.z + (CAM_TURN * amount));
 	}
 
+	/**
+	 * Turn the camera downwards a bit.
+	 * 
+	 * @see #turnDown(float)
+	 */
 	public void turnDown() {
-		camSpherical.y = (float) (camSpherical.y - (float) (Math.PI / 100) % (2 * Math.PI));
+		turnDown(1.0f);
+	}
+	
+	/**
+	 * Turn the camera downwards a bit, where the "default bit" is multiplied
+	 * by the given factor. This can be used for faster or slower turning.
+	 * 
+	 * @param amount The factor for multiplication.
+	 * @see #turnDown()
+	 */
+	public void turnDown(float amount) {
+		camSpherical.y = clamp(camSpherical.y - (CAM_TURN * amount));
 	}
 
+	/**
+	 * Turn the camera upwards a bit.
+	 * 
+	 * @see #turnUp(float)
+	 */
 	public void turnUp() {
-		camSpherical.y = (float) (camSpherical.y + (float) (Math.PI / 100) % (2 * Math.PI));
+		turnUp(1.0f);
+	}
+	
+	/**
+	 * Turn the camera upwards a bit, where the "default bit" is multiplied
+	 * by the given factor. This can be used for faster or slower turning.
+	 * 
+	 * @param amount The factor for multiplication.
+	 * @see #turnUp()
+	 */
+	public void turnUp(float amount) {
+		camSpherical.y = clamp(camSpherical.y + (CAM_TURN * amount));
 	}
 	
 	public void moveForward() {
-		Vector3f addVector = sphericalToCartesian(camSpherical, new Vector3f(0, 0, 0));
-		addVector.z = 0;
-		addVector.normalise().scale(-0.1f);
-		Vector3f.add(camLookPos, addVector, camLookPos);
+		moveForward(1.0f);
+	}
+	
+	public void moveForward(float amount) {
+		moveForwardBackward(-CAM_MOVE * amount);
 	}
 
 	public void moveBackward() {
+		moveBackward(1.0f);
+	}
+	
+	public void moveBackward(float amount) {
+		moveForwardBackward(CAM_MOVE * amount);
+	}
+	
+	private void moveForwardBackward(float scale) {
 		Vector3f addVector = sphericalToCartesian(camSpherical, new Vector3f(0, 0, 0));
 		addVector.z = 0;
-		addVector.normalise().scale(0.1f);
+		addVector.normalise().scale(scale);
 		Vector3f.add(camLookPos, addVector, camLookPos);
 	}
 	
 	public void moveLeft() {
-		Vector3f addVector = sphericalToCartesian(camSpherical, new Vector3f(0, 0, 0));
-		Vector3f.cross(addVector, camUpPos, addVector);
-		addVector.normalise().scale(0.1f);
-		Vector3f.add(camLookPos, addVector, camLookPos);
+		moveLeft(1.0f);
+	}
+	
+	public void moveLeft(float amount) {
+		moveLeftRight(CAM_MOVE * amount);
 	}
 	
 	public void moveRight() {
+		moveRight(1.0f);
+	}
+	
+	public void moveRight(float amount) {
+		moveLeftRight(-CAM_MOVE * amount);
+	}
+	
+	private void moveLeftRight(float scale) {
 		Vector3f addVector = sphericalToCartesian(camSpherical, new Vector3f(0, 0, 0));
 		Vector3f.cross(addVector, camUpPos, addVector);
-		addVector.normalise().scale(-0.1f);
+		addVector.normalise().scale(scale);
 		Vector3f.add(camLookPos, addVector, camLookPos);
 	}
 	
@@ -111,6 +205,45 @@ public class Camera {
 	}
 	
 	// Private methods
+	/**
+	 * Clamp a given value between 0.1 and PI - 0.1.
+	 * 
+	 * @param value The value to be clamped.
+	 * @return A clamped value.
+	 * @see #clamp(float, float, float)
+	 */
+	private float clamp(float value) {
+		return clamp(value, 0.1f, (float) (Math.PI - 0.1));
+	}
+	
+	/**
+	 * Clamp a given value between a given minimum and maximum value.
+	 * Clamping means that when the given value is less than the given
+	 * minimum, this minimum is returned. If the value is greater than
+	 * the maximum, this maximum is returned. Otherwise, the value is
+	 * unchanged.
+	 * 
+	 * <p>This function does not change any of its parameters.</p>
+	 * 
+	 * @param value The value to be clamped.
+	 * @param min The minimum value for clamping.
+	 * @param max The maximum value for clamping.
+	 * @return A value between {@code min} and {@code max}.
+	 */
+	private float clamp(float value, float min, float max) {
+		if (value <= min)  return min;
+		if (value >= max)  return max;
+		return value;
+	}
+	
+	private float modulo(float value) {
+		return modulo(value, 0.0f, (float) (2 * Math.PI));
+	}
+	
+	private float modulo(float value, float min, float max) {
+		return min + ((value - min) % (max - min));
+	}
+	
 	/**
 	 * Convert sperhical coordinates to cartesian, given spherical coordinates and the absolute cartesian
 	 * coordinates of the origin.
@@ -126,5 +259,31 @@ public class Camera {
 						(float) (spherical.x * Math.cos(spherical.y)) + origin.z
 		);
 		return result;
+	}
+
+	/**
+	 * Move the camera left, right, backward and/or forward in response to a mouse movement.
+	 * 
+	 * @param dx The number of pixels the mouse moved in horizontal direction.
+	 * @param dy The number of pixels the mouse moved in vertical direction.
+	 */
+	public void moveByMouse(int dx, int dy) {
+		if (dx < 0)  moveRight(MOUSE_FACTOR * -dx * (camSpherical.x / INITIAL_CAM_POS.x));
+		if (dx > 0)  moveLeft(MOUSE_FACTOR * dx * (camSpherical.x / INITIAL_CAM_POS.x));
+		if (dy < 0)  moveForward(MOUSE_FACTOR * -dy * (camSpherical.x / INITIAL_CAM_POS.x));
+		if (dy > 0)  moveBackward(MOUSE_FACTOR * dy * (camSpherical.x / INITIAL_CAM_POS.x));
+	}
+	
+	/**
+	 * Turn the camera left, right, down and/or up in response to a mouse movement.
+	 * 
+	 * @param dx The number of pixels the mouse moved in horizontal direction.
+	 * @param dy The number of pixels the mouse moved in vertical direction.
+	 */
+	public void turnByMouse(int dx, int dy) {
+		if (dx < 0)  turnRight(MOUSE_FACTOR * -dx);
+		if (dx > 0)  turnLeft(MOUSE_FACTOR * dx);
+		if (dy < 0)  turnDown(MOUSE_FACTOR * -dy);
+		if (dy > 0)  turnUp(MOUSE_FACTOR * dy);
 	}
 }
