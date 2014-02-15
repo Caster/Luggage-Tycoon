@@ -1,6 +1,5 @@
 package accg.objects;
 
-import accg.State;
 
 /**
  * Abstract super class of all blocks.

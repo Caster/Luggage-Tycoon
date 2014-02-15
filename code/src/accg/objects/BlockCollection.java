@@ -5,7 +5,7 @@ import accg.State;
 /**
  * The collection of blocks to draw.
  * 
- * TODO: This class at the moment is a mixture of model and view code.
+ * \todo This class at the moment is a mixture of model and view code.
  * It would be nice to split this into two classes, where this class only
  * becomes responsible for drawing the contents of the model class.
  */

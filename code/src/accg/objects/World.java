@@ -1,7 +1,5 @@
 package accg.objects;
 
-import java.util.ArrayList;
-
 import accg.objects.Block.Orientation;
 import accg.objects.blocks.*;
 
@@ -10,10 +8,19 @@ import accg.objects.blocks.*;
  */
 public class World extends Container<DrawableObject> {
 	
+	/**
+	 * The collection of blocks in the world.
+	 */
 	public BlockCollection bc;
 	
+	/**
+	 * The luggage objects.
+	 */
 	public Container<Luggage> luggage;
 	
+	/**
+	 * Creates a new world.
+	 */
 	public World() {
 		addObject(new Floor());
 		

@@ -1,7 +1,7 @@
 package accg.utils;
 
-import static org.lwjgl.opengl.GL11.*;
 import static accg.utils.GLUtils.*;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;

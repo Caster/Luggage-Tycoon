@@ -7,6 +7,9 @@ import java.io.File;
 import accg.State;
 import accg.utils.OBJModel;
 
+/**
+ * A luggage item.
+ */
 public class Luggage extends DrawableObject {
 	
 	/**

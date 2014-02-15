@@ -1,6 +1,6 @@
 package accg.camera;
 
-import static org.lwjgl.util.glu.GLU.gluLookAt;
+import static org.lwjgl.util.glu.GLU.*;
 
 import org.lwjgl.util.vector.Vector3f;
 
@@ -242,7 +242,7 @@ public class Camera {
 	 * @return A clamped value.
 	 * @see #clamp(float, float, float)
 	 */
-	private float clamp(float value) {
+	private static float clamp(float value) {
 		return clamp(value, 0.1f, (float) (Math.PI - 0.1));
 	}
 	
@@ -260,17 +260,17 @@ public class Camera {
 	 * @param max The maximum value for clamping.
 	 * @return A value between {@code min} and {@code max}.
 	 */
-	private float clamp(float value, float min, float max) {
+	private static float clamp(float value, float min, float max) {
 		if (value <= min)  return min;
 		if (value >= max)  return max;
 		return value;
 	}
 	
-	private float modulo(float value) {
+	private static float modulo(float value) {
 		return modulo(value, 0.0f, (float) (2 * Math.PI));
 	}
 	
-	private float modulo(float value, float min, float max) {
+	private static float modulo(float value, float min, float max) {
 		return min + ((value - min) % (max - min));
 	}
 	
@@ -318,7 +318,7 @@ public class Camera {
 	 *                  with the angles in radials.
 	 * @return A vector in cartesian coordinates
 	 */
-	private Vector3f sphericalToCartesian(Vector3f spherical, Vector3f origin) {
+	private static Vector3f sphericalToCartesian(Vector3f spherical, Vector3f origin) {
 		Vector3f result = new Vector3f (
 				(float) (spherical.x * Math.sin(spherical.y) * Math.cos(spherical.z)) + origin.x,
 			    (float) (spherical.x * Math.sin(spherical.y) * Math.sin(spherical.z)) + origin.y,
