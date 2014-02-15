@@ -67,13 +67,54 @@ public class Luggage extends DrawableObject {
 		
 		glColor3f(0.3f, 0.6f, 0.8f);
 		
+		glPushMatrix();
+		glTranslated(x, y, z + 0.15);
+		
+		float size = 0.15f;
+		
 		glBegin(GL_QUADS);
 		{
-			glVertex3d(x - 0.15f, y - 0.15f, z);
-			glVertex3d(x - 0.15f, y + 0.15f, z);
-			glVertex3d(x + 0.15f, y + 0.15f, z);
-			glVertex3d(x + 0.15f, y - 0.15f, z);
+	        // in XY plane
+	        glNormal3f(0, 0, 1);
+	        glVertex3f(-size, -size, size);
+	        glVertex3f(size, -size, size);
+	        glVertex3f(size, size, size);
+	        glVertex3f(-size, size, size);
+	        
+	        glNormal3f(0, 0, -1);
+	        glVertex3f(-size, -size, -size);
+	        glVertex3f(-size, size, -size);
+	        glVertex3f(size, size, -size);
+	        glVertex3f(size, -size, -size);
+	        
+	        // in XZ plane
+	        glNormal3f(0, 1, 0);
+	        glVertex3f(-size, size, -size);
+	        glVertex3f(-size, size, size);
+	        glVertex3f(size, size, size);
+	        glVertex3f(size, size, -size);
+	        
+	        glNormal3f(0, -1, 0);
+	        glVertex3f(-size, -size, -size);
+	        glVertex3f(size, -size, -size);
+	        glVertex3f(size, -size, size);
+	        glVertex3f(-size, -size, size);
+	        
+	        // in YZ plane
+	        glNormal3f(1, 0, 0);
+	        glVertex3f(size, -size, -size);
+	        glVertex3f(size, size, -size);
+	        glVertex3f(size, size, size);
+	        glVertex3f(size, -size, size);
+	        
+	        glNormal3f(-1, 0, 0);
+	        glVertex3f(-size, -size, -size);
+	        glVertex3f(-size, -size, size);
+	        glVertex3f(-size, size, size);
+	        glVertex3f(-size, size, -size);
 		}
 		glEnd();
+		
+		glPopMatrix();
 	}
 }
