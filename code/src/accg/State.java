@@ -6,6 +6,20 @@ package accg;
 public class State {
 	
 	/**
+	 * Length of the field, in number of grid squares.
+	 * 
+	 * <p>This is the number of squares along the X-axis.</p>
+	 */
+	public int fieldLength = 20;
+	
+	/**
+	 * Width of the field, in number of grid squares.
+	 * 
+	 * <p>This is the number of squares along the Y-axis.</p>
+	 */
+	public int fieldWidth = 16;
+	
+	/**
 	 * The current frame number.
 	 */
 	public int frame;
