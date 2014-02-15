@@ -1,66 +1,82 @@
 package accg.objects.blocks;
 
-import org.lwjgl.util.glu.Cylinder;
+import java.util.ArrayList;
+
+import org.lwjgl.util.vector.Vector3f;
 
 import accg.State;
-import accg.objects.Block;
-import static org.lwjgl.opengl.GL11.*;
+import accg.objects.Block.Orientation;
+import accg.objects.Luggage;
 
-public class BendLeftConveyorBlock extends Block {
+public class BendLeftConveyorBlock extends ConveyorBlock {
 
 	public BendLeftConveyorBlock(int x, int y, int z, Orientation orientation) {
 		super(x, y, z, orientation);
 	}
+	
+	@Override
+	protected ArrayList<Vector3f> getTopCoordinatesLeft() {
+		ArrayList<Vector3f> lefts = new ArrayList<>();
+		for (int i = 0; i <= 32; i++) {
+			lefts.add(new Vector3f(-0.375f, -0.375f, 0.375f));
+		}
+		return lefts;
+	}
 
 	@Override
-	public void draw(State s) {
-		
-		glPushMatrix();
-		glTranslated(x + 0.5, y + 0.5, z / 4.0);
-		glRotated(orientation.angle, 0, 0, 1);
-		
-		Cylinder c1 = new Cylinder();
+	protected ArrayList<Vector3f> getTopCoordinatesRight() {
+		ArrayList<Vector3f> rights = new ArrayList<>();
+		for (int i = 0; i <= 32; i++) {
+			rights.add(new Vector3f(
+					-0.375f + 0.75f * (float) Math.cos(i * (Math.PI / 64)),
+					-0.375f + 0.75f * (float) Math.sin(i * (Math.PI / 64)),
+					0.375f));
+		}
+		return rights;
+	}
 
-		glColor3d(0.7, 0.7, 0.65);
-		glPushMatrix();
-		glTranslated(-0.375, -0.375, 0.25);
-		glRotated(90, 0, 1, 0);
-		c1.draw(0.125f, 0.125f, 0.75f, 16, 1);
-		glPopMatrix();
-		glPushMatrix();
-		glTranslated(-0.375, -0.375, 0.25);
-		glRotated(-90, 1, 0, 0);
-		c1.draw(0.125f, 0.125f, 0.75f, 16, 1);
-		glPopMatrix();
-		
-		// the belt
-		glColor3d(1, 1, 1);
-		glEnable(GL_TEXTURE_2D);
-		s.textures.conveyor.bind();
-		glBegin(GL_QUAD_STRIP);
-		{
-			glNormal3d(0, 0, 1);
-			for (int segment = 0; segment <= 32; segment++) {
-				glTexCoord2d(segment / 16.0 - s.frame / 50.0, 0);
-				glVertex3d(-0.375, -0.375, 0.375);
-				glTexCoord2d(segment / 16.0 - s.frame / 50.0, 1);
-				glVertex3d(-0.375 + 0.75 * Math.cos(segment * (Math.PI / 64)), -0.375 + 0.75 * Math.sin(segment * (Math.PI / 64)), 0.375);
-			}
+	@Override
+	protected ArrayList<Double> getTopTextureCoordinates() {
+		ArrayList<Double> texs = new ArrayList<>();
+		for (int i = 0; i <= 32; i++) {
+			texs.add(i / 16.0);
 		}
-		glEnd();
-		glBegin(GL_QUAD_STRIP);
-		{
-			glNormal3d(0, 0, -1);
-			for (int segment = 0; segment <= 32; segment++) {
-				glTexCoord2d(segment / 16.0 - s.frame / 50.0, 0);
-				glVertex3d(-0.375, -0.375, 0.125);
-				glTexCoord2d(segment / 16.0 - s.frame / 50.0, 1);
-				glVertex3d(-0.375 + 0.75 * Math.cos((32 - segment) * (Math.PI / 64)), -0.375 + 0.75 * Math.sin((32 - segment) * (Math.PI / 64)), 0.125);
-			}
+		return texs;
+	}
+
+	@Override
+	protected ArrayList<Vector3f> getBottomCoordinatesLeft() {
+		ArrayList<Vector3f> lefts = new ArrayList<>();
+		for (int i = 0; i <= 32; i++) {
+			lefts.add(new Vector3f(-0.375f, -0.375f, 0.125f));
 		}
-		glEnd();
-		glDisable(GL_TEXTURE_2D);
+		return lefts;
+	}
+
+	@Override
+	protected ArrayList<Vector3f> getBottomCoordinatesRight() {
+		ArrayList<Vector3f> rights = new ArrayList<>();
+		for (int i = 32; i >= 0; i--) {
+			rights.add(new Vector3f(
+					-0.375f + 0.75f * (float) Math.cos(i * (Math.PI / 64)),
+					-0.375f + 0.75f * (float) Math.sin(i * (Math.PI / 64)),
+					0.125f));
+		}
+		return rights;
+	}
+
+	@Override
+	protected ArrayList<Double> getBottomTextureCoordinates() {
+		ArrayList<Double> texs = new ArrayList<>();
+		for (int i = 0; i <= 32; i++) {
+			texs.add(i / 16.0);
+		}
+		return texs;
+	}
+
+	@Override
+	protected void furtherPositionInternal(Luggage l, double step) {
+		// TODO Automatisch gegenereerde methodestub
 		
-		glPopMatrix();
 	}
 }

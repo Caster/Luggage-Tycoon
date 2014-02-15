@@ -1,65 +1,162 @@
 package accg.objects.blocks;
 
-import org.lwjgl.util.glu.Cylinder;
+import static org.lwjgl.opengl.GL11.*;
+import static accg.utils.GLUtils.*;
+
+import java.util.ArrayList;
+
+import org.lwjgl.util.vector.Vector3f;
 
 import accg.State;
 import accg.objects.Block;
-import static org.lwjgl.opengl.GL11.*;
+import accg.objects.Luggage;
 
-public class ConveyorBlock extends Block {
-
+/**
+ * Generic super class of all conveyor blocks. This class is overridden by the
+ * block classes.
+ * 
+ * A {@link ConveyorBlock} manages the drawing of conveyor belts and the simulation
+ * <b>(not yet of course)</b>, based on abstract methods that indicate the exact
+ * shape of the conveyor belt.
+ * 
+ * ConveyorBlocks use the following coordinate system: they are centered around
+ * the origin (0, 0), and the conveyor belt moves towards the positive y direction.
+ */
+public abstract class ConveyorBlock extends Block {
+	
+	/**
+	 * Creates a new ConveyorBlock on the specified position.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @param z The z-coordinate.
+	 * @param orientation The orientation of this block.
+	 */
 	public ConveyorBlock(int x, int y, int z, Orientation orientation) {
 		super(x, y, z, orientation);
 	}
-
+	
+	/**
+	 * Returns a list of the coordinates on the left side of the top part
+	 * of the conveyor belt.
+	 * 
+	 * @return An ArrayList of the coordinates.
+	 */
+	protected abstract ArrayList<Vector3f> getTopCoordinatesLeft();
+	
+	/**
+	 * Returns a list of the coordinates on the right side of the top part
+	 * of the conveyor belt.
+	 * 
+	 * @return An ArrayList of the coordinates.
+	 */
+	protected abstract ArrayList<Vector3f> getTopCoordinatesRight();
+	
+	/**
+	 * Returns a list of the texture coordinates for the top part of the conveyor belt.
+	 * These should correspond to the coordinates given by the methods
+	 * {@link #getTopCoordinatesLeft()} and {@link #getTopCoordinatesRight()}.
+	 * 
+	 * @return An ArrayList of the texture coordinates.
+	 */
+	protected abstract ArrayList<Double> getTopTextureCoordinates();
+	
+	/**
+	 * Returns a list of the coordinates on the left side of the bottom part
+	 * of the conveyor belt.
+	 * 
+	 * @return An ArrayList of the coordinates.
+	 */
+	protected abstract ArrayList<Vector3f> getBottomCoordinatesLeft();
+	
+	/**
+	 * Returns a list of the coordinates on the right side of the bottom part
+	 * of the conveyor belt.
+	 * 
+	 * @return An ArrayList of the coordinates.
+	 */
+	protected abstract ArrayList<Vector3f> getBottomCoordinatesRight();
+	
+	/**
+	 * Returns a list of the texture coordinates for the bottom part of the conveyor belt.
+	 * These should correspond to the coordinates given by the methods
+	 * {@link #getBottomCoordinatesLeft()} and {@link #getBottomCoordinatesRight()}.
+	 * 
+	 * @return An ArrayList of the texture coordinates.
+	 */
+	protected abstract ArrayList<Double> getBottomTextureCoordinates();
+	
+	/**
+	 * Increases the position of the luggage.
+	 * 
+	 * This method may do two things:
+	 * 
+	 *  * update the position of the luggage;
+	 *  * "drop" the luggage (set {@link Luggage#supportingBlock} to <code>null</code>).
+	 * 
+	 * It may be assumed that the luggage is indeed on {@link Luggage#supportingBlock}.
+	 * 
+	 * This method is used for the simulation.
+	 * 
+	 * @param l The luggage item, which also contains data like the current
+	 * position on this conveyor belt.
+	 * @param step The step size in seconds.
+	 */
+	protected abstract void furtherPositionInternal(Luggage l, double step);
+	
 	@Override
 	public void draw(State s) {
 		
 		glPushMatrix();
-		glTranslated(x + 0.5, y + 0.5, z / 4.0);
-		glRotated(orientation.angle, 0, 0, 1);
+		glTranslated(x, y, z / 4.0);
+		glRotated(-orientation.angle, 0, 0, 1);
 		
-		Cylinder c1 = new Cylinder();
-
-		glColor3d(0.7, 0.7, 0.65);
-		glPushMatrix();
-		glTranslated(-0.375,-0.375, 0.25);
-		glRotated(90, 0, 1, 0);
-		c1.draw(0.125f, 0.125f, 0.75f, 16, 1);
-		glPopMatrix();
-		glPushMatrix();
-		glTranslated(-0.375, 0.375, 0.25);
-		glRotated(90, 0, 1, 0);
-		c1.draw(0.125f, 0.125f, 0.75f, 16, 1);
-		glPopMatrix();
+		// TODO draw the axes
 		
-		// the belt
 		glColor3d(1, 1, 1);
 		glEnable(GL_TEXTURE_2D);
 		s.textures.conveyor.bind();
-		glBegin(GL_QUADS);
+		
+		glBegin(GL_QUAD_STRIP);
 		{
-			glNormal3d(0, 0, 1);
-			glTexCoord2d(-s.frame / 50.0, 0);
-			glVertex3d(-0.375, -0.375, 0.375);
-			glTexCoord2d(2 - s.frame / 50.0, 0);
-			glVertex3d(-0.375, 0.375, 0.375);
-			glTexCoord2d(2 - s.frame / 50.0, 1);
-			glVertex3d(0.375, 0.375, 0.375);
-			glTexCoord2d(-s.frame / 50.0, 1);
-			glVertex3d(0.375, -0.375, 0.375);
+			glNormal3d(0, 0, 1); // TODO calculate proper normals
 			
-			glNormal3d(0, 0, -1);
-			glTexCoord2d(2 - s.frame / 50.0, 1);
-			glVertex3d(-0.375, -0.375, 0.125);
-			glTexCoord2d(-s.frame / 50.0, 1);
-			glVertex3d(-0.375, 0.375, 0.125);
-			glTexCoord2d(-s.frame / 50.0, 0);
-			glVertex3d(0.375, 0.375, 0.125);
-			glTexCoord2d(2 - s.frame / 50.0, 0);
-			glVertex3d(0.375, -0.375, 0.125);
+			ArrayList<Vector3f> lefts = getTopCoordinatesLeft();
+			ArrayList<Vector3f> rights = getTopCoordinatesRight();
+			ArrayList<Double> texs = getTopTextureCoordinates();
+			
+			assert lefts.size() == rights.size() && lefts.size() == texs.size();
+			
+			for (int i = 0; i < lefts.size(); i++) {
+				glTexCoord2d(texs.get(i) - s.time, 0);
+				glVertex3f(lefts.get(i));
+				
+				glTexCoord2d(texs.get(i) - s.time, 1);
+				glVertex3f(rights.get(i));
+			}
 		}
 		glEnd();
+		
+		glBegin(GL_QUAD_STRIP);
+		{
+			glNormal3d(0, 0, 1); // TODO calculate proper normals
+			
+			ArrayList<Vector3f> lefts = getBottomCoordinatesLeft();
+			ArrayList<Vector3f> rights = getBottomCoordinatesRight();
+			ArrayList<Double> texs = getBottomTextureCoordinates();
+			
+			assert lefts.size() == rights.size() && lefts.size() == texs.size();
+			
+			for (int i = 0; i < lefts.size(); i++) {
+				glTexCoord2d(texs.get(i) - s.time, 0);
+				glVertex3f(lefts.get(i));
+				
+				glTexCoord2d(texs.get(i) - s.time, 1);
+				glVertex3f(rights.get(i));
+			}
+		}
+		glEnd();
+		
 		glDisable(GL_TEXTURE_2D);
 		
 		glPopMatrix();

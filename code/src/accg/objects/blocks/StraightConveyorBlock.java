@@ -6,9 +6,9 @@ import org.lwjgl.util.vector.Vector3f;
 
 import accg.objects.Luggage;
 
-public class AscendingConveyorBlock extends ConveyorBlock {
+public class StraightConveyorBlock extends ConveyorBlock {
 
-	public AscendingConveyorBlock(int x, int y, int z, Orientation orientation) {
+	public StraightConveyorBlock(int x, int y, int z, Orientation orientation) {
 		super(x, y, z, orientation);
 	}
 	
@@ -16,7 +16,7 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	protected ArrayList<Vector3f> getTopCoordinatesLeft() {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
 		lefts.add(new Vector3f(-0.375f, -0.375f, 0.375f));
-		lefts.add(new Vector3f(-0.375f, 0.375f, 0.625f));
+		lefts.add(new Vector3f(-0.375f, 0.375f, 0.375f));
 		return lefts;
 	}
 
@@ -24,7 +24,7 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	protected ArrayList<Vector3f> getTopCoordinatesRight() {
 		ArrayList<Vector3f> rights = new ArrayList<>();
 		rights.add(new Vector3f(0.375f, -0.375f, 0.375f));
-		rights.add(new Vector3f(0.375f, 0.375f, 0.625f));
+		rights.add(new Vector3f(0.375f, 0.375f, 0.375f));
 		return rights;
 	}
 
@@ -39,7 +39,7 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	@Override
 	protected ArrayList<Vector3f> getBottomCoordinatesLeft() {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
-		lefts.add(new Vector3f(-0.375f, 0.375f, 0.375f));
+		lefts.add(new Vector3f(-0.375f, 0.375f, 0.125f));
 		lefts.add(new Vector3f(-0.375f, -0.375f, 0.125f));
 		return lefts;
 	}
@@ -47,7 +47,7 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	@Override
 	protected ArrayList<Vector3f> getBottomCoordinatesRight() {
 		ArrayList<Vector3f> rights = new ArrayList<>();
-		rights.add(new Vector3f(0.375f, 0.375f, 0.375f));
+		rights.add(new Vector3f(0.375f, 0.375f, 0.125f));
 		rights.add(new Vector3f(0.375f, -0.375f, 0.125f));
 		return rights;
 	}

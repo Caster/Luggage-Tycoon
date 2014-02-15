@@ -21,6 +21,7 @@ import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -29,6 +30,7 @@ import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.opengl.Util;
 
 import accg.camera.Camera;
+import accg.objects.Luggage;
 import accg.objects.World;
 
 public class ACCGProgram {
@@ -62,7 +64,9 @@ public class ACCGProgram {
 		// initialize stuff here
 		State s = new State();
 		s.textures = new Textures();
-		World world = new World();
+		s.world = new World();
+		s.simulation = new Simulation();
+		s.startTime = Sys.getTime() / Sys.getTimerResolution();
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
 		glEnable(GL_COLOR_MATERIAL);
@@ -79,6 +83,13 @@ public class ACCGProgram {
 			
 			// render stuff here
 			s.frame++;
+			s.time = (double) Sys.getTime() / Sys.getTimerResolution() - s.startTime;
+			s.simulation.update(s);
+			
+			// TODO temporary: add some luggage
+			if (s.frame % 25 == 0) {
+				s.world.luggage.addObject(new Luggage(Math.random() * 10, Math.random() * 10, 2));
+			}
 			
 			glClearColor(0.8f, 0.8f, 0.77f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -91,7 +102,7 @@ public class ACCGProgram {
 			glLoadIdentity();
 			camera.setLookAt();
 
-			world.draw(s);
+			s.world.draw(s);
 			
 			// check for errors
 			Util.checkGLError();
