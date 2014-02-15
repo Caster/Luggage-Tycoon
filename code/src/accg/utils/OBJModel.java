@@ -17,13 +17,14 @@ import org.lwjgl.util.vector.Vector3f;
 public class OBJModel {
 	
 	private ArrayList<Vector3f> vertices;
-	
 	private ArrayList<ArrayList<Vector3f>> faces;
+	private ArrayList<Vector3f> normals;
 	
 	public OBJModel(File file) {
 		
 		this.vertices = new ArrayList<>();
 		this.faces = new ArrayList<>();
+		this.normals = new ArrayList<>();
 		
 		Scanner s = null;
 		
@@ -65,6 +66,12 @@ public class OBJModel {
 					System.err.println("Encountered face with " + face.size() + " vertices; 3 expected");
 				}
 				faces.add(face);
+				
+				Vector3f a = new Vector3f(), b = new Vector3f(), normal = new Vector3f();
+				Vector3f.sub(face.get(1), face.get(0), a);
+				Vector3f.sub(face.get(2), face.get(0), b);
+				Vector3f.cross(a, b, normal);
+				normals.add(normal);
 			}
 		}
 	}
@@ -72,8 +79,9 @@ public class OBJModel {
 	public void draw() {
 		glBegin(GL_TRIANGLES);
 		{
-			for (ArrayList<Vector3f> face : faces) {
-				for (Vector3f vertex : face) {
+			for (int i = 0; i < faces.size(); i++) {
+				glNormal3f(normals.get(i));
+				for (Vector3f vertex : faces.get(i)) {
 					glVertex3f(vertex);
 				}
 			}
