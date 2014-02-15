@@ -151,7 +151,7 @@ public class Camera {
 	}
 	
 	public void moveForward() {
-		moveForward(1.0f);
+		moveForward(camSpherical.x / INITIAL_CAM_POS.x);
 	}
 	
 	public void moveForward(float amount) {
@@ -159,7 +159,7 @@ public class Camera {
 	}
 
 	public void moveBackward() {
-		moveBackward(1.0f);
+		moveBackward(camSpherical.x / INITIAL_CAM_POS.x);
 	}
 	
 	public void moveBackward(float amount) {
@@ -174,7 +174,7 @@ public class Camera {
 	}
 	
 	public void moveLeft() {
-		moveLeft(1.0f);
+		moveLeft(camSpherical.x / INITIAL_CAM_POS.x);
 	}
 	
 	public void moveLeft(float amount) {
@@ -182,7 +182,7 @@ public class Camera {
 	}
 	
 	public void moveRight() {
-		moveRight(1.0f);
+		moveRight(camSpherical.x / INITIAL_CAM_POS.x);
 	}
 	
 	public void moveRight(float amount) {
