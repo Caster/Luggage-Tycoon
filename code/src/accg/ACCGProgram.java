@@ -20,9 +20,9 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import accg.camera.Camera;
 import accg.gui.MenuBar;
-import accg.gui.MenuBarItem;
 import accg.gui.MenuBar.Alignment;
 import accg.gui.MenuBar.Position;
+import accg.gui.MenuBarItem;
 import accg.objects.Luggage;
 import accg.objects.World;
 

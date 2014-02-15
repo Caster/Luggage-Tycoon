@@ -2,8 +2,14 @@ package accg.objects;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import accg.State;
+import java.io.File;
 
+import accg.State;
+import accg.utils.OBJModel;
+
+/**
+ * A luggage item.
+ */
 public class Luggage extends DrawableObject {
 	
 	/**
@@ -50,6 +56,11 @@ public class Luggage extends DrawableObject {
 	public Block supportingBlock;
 	
 	/**
+	 * The OBJ model for the case.
+	 */
+	private OBJModel caseModel;
+	
+	/**
 	 * Creates a new, free-floating luggage item.
 	 * 
 	 * @param x The x-coordinate of this luggage item.
@@ -60,6 +71,8 @@ public class Luggage extends DrawableObject {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		
+		this.caseModel = new OBJModel(new File("res/suitcase.obj"));
 	}
 	
 	@Override
@@ -68,52 +81,9 @@ public class Luggage extends DrawableObject {
 		glColor3f(0.3f, 0.6f, 0.8f);
 		
 		glPushMatrix();
-		glTranslated(x, y, z + 0.15);
+		glTranslated(x, y, z);
 		
-		float size = 0.15f;
-		
-		glBegin(GL_QUADS);
-		{
-	        // in XY plane
-	        glNormal3f(0, 0, 1);
-	        glVertex3f(-size, -size, size);
-	        glVertex3f(size, -size, size);
-	        glVertex3f(size, size, size);
-	        glVertex3f(-size, size, size);
-	        
-	        glNormal3f(0, 0, -1);
-	        glVertex3f(-size, -size, -size);
-	        glVertex3f(-size, size, -size);
-	        glVertex3f(size, size, -size);
-	        glVertex3f(size, -size, -size);
-	        
-	        // in XZ plane
-	        glNormal3f(0, 1, 0);
-	        glVertex3f(-size, size, -size);
-	        glVertex3f(-size, size, size);
-	        glVertex3f(size, size, size);
-	        glVertex3f(size, size, -size);
-	        
-	        glNormal3f(0, -1, 0);
-	        glVertex3f(-size, -size, -size);
-	        glVertex3f(size, -size, -size);
-	        glVertex3f(size, -size, size);
-	        glVertex3f(-size, -size, size);
-	        
-	        // in YZ plane
-	        glNormal3f(1, 0, 0);
-	        glVertex3f(size, -size, -size);
-	        glVertex3f(size, size, -size);
-	        glVertex3f(size, size, size);
-	        glVertex3f(size, -size, size);
-	        
-	        glNormal3f(-1, 0, 0);
-	        glVertex3f(-size, -size, -size);
-	        glVertex3f(-size, -size, size);
-	        glVertex3f(-size, size, size);
-	        glVertex3f(-size, size, -size);
-		}
-		glEnd();
+		caseModel.draw();
 		
 		glPopMatrix();
 	}

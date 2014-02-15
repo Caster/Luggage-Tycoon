@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import accg.State;
-import accg.objects.Block.Orientation;
 import accg.objects.Luggage;
 
 public class BendLeftConveyorBlock extends ConveyorBlock {
