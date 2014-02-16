@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import org.lwjgl.util.vector.Vector3f;
 
@@ -17,14 +18,16 @@ import org.lwjgl.util.vector.Vector3f;
 public class OBJModel {
 	
 	private ArrayList<Vector3f> vertices;
-	private ArrayList<ArrayList<Vector3f>> faces;
 	private ArrayList<Vector3f> normals;
+	private ArrayList<ArrayList<Vector3f>> facesVertices;
+	private ArrayList<ArrayList<Vector3f>> facesNormals;
 	
 	public OBJModel(File file) {
 		
 		this.vertices = new ArrayList<>();
-		this.faces = new ArrayList<>();
 		this.normals = new ArrayList<>();
+		this.facesVertices = new ArrayList<>();
+		this.facesNormals = new ArrayList<>();
 		
 		Scanner s = null;
 		
@@ -42,37 +45,46 @@ public class OBJModel {
 	}
 	
 	private void parseModel(Scanner s) {
+		
+		Pattern facePattern = Pattern.compile("(\\d*)//(\\d*)");
+		
 		while (s.hasNext()) {
-			String type = s.next();
+			String text = s.next();
 			
-			if (type.equals("#")) {
+			if (text.equals("#")) {
 				s.nextLine();
 			}
 			
-			if (type.equals("v")) {
+			if (text.equals("v")) {
 				float x = s.nextFloat();
 				float y = s.nextFloat();
 				float z = s.nextFloat();
 				vertices.add(new Vector3f(x, y, z));
 			}
 			
-			if (type.equals("f")) {
-				ArrayList<Vector3f> face = new ArrayList<>();
-				while (s.hasNextInt()) {
-					int vertexId = s.nextInt();
-					face.add(vertices.get(vertexId - 1)); // I assume here that all v's become before the f's
+			if (text.equals("vn")) {
+				float x = s.nextFloat();
+				float y = s.nextFloat();
+				float z = s.nextFloat();
+				normals.add(new Vector3f(x, y, z));
+			}
+			
+			if (text.equals("f")) {
+				ArrayList<Vector3f> faceVertices = new ArrayList<>();
+				ArrayList<Vector3f> faceNormals = new ArrayList<>();
+				while (s.hasNext(facePattern)) {
+					text = s.next(facePattern);
+					int slash = text.indexOf("//");
+					int vertexId = Integer.parseInt(text.substring(0, slash));
+					faceVertices.add(vertices.get(vertexId - 1)); // I assume here that all v's become before the f's
+					int normalId = Integer.parseInt(text.substring(slash + 2));
+					faceNormals.add(normals.get(normalId - 1)); // I assume here that all vn's become before the f's
 				}
-				if (face.size() != 3) {
-					System.err.println("Encountered face with " + face.size() + " vertices; 3 expected");
+				if (faceVertices.size() != 3) {
+					System.err.println("Encountered face with " + faceVertices.size() + " vertices; 3 expected");
 				}
-				faces.add(face);
-				
-				Vector3f a = new Vector3f(), b = new Vector3f(), normal = new Vector3f();
-				Vector3f.sub(face.get(1), face.get(0), a);
-				Vector3f.sub(face.get(2), face.get(0), b);
-				Vector3f.cross(a, b, normal);
-				normal.normalise();
-				normals.add(normal);
+				facesVertices.add(faceVertices);
+				facesNormals.add(faceNormals);
 			}
 		}
 	}
@@ -80,10 +92,10 @@ public class OBJModel {
 	public void draw() {
 		glBegin(GL_TRIANGLES);
 		{
-			for (int i = 0; i < faces.size(); i++) {
-				glNormal3f(normals.get(i));
-				for (Vector3f vertex : faces.get(i)) {
-					glVertex3f(vertex);
+			for (int i = 0; i < facesVertices.size(); i++) {
+				for (int j = 0; j < facesVertices.get(i).size(); j++) {
+					glNormal3f(facesNormals.get(i).get(j));
+					glVertex3f(facesVertices.get(i).get(j));
 				}
 			}
 		}

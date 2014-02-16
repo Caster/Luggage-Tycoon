@@ -5,6 +5,9 @@ import accg.State;
 /**
  * The collection of blocks to draw.
  * 
+ * In this class, all z-coordinates are considered to be multiplied by
+ * 4.
+ * 
  * \todo This class at the moment is a mixture of model and view code.
  * It would be nice to split this into two classes, where this class only
  * becomes responsible for drawing the contents of the model class.
@@ -13,7 +16,7 @@ public class BlockCollection extends DrawableObject {
 	
 	/**
 	 * Array of blocks. <code>blocks[x][y][z]</code> contains the block
-	 * on the coordinate (x, y, z), or <code>null</code> if there is no
+	 * on the coordinate (x, y, z / 4), or <code>null</code> if there is no
 	 * block there.
 	 */
 	private Block[][][] blocks;
@@ -71,8 +74,8 @@ public class BlockCollection extends DrawableObject {
 	 * 
 	 * @param x The x-coordinate.
 	 * @param y The y-coordinate.
-	 * @param z The z-coordinate.
-	 * @return The block on coordinate (x, y, z), or <code>null</code> if
+	 * @param z The z-coordinate (divided by 4).
+	 * @return The block on coordinate (x, y, z / 4), or <code>null</code> if
 	 * there is no block there.
 	 */
 	public Block getBlock(int x, int y, int z) {

@@ -18,7 +18,9 @@ public class Simulation {
 	double time = 0;
 	
 	/**
-	 * Updates the simulation to the current time step.
+	 * Updates the simulation to the current time step. This method
+	 * performs simulation steps until the current time is synchronized again
+	 * with the real time.
 	 * 
 	 * @param s The state of the program.
 	 */
@@ -27,24 +29,32 @@ public class Simulation {
 			doSimulationStep(s);
 		}
 	}
-
+	
+	/**
+	 * Performs a single simulation step.
+	 * @param s The state of the program.
+	 */
 	private void doSimulationStep(State s) {
 		time += dt;
 		for (Luggage l : s.world.luggage) {
 			if (l.supportingBlock == null) {
-				// gravity
-				l.vz -= 9.81 * dt;
+				
+				// lying on floor
+				if (l.z < 0) {
+					l.z = 0;
+					l.vz = 0;
+				} else {
+					// gravity
+					l.vz -= 9.81 * dt;
+				}
 				
 				// update positions
 				l.x += l.vx * dt;
 				l.y += l.vy * dt;
 				l.z += l.vz * dt;
 				
-				// bounce
-				if (l.z < 0) {
-					l.z = 0;
-					l.vz *= -0.9;
-				}
+				// check for collisions with conveyor belts
+				
 			}
 		}
 	}
