@@ -12,7 +12,7 @@ public class Simulation {
 	/**
 	 * The step size of the simulation.
 	 */
-	double dt = 0.01;
+	double dt = 0.001;
 	
 	/**
 	 * The current time in the simulation.
@@ -45,8 +45,8 @@ public class Simulation {
 				if (l.z <= 0) {
 					l.z = 0;
 					l.vz = 0;
-					l.vx -= 0.01 * Math.signum(l.vx);
-					l.vy -= 0.01 * Math.signum(l.vy);
+					l.vx -= dt * Math.signum(l.vx);
+					l.vy -= dt * Math.signum(l.vy);
 					l.vx = Math.abs(l.vx) <= 0.01 ? 0 : l.vx;
 					l.vy = Math.abs(l.vy) <= 0.01 ? 0 : l.vy;
 				} else {
@@ -61,10 +61,10 @@ public class Simulation {
 				
 				// check for conveyor belts that can take the luggage
 				for (int z = (int) (4 * l.z - 3); z <= (int) (4 * l.z); z++) {
-					if (!s.world.bc.inBounds((int) l.x, (int) l.y, z)) {
+					if (!s.world.bc.inBounds((int) (l.x + 0.5), (int) (l.y + 0.5), z)) {
 						continue; // TODO better check of course
 					}
-					Block b = s.world.bc.getBlock((int) l.x, (int) l.y, z);
+					Block b = s.world.bc.getBlock((int) (l.x + 0.5), (int) (l.y + 0.5), z);
 					if (b instanceof ConveyorBlock) {
 						if (((ConveyorBlock) b).canTakeLuggage(l)) {
 							l.supportingBlock = b;
