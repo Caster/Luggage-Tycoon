@@ -15,10 +15,12 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.opengl.Util;
 import org.lwjgl.util.Point;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.util.ResourceLoader;
 
 import accg.camera.Camera;
+import accg.gui.GUI;
 import accg.gui.MenuBar;
 import accg.gui.MenuBar.Alignment;
 import accg.gui.MenuBar.Position;
@@ -56,12 +58,33 @@ public class ACCGProgram {
 			System.exit(1);
 		}
 		
-		// initialize stuff here
+		// save window size to be able to react to resize events
+		int displayWidth = Display.getWidth();
+		int displayHeight = Display.getHeight();
+		
+		// pre-initialize stuff
 		State s = new State();
-		s.textures = new Textures();
-		s.world = new World();
-		s.simulation = new Simulation();
 		initialiseFonts(s);
+		
+		// show a loading message, loading textures takes some time
+		glClearColor(0.8f, 0.8f, 0.77f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glViewport(0, 0, Display.getWidth(), Display.getHeight());
+		GUI.make2D();
+		String loadingText = "Loading...";
+		int loadingTextWidth = s.fontMenu.getWidth(loadingText);
+		int loadingTextHeight = s.fontMenu.getHeight(loadingText);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		s.fontMenu.drawString((displayWidth - loadingTextWidth) / 2,
+				(displayHeight - loadingTextHeight) / 2, loadingText, Color.black);
+		glDisable(GL_BLEND);
+		Display.update();
+		
+		// initialize stuff here
+		s.world = new World();
+		s.textures = new Textures();
+		s.simulation = new Simulation();
 		s.startTime = Sys.getTime() / Sys.getTimerResolution();
 		camera = new Camera(s);
 		clickedPoint = null;
@@ -76,10 +99,6 @@ public class ACCGProgram {
 		glEnable(GL_COLOR_MATERIAL);
 		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 		glEnable(GL_DEPTH_TEST);
-		
-		// save window size to be able to react to resize events
-		int displayWidth = Display.getWidth();
-		int displayHeight = Display.getHeight();
 		
 		while (!Display.isCloseRequested() && !escPressed) {
 			

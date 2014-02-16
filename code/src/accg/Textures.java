@@ -10,6 +10,7 @@ public class Textures {
 	
 	// icon textures
 	public Texture iconExit;
+	public Texture iconConfigure;
 	public Texture iconOpen;
 	public Texture iconSave;
 	public Texture iconPause;
@@ -26,6 +27,8 @@ public class Textures {
 			// icon textures
 			iconExit = TextureLoader.getTexture("PNG",
 					ResourceLoader.getResourceAsStream("res/icons/application-exit.png"));
+			iconConfigure = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/configure.png"));
 			iconOpen = TextureLoader.getTexture("PNG",
 					ResourceLoader.getResourceAsStream("res/icons/document-open.png"));
 			iconSave = TextureLoader.getTexture("PNG",
