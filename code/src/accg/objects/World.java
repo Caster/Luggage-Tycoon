@@ -44,10 +44,10 @@ public class World extends Container<DrawableObject> {
 		bc.setBlock(new StraightConveyorBlock(3, 7, 6, Orientation.DOWN), 3, 7, 6);
 		bc.setBlock(new StraightConveyorBlock(3, 6, 6, Orientation.DOWN), 3, 6, 6);
 		bc.setBlock(new StraightConveyorBlock(3, 5, 6, Orientation.DOWN), 3, 5, 6);
-		bc.setBlock(new StraightConveyorBlock(3, 4, 4, Orientation.RIGHT), 3, 4, 4);
-		bc.setBlock(new StraightConveyorBlock(4, 4, 2, Orientation.UP), 4, 4, 2);
-		bc.setBlock(new StraightConveyorBlock(4, 5, 0, Orientation.LEFT), 4, 5, 0);
-		bc.setBlock(new StraightConveyorBlock(3, 5, 0, Orientation.LEFT), 3, 5, 0);
+		bc.setBlock(new StraightConveyorBlock(3, 4, 4, Orientation.LEFT), 3, 4, 4);
+		bc.setBlock(new StraightConveyorBlock(2, 4, 2, Orientation.UP), 2, 4, 2);
+		bc.setBlock(new StraightConveyorBlock(2, 5, 0, Orientation.RIGHT), 2, 5, 0);
+		bc.setBlock(new StraightConveyorBlock(3, 5, 0, Orientation.RIGHT), 3, 5, 0);
 		addObject(bc);
 		
 		luggage = new Container<>();
