@@ -58,6 +58,54 @@ public class MenuBar extends DrawableObject {
 		this.position = pos;
 		this.alignment = align;
 		this.items = new ArrayList<>();
+		this.visible = true;
+		this.listeners = new ArrayList<>();
+	}
+	
+	/**
+	 * Construct a new {@link MenuBar} with the given parent. This means
+	 * that it is shown next to the parent, on which side depends on the
+	 * position of the parent. The alignment will be inherited from the
+	 * parent too.
+	 * 
+	 * @param state State of the program, used to extract font from.
+	 * @param parent Menu bar next to which this menu should be shown.
+	 */
+	public MenuBar(State state, MenuBar parent) {
+		this(state, null, null);
+		this.visible = false;
+		this.parent = parent;
+		
+		// hide when the parent hides
+		parent.addMenuBarListener(new MenuBarListener() {
+			@Override
+			public void onHide() {
+				setVisible(false);
+			}
+			
+			@Override
+			public void onAlignmentChanged(Alignment newAlignment) {
+				outline = null;
+				
+				for (MenuBarListener mbl : listeners) {
+					mbl.onAlignmentChanged(newAlignment);
+				}
+			}
+			
+			@Override
+			public void onPositionChanged(Position newPosition) {
+				outline = null;
+				
+				for (MenuBarListener mbl : listeners) {
+					mbl.onPositionChanged(newPosition);
+				}
+			}
+			
+			@Override
+			public void onResize(int width, int height) {
+				handleResizeEvent(width, height);
+			}
+		});
 	}
 	
 	/**
@@ -71,8 +119,22 @@ public class MenuBar extends DrawableObject {
 		}
 	}
 	
+	/**
+	 * Add a listener that is notified of menu bar events.
+	 * 
+	 * @param mbl The listener to be added.
+	 */
+	public void addMenuBarListener(MenuBarListener mbl) {
+		listeners.add(mbl);
+	}
+	
 	@Override
 	public void draw(State s) {
+		// should we draw in the first place?
+		if (!this.visible || items.size() == 0) {
+			return;
+		}
+		
 		// determine outline
 		Rectangle outline = getOutline();
 		
@@ -90,7 +152,7 @@ public class MenuBar extends DrawableObject {
 		glEnd();
 		
 		// draw menu items
-		if (position == Position.TOP || position == Position.BOTTOM) {
+		if (getPosition() == Position.TOP || getPosition() == Position.BOTTOM) {
 			Rectangle itemOutline = new Rectangle();
 			itemOutline.setX(outline.getX());
 			itemOutline.setY(outline.getY());
@@ -120,6 +182,42 @@ public class MenuBar extends DrawableObject {
 	}
 
 	/**
+	 * Return the alignment of this menu bar.
+	 * 
+	 * @return The last set alignment of this menu bar.
+	 */
+	public Alignment getAlignment() {
+		return (parent == null ? alignment : parent.getAlignment());
+	}
+	
+	/**
+	 * Return the height of this menu bar.
+	 * 
+	 * @return The height in pixels of this menu bar.
+	 */
+	public int getHeight() {
+		return getOutline().getHeight();
+	}
+	
+	/**
+	 * Return the position of this menu bar in the display.
+	 * 
+	 * @return The last set position of this menu bar.
+	 */
+	public Position getPosition() {
+		return (parent == null ? position : parent.getPosition());
+	}
+	
+	/**
+	 * Return the width of this menu bar.
+	 * 
+	 * @return The width in pixels of this menu bar.
+	 */
+	public int getWidth() {
+		return getOutline().getWidth();
+	}
+	
+	/**
 	 * Handle a mouse click event where the mouse is currently at the given
 	 * position in window coordinates.
 	 * 
@@ -147,13 +245,19 @@ public class MenuBar extends DrawableObject {
 	 * @param y Y-coordinate of current mouse position.
 	 */
 	public void handleMouseMoveEvent(int x, int y) {
+		// do we even have items that can be hovered?
+		if (!visible || items.size() == 0) {
+			return;
+		}
+		
+		// our Y-axis is inverted, sadly, because of font rendering...
 		y = Display.getHeight() - y;
 		
 		// determine outline
 		Rectangle outline = getOutline();
 		
 		// check if any (and if yes, which) menu item has been clicked
-		if (position == Position.TOP || position == Position.BOTTOM) {
+		if (getPosition() == Position.TOP || getPosition() == Position.BOTTOM) {
 			// check if the vertical position matches at least
 			if (y < outline.getY() - outline.getHeight() ||
 					y > outline.getY()) {
@@ -216,6 +320,76 @@ public class MenuBar extends DrawableObject {
 	public void handleResizeEvent(int width, int height) {
 		this.outline = null;
 		getOutline(width, height);
+		
+		for (MenuBarListener mbl : listeners) {
+			mbl.onResize(width, height);
+		}
+	}
+	
+	/**
+	 * Return if this menu bar is currently visible or not.
+	 * 
+	 * @return The last value of a call to {@link #setVisible(boolean)}.
+	 */
+	public boolean isVisible() {
+		return visible;
+	}
+	
+	/**
+	 * Change the alignment of this menu bar.
+	 * 
+	 * @param alignment New alignment for this menu bar.
+	 */
+	public void setAlignment(Alignment alignment) {
+		if (this.parent == null) {
+			this.alignment = alignment;
+			this.outline = null;
+			
+			for (MenuBarListener mbl : listeners) {
+				mbl.onAlignmentChanged(alignment);
+			}
+		}
+	}
+	
+	/**
+	 * Change the position of this menu bar.
+	 * 
+	 * @param position New position for this menu bar.
+	 */
+	public void setPosition(Position position) {
+		if (this.parent == null) {
+			this.position = position;
+			this.outline = null;
+			
+			for (MenuBarListener mbl : listeners) {
+				mbl.onPositionChanged(position);
+			}
+		}
+	}
+	
+	/**
+	 * Show or hide this menu bar.
+	 * 
+	 * @param visible If the menu bar should be visible.
+	 */
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+		
+		// notify children (or others) in case we are hiding now
+		if (!visible) {
+			for (MenuBarListener mbl : listeners) {
+				mbl.onHide();
+			}
+		}
+	}
+	
+	/**
+	 * Toggle the visibility of this menu bar.
+	 * 
+	 * @see #setVisible(boolean)
+	 */
+	public void toggleVisible() {
+		setVisible(!this.visible);
 	}
 	
 	/**
@@ -263,7 +437,7 @@ public class MenuBar extends DrawableObject {
 		}
 		
 		// determine width and height of outline
-		if (position == Position.TOP || position == Position.BOTTOM) {
+		if (getPosition() == Position.TOP || getPosition() == Position.BOTTOM) {
 			// all items are next to each other
 			outline.setHeight(itemHeight);
 			outline.setWidth(items.size() * maxWidth);
@@ -274,46 +448,50 @@ public class MenuBar extends DrawableObject {
 		}
 		
 		// determine position of rectangle
-		switch (position) {
+		Rectangle parentOutline = (parent == null ? null : parent.getOutline());
+		switch (getPosition()) {
 		case TOP :
 		case BOTTOM :
-			switch (alignment) {
-			case BEGIN:
+			switch (getAlignment()) {
+			case BEGIN :
 				outline.setX(MARGIN);
 				break;
-			case CENTER:
+			case END :
+				outline.setX(width - MARGIN - outline.getWidth());
+				break;
+			default : // CENTER or null
 				outline.setX(MARGIN + (width - 2 * MARGIN -
 						outline.getWidth()) / 2);
 				break;
-			case END:
-				outline.setX(width - MARGIN - outline.getWidth());
-				break;
 			}
 			
-			if (position == Position.TOP) {
-				outline.setY(MARGIN + outline.getHeight());
+			if (getPosition() == Position.TOP) {
+				outline.setY(parent == null ? MARGIN + outline.getHeight()
+						: parentOutline.getY() + MARGIN + outline.getHeight());
 			} else {
-				outline.setY(height - MARGIN);
+				outline.setY(parent == null ? height - MARGIN
+						: parentOutline.getY() - parentOutline.getHeight() - MARGIN);
 			}
 			break;
-		case LEFT:
-		case RIGHT:
-			if (position == Position.LEFT) {
-				outline.setX(MARGIN);
+		default : // LEFT, RIGHT or null
+			if (getPosition() == Position.LEFT) {
+				outline.setX(parent == null ? MARGIN
+						: parentOutline.getX() + MARGIN + parentOutline.getWidth());
 			} else {
-				outline.setX(width - MARGIN - outline.getWidth());
+				outline.setX(parent == null ? width - MARGIN - outline.getWidth()
+						: parentOutline.getX() - MARGIN - outline.getWidth());
 			}
 			
-			switch (alignment) {
-			case BEGIN:
+			switch (getAlignment()) {
+			case BEGIN :
 				outline.setY(MARGIN + outline.getHeight());
 				break;
-			case CENTER:
+			case END :
+				outline.setY(height - MARGIN);
+				break;
+			default : // CENTER or null
 				outline.setY(MARGIN + (height - 2 * MARGIN -
 						outline.getHeight()) / 2 + outline.getHeight());
-				break;
-			case END:
-				outline.setY(height - MARGIN);
 				break;
 			}
 			break;
@@ -333,4 +511,10 @@ public class MenuBar extends DrawableObject {
 	private ArrayList<MenuBarItem> items;
 	/** Outline of menu bar. If {@code null}, can be calculated using {@link #getOutline()}. */
 	private Rectangle outline;
+	/** If this menu bar is drawn or not. */
+	private boolean visible;
+	/** Parent of this menu bar, may be {@code null}. */
+	private MenuBar parent;
+	/** List of listeners. */
+	private ArrayList<MenuBarListener> listeners;
 }

@@ -13,6 +13,13 @@ public class Textures {
 	public Texture iconConfigure;
 	public Texture iconOpen;
 	public Texture iconSave;
+	public Texture iconJustifyCenter;
+	public Texture iconJustifyLeft;
+	public Texture iconJustifyRight;
+	public Texture iconGoDown;
+	public Texture iconGoRight;
+	public Texture iconGoLeft;
+	public Texture iconGoUp;
 	public Texture iconPause;
 	public Texture iconStart;
 	public Texture iconStop;
@@ -33,6 +40,20 @@ public class Textures {
 					ResourceLoader.getResourceAsStream("res/icons/document-open.png"));
 			iconSave = TextureLoader.getTexture("PNG",
 					ResourceLoader.getResourceAsStream("res/icons/document-save.png"));
+			iconJustifyCenter = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/format-justify-center.png"));
+			iconJustifyLeft = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/format-justify-left.png"));
+			iconJustifyRight = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/format-justify-right.png"));
+			iconGoDown = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/go-down.png"));
+			iconGoRight = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/go-next.png"));
+			iconGoLeft = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/go-previous.png"));
+			iconGoUp = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/go-up.png"));
 			iconPause = TextureLoader.getTexture("PNG",
 					ResourceLoader.getResourceAsStream("res/icons/media-playback-pause.png"));
 			iconStart = TextureLoader.getTexture("PNG",

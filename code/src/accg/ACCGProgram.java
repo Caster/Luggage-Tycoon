@@ -33,7 +33,15 @@ public class ACCGProgram {
 	private boolean escPressed = false;
 	private DisplayMode windowedMode, fullScreenMode;
 	private Camera camera;
-	private MenuBar menuBar;
+	/**
+	 * Menu bars used in the program.
+	 * 
+	 *  0: main menu.
+	 *  1: settings menu           (child of 0).
+	 *  2: menu position menu      (child of 1).
+	 *  3: menu alignment menu     (child of 1).
+	 */
+	private MenuBar[] menuBars;
 	private Point clickedPoint;
 	
 	public static void main(String[] args) {
@@ -90,8 +98,12 @@ public class ACCGProgram {
 		clickedPoint = null;
 		
 		// intialise GUI stuff
-		menuBar = new MenuBar(s, Position.RIGHT, Alignment.CENTER);
-		initialiseMenu(menuBar, s);
+		menuBars = new MenuBar[4];
+		menuBars[0] = new MenuBar(s, Position.RIGHT, Alignment.CENTER);
+		menuBars[1] = new MenuBar(s, menuBars[0]);
+		menuBars[2] = new MenuBar(s, menuBars[1]);
+		menuBars[3] = new MenuBar(s, menuBars[1]);
+		initialiseMenus(menuBars, s);
 		
 		// enable some GL stuff
 		glEnable(GL_LIGHTING);
@@ -112,7 +124,7 @@ public class ACCGProgram {
 			if (displayWidth != Display.getWidth() || displayHeight != Display.getHeight()) {
 				displayWidth = Display.getWidth();
 				displayHeight = Display.getHeight();
-				menuBar.handleResizeEvent(displayWidth, displayHeight);
+				menuBars[0].handleResizeEvent(displayWidth, displayHeight);
 			}
 			
 			// render stuff here
@@ -140,7 +152,9 @@ public class ACCGProgram {
 			s.world.draw(s);
 			
 			// draw the menu bar
-			menuBar.draw(s);
+			for (int i = 0; i < menuBars.length; i++) {
+				menuBars[i].draw(s);
+			}
 			
 			// check for errors
 			Util.checkGLError();
@@ -253,9 +267,14 @@ public class ACCGProgram {
 						clickedPoint = new Point(Mouse.getX(), Mouse.getY());
 					} else {
 						if (clickedPoint != null) {
-							if (Math.abs(clickedPoint.getX() - Mouse.getX()) < 3 &&
-									Math.abs(clickedPoint.getY() - Mouse.getY()) < 3) {
-								menuBar.handleMouseClickEvent(Mouse.getX(), Mouse.getY());
+							if (Math.abs(clickedPoint.getX() -
+										Mouse.getX()) < 3 &&
+									Math.abs(clickedPoint.getY() -
+											Mouse.getY()) < 3) {
+								for (int i = 0; i < menuBars.length; i++) {
+									menuBars[i].handleMouseClickEvent(
+											Mouse.getX(), Mouse.getY());
+								}
 							}
 							
 							clickedPoint = null;
@@ -270,7 +289,10 @@ public class ACCGProgram {
 				
 				// handle general mouse move
 				if (!handledMouseMove) {
-					menuBar.handleMouseMoveEvent(Mouse.getX(), Mouse.getY());
+					for (int i = 0; i < menuBars.length; i++) {
+						menuBars[i].handleMouseMoveEvent(
+								Mouse.getX(), Mouse.getY());
+					}
 					
 					handledMouseMove = true;
 				}
@@ -312,36 +334,145 @@ public class ACCGProgram {
 	/**
 	 * Create some menu items and add those to the given menu bar.
 	 * 
-	 * @param mb Menu bar to add menu items to.
+	 * @param menus Array of menus to initialise.
 	 * @param s State to read icon textures from.
 	 */
-	private void initialiseMenu(MenuBar mb, State s) {
-		mb.addMenuBarItem(new MenuBarItem("Simulate", s.textures.iconStart) {
+	private void initialiseMenus(MenuBar[] menus, State s) {
+		// main menu
+		menus[0].addMenuBarItem(new MenuBarItem("Simulate", s.textures.iconStart) {
 			@Override
 			public void onClick() {
 				System.out.println("Start simulation mode!");
 			}
 		});
 		
-		mb.addMenuBarItem(new MenuBarItem("Open", s.textures.iconOpen) {
+		menus[0].addMenuBarItem(new MenuBarItem("Open", s.textures.iconOpen) {
 			@Override
 			public void onClick() {
 				System.out.println("Open!");
 			}
 		});
 		
-		mb.addMenuBarItem(new MenuBarItem("Save", s.textures.iconSave) {
+		menus[0].addMenuBarItem(new MenuBarItem("Save", s.textures.iconSave) {
 			@Override
 			public void onClick() {
 				System.out.println("Save!");
 			}
 		});
 		
-		mb.addMenuBarItem(new MenuBarItem("Exit", s.textures.iconExit) {
+		menus[0].addMenuBarItem(new MenuBarItem("Settings", s.textures.iconConfigure) {
+			@Override
+			public void onClick() {
+				menuBars[1].toggleVisible();
+			}
+		});
+		
+		menus[0].addMenuBarItem(new MenuBarItem("Exit", s.textures.iconExit) {
 			@Override
 			public void onClick() {
 				escPressed = true;
 			}
 		});
+		
+		// settings menu
+		menus[1].addMenuBarItem(new MenuBarItem("Menu position", s.textures.iconConfigure) {
+			@Override
+			public void onClick() {
+				menuBars[2].toggleVisible();
+				if (menuBars[2].isVisible()) {
+					menuBars[3].setVisible(false);
+				}
+			}
+		});
+		
+		menus[1].addMenuBarItem(new MenuBarItem("Menu alignment", s.textures.iconConfigure) {
+			@Override
+			public void onClick() {
+				menuBars[3].toggleVisible();
+				if (menuBars[3].isVisible()) {
+					menuBars[2].setVisible(false);
+				}
+			}
+		});
+		
+		menus[1].addMenuBarItem(new MenuBarItem("Mouse sensitivity", s.textures.iconConfigure) {
+			@Override
+			public void onClick() {
+				System.out.println("Mouse sensitivity?");
+			}
+		});
+		
+		// menu position menu
+		menus[2].addMenuBarItem(new MenuBarItem("Top", s.textures.iconGoUp) {
+			@Override
+			public void onClick() {
+				setMenuPositions(Position.TOP);
+			}
+		});
+		
+		menus[2].addMenuBarItem(new MenuBarItem("Bottom", s.textures.iconGoDown) {
+			@Override
+			public void onClick() {
+				setMenuPositions(Position.BOTTOM);
+			}
+		});
+		
+		menus[2].addMenuBarItem(new MenuBarItem("Left", s.textures.iconGoLeft) {
+			@Override
+			public void onClick() {
+				setMenuPositions(Position.LEFT);
+			}
+		});
+		
+		menus[2].addMenuBarItem(new MenuBarItem("Right", s.textures.iconGoRight) {
+			@Override
+			public void onClick() {
+				setMenuPositions(Position.RIGHT);
+			}
+		});
+		
+		// menu alignment menu
+		menus[3].addMenuBarItem(new MenuBarItem("Left / top", s.textures.iconJustifyLeft) {
+			@Override
+			public void onClick() {
+				setMenuAlignments(Alignment.BEGIN);
+			}
+		});
+		
+		menus[3].addMenuBarItem(new MenuBarItem("Center", s.textures.iconJustifyCenter) {
+			@Override
+			public void onClick() {
+				setMenuAlignments(Alignment.CENTER);
+			}
+		});
+		
+		menus[3].addMenuBarItem(new MenuBarItem("Right / bottom", s.textures.iconJustifyRight) {
+			@Override
+			public void onClick() {
+				setMenuAlignments(Alignment.END);
+			}
+		});
+	}
+	
+	/**
+	 * Change alignment of all menu bars.
+	 * 
+	 * @param alignment New alignment for all menu bars.
+	 */
+	private void setMenuAlignments(Alignment alignment) {
+		for (int i = 0; i < menuBars.length; i++) {
+			menuBars[i].setAlignment(alignment);
+		}
+	}
+	
+	/**
+	 * Change position of all menu bars.
+	 * 
+	 * @param pos New position for all menu bars.
+	 */
+	private void setMenuPositions(Position pos) {
+		for (int i = 0; i < menuBars.length; i++) {
+			menuBars[i].setPosition(pos);
+		}
 	}
 }
