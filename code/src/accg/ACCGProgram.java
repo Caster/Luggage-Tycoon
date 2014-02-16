@@ -77,6 +77,10 @@ public class ACCGProgram {
 		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 		glEnable(GL_DEPTH_TEST);
 		
+		// save window size to be able to react to resize events
+		int displayWidth = Display.getWidth();
+		int displayHeight = Display.getHeight();
+		
 		while (!Display.isCloseRequested() && !escPressed) {
 			
 			// handle events
@@ -84,6 +88,13 @@ public class ACCGProgram {
 			handlePressedKeys();
 			handleScrollEvents();
 			handleMouseEvents();
+			
+			// handle resize events
+			if (displayWidth != Display.getWidth() || displayHeight != Display.getHeight()) {
+				displayWidth = Display.getWidth();
+				displayHeight = Display.getHeight();
+				menuBar.handleResizeEvent(displayWidth, displayHeight);
+			}
 			
 			// render stuff here
 			s.frame++;

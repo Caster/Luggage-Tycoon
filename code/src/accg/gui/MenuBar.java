@@ -207,6 +207,18 @@ public class MenuBar extends DrawableObject {
 	}
 	
 	/**
+	 * Handle a resize event of the display. That is, make sure that the
+	 * menu bar is still positioned at the edge of the display.
+	 * 
+	 * @param width New width of the display.
+	 * @param height New height of the display.
+	 */
+	public void handleResizeEvent(int width, int height) {
+		this.outline = null;
+		getOutline(width, height);
+	}
+	
+	/**
 	 * Assumes that it is called inside GL_QUADS. Will render a background
 	 * on the correct spot, using the {@link Alignment} and {@link Position}
 	 * of this menu bar.
@@ -218,6 +230,10 @@ public class MenuBar extends DrawableObject {
 		glVertex2d(outline.getX(), outline.getY());
 	}
 	
+	private Rectangle getOutline() {
+		return getOutline(Display.getWidth(), Display.getHeight());
+	}
+	
 	/**
 	 * Return the outline of the menu bar. This makes sure that all items fit
 	 * in the returned outline, which is positioned correctly with respect to
@@ -225,9 +241,11 @@ public class MenuBar extends DrawableObject {
 	 * is either top or bottom, all items should be placed next to each other.
 	 * Otherwise, all items should be placed below each other.
 	 * 
+	 * @param width The width of the display.
+	 * @param height The height of the display.
 	 * @return An easy-to-use outline.
 	 */
-	private Rectangle getOutline() {
+	private Rectangle getOutline(int width, int height) {
 		if (this.outline != null) {
 			return this.outline;
 		}
@@ -264,18 +282,18 @@ public class MenuBar extends DrawableObject {
 				outline.setX(MARGIN);
 				break;
 			case CENTER:
-				outline.setX(MARGIN + (Display.getWidth() - 2 * MARGIN -
+				outline.setX(MARGIN + (width - 2 * MARGIN -
 						outline.getWidth()) / 2);
 				break;
 			case END:
-				outline.setX(Display.getWidth() - MARGIN - outline.getWidth());
+				outline.setX(width - MARGIN - outline.getWidth());
 				break;
 			}
 			
 			if (position == Position.TOP) {
 				outline.setY(MARGIN + outline.getHeight());
 			} else {
-				outline.setY(Display.getHeight() - MARGIN);
+				outline.setY(height - MARGIN);
 			}
 			break;
 		case LEFT:
@@ -283,7 +301,7 @@ public class MenuBar extends DrawableObject {
 			if (position == Position.LEFT) {
 				outline.setX(MARGIN);
 			} else {
-				outline.setX(Display.getWidth() - MARGIN - outline.getWidth());
+				outline.setX(width - MARGIN - outline.getWidth());
 			}
 			
 			switch (alignment) {
@@ -291,11 +309,11 @@ public class MenuBar extends DrawableObject {
 				outline.setY(MARGIN + outline.getHeight());
 				break;
 			case CENTER:
-				outline.setY(MARGIN + (Display.getHeight() - 2 * MARGIN -
+				outline.setY(MARGIN + (height - 2 * MARGIN -
 						outline.getHeight()) / 2 + outline.getHeight());
 				break;
 			case END:
-				outline.setY(Display.getHeight() - MARGIN);
+				outline.setY(height - MARGIN);
 				break;
 			}
 			break;
