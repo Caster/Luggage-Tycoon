@@ -1,6 +1,8 @@
 package accg;
 
+import accg.objects.Block;
 import accg.objects.Luggage;
+import accg.objects.blocks.ConveyorBlock;
 
 /**
  * This class manages the simulation.
@@ -53,8 +55,23 @@ public class Simulation {
 				l.y += l.vy * dt;
 				l.z += l.vz * dt;
 				
-				// check for collisions with conveyor belts
-				
+				// check for conveyor belts that can take the luggage
+				for (int z = (int) (4 * l.z - 3); z <= (int) (4 * l.z); z++) {
+					if (z < 0) {
+						continue; // TODO better check of course
+					}
+					Block b = s.world.bc.getBlock((int) l.x, (int) l.y, z);
+					if (b instanceof ConveyorBlock) {
+						if (((ConveyorBlock) b).canTakeLuggage(l)) {
+							l.supportingBlock = b;
+							((ConveyorBlock) b).takeLuggage(l);
+						}
+					}
+				}
+			} else {
+				if (l.supportingBlock instanceof ConveyorBlock) {
+					((ConveyorBlock) l.supportingBlock).furtherPosition(l, dt);
+				}
 			}
 		}
 	}

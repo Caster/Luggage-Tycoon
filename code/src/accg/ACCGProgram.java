@@ -133,8 +133,8 @@ public class ACCGProgram {
 			s.simulation.update(s);
 			
 			// TODO temporary: add some luggage
-			if (s.frame % 25 == 0) {
-				s.world.luggage.addObject(new Luggage(Math.random() * 10, Math.random() * 10, 2));
+			if (s.frame % 100 == 25) {
+				s.world.luggage.addObject(new Luggage(1, 5, 2));
 			}
 			
 			glClearColor(0.8f, 0.8f, 0.77f, 1.0f);

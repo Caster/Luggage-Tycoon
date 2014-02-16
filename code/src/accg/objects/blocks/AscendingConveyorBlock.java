@@ -61,7 +61,19 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	protected void furtherPositionInternal(Luggage l, double step) {
+	public void furtherPosition(Luggage l, double step) {
+		// TODO Automatisch gegenereerde methodestub
+		
+	}
+
+	@Override
+	public boolean canTakeLuggage(Luggage l) {
+		// TODO Automatisch gegenereerde methodestub
+		return false;
+	}
+
+	@Override
+	public void takeLuggage(Luggage l) {
 		// TODO Automatisch gegenereerde methodestub
 		
 	}

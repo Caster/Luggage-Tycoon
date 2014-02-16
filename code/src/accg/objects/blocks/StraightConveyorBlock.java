@@ -61,8 +61,64 @@ public class StraightConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	protected void furtherPositionInternal(Luggage l, double step) {
-		// TODO Automatisch gegenereerde methodestub
+	public void furtherPosition(Luggage l, double step) {
+		assert (l.supportingBlock == this);
 		
+		switch (orientation) {
+		case UP:
+			l.y += step;
+			if (l.y > y + 0.5) {
+				l.supportingBlock = null;
+				l.vx = 0;
+				l.vy = 1;
+				l.vz = 0;
+			}
+			break;
+		case DOWN:
+			l.y -= step;
+			if (l.y < y - 0.5) {
+				l.supportingBlock = null;
+				l.vx = 0;
+				l.vy = -1;
+				l.vz = 0;
+			}
+			break;
+		case RIGHT:
+			l.x += step;
+			if (l.x > x + 0.5) {
+				l.supportingBlock = null;
+				l.vx = 1;
+				l.vy = 0;
+				l.vz = 0;
+			}
+			break;
+		case LEFT:
+			l.x -= step;
+			if (l.x < x - 0.5) {
+				l.supportingBlock = null;
+				l.vx = -1;
+				l.vy = 0;
+				l.vz = 0;
+			}
+			break;
+		}
+	}
+
+	@Override
+	public boolean canTakeLuggage(Luggage l) {
+		if (orientation == Orientation.LEFT || orientation == Orientation.RIGHT) {
+			return l.x > x - 0.5 && l.x < x + 0.5
+			    && l.y > y - 0.375 && l.y < y + 0.375
+			    && l.z > 0.125 && l.z < 0.375;
+		} else {
+			return l.x > x - 0.375 && l.x < x + 0.375
+				    && l.y > y - 0.5 && l.y < y + 0.5
+				    && l.z > 0.125 && l.z < 0.375;
+		}
+	}
+
+	@Override
+	public void takeLuggage(Luggage l) {
+		l.z = z + 0.375;
 	}
 }

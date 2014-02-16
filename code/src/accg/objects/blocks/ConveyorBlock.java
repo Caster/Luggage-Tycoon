@@ -102,7 +102,31 @@ public abstract class ConveyorBlock extends Block {
 	 * position on this conveyor belt.
 	 * @param step The step size in seconds.
 	 */
-	protected abstract void furtherPositionInternal(Luggage l, double step);
+	public abstract void furtherPosition(Luggage l, double step);
+	
+	/**
+	 * Checks whether this conveyor belt is able to take the given luggage.
+	 * 
+	 * We say that a conveyor belt can take luggage if the luggage is in such a position
+	 * that it "seems to be approximately" on the conveyor belt. In that situation,
+	 * the luggage can be moved exactly to the conveyor belt for the next simulation
+	 * step (with the method {@link #takeLuggage(Luggage)}).
+	 * 
+	 * @param l The luggage to check.
+	 * @return Whether the luggage can be taken (<code>true</code>) or not
+	 * (<code>false</code>).
+	 */
+	public abstract boolean canTakeLuggage(Luggage l);
+	
+	/**
+	 * Takes the luggage. That is, puts the luggage exactly on the conveyor belt.
+	 * This should only be done when {@link #canTakeLuggage(Luggage)} is <code>true</code>,
+	 * else the luggage could move a lot between two simulation steps, causing a
+	 * "jump".
+	 * 
+	 * @param l The luggage to take.
+	 */
+	public abstract void takeLuggage(Luggage l);
 	
 	@Override
 	public void draw(State s) {
