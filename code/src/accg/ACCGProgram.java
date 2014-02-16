@@ -99,7 +99,7 @@ public class ACCGProgram {
 		
 		// intialise GUI stuff
 		menuBars = new MenuBar[4];
-		menuBars[0] = new MenuBar(s, Position.RIGHT, Alignment.CENTER);
+		menuBars[0] = new MenuBar(s, Position.TOP, Alignment.CENTER);
 		menuBars[1] = new MenuBar(s, menuBars[0]);
 		menuBars[2] = new MenuBar(s, menuBars[1]);
 		menuBars[3] = new MenuBar(s, menuBars[1]);
