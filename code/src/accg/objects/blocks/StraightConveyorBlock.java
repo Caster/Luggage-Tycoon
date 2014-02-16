@@ -109,16 +109,16 @@ public class StraightConveyorBlock extends ConveyorBlock {
 		if (orientation == Orientation.LEFT || orientation == Orientation.RIGHT) {
 			return l.x > x - 0.5 && l.x < x + 0.5
 			    && l.y > y - 0.375 && l.y < y + 0.375
-			    && l.z > 0.125 && l.z < 0.375;
+			    && l.z > z / 4.0 + 0.125 && l.z < z / 4.0 + 0.375;
 		} else {
 			return l.x > x - 0.375 && l.x < x + 0.375
 				    && l.y > y - 0.5 && l.y < y + 0.5
-				    && l.z > 0.125 && l.z < 0.375;
+				    && l.z > z / 4.0 + 0.125 && l.z < z / 4.0 + 0.375;
 		}
 	}
 
 	@Override
 	public void takeLuggage(Luggage l) {
-		l.z = z + 0.375;
+		l.z = z / 4.0 + 0.375;
 	}
 }

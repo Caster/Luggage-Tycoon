@@ -42,9 +42,13 @@ public class Simulation {
 			if (l.supportingBlock == null) {
 				
 				// lying on floor
-				if (l.z < 0) {
+				if (l.z <= 0) {
 					l.z = 0;
 					l.vz = 0;
+					l.vx -= 0.01 * Math.signum(l.vx);
+					l.vy -= 0.01 * Math.signum(l.vy);
+					l.vx = Math.abs(l.vx) <= 0.01 ? 0 : l.vx;
+					l.vy = Math.abs(l.vy) <= 0.01 ? 0 : l.vy;
 				} else {
 					// gravity
 					l.vz -= 9.81 * dt;
@@ -57,7 +61,7 @@ public class Simulation {
 				
 				// check for conveyor belts that can take the luggage
 				for (int z = (int) (4 * l.z - 3); z <= (int) (4 * l.z); z++) {
-					if (z < 0) {
+					if (!s.world.bc.inBounds((int) l.x, (int) l.y, z)) {
 						continue; // TODO better check of course
 					}
 					Block b = s.world.bc.getBlock((int) l.x, (int) l.y, z);

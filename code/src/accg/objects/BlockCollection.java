@@ -68,6 +68,21 @@ public class BlockCollection extends DrawableObject {
 		}
 		blocks[x][y][z] = null;
 	}
+
+	/**
+	 * Returns whether the given coordinate is within the bounds of the world.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @param z The z-coordinate (divided by 4).
+	 * @return The block on coordinate (x, y, z / 4), or <code>null</code> if
+	 * there is no block there.
+	 */
+	public boolean inBounds(int x, int y, int z) {
+		return x >= 0 && x < size
+		    && y >= 0 && y < size
+		    && z >= 0 && z < size;
+	}
 	
 	/**
 	 * Returns the block on the given coordinate.
@@ -77,6 +92,8 @@ public class BlockCollection extends DrawableObject {
 	 * @param z The z-coordinate (divided by 4).
 	 * @return The block on coordinate (x, y, z / 4), or <code>null</code> if
 	 * there is no block there.
+	 * @throws ArrayIndexOutOfBoundsException If {@link #inBounds(int, int, int)}
+	 * returns <code>false</code> for this coordinate.
 	 */
 	public Block getBlock(int x, int y, int z) {
 		return blocks[x][y][z];

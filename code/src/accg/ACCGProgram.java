@@ -134,7 +134,7 @@ public class ACCGProgram {
 			
 			// TODO temporary: add some luggage
 			if (s.frame % 100 == 25) {
-				s.world.luggage.addObject(new Luggage(1, 5, 2));
+				s.world.luggage.addObject(new Luggage(3, 7, 3));
 			}
 			
 			glClearColor(0.8f, 0.8f, 0.77f, 1.0f);
