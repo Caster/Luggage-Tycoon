@@ -20,6 +20,7 @@ public class Textures {
 	public Texture iconGoRight;
 	public Texture iconGoLeft;
 	public Texture iconGoUp;
+	public Texture iconMouse;
 	public Texture iconPause;
 	public Texture iconStart;
 	public Texture iconStop;
@@ -54,6 +55,8 @@ public class Textures {
 					ResourceLoader.getResourceAsStream("res/icons/go-previous.png"));
 			iconGoUp = TextureLoader.getTexture("PNG",
 					ResourceLoader.getResourceAsStream("res/icons/go-up.png"));
+			iconMouse = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/input-mouse.png"));
 			iconPause = TextureLoader.getTexture("PNG",
 					ResourceLoader.getResourceAsStream("res/icons/media-playback-pause.png"));
 			iconStart = TextureLoader.getTexture("PNG",

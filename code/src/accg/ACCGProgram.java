@@ -395,7 +395,7 @@ public class ACCGProgram {
 			}
 		});
 		
-		menus[1].addMenuBarItem(new MenuBarItem("Mouse sensitivity", s.textures.iconConfigure) {
+		menus[1].addMenuBarItem(new MenuBarItem("Mouse sensitivity", s.textures.iconMouse) {
 			@Override
 			public void onClick() {
 				System.out.println("Mouse sensitivity?");
