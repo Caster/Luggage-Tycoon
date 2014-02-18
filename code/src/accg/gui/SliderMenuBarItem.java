@@ -19,9 +19,9 @@ import org.newdawn.slick.opengl.Texture;
 public class SliderMenuBarItem extends MenuBarItem {
 
 	/** The color in which the slider bar is rendered. */
-	public static final Color SLIDER_BAR_COLOR = new Color(0.5f, 0.7f, 1.0f);
+	public static final Color SLIDER_BAR_COLOR = new Color(0.5f, 0.5f, 0.5f);
 	/** The color in which the slider bar edge is rendered. */
-	public static final Color SLIDER_BAR_EDGE_COLOR = new Color(0.0f, 0.4f, 1.0f);
+	public static final Color SLIDER_BAR_EDGE_COLOR = new Color(0, 0, 0);
 	/**
 	 * The color in which the background of the slider bar is rendered.
 	 * 
