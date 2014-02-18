@@ -259,8 +259,8 @@ public class ACCGProgram {
 		// first see if the menu wants to handle this
 		boolean handledByMenu = false;
 		for (int i = 0; i < menuBars.length; i++) {
-			handledByMenu = (handledByMenu || menuBars[i].handleMouseWheelEvent(
-					Mouse.getX(), Mouse.getY(), dWheel));
+			handledByMenu = (menuBars[i].handleMouseWheelEvent(
+					Mouse.getX(), Mouse.getY(), dWheel) || handledByMenu);
 		}
 		
 		// otherwise, let the camera handle it
@@ -316,9 +316,8 @@ public class ACCGProgram {
 				// handle general mouse move
 				if (!handledMouseMove) {
 					for (int i = 0; i < menuBars.length; i++) {
-						handledMouseMoveByMenu = (handledMouseMoveByMenu ||
-								menuBars[i].handleMouseMoveEvent(
-										Mouse.getX(), Mouse.getY()));
+						handledMouseMoveByMenu = (menuBars[i].handleMouseMoveEvent(
+								Mouse.getX(), Mouse.getY()) || handledMouseMoveByMenu);
 					}
 					
 					handledMouseMove = true;
