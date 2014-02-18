@@ -379,9 +379,6 @@ public class ACCGProgram {
 			@Override
 			public void onClick() {
 				menuBars[2].toggleVisible();
-				if (menuBars[2].isVisible()) {
-					menuBars[3].setVisible(false);
-				}
 			}
 		});
 		
@@ -389,9 +386,6 @@ public class ACCGProgram {
 			@Override
 			public void onClick() {
 				menuBars[3].toggleVisible();
-				if (menuBars[3].isVisible()) {
-					menuBars[2].setVisible(false);
-				}
 			}
 		});
 		

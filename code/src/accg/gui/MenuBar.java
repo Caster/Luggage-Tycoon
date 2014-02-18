@@ -60,6 +60,7 @@ public class MenuBar extends DrawableObject {
 		this.items = new ArrayList<>();
 		this.visible = true;
 		this.listeners = new ArrayList<>();
+		this.ignoreHideRequests = false;
 	}
 	
 	/**
@@ -104,6 +105,13 @@ public class MenuBar extends DrawableObject {
 			@Override
 			public void onResize(int width, int height) {
 				handleResizeEvent(width, height);
+			}
+			
+			@Override
+			public void requestHide() {
+				if (!ignoreHideRequests) {
+					setVisible(false);
+				}
 			}
 		});
 	}
@@ -336,6 +344,16 @@ public class MenuBar extends DrawableObject {
 	}
 	
 	/**
+	 * Should be called by a child {@link MenuBar} when it is shown. In
+	 * this function, other children will be hidden using the listeners.
+	 */
+	public void onChildShown() {
+		for (MenuBarListener mbl : listeners) {
+			mbl.requestHide();
+		}
+	}
+	
+	/**
 	 * Change the alignment of this menu bar.
 	 * 
 	 * @param alignment New alignment for this menu bar.
@@ -380,6 +398,11 @@ public class MenuBar extends DrawableObject {
 			for (MenuBarListener mbl : listeners) {
 				mbl.onHide();
 			}
+		} else if (parent != null) {
+			// notify the parent, maybe other children should be hidden now
+			ignoreHideRequests = true;
+			parent.onChildShown();
+			ignoreHideRequests = false;
 		}
 	}
 	
@@ -517,4 +540,6 @@ public class MenuBar extends DrawableObject {
 	private MenuBar parent;
 	/** List of listeners. */
 	private ArrayList<MenuBarListener> listeners;
+	/** If a request from the parent to hide should be ignored or not. */
+	private boolean ignoreHideRequests;
 }

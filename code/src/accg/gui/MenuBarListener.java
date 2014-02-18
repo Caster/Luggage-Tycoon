@@ -39,4 +39,11 @@ public interface MenuBarListener {
 	 * @see {@link MenuBar#handleResizeEvent(int, int)}
 	 */
 	public void onResize(int width, int height);
+	
+	/**
+	 * Fired when the parent wants its child to hide, that is,
+	 * {@code setVisible(false)}. This may be triggered when some other
+	 * child on the same level wants to show itself.
+	 */
+	public void requestHide();
 }
