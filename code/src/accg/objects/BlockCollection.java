@@ -37,6 +37,17 @@ public class BlockCollection extends DrawableObject {
 	}
 	
 	/**
+	 * Sets the block on a position given by that block.
+	 * 
+	 * @param block The new block to be put in this collection.
+	 * @throws NullPointerException If <code>block == null</code>.
+	 * @see #setBlock(Block, int, int, int)
+	 */
+	public void setBlock(Block block) {
+		setBlock(block, block.x, block.y, block.z);
+	}
+	
+	/**
 	 * Sets the block on a given position.
 	 * 
 	 * @param block The new block to be put on the given position.
