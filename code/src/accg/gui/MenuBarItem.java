@@ -40,9 +40,16 @@ public abstract class MenuBarItem {
 		this.hovered = false;
 	}
 	
+	/**
+	 * Render this {@link MenuBarItem} in the given outline using static
+	 * OpenGL functions for immediate mode rendering.
+	 * 
+	 * @param outline Rectangle in which the item should be rendered.
+	 * @param renderFont Font that should be used for text rendering.
+	 */
 	public void draw(Rectangle outline, Font renderFont) {
 		// render hovered background, if needed
-		if (this.hovered) {
+		if (this.hovered && this.drawHoveredBackground) {
 			glColor4d(1, 1, 1, 1);
 			glBegin(GL_QUADS);
 			{
@@ -58,32 +65,36 @@ public abstract class MenuBarItem {
 		// render text
 		int textWidth = renderFont.getWidth(text);
 		int textHeight = renderFont.getHeight(text);
-		renderFont.drawString(outline.getX() + (outline.getWidth() - textWidth) / 2,
-								outline.getY() - PADDING - textHeight, text, Color.black);
-		
-		// render icon		
-		int iconSize = Math.min(outline.getWidth() - 2 * PADDING,
-				outline.getHeight() - 3 * PADDING - textHeight);
-		int iconX = outline.getX() + (outline.getWidth() - iconSize) / 2;
-		int iconY = outline.getY() - textHeight - 2 * PADDING -
-				(outline.getHeight() - 3 * PADDING - textHeight - iconSize) / 2;
-		
-		glColor3d(1, 1, 1);
-		glEnable(GL_TEXTURE_2D);
-		icon.bind();
-		glBegin(GL_QUADS);
-		{
-			glTexCoord2d(0, 0);
-			glVertex2d(iconX, iconY - iconSize);
-			glTexCoord2d(1, 0);
-			glVertex2d(iconX + iconSize, iconY - iconSize);
-			glTexCoord2d(1, 1);
-			glVertex2d(iconX + iconSize, iconY);
-			glTexCoord2d(0, 1);
-			glVertex2d(iconX, iconY);
+		if (this.drawText) {
+			renderFont.drawString(outline.getX() + (outline.getWidth() - textWidth) / 2,
+									outline.getY() - PADDING - textHeight, text, Color.black);
 		}
-		glEnd();
-		glDisable(GL_TEXTURE_2D);
+		
+		// render icon
+		if (this.drawIcon) {
+			int iconSize = Math.min(outline.getWidth() - 2 * PADDING,
+					outline.getHeight() - 3 * PADDING - textHeight);
+			int iconX = outline.getX() + (outline.getWidth() - iconSize) / 2;
+			int iconY = outline.getY() - textHeight - 2 * PADDING -
+					(outline.getHeight() - 3 * PADDING - textHeight - iconSize) / 2;
+			
+			glColor3d(1, 1, 1);
+			glEnable(GL_TEXTURE_2D);
+			icon.bind();
+			glBegin(GL_QUADS);
+			{
+				glTexCoord2d(0, 0);
+				glVertex2d(iconX, iconY - iconSize);
+				glTexCoord2d(1, 0);
+				glVertex2d(iconX + iconSize, iconY - iconSize);
+				glTexCoord2d(1, 1);
+				glVertex2d(iconX + iconSize, iconY);
+				glTexCoord2d(0, 1);
+				glVertex2d(iconX, iconY);
+			}
+			glEnd();
+			glDisable(GL_TEXTURE_2D);
+		}
 	}
 
 	/**
@@ -112,6 +123,14 @@ public abstract class MenuBarItem {
 	public abstract void onClick();
 	
 	/**
+	 * Called when this menu item is hovered and then the scroll wheel on
+	 * the mouse is moved. This may be handy for interactive menu items.
+	 * 
+	 * @param dWheel The delta of the scroll wheel.
+	 */
+	public abstract void onScroll(int dWheel);
+	
+	/**
 	 * Change if this menu item is being hovered or not.
 	 * 
 	 * @param hovered If this item is being hovered by the mouse.
@@ -121,9 +140,16 @@ public abstract class MenuBarItem {
 	}
 	
 	/** Describing text of this menu item. */
-	private String text;
+	protected String text;
 	/** Icon of this menu item. */
-	private Texture icon;
+	protected Texture icon;
 	/** Indicates if this menu item is being hovered by the mouse. */
-	private boolean hovered;
+	protected boolean hovered;
+	
+	/** Indicates if the background should be rendered differently when hovered. */
+	protected boolean drawHoveredBackground = true;
+	/** Indicates if the text should be drawn. */
+	protected boolean drawText = true;
+	/** Indicates if the icon should be drawn. */
+	protected boolean drawIcon = true;
 }

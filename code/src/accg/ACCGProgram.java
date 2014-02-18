@@ -25,6 +25,7 @@ import accg.gui.MenuBar;
 import accg.gui.MenuBar.Alignment;
 import accg.gui.MenuBar.Position;
 import accg.gui.MenuBarItem;
+import accg.gui.SliderMenuBarItem;
 import accg.objects.Luggage;
 import accg.objects.World;
 
@@ -241,10 +242,24 @@ public class ACCGProgram {
 	 */
 	public void handleScrollEvents() {
 		int dWheel = Mouse.getDWheel();
-		if (dWheel < 0) {
-			camera.moveUp();
-		} else if (dWheel > 0) {
-			camera.moveDown();
+		if (dWheel == 0) {
+			return;
+		}
+		
+		// first see if the menu wants to handle this
+		boolean handledByMenu = false;
+		for (int i = 0; i < menuBars.length; i++) {
+			handledByMenu = (handledByMenu || menuBars[i].handleMouseWheelEvent(
+					Mouse.getX(), Mouse.getY(), dWheel));
+		}
+		
+		// otherwise, let the camera handle it
+		if (!handledByMenu) {
+			if (dWheel < 0) {
+				camera.moveUp();
+			} else if (dWheel > 0) {
+				camera.moveDown();
+			}
 		}
 	}
 	
@@ -257,6 +272,7 @@ public class ACCGProgram {
 		// mouse is slightly weird. Or I just don't get it.
 		boolean[] handledButton = new boolean[] {false, false, false};
 		boolean handledMouseMove = false;
+		boolean handledMouseMoveByMenu = false;
 		
 		while (Mouse.next()) {
 			// handle click
@@ -290,22 +306,23 @@ public class ACCGProgram {
 				// handle general mouse move
 				if (!handledMouseMove) {
 					for (int i = 0; i < menuBars.length; i++) {
-						menuBars[i].handleMouseMoveEvent(
-								Mouse.getX(), Mouse.getY());
+						handledMouseMoveByMenu = (handledMouseMoveByMenu ||
+								menuBars[i].handleMouseMoveEvent(
+										Mouse.getX(), Mouse.getY()));
 					}
 					
 					handledMouseMove = true;
 				}
 				
 				// handle left mouse button: mouse button 0
-				if (!handledButton[0] && Mouse.isButtonDown(0)) {
+				if (!handledButton[0] && !handledMouseMoveByMenu && Mouse.isButtonDown(0)) {
 					camera.moveByMouse(dx, dy);
 					
 					handledButton[0] = true;
 				}
 				
 				// handle middle mouse button: mouse button 2
-				if (!handledButton[2] && Mouse.isButtonDown(2)) {					
+				if (!handledButton[2] && !handledMouseMoveByMenu && Mouse.isButtonDown(2)) {					
 					camera.turnByMouse(dx, dy);
 					
 					handledButton[2] = true;
@@ -337,13 +354,16 @@ public class ACCGProgram {
 	 * @param menus Array of menus to initialise.
 	 * @param s State to read icon textures from.
 	 */
-	private void initialiseMenus(MenuBar[] menus, State s) {
+	private void initialiseMenus(MenuBar[] menus, final State s) {
 		// main menu
 		menus[0].addMenuBarItem(new MenuBarItem("Simulate", s.textures.iconStart) {
 			@Override
 			public void onClick() {
 				System.out.println("Start simulation mode!");
 			}
+
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
 		});
 		
 		menus[0].addMenuBarItem(new MenuBarItem("Open", s.textures.iconOpen) {
@@ -351,6 +371,9 @@ public class ACCGProgram {
 			public void onClick() {
 				System.out.println("Open!");
 			}
+
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
 		});
 		
 		menus[0].addMenuBarItem(new MenuBarItem("Save", s.textures.iconSave) {
@@ -358,6 +381,9 @@ public class ACCGProgram {
 			public void onClick() {
 				System.out.println("Save!");
 			}
+
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
 		});
 		
 		menus[0].addMenuBarItem(new MenuBarItem("Settings", s.textures.iconConfigure) {
@@ -365,6 +391,9 @@ public class ACCGProgram {
 			public void onClick() {
 				menuBars[1].toggleVisible();
 			}
+
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
 		});
 		
 		menus[0].addMenuBarItem(new MenuBarItem("Exit", s.textures.iconExit) {
@@ -372,6 +401,9 @@ public class ACCGProgram {
 			public void onClick() {
 				escPressed = true;
 			}
+
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
 		});
 		
 		// settings menu
@@ -380,6 +412,9 @@ public class ACCGProgram {
 			public void onClick() {
 				menuBars[2].toggleVisible();
 			}
+
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
 		});
 		
 		menus[1].addMenuBarItem(new MenuBarItem("Menu alignment", s.textures.iconConfigure) {
@@ -387,12 +422,17 @@ public class ACCGProgram {
 			public void onClick() {
 				menuBars[3].toggleVisible();
 			}
+
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
 		});
 		
-		menus[1].addMenuBarItem(new MenuBarItem("Mouse sensitivity", s.textures.iconMouse) {
+		menus[1].addMenuBarItem(new SliderMenuBarItem("Mouse sensitivity",
+				s.textures.iconMouse, 0.1f, 2.0f, s.mouseSensitivityFactor) {
 			@Override
-			public void onClick() {
-				System.out.println("Mouse sensitivity?");
+			public void onScroll(int dWheel) {
+				super.onScroll(dWheel);
+				s.mouseSensitivityFactor = this.val;
 			}
 		});
 		
@@ -402,6 +442,9 @@ public class ACCGProgram {
 			public void onClick() {
 				setMenuPositions(Position.TOP);
 			}
+
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
 		});
 		
 		menus[2].addMenuBarItem(new MenuBarItem("Bottom", s.textures.iconGoDown) {
@@ -409,6 +452,9 @@ public class ACCGProgram {
 			public void onClick() {
 				setMenuPositions(Position.BOTTOM);
 			}
+
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
 		});
 		
 		menus[2].addMenuBarItem(new MenuBarItem("Left", s.textures.iconGoLeft) {
@@ -416,6 +462,9 @@ public class ACCGProgram {
 			public void onClick() {
 				setMenuPositions(Position.LEFT);
 			}
+
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
 		});
 		
 		menus[2].addMenuBarItem(new MenuBarItem("Right", s.textures.iconGoRight) {
@@ -423,6 +472,9 @@ public class ACCGProgram {
 			public void onClick() {
 				setMenuPositions(Position.RIGHT);
 			}
+
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
 		});
 		
 		// menu alignment menu
@@ -431,6 +483,9 @@ public class ACCGProgram {
 			public void onClick() {
 				setMenuAlignments(Alignment.BEGIN);
 			}
+
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
 		});
 		
 		menus[3].addMenuBarItem(new MenuBarItem("Center", s.textures.iconJustifyCenter) {
@@ -438,6 +493,9 @@ public class ACCGProgram {
 			public void onClick() {
 				setMenuAlignments(Alignment.CENTER);
 			}
+
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
 		});
 		
 		menus[3].addMenuBarItem(new MenuBarItem("Right / bottom", s.textures.iconJustifyRight) {
@@ -445,6 +503,9 @@ public class ACCGProgram {
 			public void onClick() {
 				setMenuAlignments(Alignment.END);
 			}
+
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
 		});
 	}
 	

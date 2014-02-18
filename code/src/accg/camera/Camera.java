@@ -1,5 +1,6 @@
 package accg.camera;
 
+import static accg.utils.GLUtils.*;
 import static org.lwjgl.util.glu.GLU.*;
 
 import org.lwjgl.util.vector.Vector3f;
@@ -234,77 +235,78 @@ public class Camera {
 		if (dy > 0)  turnUp(MOUSE_FACTOR * dy);
 	}
 	
-	// Private methods
+	// Private methods	
 	/**
-	 * Clamp a given value between 0.1 and PI - 0.1.
+	 * Moves the camera forward or backwards with the given distance,
+	 * multiplied by the mouse sensitivity constant from the {@link State}.
 	 * 
-	 * @param value The value to be clamped.
-	 * @return A clamped value.
-	 * @see #clamp(float, float, float)
+	 * @param scale Length to move. A positive value means moving forward,
+	 *              a negative one means moving backwards. It is guaranteed
+	 *              that the mouse sensitivity constant with which this value
+	 *              will be multiplied is positive and will hence not change
+	 *              the sign/direction.
 	 */
-	private static float clamp(float value) {
-		return clamp(value, 0.1f, (float) (Math.PI - 0.1));
-	}
-	
-	/**
-	 * Clamp a given value between a given minimum and maximum value.
-	 * Clamping means that when the given value is less than the given
-	 * minimum, this minimum is returned. If the value is greater than
-	 * the maximum, this maximum is returned. Otherwise, the value is
-	 * unchanged.
-	 * 
-	 * <p>This function does not change any of its parameters.</p>
-	 * 
-	 * @param value The value to be clamped.
-	 * @param min The minimum value for clamping.
-	 * @param max The maximum value for clamping.
-	 * @return A value between {@code min} and {@code max}.
-	 */
-	private static float clamp(float value, float min, float max) {
-		if (value <= min)  return min;
-		if (value >= max)  return max;
-		return value;
-	}
-	
-	private static float modulo(float value) {
-		return modulo(value, 0.0f, (float) (2 * Math.PI));
-	}
-	
-	private static float modulo(float value, float min, float max) {
-		return min + ((value - min) % (max - min));
-	}
-	
 	private void moveForwardBackward(float scale) {
 		Vector3f addVector = sphericalToCartesian(camSpherical, ZERO_ORIGIN);
 		addVector.z = 0;
-		addVector.normalise().scale(scale);
+		addVector.normalise().scale(scale * state.mouseSensitivityFactor);
 		Vector3f.add(camLookPos, addVector, camLookPos);
 		if (!ensureBounds(camSpherical)) {
 			Vector3f.sub(camLookPos, addVector, camLookPos);
 		}
 	}
 	
+	/**
+	 * Moves the camera left or right with the given distance,
+	 * multiplied by the mouse sensitivity constant from the {@link State}.
+	 * 
+	 * @param scale Length to move. A positive value means moving left,
+	 *              a negative one means moving right. It is guaranteed
+	 *              that the mouse sensitivity constant with which this value
+	 *              will be multiplied is positive and will hence not change
+	 *              the sign/direction.
+	 */
 	private void moveLeftRight(float scale) {
 		Vector3f addVector = sphericalToCartesian(camSpherical, ZERO_ORIGIN);
 		Vector3f.cross(addVector, camUpPos, addVector);
-		addVector.normalise().scale(scale);
+		addVector.normalise().scale(scale * state.mouseSensitivityFactor);
 		Vector3f.add(camLookPos, addVector, camLookPos);
 		if (!ensureBounds(camSpherical)) {
 			Vector3f.sub(camLookPos, addVector, camLookPos);
 		}
 	}
 	
+	/**
+	 * Turns the camera upwards or downwards with the given angle in radians,
+	 * multiplied by the mouse sensitivity constant from the {@link State}.
+	 * 
+	 * @param amount Angle to turn. A positive value means turning upwards,
+	 *               a negative one means turning downwards. It is guaranteed
+	 *               that the mouse sensitivity constant with which this value
+	 *               will be multiplied is positive and will hence not change
+	 *               the sign/direction.
+	 */
 	private void turnDownUp(float amount) {
 		float oldCamY = camSpherical.y;
-		camSpherical.y = clamp(camSpherical.y + amount);
+		camSpherical.y = clamp(camSpherical.y + amount * state.mouseSensitivityFactor);
 		if (!ensureBounds(camSpherical)) {
 			camSpherical.y = oldCamY;
 		}
 	}
 	
+	/**
+	 * Turns the camera left or right with the given angle in radians,
+	 * multiplied by the mouse sensitivity constant from the {@link State}.
+	 * 
+	 * @param amount Angle to turn. A positive value means turning right,
+	 *               a negative one means turning left. It is guaranteed
+	 *               that the mouse sensitivity constant with which this value
+	 *               will be multiplied is positive and will hence not change
+	 *               the sign/direction.
+	 */
 	private void turnLeftRight(float amount) {
 		float oldCamZ = camSpherical.z;
-		camSpherical.z = modulo(camSpherical.z + amount);
+		camSpherical.z = modulo(camSpherical.z + amount * state.mouseSensitivityFactor);
 		if (!ensureBounds(camSpherical)) {
 			camSpherical.z = oldCamZ;
 		}

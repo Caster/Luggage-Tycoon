@@ -65,4 +65,10 @@ public class State {
 	 * Font that is used in all menus.
 	 */
 	public Font fontMenu;
+	
+	/**
+	 * This factor is used to multiply camera movements with. It can be
+	 * used to make the program more or less sensitive to mouse interaction.
+	 */
+	public float mouseSensitivityFactor = 1.0f;
 }

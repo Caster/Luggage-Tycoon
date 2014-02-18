@@ -231,8 +231,9 @@ public class MenuBar extends DrawableObject {
 	 * 
 	 * @param x X-coordinate of current mouse position.
 	 * @param y Y-coordinate of current mouse position.
+	 * @return If the event has been used or not.
 	 */
-	public void handleMouseClickEvent(int x, int y) {
+	public boolean handleMouseClickEvent(int x, int y) {
 		// We cheat here: if the mouse has clicked at a menu item, then that
 		// menu item must be hovered right now. Therefore, we do not need
 		// cumbersome look-up functions now: we just click the hovered item
@@ -240,9 +241,10 @@ public class MenuBar extends DrawableObject {
 		for (MenuBarItem item : items) {
 			if (item.isHovered()) {
 				item.onClick();
-				break;
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	/**
@@ -251,11 +253,12 @@ public class MenuBar extends DrawableObject {
 	 * 
 	 * @param x X-coordinate of current mouse position.
 	 * @param y Y-coordinate of current mouse position.
+	 * @return If the event has been used or not.
 	 */
-	public void handleMouseMoveEvent(int x, int y) {
+	public boolean handleMouseMoveEvent(int x, int y) {
 		// do we even have items that can be hovered?
 		if (!visible || items.size() == 0) {
-			return;
+			return false;
 		}
 		
 		// our Y-axis is inverted, sadly, because of font rendering...
@@ -265,6 +268,7 @@ public class MenuBar extends DrawableObject {
 		Rectangle outline = getOutline();
 		
 		// check if any (and if yes, which) menu item has been clicked
+		boolean handled = false;
 		if (getPosition() == Position.TOP || getPosition() == Position.BOTTOM) {
 			// check if the vertical position matches at least
 			if (y < outline.getY() - outline.getHeight() ||
@@ -272,7 +276,7 @@ public class MenuBar extends DrawableObject {
 				for (MenuBarItem item : items) {
 					item.setHovered(false);
 				}
-				return;
+				return false;
 			}
 			
 			// check if some horizontal position matches
@@ -285,6 +289,7 @@ public class MenuBar extends DrawableObject {
 				if (itemOutline.getX() <= x && x <= itemOutline.getX() +
 						itemOutline.getWidth())	{
 					item.setHovered(true);
+					handled = true;
 				} else {
 					item.setHovered(false);
 				}
@@ -297,7 +302,7 @@ public class MenuBar extends DrawableObject {
 				for (MenuBarItem item : items) {
 					item.setHovered(false);
 				}
-				return;
+				return false;
 			}
 			
 			// check if some vertical position matches
@@ -310,12 +315,38 @@ public class MenuBar extends DrawableObject {
 				if (itemOutline.getY() <= y && y <= itemOutline.getY() +
 						itemOutline.getHeight()) {
 					item.setHovered(true);
+					handled = true;
 				} else {
 					item.setHovered(false);
 				}
 				itemOutline.setY(itemOutline.getY() + itemOutline.getHeight());
 			}
 		}
+		
+		return handled;
+	}
+	
+	/**
+	 * Handle a mouse wheel event where the mouse is currently at the given
+	 * position in window coordinates.
+	 * 
+	 * @param x X-coordinate of current mouse position.
+	 * @param y Y-coordinate of current mouse position.
+	 * @param dWheel The delta of the mouse wheel.
+	 * @return If the event has been used or not.
+	 */
+	public boolean handleMouseWheelEvent(int x, int y, int dWheel) {
+		// We cheat here: if the mouse is over a menu item, then that
+		// menu item must be hovered right now. Therefore, we do not need
+		// cumbersome look-up functions now: we just wheel the hovered item
+		// if there is any at all!
+		for (MenuBarItem item : items) {
+			if (item.isHovered()) {
+				item.onScroll(dWheel);
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
