@@ -129,7 +129,13 @@ public class SliderMenuBarItem extends MenuBarItem {
 	 */
 	protected void drawBar(Rectangle outline, int barHeight, int textBarDiff,
 			int margin, float width) {
+		// calculate the width of the bar in pixels
 		int barWidth = (int) (width * (outline.getWidth() - 2 * PADDING - 2 * margin));
+		// draw at least one pixel wide
+		if (barWidth == 0) {
+			barWidth = 1;
+		}
+		// command OpenGL to draw the bar
 		glBegin(GL_QUADS);
 		{
 			glVertex2d(outline.getX() + PADDING + margin,
