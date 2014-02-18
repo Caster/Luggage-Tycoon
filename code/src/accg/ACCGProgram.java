@@ -5,6 +5,7 @@ import static org.lwjgl.util.glu.GLU.*;
 
 import java.awt.Font;
 import java.io.InputStream;
+import java.util.prefs.Preferences;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -43,7 +44,15 @@ public class ACCGProgram {
 	 *  3: menu alignment menu     (child of 1).
 	 */
 	private MenuBar[] menuBars;
+	/**
+	 * Point where mouse was pressed. Is compared to point where mouse
+	 * is released to see if it was a click or not.
+	 */
 	private Point clickedPoint;
+	/**
+	 * Preferences object. Used to store user preferences persistently.
+	 */
+	private Preferences prefs;
 	
 	public static void main(String[] args) {
 		ACCGProgram p = new ACCGProgram();
@@ -104,6 +113,7 @@ public class ACCGProgram {
 		menuBars[1] = new MenuBar(s, menuBars[0]);
 		menuBars[2] = new MenuBar(s, menuBars[1]);
 		menuBars[3] = new MenuBar(s, menuBars[1]);
+		loadPreferences(s);
 		initialiseMenus(menuBars, s);
 		
 		// enable some GL stuff
@@ -433,6 +443,7 @@ public class ACCGProgram {
 			public void onScroll(int dWheel) {
 				super.onScroll(dWheel);
 				s.mouseSensitivityFactor = this.val;
+				prefs.putFloat("mouse.sensitivity", this.val);
 			}
 		});
 		
@@ -510,6 +521,24 @@ public class ACCGProgram {
 	}
 	
 	/**
+	 * Try to load preferences of the user from last time.
+	 * 
+	 * @param s
+	 */
+	private void loadPreferences(State s) {
+		if (prefs == null) {
+			prefs = Preferences.userNodeForPackage(ACCGProgram.class);
+		}
+		
+		s.mouseSensitivityFactor = prefs.getFloat("mouse.sensitivity", 1.0f);
+		
+		int alignment = prefs.getInt("menu.alignment", 1);
+		setMenuAlignments(MenuBar.Alignment.values()[alignment]);
+		int position = prefs.getInt("menu.position", 0);
+		setMenuPositions(MenuBar.Position.values()[position]);
+	}
+	
+	/**
 	 * Change alignment of all menu bars.
 	 * 
 	 * @param alignment New alignment for all menu bars.
@@ -518,6 +547,8 @@ public class ACCGProgram {
 		for (int i = 0; i < menuBars.length; i++) {
 			menuBars[i].setAlignment(alignment);
 		}
+		
+		prefs.putInt("menu.alignment", alignment.ordinal());
 	}
 	
 	/**
@@ -529,5 +560,7 @@ public class ACCGProgram {
 		for (int i = 0; i < menuBars.length; i++) {
 			menuBars[i].setPosition(pos);
 		}
+		
+		prefs.putInt("menu.position", pos.ordinal());
 	}
 }
