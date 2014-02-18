@@ -43,8 +43,7 @@ public abstract class MenuBarItem {
 	public void draw(Rectangle outline, Font renderFont) {
 		// render hovered background, if needed
 		if (this.hovered) {
-			glDisable(GL_BLEND);
-			glColor3d(1, 1, 1);
+			glColor4d(1, 1, 1, 1);
 			glBegin(GL_QUADS);
 			{
 				glVertex2d(outline.getX(), outline.getY() - outline.getHeight());
@@ -54,7 +53,6 @@ public abstract class MenuBarItem {
 				glVertex2d(outline.getX(), outline.getY());
 			}
 			glEnd();
-			glEnable(GL_BLEND);
 		}
 		
 		// render text
