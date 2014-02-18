@@ -21,6 +21,27 @@ public abstract class MenuBarItem {
 	public static final int PADDING = 10;
 	
 	/**
+	 * The Type of a {@link MenuBarItem} indicates what properties it
+	 * has. Refer to the documentation of the enum members for details.
+	 */
+	public enum Type {
+		/** A regular menu item. */
+		NORMAL,
+		/**
+		 * A menu item that has a boolean isChecked property. When
+		 * clicked, the value of that property is toggled and this is
+		 * also indicated visually.
+		 */
+		CHECKABLE,
+		/**
+		 * Same as a {@link #CHECKABLE} menu item, but whenever a menu
+		 * item is checked, all other menu items in the same {@link MenuBar}
+		 * are automatically unchecked.
+		 */
+		CHECKABLE_UNIQUE
+	};
+	
+	/**
 	 * Construct a new {@link MenuBarItem} with given text and icon.
 	 * The text and icon should not be {@code null}.
 	 * 
@@ -30,6 +51,20 @@ public abstract class MenuBarItem {
 	 *         {@code icon} is {@code null}.
 	 */
 	public MenuBarItem(String text, Texture icon) {
+		this(text, icon, Type.NORMAL);
+	}
+	
+	/**
+	 * Construct a new {@link MenuBarItem} with given text and icon.
+	 * The text and icon should not be {@code null}.
+	 * 
+	 * @param text Text that is displayed next to the icon.
+	 * @param icon Icon that is displayed.
+	 * @param type {@link Type} of the menu item.
+	 * @throws IllegalArgumentException when either {@code text} or
+	 *         {@code icon} is {@code null}.
+	 */
+	public MenuBarItem(String text, Texture icon, Type type) {
 		if (text == null || icon == null) {
 			throw new IllegalArgumentException("Neither text nor icon "
 					+ "can be null for a MenuBarItem.");
@@ -37,7 +72,9 @@ public abstract class MenuBarItem {
 		
 		this.text = text;
 		this.icon = icon;
+		this.type = type;
 		this.hovered = false;
+		this.checked = false;
 	}
 	
 	/**
@@ -49,7 +86,8 @@ public abstract class MenuBarItem {
 	 */
 	public void draw(Rectangle outline, Font renderFont) {
 		// render hovered background, if needed
-		if (this.hovered && this.drawHoveredBackground) {
+		if ((this.hovered && this.drawHoveredBackground) ||
+				(this.checked && this.drawCheckedBackground)) {
 			glColor4d(1, 1, 1, 1);
 			glBegin(GL_QUADS);
 			{
@@ -108,7 +146,19 @@ public abstract class MenuBarItem {
 	}
 	
 	/**
-	 * Return if this menu item is currenlty being hovered by the mouse.
+	 * Return if this menu item is checked. Only applicable if the type of this
+	 * menu item is {@link Type#CHECKABLE} or {@link Type#CHECKABLE_UNIQUE}. If
+	 * that is not the case, this method will always return false.
+	 * 
+	 * @return If this menu item is checked, or false if the notion of checked
+	 *         does not apply to this menu item type.
+	 */
+	public boolean isChecked() {
+		return checked;
+	}
+	
+	/**
+	 * Return if this menu item is currently being hovered by the mouse.
 	 * 
 	 * @return the value of the parameter of the last call to {@link #setHovered(boolean)}.
 	 */
@@ -120,7 +170,14 @@ public abstract class MenuBarItem {
 	 * Called when this menu item is clicked. In this method, code that
 	 * handles whatever this menu item stands for should be placed.
 	 */
-	public abstract void onClick();
+	public void onClick() {
+		if (this.type == Type.CHECKABLE || this.type == Type.CHECKABLE_UNIQUE) {
+			this.checked = !this.checked;
+			if (this.checked && this.type == Type.CHECKABLE_UNIQUE && parent != null) {
+				parent.uncheckOtherItems(this);
+			}
+		}
+	}
 	
 	/**
 	 * Called when this menu item is hovered and then the scroll wheel on
@@ -131,6 +188,19 @@ public abstract class MenuBarItem {
 	public abstract void onScroll(int dWheel);
 	
 	/**
+	 * Change if this menu item is checked or not. Only has effect if the
+	 * type of this menu item is {@link Type#CHECKABLE} or
+	 * {@link Type#CHECKABLE_UNIQUE}.
+	 * 
+	 * @param checked The new value for the isChecked property of this item.
+	 */
+	public void setChecked(boolean checked) {
+		if (this.type == Type.CHECKABLE || this.type == Type.CHECKABLE_UNIQUE) {
+			this.checked = checked;
+		}
+	}
+	
+	/**
 	 * Change if this menu item is being hovered or not.
 	 * 
 	 * @param hovered If this item is being hovered by the mouse.
@@ -139,13 +209,31 @@ public abstract class MenuBarItem {
 		this.hovered = hovered;
 	}
 	
+	/**
+	 * Change the parent of this menu item, that is, set the {@link MenuBar}
+	 * in which this {@link MenuBarItem} is put.
+	 * 
+	 * @param parent The {@link MenuBar} in which this item is put.
+	 */
+	public void setParent(MenuBar parent) {
+		this.parent = parent;
+	}
+	
 	/** Describing text of this menu item. */
 	protected String text;
 	/** Icon of this menu item. */
 	protected Texture icon;
+	/** Type of this menu item. */
+	protected Type type;
 	/** Indicates if this menu item is being hovered by the mouse. */
 	protected boolean hovered;
+	/** Indicates if this menu item is checked. */
+	protected boolean checked;
+	/** The MenuBar in which this item is placed. */
+	protected MenuBar parent;
 	
+	/** Indicates if the background should be rendered differently when checked. */
+	protected boolean drawCheckedBackground = true;
 	/** Indicates if the background should be rendered differently when hovered. */
 	protected boolean drawHoveredBackground = true;
 	/** Indicates if the text should be drawn. */

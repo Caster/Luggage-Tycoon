@@ -33,17 +33,51 @@ public class MenuBar extends DrawableObject {
 	 */
 	public enum Alignment {
 		/** Left or top. */
-		BEGIN,
+		BEGIN("Left / top"),
 		/** Center. */
-		CENTER,
+		CENTER("Center"),
 		/** Right or bottom. */
-		END
+		END("Right / bottom");
+		
+		private Alignment(String name) {
+			this.name = name;
+		}
+		
+		private String name;
+		
+		/**
+		 * Return a human-readable description of the alignment type.
+		 * 
+		 * @return A human-readable, short description.
+		 */
+		public String getName() {
+			return name;
+		}
 	};
 	/**
 	 * Possible positions for a {@link MenuBar}.
 	 */
 	public enum Position {
-		TOP, RIGHT, BOTTOM, LEFT
+		TOP, RIGHT, BOTTOM, LEFT;
+		
+		private Position() {
+			this.name = name().charAt(0) + name().substring(1).toLowerCase();
+		}
+		
+		private Position(String name) {
+			this.name = name;
+		}
+		
+		private String name;
+		
+		/**
+		 * Return a human-readable description of the position type.
+		 * 
+		 * @return A human-readable, short description.
+		 */
+		public String getName() {
+			return name;
+		}
 	};
 	
 	/**
@@ -124,6 +158,7 @@ public class MenuBar extends DrawableObject {
 	public void addMenuBarItem(MenuBarItem item) {
 		if (!items.contains(item)) {
 			items.add(item);
+			item.setParent(this);
 		}
 	}
 	
@@ -444,6 +479,21 @@ public class MenuBar extends DrawableObject {
 	 */
 	public void toggleVisible() {
 		setVisible(!this.visible);
+	}
+	
+	/**
+	 * Set the isChecked property of all menu items in this menu to
+	 * false, except for the given item.
+	 * 
+	 * @param exceptFor The item of which the isChecked property
+	 *                  should not be changed.
+	 */
+	public void uncheckOtherItems(MenuBarItem exceptFor) {
+		for (MenuBarItem item : items) {
+			if (item != exceptFor) {
+				item.setChecked(false);
+			}
+		}
 	}
 	
 	/**

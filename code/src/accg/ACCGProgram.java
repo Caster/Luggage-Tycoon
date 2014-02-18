@@ -18,6 +18,7 @@ import org.lwjgl.opengl.Util;
 import org.lwjgl.util.Point;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.util.ResourceLoader;
 
 import accg.camera.Camera;
@@ -26,14 +27,21 @@ import accg.gui.MenuBar;
 import accg.gui.MenuBar.Alignment;
 import accg.gui.MenuBar.Position;
 import accg.gui.MenuBarItem;
+import accg.gui.MenuBarItem.Type;
 import accg.gui.SliderMenuBarItem;
 import accg.objects.Luggage;
 import accg.objects.World;
 
 public class ACCGProgram {
 	
+	private static final int DEF_MENU_ALIGNMENT = 1;
+	private static final int DEF_MENU_POSITION = 0;
+	
+	/** If the escape key has been pressed. */
 	private boolean escPressed = false;
+	/** Possible {@link DisplayMode} which the program can use. */
 	private DisplayMode windowedMode, fullScreenMode;
+	/** Camera that provides an easy-to-use API for changing viewpoint and such. */
 	private Camera camera;
 	/**
 	 * Menu bars used in the program.
@@ -368,6 +376,7 @@ public class ACCGProgram {
 		menus[0].addMenuBarItem(new MenuBarItem("Simulate", s.textures.iconStart) {
 			@Override
 			public void onClick() {
+				super.onClick();
 				System.out.println("Start simulation mode!");
 			}
 
@@ -378,6 +387,7 @@ public class ACCGProgram {
 		menus[0].addMenuBarItem(new MenuBarItem("Open", s.textures.iconOpen) {
 			@Override
 			public void onClick() {
+				super.onClick();
 				System.out.println("Open!");
 			}
 
@@ -388,6 +398,7 @@ public class ACCGProgram {
 		menus[0].addMenuBarItem(new MenuBarItem("Save", s.textures.iconSave) {
 			@Override
 			public void onClick() {
+				super.onClick();
 				System.out.println("Save!");
 			}
 
@@ -398,6 +409,7 @@ public class ACCGProgram {
 		menus[0].addMenuBarItem(new MenuBarItem("Settings", s.textures.iconConfigure) {
 			@Override
 			public void onClick() {
+				super.onClick();
 				menuBars[1].toggleVisible();
 			}
 
@@ -408,6 +420,7 @@ public class ACCGProgram {
 		menus[0].addMenuBarItem(new MenuBarItem("Exit", s.textures.iconExit) {
 			@Override
 			public void onClick() {
+				super.onClick();
 				escPressed = true;
 			}
 
@@ -419,6 +432,7 @@ public class ACCGProgram {
 		menus[1].addMenuBarItem(new MenuBarItem("Menu position", s.textures.iconConfigure) {
 			@Override
 			public void onClick() {
+				super.onClick();
 				menuBars[2].toggleVisible();
 			}
 
@@ -429,6 +443,7 @@ public class ACCGProgram {
 		menus[1].addMenuBarItem(new MenuBarItem("Menu alignment", s.textures.iconConfigure) {
 			@Override
 			public void onClick() {
+				super.onClick();
 				menuBars[3].toggleVisible();
 			}
 
@@ -447,76 +462,122 @@ public class ACCGProgram {
 		});
 		
 		// menu position menu
-		menus[2].addMenuBarItem(new MenuBarItem("Top", s.textures.iconGoUp) {
-			@Override
-			public void onClick() {
-				setMenuPositions(Position.TOP);
-			}
-
-			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
-		});
-		
-		menus[2].addMenuBarItem(new MenuBarItem("Bottom", s.textures.iconGoDown) {
-			@Override
-			public void onClick() {
-				setMenuPositions(Position.BOTTOM);
-			}
-
-			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
-		});
-		
-		menus[2].addMenuBarItem(new MenuBarItem("Left", s.textures.iconGoLeft) {
-			@Override
-			public void onClick() {
-				setMenuPositions(Position.LEFT);
-			}
-
-			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
-		});
-		
-		menus[2].addMenuBarItem(new MenuBarItem("Right", s.textures.iconGoRight) {
-			@Override
-			public void onClick() {
-				setMenuPositions(Position.RIGHT);
-			}
-
-			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
-		});
+		for (int i = 0; i < Position.values().length; i++) {
+			menus[2].addMenuBarItem(generatePositionItem(i, s));
+		}
 		
 		// menu alignment menu
-		menus[3].addMenuBarItem(new MenuBarItem("Left / top", s.textures.iconJustifyLeft) {
+		for (int i = 0; i < Alignment.values().length; i++) {
+			menus[3].addMenuBarItem(generateAlignmentItem(i, s));
+		}
+	}
+	
+	/**
+	 * Generate a {@link MenuBarItem} that represents a menu alignment.
+	 * 
+	 * @param index Index of the alignment to generate an item for.
+	 * @param s State, used to look up icons in.
+	 * @return A newly created {@link MenuBarItem}.
+	 */
+	private MenuBarItem generateAlignmentItem(final int index, State s) {
+		final Alignment alignment = MenuBar.Alignment.values()[index];
+		// create the item
+		MenuBarItem mbi = new MenuBarItem(alignment.getName(),
+				getAlignmentIcon(index, s), Type.CHECKABLE_UNIQUE) {
 			@Override
 			public void onClick() {
-				setMenuAlignments(Alignment.BEGIN);
+				super.onClick();
+				setMenuAlignments(alignment);
 			}
 
 			@Override
 			public void onScroll(int dWheel) { /* ignored */ }
-		});
+		};
+		// check the item if needed
+		if (index == prefs.getInt("menu.alignment", DEF_MENU_ALIGNMENT)) {
+			mbi.setChecked(true);
+		}
+		// return the result
+		return mbi;
+	}
+	
+	/**
+	 * Generate a {@link MenuBarItem} that represents a menu position.
+	 * 
+	 * @param index Index of the position to generate an item for.
+	 * @param s State, used to look up icons in.
+	 * @return A newly created {@link MenuBarItem}.
+	 */
+	private MenuBarItem generatePositionItem(final int index, State s) {
+		final Position pos = MenuBar.Position.values()[index];
+		// create the item
+		MenuBarItem mbi = new MenuBarItem(pos.getName(),
+				getPositionIcon(index, s), Type.CHECKABLE_UNIQUE) {
+			@Override
+			public void onClick() {
+				super.onClick();
+				setMenuPositions(pos);
+			}
+
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
+		};
+		// check the item if needed
+		if (index == prefs.getInt("menu.position", DEF_MENU_POSITION)) {
+			mbi.setChecked(true);
+		}
+		// return the result
+		return mbi;
+	}
+	
+	/**
+	 * Return the icon that belongs to the {@link Alignment} with given ordinal index.
+	 * 
+	 * @param index Ordinal index of an {@link Alignment}.
+	 * @param s State, used to look up icons in.
+	 * @return An icon, or {@code null} if index is invalid.
+	 */
+	private Texture getAlignmentIcon(final int index, State s) {
+		if (index < 0 || index >= MenuBar.Alignment.values().length) {
+			return null;
+		}
 		
-		menus[3].addMenuBarItem(new MenuBarItem("Center", s.textures.iconJustifyCenter) {
-			@Override
-			public void onClick() {
-				setMenuAlignments(Alignment.CENTER);
-			}
-
-			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
-		});
+		switch (index) {
+		case 0 :
+			return s.textures.iconJustifyLeft;
+		case 1 :
+			return s.textures.iconJustifyCenter;
+		case 2 :
+			return s.textures.iconJustifyRight;
+		default :
+			return null;
+		}
+	}
+	
+	/**
+	 * Return the icon that belongs to the {@link Position} with given ordinal index.
+	 * 
+	 * @param index Ordinal index of a {@link Position}.
+	 * @param s State, used to look up icons in.
+	 * @return An icon, or {@code null} if index is invalid.
+	 */
+	private Texture getPositionIcon(final int index, State s) {
+		if (index < 0 || index >= MenuBar.Position.values().length) {
+			return null;
+		}
 		
-		menus[3].addMenuBarItem(new MenuBarItem("Right / bottom", s.textures.iconJustifyRight) {
-			@Override
-			public void onClick() {
-				setMenuAlignments(Alignment.END);
-			}
-
-			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
-		});
+		switch (index) {
+		case 0 :
+			return s.textures.iconGoUp;
+		case 1 :
+			return s.textures.iconGoRight;
+		case 2 :
+			return s.textures.iconGoDown;
+		case 3 :
+			return s.textures.iconGoLeft;
+		default :
+			return null;
+		}
 	}
 	
 	/**
@@ -531,9 +592,9 @@ public class ACCGProgram {
 		
 		s.mouseSensitivityFactor = prefs.getFloat("mouse.sensitivity", 1.0f);
 		
-		int alignment = prefs.getInt("menu.alignment", 1);
+		int alignment = prefs.getInt("menu.alignment", DEF_MENU_ALIGNMENT);
 		setMenuAlignments(MenuBar.Alignment.values()[alignment]);
-		int position = prefs.getInt("menu.position", 0);
+		int position = prefs.getInt("menu.position", DEF_MENU_POSITION);
 		setMenuPositions(MenuBar.Position.values()[position]);
 	}
 	
