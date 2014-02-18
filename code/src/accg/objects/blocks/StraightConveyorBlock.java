@@ -17,6 +17,7 @@ public class StraightConveyorBlock extends ConveyorBlock {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
 		lefts.add(new Vector3f(-0.375f, -0.375f, 0.375f));
 		lefts.add(new Vector3f(-0.375f, 0.375f, 0.375f));
+		addBendYZ(lefts, Math.PI / 2, 0, -0.375f, 0.375f, 0.25f, 0.125);
 		return lefts;
 	}
 
@@ -25,6 +26,7 @@ public class StraightConveyorBlock extends ConveyorBlock {
 		ArrayList<Vector3f> rights = new ArrayList<>();
 		rights.add(new Vector3f(0.375f, -0.375f, 0.375f));
 		rights.add(new Vector3f(0.375f, 0.375f, 0.375f));
+		addBendYZ(rights, Math.PI / 2, 0, 0.375f, 0.375f, 0.25f, 0.125);
 		return rights;
 	}
 
@@ -33,6 +35,7 @@ public class StraightConveyorBlock extends ConveyorBlock {
 		ArrayList<Double> texs = new ArrayList<>();
 		texs.add(0.0);
 		texs.add(2.0);
+		addBendYZTextureCoordinates(texs, Math.PI / 2, 0, 0.125, 2.0);
 		return texs;
 	}
 

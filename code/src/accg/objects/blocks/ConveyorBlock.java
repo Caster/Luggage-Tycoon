@@ -185,4 +185,63 @@ public abstract class ConveyorBlock extends Block {
 		
 		glPopMatrix();
 	}
+	
+	/**
+	 * Add coordinates to the given list that form a bend in the YZ plane.
+	 * 
+	 * @param list The list to which points should be added.
+	 * @param radStart Start in radians of bend.
+	 * @param radEnd End in radians of bend.
+	 * @param xCoord X-coordinate of all added points.
+	 * @param yOffset Offset for all generated Y-coordinates.
+	 * @param zOffset Offset for all generated Z-coordinates.
+	 * @param rScale Scale factor for the radius of the bend.
+	 */
+	protected void addBendYZ(ArrayList<Vector3f> list, double radStart,
+			double radEnd, float xCoord, float yOffset, float zOffset, double rScale) {
+		for (double rad = radStart; (radStart < radEnd ? rad < radEnd - RAD_STEP :
+				rad > radEnd + RAD_STEP); rad += Math.signum(radEnd - radStart) * RAD_STEP) {
+			list.add(new Vector3f(xCoord, (float) (rScale * Math.cos(rad)) + yOffset,
+					(float) (rScale * Math.sin(rad)) + zOffset));
+		}
+		list.add(new Vector3f(xCoord, (float) (rScale * Math.cos(radEnd)) + yOffset,
+				(float) (rScale * Math.sin(radEnd)) + zOffset));
+	}
+	
+	/**
+	 * Add texture coordinates to the given list of texture coordinates that would
+	 * match a bend created with
+	 * {@link #addBendYZ(ArrayList, double, double, float, float, float, double)}.
+	 * Note that it is used that a distance of 0.75 maps to a distance of 2 in
+	 * texture coordinates.
+	 * 
+	 * @param list List of texture coordinates to add to.
+	 * @param radStart Start in radians of bend.
+	 * @param radEnd End in radians of bend.
+	 * @param rScale Scale factor for the radius of the bend.
+	 * @param coordStart Offset where coordinates should start.
+	 * @return Last added texture coordinate.
+	 */
+	protected double addBendYZTextureCoordinates(ArrayList<Double> list,
+			double radStart, double radEnd, double rScale, double coordStart) {
+		double coord = coordStart;
+		for (double rad = radStart; (radStart < radEnd ? rad < radEnd - RAD_STEP :
+				rad > radEnd + RAD_STEP); rad += Math.signum(radEnd - radStart) * RAD_STEP) {
+			list.add(Double.valueOf(coord));
+			// calculate the distance to the next point
+			Vector3f curr = new Vector3f(0, (float) (rScale * Math.cos(rad)),
+					(float) (rScale * Math.sin(rad)));
+			double nextRad = (radStart < radEnd ? Math.min(rad + RAD_STEP, radEnd) :
+				Math.max(rad - RAD_STEP, radStart));
+			Vector3f next = new Vector3f(0, (float) (rScale * Math.cos(nextRad)),
+					(float) (rScale * Math.sin(nextRad)));
+			Vector3f.sub(next, curr, next);
+			coord += next.length();
+		}
+		list.add(Double.valueOf(coord));
+		return coord;
+	}
+	
+	/** Step that is used when generating bends. */
+	protected static final double RAD_STEP = Math.PI / 20;
 }
