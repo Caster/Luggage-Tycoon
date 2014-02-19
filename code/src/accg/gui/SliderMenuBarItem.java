@@ -113,7 +113,11 @@ public class SliderMenuBarItem extends MenuBarItem {
 	
 	@Override
 	public void onScroll(int dWheel) {
-		this.val = clamp(this.val + Math.signum(dWheel) * this.step, this.min, this.max);
+		// only respond if the bar is actually shown
+		if (this.showBar) {
+			this.val = clamp(this.val + Math.signum(dWheel) * this.step,
+					this.min, this.max);
+		}
 	}
 	
 	/**
