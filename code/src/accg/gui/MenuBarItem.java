@@ -180,6 +180,16 @@ public abstract class MenuBarItem {
 	}
 	
 	/**
+	 * Called when the mouse moves over this {@link MenuBarItem} and the left
+	 * mouse button is down. The current position of the mouse is passed as a
+	 * parameter.
+	 * 
+	 * @param x X-coordinate of current mouse position.
+	 * @param y Y-coordinate of current mouse position.
+	 */
+	public abstract void onDrag(int x, int y);
+	
+	/**
 	 * Called when this menu item is hovered and then the scroll wheel on
 	 * the mouse is moved. This may be handy for interactive menu items.
 	 * 

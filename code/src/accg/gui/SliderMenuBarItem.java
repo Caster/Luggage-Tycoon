@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
 
+import org.lwjgl.util.Point;
 import org.lwjgl.util.Rectangle;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.opengl.Texture;
@@ -87,7 +88,7 @@ public class SliderMenuBarItem extends MenuBarItem {
 		if (this.showBar) {
 			// the height of the bar depends on that of the text
 			int textHeight = renderFont.getHeight(text);
-			int barHeight = textHeight / 2;
+			int barHeight = textHeight;
 			int textBarDiff = (textHeight - barHeight) / 2;
 			
 			// outline
@@ -112,6 +113,16 @@ public class SliderMenuBarItem extends MenuBarItem {
 	}
 	
 	@Override
+	public void onDrag(int x, int y) {
+		// see if the drag is inside the bar
+		if (this.showBar && this.barOutline.contains(new Point(x, y))) {
+			this.val = this.min + ((x - this.barOutline.getX()) /
+					((float) this.barOutline.getWidth() - 2 * SLIDER_BAR_EDGE_WIDTH)) *
+					(this.max - this.min);
+		}
+	}
+	
+	@Override
 	public void onScroll(int dWheel) {
 		// only respond if the bar is actually shown
 		if (this.showBar) {
@@ -133,25 +144,49 @@ public class SliderMenuBarItem extends MenuBarItem {
 	 */
 	protected void drawBar(Rectangle outline, int barHeight, int textBarDiff,
 			int margin, float width) {
-		// calculate the width of the bar in pixels
-		int barWidth = (int) (width * (outline.getWidth() - 2 * PADDING - 2 * margin));
-		// draw at least one pixel wide
-		if (barWidth == 0) {
-			barWidth = 1;
-		}
+		// calculate outline
+		Rectangle barOutline = getBarOutline(outline, barHeight, textBarDiff,
+				margin, width);
+		
 		// command OpenGL to draw the bar
 		glBegin(GL_QUADS);
 		{
-			glVertex2d(outline.getX() + PADDING + margin,
-					outline.getY() - PADDING - barHeight - textBarDiff + margin);
-			glVertex2d(outline.getX() + PADDING + margin + barWidth,
-					outline.getY() - PADDING - barHeight - textBarDiff + margin);
-			glVertex2d(outline.getX() + PADDING + margin + barWidth,
-					outline.getY() - PADDING - textBarDiff - margin);
-			glVertex2d(outline.getX() + PADDING + margin,
-					outline.getY() - PADDING - textBarDiff - margin);
+			glVertex2d(barOutline.getX(), barOutline.getY());
+			glVertex2d(barOutline.getX() + barOutline.getWidth(), barOutline.getY());
+			glVertex2d(barOutline.getX() + barOutline.getWidth(),
+					barOutline.getY() + barOutline.getHeight());
+			glVertex2d(barOutline.getX(), barOutline.getY() + barOutline.getHeight());
 		}
 		glEnd();
+	}
+	
+	protected Rectangle getBarOutline(Rectangle outline, int barHeight,
+			int textBarDiff, int margin, float width) {
+		// calculate the width of the bar in pixels
+		int barWidth = (int) (width * (outline.getWidth() - 2 * PADDING - 2 * margin));
+		// the bar should be at least one pixel wide
+		if (barWidth == 0) {
+			barWidth = 1;
+		}
+		// put together the result and return it, possibly save it
+		if (margin > 0 || width < 1.0f || this.barOutline == null) {
+			Rectangle barOutline = new Rectangle(outline.getX() + PADDING + margin,
+					outline.getY() - PADDING - barHeight - textBarDiff + margin,
+					barWidth, barHeight - 2 * margin);
+			if (margin == 0 && width == 1.0f) {
+				if (this.barOutline == null) {
+					this.barOutline = barOutline;
+				} else {
+					barOutline.getBounds(this.barOutline);
+				}
+			}
+			return barOutline;
+		} else {
+			this.barOutline.setBounds(outline.getX() + PADDING + margin,
+					outline.getY() - PADDING - barHeight - textBarDiff + margin,
+					barWidth, barHeight - 2 * margin);
+			return this.barOutline;
+		}
 	}
 	
 	/** The minimal value of this slider. */
@@ -164,4 +199,6 @@ public class SliderMenuBarItem extends MenuBarItem {
 	protected float step;
 	/** If the slider bar should be drawn, or the text. */
 	protected boolean showBar;
+	/** Cached outline of slider bar, for use in {@link #onDrag(int, int)}. */
+	protected Rectangle barOutline;
 }

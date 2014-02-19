@@ -381,6 +381,9 @@ public class ACCGProgram {
 			}
 
 			@Override
+			public void onDrag(int x, int y) { /* ignored */ }
+			
+			@Override
 			public void onScroll(int dWheel) { /* ignored */ }
 		});
 		
@@ -390,7 +393,10 @@ public class ACCGProgram {
 				super.onClick();
 				System.out.println("Open!");
 			}
-
+			
+			@Override
+			public void onDrag(int x, int y) { /* ignored */ }
+			
 			@Override
 			public void onScroll(int dWheel) { /* ignored */ }
 		});
@@ -401,7 +407,10 @@ public class ACCGProgram {
 				super.onClick();
 				System.out.println("Save!");
 			}
-
+			
+			@Override
+			public void onDrag(int x, int y) { /* ignored */ }
+			
 			@Override
 			public void onScroll(int dWheel) { /* ignored */ }
 		});
@@ -412,7 +421,10 @@ public class ACCGProgram {
 				super.onClick();
 				menuBars[1].toggleVisible();
 			}
-
+			
+			@Override
+			public void onDrag(int x, int y) { /* ignored */ }
+			
 			@Override
 			public void onScroll(int dWheel) { /* ignored */ }
 		});
@@ -423,7 +435,10 @@ public class ACCGProgram {
 				super.onClick();
 				escPressed = true;
 			}
-
+			
+			@Override
+			public void onDrag(int x, int y) { /* ignored */ }
+			
 			@Override
 			public void onScroll(int dWheel) { /* ignored */ }
 		});
@@ -435,7 +450,10 @@ public class ACCGProgram {
 				super.onClick();
 				menuBars[2].toggleVisible();
 			}
-
+			
+			@Override
+			public void onDrag(int x, int y) { /* ignored */ }
+			
 			@Override
 			public void onScroll(int dWheel) { /* ignored */ }
 		});
@@ -446,7 +464,10 @@ public class ACCGProgram {
 				super.onClick();
 				menuBars[3].toggleVisible();
 			}
-
+			
+			@Override
+			public void onDrag(int x, int y) { /* ignored */ }
+			
 			@Override
 			public void onScroll(int dWheel) { /* ignored */ }
 		});
@@ -489,7 +510,10 @@ public class ACCGProgram {
 				super.onClick();
 				setMenuAlignments(alignment);
 			}
-
+			
+			@Override
+			public void onDrag(int x, int y) { /* ignored */ }
+			
 			@Override
 			public void onScroll(int dWheel) { /* ignored */ }
 		};
@@ -518,7 +542,10 @@ public class ACCGProgram {
 				super.onClick();
 				setMenuPositions(pos);
 			}
-
+			
+			@Override
+			public void onDrag(int x, int y) { /* ignored */ }
+			
 			@Override
 			public void onScroll(int dWheel) { /* ignored */ }
 		};

@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.Rectangle;
 
@@ -324,6 +325,9 @@ public class MenuBar extends DrawableObject {
 				if (itemOutline.getX() <= x && x <= itemOutline.getX() +
 						itemOutline.getWidth())	{
 					item.setHovered(true);
+					if (Mouse.isButtonDown(0)) {
+						item.onDrag(x, y);
+					}
 					handled = true;
 				} else {
 					item.setHovered(false);
@@ -350,6 +354,9 @@ public class MenuBar extends DrawableObject {
 				if (itemOutline.getY() <= y && y <= itemOutline.getY() +
 						itemOutline.getHeight()) {
 					item.setHovered(true);
+					if (Mouse.isButtonDown(0)) {
+						item.onDrag(x, y);
+					}
 					handled = true;
 				} else {
 					item.setHovered(false);
