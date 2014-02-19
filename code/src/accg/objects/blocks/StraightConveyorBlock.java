@@ -15,8 +15,7 @@ public class StraightConveyorBlock extends ConveyorBlock {
 	@Override
 	protected ArrayList<Vector3f> getTopCoordinatesLeft() {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
-		lefts.add(new Vector3f(-0.375f, -0.375f, 0.375f));
-//		lefts.add(new Vector3f(-0.375f, 0.375f, 0.375f));
+		addBendYZ(lefts, Math.PI, Math.PI / 2, -0.375f, -0.375f, 0.25f, 0.125);
 		addBendYZ(lefts, Math.PI / 2, 0, -0.375f, 0.375f, 0.25f, 0.125);
 		return lefts;
 	}
@@ -24,8 +23,7 @@ public class StraightConveyorBlock extends ConveyorBlock {
 	@Override
 	protected ArrayList<Vector3f> getTopCoordinatesRight() {
 		ArrayList<Vector3f> rights = new ArrayList<>();
-		rights.add(new Vector3f(0.375f, -0.375f, 0.375f));
-//		rights.add(new Vector3f(0.375f, 0.375f, 0.375f));
+		addBendYZ(rights, Math.PI, Math.PI / 2, 0.375f, -0.375f, 0.25f, 0.125);
 		addBendYZ(rights, Math.PI / 2, 0, 0.375f, 0.375f, 0.25f, 0.125);
 		return rights;
 	}
@@ -33,33 +31,35 @@ public class StraightConveyorBlock extends ConveyorBlock {
 	@Override
 	protected ArrayList<Double> getTopTextureCoordinates() {
 		ArrayList<Double> texs = new ArrayList<>();
-		texs.add(0.0);
-//		texs.add(2.0);
-		addBendYZTextureCoordinates(texs, Math.PI / 2, 0, 0.125, 2.0);
+		double texCoord = addBendYZTextureCoordinates(texs, Math.PI, Math.PI / 2,
+				0.125, 0.0);
+		texCoord = addBendYZTextureCoordinates(texs, Math.PI / 2, 0, 0.125, texCoord + 2.0);
 		return texs;
 	}
 
 	@Override
 	protected ArrayList<Vector3f> getBottomCoordinatesLeft() {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
-		lefts.add(new Vector3f(-0.375f, 0.375f, 0.125f));
-		lefts.add(new Vector3f(-0.375f, -0.375f, 0.125f));
+		addBendYZ(lefts, Math.PI * 2, Math.PI * 3 / 2, -0.375f, 0.375f, 0.25f, 0.125);
+		addBendYZ(lefts, Math.PI * 3 / 2, Math.PI, -0.375f, -0.375f, 0.25f, 0.125);
 		return lefts;
 	}
 
 	@Override
 	protected ArrayList<Vector3f> getBottomCoordinatesRight() {
 		ArrayList<Vector3f> rights = new ArrayList<>();
-		rights.add(new Vector3f(0.375f, 0.375f, 0.125f));
-		rights.add(new Vector3f(0.375f, -0.375f, 0.125f));
+		addBendYZ(rights, Math.PI * 2, Math.PI * 3 / 2, 0.375f, 0.375f, 0.25f, 0.125);
+		addBendYZ(rights, Math.PI * 3 / 2, Math.PI, 0.375f, -0.375f, 0.25f, 0.125);
 		return rights;
 	}
 
 	@Override
 	protected ArrayList<Double> getBottomTextureCoordinates() {
 		ArrayList<Double> texs = new ArrayList<>();
-		texs.add(0.0);
-		texs.add(2.0);
+		double texCoord = addBendYZTextureCoordinates(texs, Math.PI * 2,
+				Math.PI * 3 / 2, 0.125, 0.0);
+		texCoord = addBendYZTextureCoordinates(texs, Math.PI * 3 / 2,
+				Math.PI, 0.125, texCoord + 2.0);
 		return texs;
 	}
 
