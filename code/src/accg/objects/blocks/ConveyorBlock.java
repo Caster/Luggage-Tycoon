@@ -199,8 +199,8 @@ public abstract class ConveyorBlock extends Block {
 	 */
 	protected void addBendYZ(ArrayList<Vector3f> list, double radStart,
 			double radEnd, float xCoord, float yOffset, float zOffset, double rScale) {
-		for (double rad = radStart; (radStart < radEnd ? rad < radEnd - RAD_STEP :
-				rad > radEnd + RAD_STEP); rad += Math.signum(radEnd - radStart) * RAD_STEP) {
+		for (double rad = radStart; (radStart < radEnd ? rad < radEnd : rad > radEnd);
+				rad += Math.signum(radEnd - radStart) * RAD_STEP) {
 			list.add(new Vector3f(xCoord, (float) (rScale * Math.cos(rad)) + yOffset,
 					(float) (rScale * Math.sin(rad)) + zOffset));
 		}
@@ -225,18 +225,18 @@ public abstract class ConveyorBlock extends Block {
 	protected double addBendYZTextureCoordinates(ArrayList<Double> list,
 			double radStart, double radEnd, double rScale, double coordStart) {
 		double coord = coordStart;
-		for (double rad = radStart; (radStart < radEnd ? rad < radEnd - RAD_STEP :
-				rad > radEnd + RAD_STEP); rad += Math.signum(radEnd - radStart) * RAD_STEP) {
+		for (double rad = radStart; (radStart < radEnd ? rad < radEnd : rad > radEnd);
+				rad += Math.signum(radEnd - radStart) * RAD_STEP) {
 			list.add(Double.valueOf(coord));
 			// calculate the distance to the next point
 			Vector3f curr = new Vector3f(0, (float) (rScale * Math.cos(rad)),
 					(float) (rScale * Math.sin(rad)));
-			double nextRad = (radStart < radEnd ? Math.min(rad + RAD_STEP, radEnd) :
-				Math.max(rad - RAD_STEP, radStart));
+			double nextRad = (radStart < radEnd ? Math.min(rad + RAD_STEP, radStart) :
+				Math.max(rad - RAD_STEP, radEnd));
 			Vector3f next = new Vector3f(0, (float) (rScale * Math.cos(nextRad)),
 					(float) (rScale * Math.sin(nextRad)));
 			Vector3f.sub(next, curr, next);
-			coord += next.length();
+			coord += next.length() / 0.375;
 		}
 		list.add(Double.valueOf(coord));
 		return coord;
