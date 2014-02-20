@@ -270,13 +270,16 @@ public class MenuBar extends DrawableObject {
 	 * @return If the event has been used or not.
 	 */
 	public boolean handleMouseClickEvent(int x, int y) {
+		// our Y-axis is inverted, sadly, because of font rendering...
+		y = Display.getHeight() - y;
+		
 		// We cheat here: if the mouse has clicked at a menu item, then that
 		// menu item must be hovered right now. Therefore, we do not need
 		// cumbersome look-up functions now: we just click the hovered item
 		// if there is any at all!
 		for (MenuBarItem item : items) {
 			if (item.isHovered()) {
-				item.onClick();
+				item.onClick(x, y);
 				return true;
 			}
 		}

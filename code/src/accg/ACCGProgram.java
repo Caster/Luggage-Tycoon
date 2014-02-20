@@ -375,8 +375,8 @@ public class ACCGProgram {
 		// main menu
 		menus[0].addMenuBarItem(new MenuBarItem("Simulate", s.textures.iconStart) {
 			@Override
-			public void onClick() {
-				super.onClick();
+			public void onClick(int x, int y) {
+				super.onClick(x, y);
 				System.out.println("Start simulation mode!");
 			}
 
@@ -389,8 +389,8 @@ public class ACCGProgram {
 		
 		menus[0].addMenuBarItem(new MenuBarItem("Open", s.textures.iconOpen) {
 			@Override
-			public void onClick() {
-				super.onClick();
+			public void onClick(int x, int y) {
+				super.onClick(x, y);
 				System.out.println("Open!");
 			}
 			
@@ -403,8 +403,8 @@ public class ACCGProgram {
 		
 		menus[0].addMenuBarItem(new MenuBarItem("Save", s.textures.iconSave) {
 			@Override
-			public void onClick() {
-				super.onClick();
+			public void onClick(int x, int y) {
+				super.onClick(x, y);
 				System.out.println("Save!");
 			}
 			
@@ -417,8 +417,8 @@ public class ACCGProgram {
 		
 		menus[0].addMenuBarItem(new MenuBarItem("Settings", s.textures.iconConfigure) {
 			@Override
-			public void onClick() {
-				super.onClick();
+			public void onClick(int x, int y) {
+				super.onClick(x, y);
 				menuBars[1].toggleVisible();
 			}
 			
@@ -431,8 +431,8 @@ public class ACCGProgram {
 		
 		menus[0].addMenuBarItem(new MenuBarItem("Exit", s.textures.iconExit) {
 			@Override
-			public void onClick() {
-				super.onClick();
+			public void onClick(int x, int y) {
+				super.onClick(x, y);
 				escPressed = true;
 			}
 			
@@ -446,8 +446,8 @@ public class ACCGProgram {
 		// settings menu
 		menus[1].addMenuBarItem(new MenuBarItem("Menu position", s.textures.iconConfigure) {
 			@Override
-			public void onClick() {
-				super.onClick();
+			public void onClick(int x, int y) {
+				super.onClick(x, y);
 				menuBars[2].toggleVisible();
 			}
 			
@@ -460,8 +460,8 @@ public class ACCGProgram {
 		
 		menus[1].addMenuBarItem(new MenuBarItem("Menu alignment", s.textures.iconConfigure) {
 			@Override
-			public void onClick() {
-				super.onClick();
+			public void onClick(int x, int y) {
+				super.onClick(x, y);
 				menuBars[3].toggleVisible();
 			}
 			
@@ -475,8 +475,24 @@ public class ACCGProgram {
 		menus[1].addMenuBarItem(new SliderMenuBarItem("Mouse sensitivity",
 				s.textures.iconMouse, 0.1f, 2.0f, s.mouseSensitivityFactor) {
 			@Override
+			public void onClick(int x, int y) {
+				super.onClick(x, y);
+				updateStateVal();
+			}
+			
+			@Override
+			public void onDrag(int x, int y) {
+				super.onDrag(x, y);
+				updateStateVal();
+			}
+			
+			@Override
 			public void onScroll(int dWheel) {
 				super.onScroll(dWheel);
+				updateStateVal();
+			}
+			
+			private void updateStateVal() {
 				s.mouseSensitivityFactor = this.val;
 				prefs.putFloat("mouse.sensitivity", this.val);
 			}
@@ -506,8 +522,8 @@ public class ACCGProgram {
 		MenuBarItem mbi = new MenuBarItem(alignment.getName(),
 				getAlignmentIcon(index, s), Type.CHECKABLE_UNIQUE) {
 			@Override
-			public void onClick() {
-				super.onClick();
+			public void onClick(int x, int y) {
+				super.onClick(x, y);
 				setMenuAlignments(alignment);
 			}
 			
@@ -538,8 +554,8 @@ public class ACCGProgram {
 		MenuBarItem mbi = new MenuBarItem(pos.getName(),
 				getPositionIcon(index, s), Type.CHECKABLE_UNIQUE) {
 			@Override
-			public void onClick() {
-				super.onClick();
+			public void onClick(int x, int y) {
+				super.onClick(x, y);
 				setMenuPositions(pos);
 			}
 			

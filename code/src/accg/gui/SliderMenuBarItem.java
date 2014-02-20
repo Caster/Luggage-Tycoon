@@ -5,7 +5,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
 
-import org.lwjgl.util.Point;
 import org.lwjgl.util.Rectangle;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.opengl.Texture;
@@ -107,18 +106,22 @@ public class SliderMenuBarItem extends MenuBarItem {
 	}
 	
 	@Override
-	public void onClick() {
-		this.showBar = !this.showBar;
-		this.drawText = !this.showBar;
+	public void onClick(int x, int y) {
+		// when clicking inside the bar, change the value
+		if (this.showBar && this.barOutline.contains(x, y)) {
+			updateValueFromPoint(x, y);
+		} else {
+			// toggle between showing the bar and showing text
+			this.showBar = !this.showBar;
+			this.drawText = !this.showBar;
+		}
 	}
 	
 	@Override
 	public void onDrag(int x, int y) {
 		// see if the drag is inside the bar
-		if (this.showBar && this.barOutline.contains(new Point(x, y))) {
-			this.val = this.min + ((x - this.barOutline.getX()) /
-					((float) this.barOutline.getWidth() - 2 * SLIDER_BAR_EDGE_WIDTH)) *
-					(this.max - this.min);
+		if (this.showBar && this.barOutline.contains(x, y)) {
+			updateValueFromPoint(x, y);
 		}
 	}
 	
@@ -160,6 +163,11 @@ public class SliderMenuBarItem extends MenuBarItem {
 		glEnd();
 	}
 	
+	/**
+	 * Return an outline of the slider bar.
+	 * 
+	 * @see #drawBar(Rectangle, int, int, int, float)
+	 */
 	protected Rectangle getBarOutline(Rectangle outline, int barHeight,
 			int textBarDiff, int margin, float width) {
 		// calculate the width of the bar in pixels
@@ -187,6 +195,19 @@ public class SliderMenuBarItem extends MenuBarItem {
 					barWidth, barHeight - 2 * margin);
 			return this.barOutline;
 		}
+	}
+	
+	/**
+	 * Given a point inside the bar outline, update the value of this slider to
+	 * make the bar be filled up to the given point.
+	 * 
+	 * @param x X-coordinate of point in bar outline.
+	 * @param y Y-coordinate of point in bar outline.
+	 */
+	protected void updateValueFromPoint(int x, int y) {
+		this.val = this.min + ((x - this.barOutline.getX()) /
+				((float) this.barOutline.getWidth() - 2 * SLIDER_BAR_EDGE_WIDTH)) *
+				(this.max - this.min);
 	}
 	
 	/** The minimal value of this slider. */

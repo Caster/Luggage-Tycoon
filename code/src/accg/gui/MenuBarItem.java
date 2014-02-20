@@ -169,8 +169,11 @@ public abstract class MenuBarItem {
 	/**
 	 * Called when this menu item is clicked. In this method, code that
 	 * handles whatever this menu item stands for should be placed.
+	 * 
+	 * @param x X-coordinate of current mouse position.
+	 * @param y Y-coordinate of current mouse position.
 	 */
-	public void onClick() {
+	public void onClick(int x, int y) {
 		if (this.type == Type.CHECKABLE || this.type == Type.CHECKABLE_UNIQUE) {
 			this.checked = !this.checked;
 			if (this.checked && this.type == Type.CHECKABLE_UNIQUE && parent != null) {
