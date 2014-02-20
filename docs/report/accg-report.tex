@@ -1,0 +1,62 @@
+\documentclass[a4paper,10pt,twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+
+\usepackage{booktabs}
+
+\usepackage{longtable}
+\usepackage{tabu}
+
+\usepackage{xspace}
+
+\usepackage[sc]{mathpazo}
+\linespread{1.05}
+
+\newcommand*{\accgtitle}{Report (concept, v1)\xspace}
+
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={2IV05: \accgtitle}, pdfauthor={Thom Castermans \& Willem Sonke}}
+
+\usepackage{graphicx}
+\graphicspath{ {img/} }
+
+% http://tex.stackexchange.com/a/57163/23145
+\usepackage{geometry}
+\geometry{
+  includeheadfoot,
+  margin=2.54cm
+}
+
+\title{\large 2IV05 -- Additional component computer graphics \\\huge \textbf{\accgtitle}}
+\author{Thom Castermans \and Willem Sonke}
+
+\begin{document}
+
+\newgeometry{margin=1in}
+\maketitle
+\input{abstract}
+\tableofcontents
+\restoregeometry
+
+\section{Introduction}
+\label{sec:introduction}
+\input{introduction}
+
+\section{Program description}
+\label{sec:description}
+\input{description}
+
+\section{Challenges \& solutions}
+\label{sec:challenges}
+\input{challenges}
+
+\section{Result \& discussion}
+\label{sec:results}
+\input{results}
+
+\section{Future work}
+\label{sec:future-work}
+\input{future-work}
+
+\end{document}
