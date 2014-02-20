@@ -1,4 +1,4 @@
-\documentclass[a4paper,10pt,twoside]{article}
+\documentclass[a4paper,10pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
@@ -22,12 +22,7 @@
 \usepackage{graphicx}
 \graphicspath{ {img/} }
 
-% http://tex.stackexchange.com/a/57163/23145
 \usepackage{geometry}
-\geometry{
-  includeheadfoot,
-  margin=2.54cm
-}
 
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 
@@ -35,10 +30,10 @@
 
 \begin{document}
 
-\newgeometry{margin=1in}
 \input{title}
 \tableofcontents
-\restoregeometry
+
+\newgeometry{twoside}
 
 \section{Introduction}
 \label{sec:introduction}

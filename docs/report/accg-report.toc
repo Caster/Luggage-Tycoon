@@ -3,9 +3,9 @@
 \contentsline {subsection}{\numberline {2.1}Design goals}{2}{subsection.2.1}
 \contentsline {subsection}{\numberline {2.2}Interaction}{2}{subsection.2.2}
 \contentsline {section}{\numberline {3}Challenges \& solutions}{2}{section.3}
-\contentsline {subsection}{\numberline {3.1}Building a(n intuitive) GUI in OpenGL}{2}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Constructing \& animating conveyor belts}{2}{subsection.3.2}
-\contentsline {subsection}{\numberline {3.3}Transforming a 2D point into the 3D model space}{2}{subsection.3.3}
-\contentsline {subsection}{\numberline {3.4}Simulating luggage movement in a conveyor belt system}{2}{subsection.3.4}
-\contentsline {section}{\numberline {4}Result \& discussion}{2}{section.4}
-\contentsline {section}{\numberline {5}Future work}{2}{section.5}
+\contentsline {subsection}{\numberline {3.1}Building a(n intuitive) GUI in OpenGL}{3}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Constructing \& animating conveyor belts}{3}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Transforming a 2D point into the 3D model space}{3}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Simulating luggage movement in a conveyor belt system}{3}{subsection.3.4}
+\contentsline {section}{\numberline {4}Result \& discussion}{3}{section.4}
+\contentsline {section}{\numberline {5}Future work}{3}{section.5}
