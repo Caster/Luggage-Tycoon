@@ -100,10 +100,21 @@ public class Luggage extends DrawableObject {
 		 */
 		private Color color;
 		
+		/**
+		 * Returns the color as a {@link java.awt.Color} object.
+		 * @return The color.
+		 */
 		private Color getColor() {
 			return color;
 		}
 		
+		/**
+		 * Creates a new color for the luggage.
+		 * 
+		 * @param red The red component.
+		 * @param green The green component.
+		 * @param blue The blue component.
+		 */
 		LuggageColor(int red, int green, int blue) {
 			this.color = new Color(red, green, blue);
 		}
