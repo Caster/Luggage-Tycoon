@@ -62,7 +62,7 @@ public class Simulation {
 				// check for conveyor belts that can take the luggage
 				for (int z = (int) (4 * l.z - 3); z <= (int) (4 * l.z); z++) {
 					if (!s.world.bc.inBounds((int) (l.x + 0.5), (int) (l.y + 0.5), z)) {
-						continue; // TODO better check of course
+						continue;
 					}
 					Block b = s.world.bc.getBlock((int) (l.x + 0.5), (int) (l.y + 0.5), z);
 					if (b instanceof ConveyorBlock) {
