@@ -33,8 +33,7 @@ public class StraightConveyorBlock extends ConveyorBlock {
 		ArrayList<Double> texs = new ArrayList<>();
 		double texCoord = addBendYZTextureCoordinates(texs, Math.PI, Math.PI / 2,
 				0.125, 0.0);
-		texCoord = addBendYZTextureCoordinates(texs, Math.PI / 2, 0, 0.125, texCoord + 6.0);
-//		System.out.println("top:    " + texs);
+		addBendYZTextureCoordinates(texs, Math.PI / 2, 0, 0.125, texCoord + 6.0);
 		return texs;
 	}
 
@@ -59,9 +58,8 @@ public class StraightConveyorBlock extends ConveyorBlock {
 		ArrayList<Double> texs = new ArrayList<>();
 		double texCoord = addBendYZTextureCoordinates(texs, Math.PI * 2,
 				Math.PI * 3 / 2, 0.125, 0.0);
-		texCoord = addBendYZTextureCoordinates(texs, Math.PI * 3 / 2,
-				Math.PI, 0.125, texCoord + 6.0);
-//		System.out.println("bottom: " + texs);
+		addBendYZTextureCoordinates(texs, Math.PI * 3 / 2, Math.PI, 0.125,
+				texCoord + 6.0);
 		return texs;
 	}
 

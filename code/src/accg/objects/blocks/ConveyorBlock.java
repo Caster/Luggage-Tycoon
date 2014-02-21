@@ -15,9 +15,8 @@ import accg.objects.Luggage;
  * Generic super class of all conveyor blocks. This class is overridden by the
  * block classes.
  * 
- * A {@link ConveyorBlock} manages the drawing of conveyor belts and the simulation
- * <b>(not yet of course)</b>, based on abstract methods that indicate the exact
- * shape of the conveyor belt.
+ * A {@link ConveyorBlock} manages the drawing of conveyor belts and the simulation,
+ * based on abstract methods that indicate the exact shape of the conveyor belt.
  * 
  * ConveyorBlocks use the following coordinate system: they are centered around
  * the origin (0, 0), and the conveyor belt moves towards the positive y direction.
