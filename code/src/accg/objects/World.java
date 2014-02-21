@@ -1,5 +1,6 @@
 package accg.objects;
 
+import accg.State;
 import accg.objects.Block.Orientation;
 import accg.objects.blocks.*;
 
@@ -20,13 +21,15 @@ public class World extends Container<DrawableObject> {
 	
 	/**
 	 * Creates a new world.
+	 * 
+	 * @param s The state object.
 	 */
-	public World() {
+	public World(State s) {
 		addObject(new Floor());
 		addObject(new Walls());
 		
-		bc = new BlockCollection(16);
-		bc.setBlock(new StraightConveyorBlock(1, 5, 0, Orientation.DOWN));
+		bc = new BlockCollection(s.fieldLength, s.fieldWidth, s.fieldHeight);
+	/*	bc.setBlock(new StraightConveyorBlock(1, 5, 0, Orientation.DOWN));
 		bc.setBlock(new AscendingConveyorBlock(1, 4, 0, Orientation.DOWN));
 		bc.setBlock(new AscendingConveyorBlock(1, 3, 1, Orientation.DOWN));
 		bc.setBlock(new AscendingConveyorBlock(1, 2, 2, Orientation.DOWN));
@@ -39,11 +42,11 @@ public class World extends Container<DrawableObject> {
 		bc.setBlock(new DescendingConveyorBlock(3, 1, 1, Orientation.LEFT));
 		bc.setBlock(new DescendingConveyorBlock(2, 1, 0, Orientation.LEFT));
 		bc.setBlock(new StraightConveyorBlock(1, 1, 0, Orientation.LEFT));
-		bc.setBlock(new BendRightConveyorBlock(0, 1, 0, Orientation.LEFT));
+		bc.setBlock(new BendRightConveyorBlock(0, 1, 0, Orientation.LEFT));*/
 
-		bc.setBlock(new StraightConveyorBlock(3, 7, 6, Orientation.DOWN));
-		bc.setBlock(new StraightConveyorBlock(3, 6, 6, Orientation.DOWN));
-		bc.setBlock(new StraightConveyorBlock(3, 5, 6, Orientation.DOWN));
+		bc.setBlock(new StraightConveyorBlock(3, 7, 15, Orientation.DOWN));
+		bc.setBlock(new StraightConveyorBlock(3, 6, 14, Orientation.DOWN));
+		bc.setBlock(new StraightConveyorBlock(3, 5, 13, Orientation.DOWN));
 		bc.setBlock(new StraightConveyorBlock(3, 4, 4, Orientation.LEFT));
 		bc.setBlock(new StraightConveyorBlock(2, 4, 2, Orientation.UP));
 		bc.setBlock(new StraightConveyorBlock(2, 5, 0, Orientation.RIGHT));

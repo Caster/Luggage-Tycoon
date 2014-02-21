@@ -152,6 +152,29 @@ public abstract class ConveyorBlock extends Block {
 			assert lefts.size() == rights.size() && lefts.size() == texs.size();
 			
 			for (int i = 0; i < lefts.size(); i++) {
+				
+				Vector3f normal1 = new Vector3f();
+				if (i < lefts.size() - 1) {
+					Vector3f normal1h = new Vector3f();
+					Vector3f.sub(lefts.get(i), lefts.get(i + 1), normal1h);
+					Vector3f normal1v = new Vector3f();
+					Vector3f.sub(lefts.get(i), rights.get(i), normal1v);
+					Vector3f.cross(normal1v, normal1h, normal1);
+				}
+				
+				Vector3f normal2 = new Vector3f();
+				if (i > 1) {
+					Vector3f normal2h = new Vector3f();
+					Vector3f.sub(lefts.get(i), lefts.get(i - 1), normal2h);
+					Vector3f normal2v = new Vector3f();
+					Vector3f.sub(lefts.get(i), rights.get(i), normal2v);
+					Vector3f.cross(normal2h, normal2v, normal2);
+				}
+				Vector3f average = new Vector3f();
+				Vector3f.add(normal1, normal2, average);
+				average.normalise();
+				glNormal3f(average);
+				
 				glTexCoord2d(texs.get(i) - 8 * s.time, 0);
 				glVertex3f(lefts.get(i));
 				
@@ -163,7 +186,6 @@ public abstract class ConveyorBlock extends Block {
 		
 		glBegin(GL_QUAD_STRIP);
 		{
-			glNormal3d(0, 0, 1); // TODO calculate proper normals
 			
 			ArrayList<Vector3f> lefts = getBottomCoordinatesLeft();
 			ArrayList<Vector3f> rights = getBottomCoordinatesRight();
@@ -172,6 +194,29 @@ public abstract class ConveyorBlock extends Block {
 			assert lefts.size() == rights.size() && lefts.size() == texs.size();
 			
 			for (int i = 0; i < lefts.size(); i++) {
+				
+				Vector3f normal1 = new Vector3f();
+				if (i < lefts.size() - 1) {
+					Vector3f normal1h = new Vector3f();
+					Vector3f.sub(lefts.get(i), lefts.get(i + 1), normal1h);
+					Vector3f normal1v = new Vector3f();
+					Vector3f.sub(lefts.get(i), rights.get(i), normal1v);
+					Vector3f.cross(normal1v, normal1h, normal1);
+				}
+				
+				Vector3f normal2 = new Vector3f();
+				if (i > 1) {
+					Vector3f normal2h = new Vector3f();
+					Vector3f.sub(lefts.get(i), lefts.get(i - 1), normal2h);
+					Vector3f normal2v = new Vector3f();
+					Vector3f.sub(lefts.get(i), rights.get(i), normal2v);
+					Vector3f.cross(normal2h, normal2v, normal2);
+				}
+				Vector3f average = new Vector3f();
+				Vector3f.add(normal1, normal2, average);
+				average.normalise();
+				glNormal3f(average);
+				
 				glTexCoord2d(texs.get(i) - 8 * s.time, 0);
 				glVertex3f(lefts.get(i));
 				
