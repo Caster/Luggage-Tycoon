@@ -140,7 +140,7 @@ public class Luggage extends DrawableObject {
 		this.vx = 0;
 		this.vy = 0;
 		this.vz = 0;
-		
+
 		this.anglez = Math.random() * 2 * Math.PI;
 		
 		this.color = LuggageColor.values()[(int) (Math.random() * LuggageColor.values().length)];
