@@ -45,8 +45,8 @@ public class Simulation {
 				if (l.z <= 0) {
 					l.z = 0;
 					l.vz = 0;
-					l.vx -= dt * Math.signum(l.vx);
-					l.vy -= dt * Math.signum(l.vy);
+					l.vx -= 10 * dt * Math.signum(l.vx);
+					l.vy -= 10 * dt * Math.signum(l.vy);
 					l.vx = Math.abs(l.vx) <= 0.01 ? 0 : l.vx;
 					l.vy = Math.abs(l.vy) <= 0.01 ? 0 : l.vy;
 				} else {
