@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
 
+import org.lwjgl.util.glu.Cylinder;
 import org.lwjgl.util.vector.Vector3f;
 
 import accg.State;
@@ -130,6 +131,8 @@ public abstract class ConveyorBlock extends Block {
 	@Override
 	public void draw(State s) {
 		
+		drawScaffolding(s);
+
 		glPushMatrix();
 		glTranslated(x, y, z / 4.0);
 		glRotated(-orientation.angle, 0, 0, 1);
@@ -151,10 +154,33 @@ public abstract class ConveyorBlock extends Block {
 			assert lefts.size() == rights.size() && lefts.size() == texs.size();
 			
 			for (int i = 0; i < lefts.size(); i++) {
-				glTexCoord2d(texs.get(i) - s.time, 0);
+				
+				Vector3f normal1 = new Vector3f();
+				if (i < lefts.size() - 1) {
+					Vector3f normal1h = new Vector3f();
+					Vector3f.sub(lefts.get(i), lefts.get(i + 1), normal1h);
+					Vector3f normal1v = new Vector3f();
+					Vector3f.sub(lefts.get(i), rights.get(i), normal1v);
+					Vector3f.cross(normal1v, normal1h, normal1);
+				}
+				
+				Vector3f normal2 = new Vector3f();
+				if (i > 1) {
+					Vector3f normal2h = new Vector3f();
+					Vector3f.sub(lefts.get(i), lefts.get(i - 1), normal2h);
+					Vector3f normal2v = new Vector3f();
+					Vector3f.sub(lefts.get(i), rights.get(i), normal2v);
+					Vector3f.cross(normal2h, normal2v, normal2);
+				}
+				Vector3f average = new Vector3f();
+				Vector3f.add(normal1, normal2, average);
+				average.normalise();
+				glNormal3f(average);
+				
+				glTexCoord2d(texs.get(i) - 8 * s.time, 0);
 				glVertex3f(lefts.get(i));
 				
-				glTexCoord2d(texs.get(i) - s.time, 1);
+				glTexCoord2d(texs.get(i) - 8 * s.time, 1);
 				glVertex3f(rights.get(i));
 			}
 		}
@@ -162,7 +188,6 @@ public abstract class ConveyorBlock extends Block {
 		
 		glBegin(GL_QUAD_STRIP);
 		{
-			glNormal3d(0, 0, 1); // TODO calculate proper normals
 			
 			ArrayList<Vector3f> lefts = getBottomCoordinatesLeft();
 			ArrayList<Vector3f> rights = getBottomCoordinatesRight();
@@ -171,10 +196,33 @@ public abstract class ConveyorBlock extends Block {
 			assert lefts.size() == rights.size() && lefts.size() == texs.size();
 			
 			for (int i = 0; i < lefts.size(); i++) {
-				glTexCoord2d(texs.get(i) - s.time, 0);
+				
+				Vector3f normal1 = new Vector3f();
+				if (i < lefts.size() - 1) {
+					Vector3f normal1h = new Vector3f();
+					Vector3f.sub(lefts.get(i), lefts.get(i + 1), normal1h);
+					Vector3f normal1v = new Vector3f();
+					Vector3f.sub(lefts.get(i), rights.get(i), normal1v);
+					Vector3f.cross(normal1v, normal1h, normal1);
+				}
+				
+				Vector3f normal2 = new Vector3f();
+				if (i > 1) {
+					Vector3f normal2h = new Vector3f();
+					Vector3f.sub(lefts.get(i), lefts.get(i - 1), normal2h);
+					Vector3f normal2v = new Vector3f();
+					Vector3f.sub(lefts.get(i), rights.get(i), normal2v);
+					Vector3f.cross(normal2h, normal2v, normal2);
+				}
+				Vector3f average = new Vector3f();
+				Vector3f.add(normal1, normal2, average);
+				average.normalise();
+				glNormal3f(average);
+				
+				glTexCoord2d(texs.get(i) - 8 * s.time, 0);
 				glVertex3f(lefts.get(i));
 				
-				glTexCoord2d(texs.get(i) - s.time, 1);
+				glTexCoord2d(texs.get(i) - 8 * s.time, 1);
 				glVertex3f(rights.get(i));
 			}
 		}
@@ -185,6 +233,33 @@ public abstract class ConveyorBlock extends Block {
 		glPopMatrix();
 	}
 	
+	/**
+	 * Draws the scaffolding below the block.
+	 * @param s The state object.
+	 */
+	private void drawScaffolding(State s) {
+		
+		drawPole(-0.5, -0.5);
+		drawPole(-0.5, 0.5);
+		drawPole(0.5, -0.5);
+		drawPole(0.5, 0.5);
+	}
+	
+	private void drawPole(double dx, double dy) {
+
+		glPushMatrix();
+		glTranslated(x + dx, y + dy, 0);
+
+		Cylinder c = new Cylinder();
+		c.draw(0.05f, 0.02f, 0.25f, 16, 8);
+		glPushMatrix();
+		glTranslated(0, 0, 0.25f);
+		c.draw(0.02f, 0.02f, z / 4.0f, 16, 8);
+		glPopMatrix();
+		
+		glPopMatrix();
+	}
+
 	/**
 	 * Add coordinates to the given list that form a bend in the YZ plane.
 	 * 

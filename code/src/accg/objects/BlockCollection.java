@@ -22,18 +22,30 @@ public class BlockCollection extends DrawableObject {
 	private Block[][][] blocks;
 	
 	/**
-	 * The size of this {@link BlockCollection}, in the number of blocks.
+	 * The X-size of this {@link BlockCollection}, in the number of blocks.
 	 */
-	private int size;
+	private int sizeX;
+	
+	/**
+	 * The Y-size of this {@link BlockCollection}, in the number of blocks.
+	 */
+	private int sizeY;
+	
+	/**
+	 * The Z-size of this {@link BlockCollection}, in the number of blocks.
+	 */
+	private int sizeZ;
 	
 	/**
 	 * Creates a new {@link BlockCollection} of the given size.
 	 * 
 	 * @param size The size, in number of blocks.
 	 */
-	public BlockCollection(int size) {
-		this.blocks = new Block[size][size][size];
-		this.size = size;
+	public BlockCollection(int sizeX, int sizeY, int sizeZ) {
+		this.blocks = new Block[sizeX][sizeY][sizeZ];
+		this.sizeX = sizeX;
+		this.sizeY = sizeY;
+		this.sizeZ = sizeZ;
 	}
 	
 	/**
@@ -90,9 +102,9 @@ public class BlockCollection extends DrawableObject {
 	 * there is no block there.
 	 */
 	public boolean inBounds(int x, int y, int z) {
-		return x >= 0 && x < size
-		    && y >= 0 && y < size
-		    && z >= 0 && z < size;
+		return x >= 0 && x < sizeX
+		    && y >= 0 && y < sizeY
+		    && z >= 0 && z < sizeZ;
 	}
 	
 	/**
@@ -111,11 +123,27 @@ public class BlockCollection extends DrawableObject {
 	}
 	
 	/**
-	 * Returns the size of this {@link BlockCollection}.
+	 * Returns the X-size of this {@link BlockCollection}.
 	 * @return The size.
 	 */
-	public int getSize() {
-		return size;
+	public int getSizeX() {
+		return sizeX;
+	}
+	
+	/**
+	 * Returns the Y-size of this {@link BlockCollection}.
+	 * @return The size.
+	 */
+	public int getSizeY() {
+		return sizeY;
+	}
+	
+	/**
+	 * Returns the Z-size of this {@link BlockCollection}.
+	 * @return The size.
+	 */
+	public int getSizeZ() {
+		return sizeZ;
 	}
 	
 	@Override

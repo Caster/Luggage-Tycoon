@@ -19,9 +19,9 @@ public class Walls extends DrawableObject {
 			glTexCoord2d(0, s.fieldHeight / 4.0);
 			glVertex3d(-0.5, -0.5, 0);
 			glTexCoord2d(0, 0);
-			glVertex3d(-0.5, -0.5, s.fieldHeight / 4.0);
+			glVertex3d(-0.5, -0.5, s.fieldHeight / 4.0 + 1);
 			glTexCoord2d(s.fieldWidth, 0);
-			glVertex3d(-0.5, s.fieldWidth - 0.5, s.fieldHeight / 4.0);
+			glVertex3d(-0.5, s.fieldWidth - 0.5, s.fieldHeight / 4.0 + 1);
 			glTexCoord2d(s.fieldWidth, s.fieldHeight / 4.0);
 			glVertex3d(-0.5, s.fieldWidth - 0.5, 0);
 			
@@ -29,9 +29,9 @@ public class Walls extends DrawableObject {
 			glTexCoord2d(s.fieldWidth, s.fieldHeight / 4.0);
 			glVertex3d(-0.5, s.fieldWidth - 0.5, 0);
 			glTexCoord2d(s.fieldWidth, 0);
-			glVertex3d(-0.5, s.fieldWidth - 0.5, s.fieldHeight / 4.0);
+			glVertex3d(-0.5, s.fieldWidth - 0.5, s.fieldHeight / 4.0 + 1);
 			glTexCoord2d(s.fieldWidth + s.fieldLength, 0);
-			glVertex3d(s.fieldLength - 0.5, s.fieldWidth - 0.5, s.fieldHeight / 4.0);
+			glVertex3d(s.fieldLength - 0.5, s.fieldWidth - 0.5, s.fieldHeight / 4.0 + 1);
 			glTexCoord2d(s.fieldWidth + s.fieldLength, s.fieldHeight / 4.0);
 			glVertex3d(s.fieldLength - 0.5, s.fieldWidth - 0.5, 0);
 			
@@ -39,9 +39,9 @@ public class Walls extends DrawableObject {
 			glTexCoord2d(0, s.fieldHeight / 4.0);
 			glVertex3d(s.fieldLength - 0.5, s.fieldWidth - 0.5, 0);
 			glTexCoord2d(0, 0);
-			glVertex3d(s.fieldLength - 0.5, s.fieldWidth - 0.5, s.fieldHeight / 4.0);
+			glVertex3d(s.fieldLength - 0.5, s.fieldWidth - 0.5, s.fieldHeight / 4.0 + 1);
 			glTexCoord2d(s.fieldWidth, 0);
-			glVertex3d(s.fieldLength - 0.5, -0.5, s.fieldHeight / 4.0);
+			glVertex3d(s.fieldLength - 0.5, -0.5, s.fieldHeight / 4.0 + 1);
 			glTexCoord2d(s.fieldWidth, s.fieldHeight / 4.0);
 			glVertex3d(s.fieldLength - 0.5, -0.5, 0);
 			
@@ -49,9 +49,9 @@ public class Walls extends DrawableObject {
 			glTexCoord2d(s.fieldWidth, s.fieldHeight / 4.0);
 			glVertex3d(s.fieldLength - 0.5, -0.5, 0);
 			glTexCoord2d(s.fieldWidth, 0);
-			glVertex3d(s.fieldLength - 0.5, -0.5, s.fieldHeight / 4.0);
+			glVertex3d(s.fieldLength - 0.5, -0.5, s.fieldHeight / 4.0 + 1);
 			glTexCoord2d(s.fieldWidth + s.fieldLength, 0);
-			glVertex3d(-0.5, -0.5, s.fieldHeight / 4.0);
+			glVertex3d(-0.5, -0.5, s.fieldHeight / 4.0 + 1);
 			glTexCoord2d(s.fieldWidth + s.fieldLength, s.fieldHeight / 4.0);
 			glVertex3d(-0.5, -0.5, 0);
 		}

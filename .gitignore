@@ -1,5 +1,6 @@
 code/lib/
 code/build/
+code/doxygen/
 code/accg.jar
 *.aux
 *.log

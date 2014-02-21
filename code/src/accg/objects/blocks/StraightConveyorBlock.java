@@ -123,5 +123,6 @@ public class StraightConveyorBlock extends ConveyorBlock {
 	@Override
 	public void takeLuggage(Luggage l) {
 		l.z = z / 4.0 + 0.375;
+		l.vz = 0;
 	}
 }

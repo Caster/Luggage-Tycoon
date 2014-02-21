@@ -108,7 +108,7 @@ public class ACCGProgram {
 		Display.update();
 		
 		// initialize stuff here
-		s.world = new World();
+		s.world = new World(s);
 		s.textures = new Textures();
 		s.simulation = new Simulation();
 		s.startTime = Sys.getTime() / Sys.getTimerResolution();
@@ -152,8 +152,8 @@ public class ACCGProgram {
 			s.simulation.update(s);
 			
 			// TODO temporary: add some luggage
-			if (s.frame % 100 == 25) {
-				s.world.luggage.addObject(new Luggage(2.75 + 0.5 * Math.random(), 6.75 + 0.5 * Math.random(), 3));
+			if (s.frame % 50 == 0) {
+				s.world.luggage.addObject(new Luggage(2.75 + 0.5 * Math.random(), 6.75 + 0.5 * Math.random(), 6));
 			}
 			
 			glClearColor(0.8f, 0.8f, 0.77f, 1.0f);
