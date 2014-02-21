@@ -78,7 +78,17 @@ public class Luggage extends DrawableObject {
 		/**
 		 * Red luggage.
 		 */
-		RED(220, 130, 120),
+		RED(240, 120, 130),
+		
+		/**
+		 * Orange luggage.
+		 */
+		ORANGE(230, 160, 80),
+		
+		/**
+		 * Green luggage.
+		 */
+		GREEN(100, 220, 130),
 		
 		/**
 		 * Blue luggage.
@@ -115,7 +125,7 @@ public class Luggage extends DrawableObject {
 		this.vy = 0;
 		this.vz = 0;
 		
-		this.color = LuggageColor.RED;
+		this.color = LuggageColor.values()[(int) (Math.random() * LuggageColor.values().length)];
 		
 		if (caseModel == null) {
 			caseModel = new OBJModel(new File("res/suitcase.obj"));
