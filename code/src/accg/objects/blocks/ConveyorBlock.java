@@ -225,18 +225,14 @@ public abstract class ConveyorBlock extends Block {
 	protected double addBendYZTextureCoordinates(ArrayList<Double> list,
 			double radStart, double radEnd, double rScale, double coordStart) {
 		double coord = coordStart;
+		// we map 6 texture coordinates to a full circle, so we can calculate
+		// the part we map to the bend we are going to texture now
+		double coordSum = Math.abs(radStart - radEnd) / (2 * Math.PI) * 6;
+		int numSteps = (int) Math.ceil(Math.abs(radStart - radEnd) / RAD_STEP) + 1;
 		for (double rad = radStart; (radStart < radEnd ? rad < radEnd : rad > radEnd);
 				rad += Math.signum(radEnd - radStart) * RAD_STEP) {
 			list.add(Double.valueOf(coord));
-			// calculate the distance to the next point
-			Vector3f curr = new Vector3f(0, (float) (rScale * Math.cos(rad)),
-					(float) (rScale * Math.sin(rad)));
-			double nextRad = (radStart < radEnd ? Math.min(rad + RAD_STEP, radStart) :
-				Math.max(rad - RAD_STEP, radEnd));
-			Vector3f next = new Vector3f(0, (float) (rScale * Math.cos(nextRad)),
-					(float) (rScale * Math.sin(nextRad)));
-			Vector3f.sub(next, curr, next);
-			coord += next.length() / 0.375;
+			coord += coordSum / numSteps;
 		}
 		list.add(Double.valueOf(coord));
 		return coord;
