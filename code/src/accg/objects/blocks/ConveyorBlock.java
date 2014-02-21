@@ -228,7 +228,7 @@ public abstract class ConveyorBlock extends Block {
 		// we map 6 texture coordinates to a full circle, so we can calculate
 		// the part we map to the bend we are going to texture now
 		double coordSum = Math.abs(radStart - radEnd) / (2 * Math.PI) * 6;
-		int numSteps = (int) Math.ceil(Math.abs(radStart - radEnd) / RAD_STEP) + 1;
+		int numSteps = (int) Math.ceil(Math.abs(radStart - radEnd) / RAD_STEP);
 		for (double rad = radStart; (radStart < radEnd ? rad < radEnd : rad > radEnd);
 				rad += Math.signum(radEnd - radStart) * RAD_STEP) {
 			list.add(Double.valueOf(coord));
