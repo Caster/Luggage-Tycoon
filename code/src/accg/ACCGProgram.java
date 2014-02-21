@@ -152,7 +152,7 @@ public class ACCGProgram {
 			s.simulation.update(s);
 			
 			// TODO temporary: add some luggage
-			if (s.frame % 25 == 0) {
+			if (s.frame % 50 == 0) {
 				s.world.luggage.addObject(new Luggage(2.75 + 0.5 * Math.random(), 6.75 + 0.5 * Math.random(), 6));
 			}
 			

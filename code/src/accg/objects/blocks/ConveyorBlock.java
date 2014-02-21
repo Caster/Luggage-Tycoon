@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
 
+import org.lwjgl.util.glu.Cylinder;
 import org.lwjgl.util.vector.Vector3f;
 
 import accg.State;
@@ -131,6 +132,8 @@ public abstract class ConveyorBlock extends Block {
 	@Override
 	public void draw(State s) {
 		
+		drawScaffolding(s);
+
 		glPushMatrix();
 		glTranslated(x, y, z / 4.0);
 		glRotated(-orientation.angle, 0, 0, 1);
@@ -231,6 +234,33 @@ public abstract class ConveyorBlock extends Block {
 		glPopMatrix();
 	}
 	
+	/**
+	 * Draws the scaffolding below the block.
+	 * @param s The state object.
+	 */
+	private void drawScaffolding(State s) {
+		
+		drawPole(-0.5, -0.5);
+		drawPole(-0.5, 0.5);
+		drawPole(0.5, -0.5);
+		drawPole(0.5, 0.5);
+	}
+	
+	private void drawPole(double dx, double dy) {
+
+		glPushMatrix();
+		glTranslated(x + dx, y + dy, 0);
+
+		Cylinder c = new Cylinder();
+		c.draw(0.05f, 0.02f, 0.25f, 16, 8);
+		glPushMatrix();
+		glTranslated(0, 0, 0.25f);
+		c.draw(0.02f, 0.02f, z / 4.0f, 16, 8);
+		glPopMatrix();
+		
+		glPopMatrix();
+	}
+
 	/**
 	 * Add coordinates to the given list that form a bend in the YZ plane.
 	 * 

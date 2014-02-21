@@ -51,6 +51,11 @@ public class Luggage extends DrawableObject {
 	public double vz;
 	
 	/**
+	 * The z-angle rotation.
+	 */
+	public double anglez;
+	
+	/**
 	 * The supporting block of this luggage item. This indicates the
 	 * block on which this luggage lies, and this block is also responsible
 	 * for handling the animation.
@@ -136,6 +141,8 @@ public class Luggage extends DrawableObject {
 		this.vy = 0;
 		this.vz = 0;
 		
+		this.anglez = Math.random() * 2 * Math.PI;
+		
 		this.color = LuggageColor.values()[(int) (Math.random() * LuggageColor.values().length)];
 		
 		if (caseModel == null) {
@@ -150,6 +157,7 @@ public class Luggage extends DrawableObject {
 		
 		glPushMatrix();
 		glTranslated(x, y, z);
+		glRotated(Math.toDegrees(anglez), 0, 0, 1);
 		
 		caseModel.draw();
 		
