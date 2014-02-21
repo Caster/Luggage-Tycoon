@@ -152,10 +152,10 @@ public abstract class ConveyorBlock extends Block {
 			assert lefts.size() == rights.size() && lefts.size() == texs.size();
 			
 			for (int i = 0; i < lefts.size(); i++) {
-				glTexCoord2d(texs.get(i) - s.time, 0);
+				glTexCoord2d(texs.get(i) - 8 * s.time, 0);
 				glVertex3f(lefts.get(i));
 				
-				glTexCoord2d(texs.get(i) - s.time, 1);
+				glTexCoord2d(texs.get(i) - 8 * s.time, 1);
 				glVertex3f(rights.get(i));
 			}
 		}
@@ -172,10 +172,10 @@ public abstract class ConveyorBlock extends Block {
 			assert lefts.size() == rights.size() && lefts.size() == texs.size();
 			
 			for (int i = 0; i < lefts.size(); i++) {
-				glTexCoord2d(texs.get(i) - s.time, 0);
+				glTexCoord2d(texs.get(i) - 8 * s.time, 0);
 				glVertex3f(lefts.get(i));
 				
-				glTexCoord2d(texs.get(i) - s.time, 1);
+				glTexCoord2d(texs.get(i) - 8 * s.time, 1);
 				glVertex3f(rights.get(i));
 			}
 		}
