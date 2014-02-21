@@ -131,6 +131,7 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 
 	@Override
 	public boolean canTakeLuggage(Luggage l) {
+		// TODO adjust this to the AscendingConveyorBelt
 		if (orientation == Orientation.LEFT || orientation == Orientation.RIGHT) {
 			return l.x > x - 0.5 && l.x < x + 0.5
 			    && l.y > y - 0.375 && l.y < y + 0.375
@@ -144,7 +145,7 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 
 	@Override
 	public void takeLuggage(Luggage l) {
-		l.z = z / 4.0 + 0.375;
+		l.z = z / 4.0 + 0.375; // TODO adjust this to the AscendingConveyorBelt
 		l.vz = 0;
 	}
 }
