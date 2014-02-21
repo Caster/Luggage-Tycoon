@@ -118,7 +118,7 @@ public class Luggage extends DrawableObject {
 		this.color = LuggageColor.RED;
 		
 		if (caseModel == null) {
-			this.caseModel = new OBJModel(new File("res/suitcase.obj"));
+			caseModel = new OBJModel(new File("res/suitcase.obj"));
 		}
 	}
 	
