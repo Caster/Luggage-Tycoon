@@ -27,13 +27,28 @@ public class Container<E extends DrawableObject> extends DrawableObject implemen
 	
 	/**
 	 * Adds a new object to this container.
+	 * 
 	 * @param object The object to add.
+	 * @throws NullPointerException If <code>object == null</code>.
 	 */
 	public void addObject(E object) {
 		if (object == null) {
-			throw new RuntimeException("Drawn objects cannot be null");
+			throw new NullPointerException("Drawn objects cannot be null");
 		}
 		objects.add(object);
+	}
+	
+	/**
+	 * Removes an object from this container.
+	 * 
+	 * @param object The object to remove.
+	 * @throws IllegalStateException If the container does not contain
+	 * <code>object</code>.
+	 */
+	public void remove(E object) {
+		if (!objects.remove(object)) {
+			throw new IllegalStateException("This container does not contain the element to remove");
+		}
 	}
 	
 	@Override

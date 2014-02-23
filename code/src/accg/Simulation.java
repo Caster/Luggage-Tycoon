@@ -1,5 +1,7 @@
 package accg;
 
+import java.util.Iterator;
+
 import accg.objects.Block;
 import accg.objects.Luggage;
 import accg.objects.blocks.ConveyorBlock;
@@ -12,7 +14,7 @@ public class Simulation {
 	/**
 	 * The step size of the simulation.
 	 */
-	double dt = 0.001;
+	double dt = 0.01;
 	
 	/**
 	 * The current time in the simulation.
@@ -38,17 +40,17 @@ public class Simulation {
 	 */
 	private void doSimulationStep(State s) {
 		time += dt;
-		for (Luggage l : s.world.luggage) {
+		Iterator<Luggage> it = s.world.luggage.iterator();
+		while (it.hasNext()) {
+			
+			Luggage l = it.next();
+			
 			if (l.supportingBlock == null) {
 				
-				// lying on floor
+				// below floor: remove this luggage
 				if (l.z <= 0) {
-					l.z = 0;
-					l.vz = 0;
-					l.vx -= 10 * dt * Math.signum(l.vx);
-					l.vy -= 10 * dt * Math.signum(l.vy);
-					l.vx = Math.abs(l.vx) <= 0.01 ? 0 : l.vx;
-					l.vy = Math.abs(l.vy) <= 0.01 ? 0 : l.vy;
+					it.remove();
+					// TODO add something like an "explosion" here :D
 				} else {
 					// gravity
 					l.vz -= 9.81 * dt;
