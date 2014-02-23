@@ -155,7 +155,7 @@ public abstract class ConveyorBlock extends Block {
 			
 			for (int i = 0; i < lefts.size(); i++) {
 				
-				/*Vector3f normal1 = new Vector3f();
+				Vector3f normal1 = new Vector3f();
 				if (i < lefts.size() - 1) {
 					Vector3f normal1h = new Vector3f();
 					Vector3f.sub(lefts.get(i), lefts.get(i + 1), normal1h);
@@ -175,7 +175,7 @@ public abstract class ConveyorBlock extends Block {
 				Vector3f average = new Vector3f();
 				Vector3f.add(normal1, normal2, average);
 				average.normalise();
-				glNormal3f(average);*/
+				glNormal3f(average);
 				
 				glTexCoord2d(texs.get(i) - 8 * s.time, 0);
 				glVertex3f(lefts.get(i));
@@ -197,7 +197,7 @@ public abstract class ConveyorBlock extends Block {
 			
 			for (int i = 0; i < lefts.size(); i++) {
 				
-				/*Vector3f normal1 = new Vector3f();
+				Vector3f normal1 = new Vector3f();
 				if (i < lefts.size() - 1) {
 					Vector3f normal1h = new Vector3f();
 					Vector3f.sub(lefts.get(i), lefts.get(i + 1), normal1h);
@@ -217,7 +217,7 @@ public abstract class ConveyorBlock extends Block {
 				Vector3f average = new Vector3f();
 				Vector3f.add(normal1, normal2, average);
 				average.normalise();
-				glNormal3f(average);*/
+				glNormal3f(average);
 				
 				glTexCoord2d(texs.get(i) - 8 * s.time, 0);
 				glVertex3f(lefts.get(i));
