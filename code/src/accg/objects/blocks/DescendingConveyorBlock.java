@@ -74,19 +74,79 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 
 	@Override
 	public void furtherPosition(Luggage l, double step) {
-		// TODO Automatisch gegenereerde methodestub
+		assert (l.supportingBlock == this);
 		
+		switch (orientation) {
+		case UP:
+			l.y += step;
+			l.z -= step / 3;
+			if (l.y > y + 0.5) {
+				l.supportingBlock = null;
+				l.vx = 0;
+				l.vy = 1;
+				l.vz = -1 / 3.0;
+			}
+			break;
+		case DOWN:
+			l.y -= step;
+			l.z -= step / 3;
+			if (l.y < y - 0.5) {
+				l.supportingBlock = null;
+				l.vx = 0;
+				l.vy = -1;
+				l.vz = -1 / 3.0;
+			}
+			break;
+		case RIGHT:
+			l.x += step;
+			l.z -= step / 3;
+			if (l.x > x + 0.5) {
+				l.supportingBlock = null;
+				l.vx = 1;
+				l.vy = 0;
+				l.vz = -1 / 3.0;
+			}
+			break;
+		case LEFT:
+			l.x -= step;
+			l.z -= step / 3;
+			if (l.x < x - 0.5) {
+				l.supportingBlock = null;
+				l.vx = -1;
+				l.vy = 0;
+				l.vz = -1 / 3.0;
+			}
+			break;
+		}
 	}
 
 	@Override
 	public boolean canTakeLuggage(Luggage l) {
-		// TODO Automatisch gegenereerde methodestub
-		return false;
+		// TODO adjust this to the DescendingConveyorBelt
+		switch (orientation) {
+		case RIGHT:
+			return l.x > x - 0.5 && l.x < x + 0.5
+				    && l.y > y - 0.375 && l.y < y + 0.375
+				    && l.z > z / 4.0 + 0.375 && l.z < z / 4.0 + 0.625;
+		case LEFT:
+			return l.x > x - 0.5 && l.x < x + 0.5
+				    && l.y > y - 0.375 && l.y < y + 0.375
+				    && l.z > z / 4.0 + 0.375 && l.z < z / 4.0 + 0.625;
+		case UP:
+			return l.x > x - 0.375 && l.x < x + 0.375
+				    && l.y > y - 0.5 && l.y < y + 0.5
+				    && l.z > z / 4.0 + 0.375 && l.z < z / 4.0 + 0.625;
+		case DOWN:
+		default:
+			return l.x > x - 0.375 && l.x < x + 0.375
+				    && l.y > y - 0.5 && l.y < y + 0.5
+				    && l.z > z / 4.0 + 0.375 && l.z < z / 4.0 + 0.625;
+		}
 	}
 
 	@Override
 	public void takeLuggage(Luggage l) {
-		// TODO Automatisch gegenereerde methodestub
-		
+		l.z = z / 4.0 + 0.625; // TODO adjust this to the DescendingConveyorBelt
+		l.vz = 0;
 	}
 }

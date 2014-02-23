@@ -132,11 +132,21 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	@Override
 	public boolean canTakeLuggage(Luggage l) {
 		// TODO adjust this to the AscendingConveyorBelt
-		if (orientation == Orientation.LEFT || orientation == Orientation.RIGHT) {
+		switch (orientation) {
+		case RIGHT:
 			return l.x > x - 0.5 && l.x < x + 0.5
-			    && l.y > y - 0.375 && l.y < y + 0.375
-			    && l.z > z / 4.0 + 0.125 && l.z < z / 4.0 + 0.375;
-		} else {
+				    && l.y > y - 0.375 && l.y < y + 0.375
+				    && l.z > z / 4.0 + 0.125 && l.z < z / 4.0 + 0.375;
+		case LEFT:
+			return l.x > x - 0.5 && l.x < x + 0.5
+				    && l.y > y - 0.375 && l.y < y + 0.375
+				    && l.z > z / 4.0 + 0.125 && l.z < z / 4.0 + 0.375;
+		case UP:
+			return l.x > x - 0.375 && l.x < x + 0.375
+				    && l.y > y - 0.5 && l.y < y + 0.5
+				    && l.z > z / 4.0 + 0.125 && l.z < z / 4.0 + 0.375;
+		case DOWN:
+		default:
 			return l.x > x - 0.375 && l.x < x + 0.375
 				    && l.y > y - 0.5 && l.y < y + 0.5
 				    && l.z > z / 4.0 + 0.125 && l.z < z / 4.0 + 0.375;
