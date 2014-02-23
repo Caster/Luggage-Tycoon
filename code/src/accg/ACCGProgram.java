@@ -155,6 +155,9 @@ public class ACCGProgram {
 			if (s.frame % 50 == 0) {
 				s.world.luggage.addObject(new Luggage(2.75 + 0.5 * Math.random(), 6.75 + 0.5 * Math.random(), 6));
 			}
+			if (s.frame % 50 == 25) {
+				s.world.luggage.addObject(new Luggage(5.75 + 0.5 * Math.random(), 8.75 + 0.5 * Math.random(), 4));
+			}
 			
 			glClearColor(0.8f, 0.8f, 0.77f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

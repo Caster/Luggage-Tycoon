@@ -56,6 +56,15 @@ public class World extends Container<DrawableObject> {
 		bc.setBlock(new DescendingConveyorBlock(6, 5, 1, Orientation.RIGHT));
 		bc.setBlock(new DescendingConveyorBlock(7, 5, 0, Orientation.RIGHT));
 		bc.setBlock(new StraightConveyorBlock(8, 5, 0, Orientation.RIGHT));
+		
+		bc.setBlock(new StraightConveyorBlock(6, 9, 3, Orientation.UP));
+		bc.setBlock(new AscendingConveyorBlock(6, 10, 3, Orientation.UP));
+		bc.setBlock(new StraightConveyorBlock(6, 11, 3, Orientation.RIGHT));
+		bc.setBlock(new AscendingConveyorBlock(7, 11, 3, Orientation.RIGHT));
+		bc.setBlock(new StraightConveyorBlock(8, 11, 3, Orientation.DOWN));
+		bc.setBlock(new AscendingConveyorBlock(8, 10, 3, Orientation.DOWN));
+		bc.setBlock(new StraightConveyorBlock(8, 9, 3, Orientation.LEFT));
+		bc.setBlock(new AscendingConveyorBlock(7, 9, 3, Orientation.LEFT));
 		addObject(bc);
 		
 		luggage = new Container<>();
