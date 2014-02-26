@@ -2,6 +2,13 @@ code/lib/
 code/build/
 code/doxygen/
 code/accg.jar
+docs/presentation/beamercolorthemetue2008plain.sty
+docs/presentation/beamerfontthemetue2008plain.sty
+docs/presentation/beamerouterthemetue2008plain.sty
+docs/presentation/beamerthemetue2008.sty
+docs/presentation/logos/
+docs/presentation/tuelogo.eps
+docs/presentation/tuestyle2008.sty
 *.aux
 *.log
 *.out
