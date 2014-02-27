@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 
 import accg.objects.Luggage;
-import accg.objects.Block.Orientation;
 
 /**
  * An {@code AscendingConveyorBlock} is a conveyor block that tilts luggage up.
