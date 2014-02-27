@@ -420,6 +420,14 @@ public class MenuBar extends DrawableObject {
 	}
 	
 	/**
+	 * Should be called by a child {@link MenuBarItem} when it changes its
+	 * size (because the text is changed for example).
+	 */
+	public void onChildResize() {
+		handleResizeEvent(Display.getWidth(), Display.getHeight());
+	}
+	
+	/**
 	 * Should be called by a child {@link MenuBar} when it is shown. In
 	 * this function, other children will be hidden using the listeners.
 	 */

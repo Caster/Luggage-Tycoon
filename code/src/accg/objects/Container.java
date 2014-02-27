@@ -39,6 +39,13 @@ public class Container<E extends DrawableObject> extends DrawableObject implemen
 	}
 	
 	/**
+	 * Removes all objects from this container.
+	 */
+	public void clear() {
+		objects.clear();
+	}
+	
+	/**
 	 * Removes an object from this container.
 	 * 
 	 * @param object The object to remove.

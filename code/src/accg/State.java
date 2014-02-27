@@ -9,6 +9,22 @@ import accg.objects.World;
  */
 public class State {
 	
+	/** Enumeration of the modes in which the program can be. */
+	public enum ProgramMode {
+		/** In this mode, the user can place and remove blocks. */
+		BUILDING_MODE,
+		/** In this mode, luggage movement is simulated over the blocks. */
+		SIMULATION_MODE;
+	};
+	
+	/**
+	 * Mode in which the program can be.
+	 * 
+	 * At the moment, this is either the building mode or the simulation
+	 * mode, also see {@link State.ProgramMode}.
+	 */
+	public ProgramMode programMode = ProgramMode.BUILDING_MODE;
+	
 	/**
 	 * Length of the field, in number of grid squares.
 	 * 
@@ -31,9 +47,12 @@ public class State {
 	public int fieldHeight = 20;
 	
 	/**
-	 * The current frame number.
+	 * The simulation time in seconds when the last frame was rendered.
+	 * 
+	 * May of course not be initialized, during the rendering of the first
+	 * frame.
 	 */
-	public int frame;
+	public double prevTime;
 	
 	/**
 	 * The current simulation time in seconds.

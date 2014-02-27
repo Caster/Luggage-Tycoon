@@ -5,6 +5,7 @@ import java.util.Iterator;
 import accg.objects.Block;
 import accg.objects.Luggage;
 import accg.objects.blocks.ConveyorBlock;
+import accg.utils.Utils;
 
 /**
  * This class manages the simulation.
@@ -20,6 +21,40 @@ public class Simulation {
 	 * The current time in the simulation.
 	 */
 	double time = 0;
+	
+	/**
+	 * Depending on the time that has passed (determined using
+	 * {@link State#prevTime} and {@link State#time}), possibly add one or more
+	 * objects to the {@link World} contained in this {@link State}.
+	 * 
+	 * @param s State to add objects to and read passed time from.
+	 */
+	public void addObjects(State s) {
+		if (Utils.hasTimePassed(s, 1.0, 0)) {
+			s.world.luggage.addObject(new Luggage(2.75 + 0.5 * Math.random(),
+					6.75 + 0.5 * Math.random(), 6));
+		}
+		if (Utils.hasTimePassed(s, 1.0, 0.5)) {
+			s.world.luggage.addObject(new Luggage(5.75 + 0.5 * Math.random(),
+					8.75 + 0.5 * Math.random(), 4));
+		}
+	}
+	
+	/**
+	 * Delete any objects from the state that were added by the simulation.
+	 */
+	public void clearObjects(State s) {
+		s.world.luggage.clear();
+	}
+	
+	/**
+	 * Update the internal simulation time without actually doing simulation steps.
+	 * 
+	 * @param time New simulation time.
+	 */
+	public void skipToTime(double time) {
+		this.time = time;
+	}
 	
 	/**
 	 * Updates the simulation to the current time step. This method

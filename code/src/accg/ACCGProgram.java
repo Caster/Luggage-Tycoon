@@ -21,6 +21,7 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.util.ResourceLoader;
 
+import accg.State.ProgramMode;
 import accg.camera.Camera;
 import accg.gui.GUI;
 import accg.gui.MenuBar;
@@ -29,7 +30,7 @@ import accg.gui.MenuBar.Position;
 import accg.gui.MenuBarItem;
 import accg.gui.MenuBarItem.Type;
 import accg.gui.SliderMenuBarItem;
-import accg.objects.Luggage;
+import accg.gui.ToggleMenuBarItem;
 import accg.objects.World;
 
 public class ACCGProgram {
@@ -146,19 +147,17 @@ public class ACCGProgram {
 				menuBars[0].handleResizeEvent(displayWidth, displayHeight);
 			}
 			
-			// render stuff here
-			s.frame++;
+			// update time
+			s.prevTime = s.time;
 			s.time = (double) Sys.getTime() / Sys.getTimerResolution() - s.startTime;
-			s.simulation.update(s);
 			
-			// TODO temporary: add some luggage
-			if (s.frame % 50 == 0) {
-				s.world.luggage.addObject(new Luggage(2.75 + 0.5 * Math.random(), 6.75 + 0.5 * Math.random(), 6));
-			}
-			if (s.frame % 50 == 25) {
-				s.world.luggage.addObject(new Luggage(5.75 + 0.5 * Math.random(), 8.75 + 0.5 * Math.random(), 4));
+			// update simulation, if applicable
+			if (s.programMode == ProgramMode.SIMULATION_MODE) {
+				s.simulation.update(s);
+				s.simulation.addObjects(s);
 			}
 			
+			// start rendering stuff
 			glClearColor(0.8f, 0.8f, 0.77f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glViewport(0, 0, Display.getWidth(), Display.getHeight());
@@ -173,7 +172,7 @@ public class ACCGProgram {
 			// draw the scene
 			s.world.draw(s);
 			
-			// draw the menu bar
+			// draw the menu bars
 			for (int i = 0; i < menuBars.length; i++) {
 				menuBars[i].draw(s);
 			}
@@ -376,18 +375,20 @@ public class ACCGProgram {
 	 */
 	private void initialiseMenus(MenuBar[] menus, final State s) {
 		// main menu
-		menus[0].addMenuBarItem(new MenuBarItem("Simulate", s.textures.iconStart) {
+		menus[0].addMenuBarItem(new ToggleMenuBarItem("Simulate",
+				s.textures.iconStart, "Stop simulation", s.textures.iconStop) {
 			@Override
 			public void onClick(int x, int y) {
 				super.onClick(x, y);
-				System.out.println("Start simulation mode!");
+				
+				if (s.programMode == ProgramMode.BUILDING_MODE) {
+					s.simulation.skipToTime(s.time);
+					s.programMode = ProgramMode.SIMULATION_MODE;
+				} else {
+					s.programMode = ProgramMode.BUILDING_MODE;
+					s.simulation.clearObjects(s);
+				}
 			}
-
-			@Override
-			public void onDrag(int x, int y) { /* ignored */ }
-			
-			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
 		});
 		
 		menus[0].addMenuBarItem(new MenuBarItem("Open", s.textures.iconOpen) {
