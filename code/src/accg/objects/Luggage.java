@@ -153,7 +153,7 @@ public class Luggage extends DrawableObject {
 	@Override
 	public void draw(State s) {
 		
-		glColor4f(color.color);
+		glColor4f(color.getColor());
 		
 		glPushMatrix();
 		glTranslated(x, y, z);
