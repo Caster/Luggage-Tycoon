@@ -32,17 +32,36 @@
 \begin{frame}
   \transduration<1>{3}
   \frametitle{Project idea}
+  \begin{columns}[c]
+    \column{.6\textwidth}
+      \begin{itemize}
+        \item Block editor\uncover<2->{\ldots\ with a twist!
+        \item Building a conveyor belt system
+        \item Simulating luggage movement}
+      \end{itemize}
+    \column{.4\textwidth}
+      \uncover<2->{\includegraphics{imgs/sketch-blocks}}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Requirements}
   \begin{itemize}
-    \item Block editor\uncover<2->{\ldots\ with a twist!
-    \item Building a conveyor belt system
-    \item Simulating luggage movement}
+    \item Very intuitive interface
+    \begin{itemize}
+      \item new users can easily find the functionality
+    \end{itemize}
+    \item Efficient interface
+    \begin{itemize}
+      \item frequent tasks can be executed quickly by the user
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}[<+->]
   \frametitle{Work so far}
   \begin{itemize}
-    \item Using LWJGL to address OpenGL from Java
+    \item Using LWJGL to access OpenGL from Java
     \item Building a GUI in OpenGL
     \item Intuitive camera control
     \item Animating conveyor belts
@@ -50,15 +69,47 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}[<+->]
-  \frametitle{Planned work}
+\begin{frame}
+  \frametitle{Problems\,/\,solutions}
   \begin{itemize}
-    \item Improving simulation
-    \item Actual editing\ldots
-    \item Adding scanners
-    \item Game-like experience, with levels
-    \item ``Sandbox mode''
+    \item Drawing\,/\,texturizing the conveyor belts
+    \begin{itemize}
+      \item want to texturize without deformation
+      \item however, different shapes of conveyor belts
+    \end{itemize}
   \end{itemize}
+  \begin{center}
+    \includegraphics{imgs/sketch-texturing} % TODO [ws] graphics path doesn't seem to work? Hardcoded imgs for now
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Planned work}
+  \begin{columns}[c]
+    \column{.67\textwidth}
+      \begin{itemize}
+        \uncover<1->{
+        \item Drawing adjacent conveyor belts connected
+        }
+        \uncover<2->{
+        \item Improving simulation
+        }
+        \uncover<3->{
+        \item Actual editing\ldots
+        }
+        \uncover<4->{
+        \item Adding scanners
+        }
+        \uncover<5->{
+        \item Game-like experience, with levels
+        }
+        \uncover<6->{
+        \item ``Sandbox mode''
+        }
+      \end{itemize}
+    \column{.33\textwidth}
+      \uncover<1>{\includegraphics{imgs/sketch-adjacent-blocks}}
+  \end{columns}
 \end{frame}
 
 % this does not use the graphicspath... weird
@@ -66,7 +117,7 @@
 \begin{frame}
   \transduration{0.25}
   \transparent{1.0}
-  \begin{center}\alert{Demo time!}\end{center}
+  \begin{center}\huge\alert{Demo time!}\end{center}
 \end{frame}
 
 % generate animation frames using a for-each loop
@@ -75,7 +126,7 @@
 \begin{animationframe}
   \transduration{0.25}
   \transparent{\transparency}
-  \begin{center}\alert{Demo time!}\end{center}
+  \begin{center}\huge\alert{Demo time!}\end{center}
 \end{animationframe}
 }
 
