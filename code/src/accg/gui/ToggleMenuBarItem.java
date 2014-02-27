@@ -3,6 +3,8 @@ package accg.gui;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.opengl.Texture;
 
+import accg.gui.MenuBar.Position;
+import accg.gui.MenuBar.Presentation;
 import accg.gui.MenuBarItem.Type;
 
 /**
@@ -48,24 +50,32 @@ public class ToggleMenuBarItem extends MenuBarItem {
 	}
 	
 	@Override
-	public int getPreferredWidth(Font renderFont) {
-		return Math.max(renderFont.getWidth(text),
-				renderFont.getWidth(text2)) + 2 * PADDING;
+	public int getPreferredWidth(Font renderFont, Position position,
+			Presentation presentation) {
+		// in case we have text next to the icon and position top or bottom,
+		// it actually looks nicer to just return the preferred width with
+		// the current text, I think [tca]
+		if ((position == Position.TOP || position == Position.BOTTOM) &&
+				presentation == Presentation.ICON_LEFT_TEXT) {
+			return super.getPreferredWidth(renderFont, position, presentation);
+		}
+		
+		// return the maximum width for both texts
+		int text1Width = super.getPreferredWidth(renderFont, position,
+				presentation);
+		swapTexts();
+		int text2Width = super.getPreferredWidth(renderFont, position,
+				presentation);
+		swapTexts();
+		return Math.max(text1Width, text2Width);
 	}
 	
 	@Override
 	public void onClick(int x, int y) {
 		super.onClick(x, y);
 		
-		// swap texts
-		String tmpText = this.text;
-		this.text = this.text2;
-		this.text2 = tmpText;
-		
-		// swap icons
-		Texture tmpIcon = this.icon;
-		this.icon = this.icon2;
-		this.icon2 = tmpIcon;
+		swapTexts();
+		swapIcons();
 		
 		// notify parent of (possible) resizing
 		this.parent.onChildResize();
@@ -77,6 +87,24 @@ public class ToggleMenuBarItem extends MenuBarItem {
 	@Override
 	public void onScroll(int dWheel) { /* ignored */ }
 
+	/**
+	 * Swap {@code this.icon} and {@code this.icon2}.
+	 */
+	protected void swapIcons() {
+		Texture tmpIcon = this.icon;
+		this.icon = this.icon2;
+		this.icon2 = tmpIcon;
+	}
+	
+	/**
+	 * Swap {@code this.text} and {@code this.text2}.
+	 */
+	protected void swapTexts() {
+		String tmpText = this.text;
+		this.text = this.text2;
+		this.text2 = tmpText;
+	}
+	
 	/** Describing text of this menu item. */
 	protected String text2;
 	/** Icon of this menu item. */

@@ -7,6 +7,9 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.opengl.Texture;
 
+import accg.gui.MenuBar.Position;
+import accg.gui.MenuBar.Presentation;
+
 /**
  * A MenuBarItem can be placed inside a {@link MenuBar} and has text and an
  * icon. It can be clicked and will fire an action in that case.
@@ -83,8 +86,10 @@ public abstract class MenuBarItem {
 	 * 
 	 * @param outline Rectangle in which the item should be rendered.
 	 * @param renderFont Font that should be used for text rendering.
+	 * @param presentation The presentation that is requested.
 	 */
-	public void draw(Rectangle outline, Font renderFont) {
+	public void draw(Rectangle outline, Font renderFont,
+			Presentation presentation) {
 		// render hovered background, if needed
 		if ((this.hovered && this.drawHoveredBackground) ||
 				(this.checked && this.drawCheckedBackground)) {
@@ -102,19 +107,41 @@ public abstract class MenuBarItem {
 		
 		// render text
 		int textWidth = renderFont.getWidth(text);
-		int textHeight = renderFont.getHeight(text);
+		int textHeight = renderFont.getLineHeight();
 		if (this.drawText) {
-			renderFont.drawString(outline.getX() + (outline.getWidth() - textWidth) / 2,
-									outline.getY() - PADDING - textHeight, text, Color.black);
+			switch (presentation) {
+			default :
+			case ICON_ABOVE_TEXT :
+				renderFont.drawString(outline.getX() + (outline.getWidth() -
+						textWidth) / 2, outline.getY() - PADDING - textHeight,
+						text, Color.black);
+				break;
+			case ICON_LEFT_TEXT :
+				renderFont.drawString(outline.getX() + renderFont.getLineHeight() +
+						2 * PADDING, outline.getY() - PADDING - textHeight,
+						text, Color.black);
+				break;
+			}
 		}
 		
 		// render icon
 		if (this.drawIcon) {
-			int iconSize = Math.min(outline.getWidth() - 2 * PADDING,
-					outline.getHeight() - 3 * PADDING - textHeight);
-			int iconX = outline.getX() + (outline.getWidth() - iconSize) / 2;
-			int iconY = outline.getY() - textHeight - 2 * PADDING -
-					(outline.getHeight() - 3 * PADDING - textHeight - iconSize) / 2;
+			int iconSize, iconX, iconY;
+			
+			switch (presentation) {
+			default :
+			case ICON_ABOVE_TEXT :
+				iconSize = Math.min(outline.getWidth() - 2 * PADDING,
+						outline.getHeight() - 3 * PADDING - textHeight);
+				iconX = outline.getX() + (outline.getWidth() - iconSize) / 2;
+				iconY = outline.getY() - textHeight - 2 * PADDING -
+						(outline.getHeight() - 3 * PADDING - textHeight - iconSize) / 2;
+				break;
+			case ICON_LEFT_TEXT :
+				iconSize = textHeight;
+				iconX = outline.getX() + PADDING;
+				iconY = outline.getY() - PADDING;
+			}
 			
 			glColor3d(1, 1, 1);
 			glEnable(GL_TEXTURE_2D);
@@ -139,10 +166,20 @@ public abstract class MenuBarItem {
 	 * Return the preferred minimal width of this item.
 	 * 
 	 * @param renderFont The font in which the text should be rendered.
+	 * @param position Where the {@link MenuBar} containing this menu item would be
+	 *                 positioned.
+	 * @param presentation The presentation that is requested.
 	 * @return The preferred minimal width of this item.
 	 */
-	public int getPreferredWidth(Font renderFont) {
-		return renderFont.getWidth(text) + 2 * PADDING;
+	public int getPreferredWidth(Font renderFont, Position position,
+			Presentation presentation) {
+		switch (presentation) {
+		default :
+		case ICON_ABOVE_TEXT :
+			return renderFont.getWidth(text) + 2 * PADDING;
+		case ICON_LEFT_TEXT :
+			return renderFont.getWidth(text) + 3 * PADDING + renderFont.getLineHeight();
+		}
 	}
 	
 	/**

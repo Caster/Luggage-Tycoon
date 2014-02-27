@@ -27,6 +27,7 @@ import accg.gui.GUI;
 import accg.gui.MenuBar;
 import accg.gui.MenuBar.Alignment;
 import accg.gui.MenuBar.Position;
+import accg.gui.MenuBar.Presentation;
 import accg.gui.MenuBarItem;
 import accg.gui.MenuBarItem.Type;
 import accg.gui.SliderMenuBarItem;
@@ -37,6 +38,7 @@ public class ACCGProgram {
 	
 	private static final int DEF_MENU_ALIGNMENT = 1;
 	private static final int DEF_MENU_POSITION = 0;
+	private static final int DEF_MENU_PRESENTATION = 1;
 	
 	/** If the escape key has been pressed. */
 	private boolean escPressed = false;
@@ -51,6 +53,7 @@ public class ACCGProgram {
 	 *  1: settings menu           (child of 0).
 	 *  2: menu position menu      (child of 1).
 	 *  3: menu alignment menu     (child of 1).
+	 *  4: menu presentation menu  (child of 1).
 	 */
 	private MenuBar[] menuBars;
 	/**
@@ -117,11 +120,14 @@ public class ACCGProgram {
 		clickedPoint = null;
 		
 		// intialise GUI stuff
-		menuBars = new MenuBar[4];
-		menuBars[0] = new MenuBar(s, Position.TOP, Alignment.CENTER);
+		menuBars = new MenuBar[5];
+		menuBars[0] = new MenuBar(s, Position.values()[DEF_MENU_POSITION],
+				Alignment.values()[DEF_MENU_ALIGNMENT],
+				Presentation.values()[DEF_MENU_PRESENTATION]);
 		menuBars[1] = new MenuBar(s, menuBars[0]);
 		menuBars[2] = new MenuBar(s, menuBars[1]);
 		menuBars[3] = new MenuBar(s, menuBars[1]);
+		menuBars[4] = new MenuBar(s, menuBars[1]);
 		loadPreferences(s);
 		initialiseMenus(menuBars, s);
 		
@@ -476,6 +482,20 @@ public class ACCGProgram {
 			public void onScroll(int dWheel) { /* ignored */ }
 		});
 		
+		menus[1].addMenuBarItem(new MenuBarItem("Menu presentation", s.textures.iconConfigure) {
+			@Override
+			public void onClick(int x, int y) {
+				super.onClick(x, y);
+				menuBars[4].toggleVisible();
+			}
+			
+			@Override
+			public void onDrag(int x, int y) { /* ignored */ }
+			
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
+		});
+		
 		menus[1].addMenuBarItem(new SliderMenuBarItem("Mouse sensitivity",
 				s.textures.iconMouse, 0.1f, 2.0f, s.mouseSensitivityFactor) {
 			@Override
@@ -510,6 +530,11 @@ public class ACCGProgram {
 		// menu alignment menu
 		for (int i = 0; i < Alignment.values().length; i++) {
 			menus[3].addMenuBarItem(generateAlignmentItem(i, s));
+		}
+		
+		// menu presentation menu
+		for (int i = 0; i < Presentation.values().length; i++) {
+			menus[4].addMenuBarItem(generatePresentationItem(i, s));
 		}
 	}
 	
@@ -578,6 +603,38 @@ public class ACCGProgram {
 	}
 	
 	/**
+	 * Generate a {@link MenuBarItem} that represents a menu presentation.
+	 * 
+	 * @param index Index of the presentation to generate an item for.
+	 * @param s State, used to look up icons in.
+	 * @return A newly created {@link MenuBarItem}.
+	 */
+	private MenuBarItem generatePresentationItem(final int index, State s) {
+		final Presentation pres = MenuBar.Presentation.values()[index];
+		// create the item
+		MenuBarItem mbi = new MenuBarItem(pres.getName(),
+				getPresentationIcon(index, s), Type.CHECKABLE_UNIQUE) {
+			@Override
+			public void onClick(int x, int y) {
+				super.onClick(x, y);
+				setMenuPresentations(pres);
+			}
+			
+			@Override
+			public void onDrag(int x, int y) { /* ignored */ }
+			
+			@Override
+			public void onScroll(int dWheel) { /* ignored */ }
+		};
+		// check the item if needed
+		if (index == prefs.getInt("menu.presentation", DEF_MENU_PRESENTATION)) {
+			mbi.setChecked(true);
+		}
+		// return the result
+		return mbi;
+	}
+	
+	/**
 	 * Return the icon that belongs to the {@link Alignment} with given ordinal index.
 	 * 
 	 * @param index Ordinal index of an {@link Alignment}.
@@ -628,6 +685,28 @@ public class ACCGProgram {
 	}
 	
 	/**
+	 * Return the icon that belongs to the {@link Presentation} with given ordinal index.
+	 * 
+	 * @param index Ordinal index of a {@link Presentation}.
+	 * @param s State, used to look up icons in.
+	 * @return An icon, or {@code null} if index is invalid.
+	 */
+	private Texture getPresentationIcon(final int index, State s) {
+		if (index < 0 || index >= MenuBar.Presentation.values().length) {
+			return null;
+		}
+		
+		switch (index) {
+		case 0 :
+			return s.textures.iconZoomOut;
+		case 1 :
+			return s.textures.iconZoomIn;
+		default :
+			return null;
+		}
+	}
+	
+	/**
 	 * Try to load preferences of the user from last time.
 	 * 
 	 * @param s
@@ -643,6 +722,8 @@ public class ACCGProgram {
 		setMenuAlignments(MenuBar.Alignment.values()[alignment]);
 		int position = prefs.getInt("menu.position", DEF_MENU_POSITION);
 		setMenuPositions(MenuBar.Position.values()[position]);
+		int presentation = prefs.getInt("menu.presentation", DEF_MENU_PRESENTATION);
+		setMenuPresentations(MenuBar.Presentation.values()[presentation]);
 	}
 	
 	/**
@@ -651,9 +732,9 @@ public class ACCGProgram {
 	 * @param alignment New alignment for all menu bars.
 	 */
 	private void setMenuAlignments(Alignment alignment) {
-		for (int i = 0; i < menuBars.length; i++) {
-			menuBars[i].setAlignment(alignment);
-		}
+		// only change the main menu alignment, child menu
+		// bars will follow the lead automatically
+		menuBars[0].setAlignment(alignment);
 		
 		prefs.putInt("menu.alignment", alignment.ordinal());
 	}
@@ -664,10 +745,23 @@ public class ACCGProgram {
 	 * @param pos New position for all menu bars.
 	 */
 	private void setMenuPositions(Position pos) {
-		for (int i = 0; i < menuBars.length; i++) {
-			menuBars[i].setPosition(pos);
-		}
+		// only change the main menu position, child menu
+		// bars will follow the lead automatically
+		menuBars[0].setPosition(pos);
 		
 		prefs.putInt("menu.position", pos.ordinal());
+	}
+	
+	/**
+	 * Change position of all menu bars.
+	 * 
+	 * @param pos New position for all menu bars.
+	 */
+	private void setMenuPresentations(Presentation pres) {
+		// only change the main menu position, child menu
+		// bars will follow the lead automatically
+		menuBars[0].setPresentation(pres);
+		
+		prefs.putInt("menu.presentation", pres.ordinal());
 	}
 }

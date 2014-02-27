@@ -2,6 +2,7 @@ package accg.gui;
 
 import accg.gui.MenuBar.Alignment;
 import accg.gui.MenuBar.Position;
+import accg.gui.MenuBar.Presentation;
 
 /**
  * Listener that can be used to hide a {@link MenuBar} when its parent is
@@ -30,6 +31,13 @@ public interface MenuBarListener {
 	 * @param newPosition New position of the {@link MenuBar}.
 	 */
 	public void onPositionChanged(Position newPosition);
+	
+	/**
+	 * Fired when the presentation of a {@link MenuBar} is changed.
+	 * 
+	 * @param newPresentation New presentation of the {@link MenuBar}.
+	 */
+	public void onPresentationChanged(Presentation newPresentation);
 	
 	/**
 	 * Fired when the {@link MenuBar} has to handle a resize event.

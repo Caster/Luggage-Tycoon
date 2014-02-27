@@ -9,6 +9,8 @@ import org.lwjgl.util.Rectangle;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.opengl.Texture;
 
+import accg.gui.MenuBar.Presentation;
+
 /**
  * A SliderMenuBarItem is a {@link MenuBarItem} that has a value which can
  * be queried. This value can be adjusted by the user by clicking the item
@@ -80,27 +82,27 @@ public class SliderMenuBarItem extends MenuBarItem {
 	}
 	
 	@Override
-	public void draw(Rectangle outline, Font renderFont) {
-		super.draw(outline, renderFont);
+	public void draw(Rectangle outline, Font renderFont, Presentation presentation) {
+		super.draw(outline, renderFont, presentation);
 		
 		// render bar if needed
 		if (this.showBar) {
 			// the height of the bar depends on that of the text
-			int textHeight = renderFont.getHeight(text);
+			int textHeight = renderFont.getLineHeight();
 			int barHeight = textHeight;
 			int textBarDiff = (textHeight - barHeight) / 2;
 			
 			// outline
 			glColor4f(SLIDER_BAR_EDGE_COLOR);
-			drawBar(outline, barHeight, textBarDiff, 0, 1f);
+			drawBar(outline, presentation, barHeight, textBarDiff, 0, 1f);
 			
 			// background
 			glColor4f(SLIDER_BAR_BACKGROUND_COLOR);
-			drawBar(outline, barHeight, textBarDiff, SLIDER_BAR_EDGE_WIDTH, 1f);
+			drawBar(outline, presentation, barHeight, textBarDiff, SLIDER_BAR_EDGE_WIDTH, 1f);
 			
 			// actual bar
 			glColor4f(SLIDER_BAR_COLOR);
-			drawBar(outline, barHeight, textBarDiff, SLIDER_BAR_EDGE_WIDTH,
+			drawBar(outline, presentation, barHeight, textBarDiff, SLIDER_BAR_EDGE_WIDTH,
 					(val - min) / (max - min));
 		}
 	}
@@ -139,17 +141,18 @@ public class SliderMenuBarItem extends MenuBarItem {
 	 * immediate drawing mode.
 	 * 
 	 * @param outline Outline of the entire menu item.
+	 * @param presentation The presentation that is requested.
 	 * @param barHeight Height of the bar (including edge).
 	 * @param textBarDiff Half the difference between the height of the bar and
 	 *                    the height of the text. Use to center the bar vertically.
 	 * @param margin Margin of the bar to be drawn.
 	 * @param width Width of the bar to be drawn, lies between 0 and 1.
 	 */
-	protected void drawBar(Rectangle outline, int barHeight, int textBarDiff,
-			int margin, float width) {
+	protected void drawBar(Rectangle outline, Presentation presentation,
+			int barHeight, int textBarDiff, int margin, float width) {
 		// calculate outline
-		Rectangle barOutline = getBarOutline(outline, barHeight, textBarDiff,
-				margin, width);
+		Rectangle barOutline = getBarOutline(outline, presentation, barHeight,
+				textBarDiff, margin, width);
 		
 		// command OpenGL to draw the bar
 		glBegin(GL_QUADS);
@@ -168,33 +171,49 @@ public class SliderMenuBarItem extends MenuBarItem {
 	 * 
 	 * @see #drawBar(Rectangle, int, int, int, float)
 	 */
-	protected Rectangle getBarOutline(Rectangle outline, int barHeight,
-			int textBarDiff, int margin, float width) {
+	protected Rectangle getBarOutline(Rectangle outline, Presentation presentation,
+			int barHeight, int textBarDiff, int margin, float width) {
 		// calculate the width of the bar in pixels
-		int barWidth = (int) (width * (outline.getWidth() - 2 * PADDING - 2 * margin));
+		int barWidth;
+		switch (presentation) {
+			default :
+			case ICON_ABOVE_TEXT :
+				barWidth = (int) (width * (outline.getWidth() - 2 * PADDING -
+						2 * margin));
+				break;
+			case ICON_LEFT_TEXT :
+				// since barHeight == textHeight and the width of the icon is
+				// precisely that, we misuse this parameter a bit here...
+				barWidth = (int) (width * (outline.getWidth() - 3 * PADDING -
+						2 * margin - barHeight));
+				break;
+		}
 		// the bar should be at least one pixel wide
 		if (barWidth == 0) {
 			barWidth = 1;
 		}
-		// put together the result and return it, possibly save it
-		if (margin > 0 || width < 1.0f || this.barOutline == null) {
-			Rectangle barOutline = new Rectangle(outline.getX() + PADDING + margin,
-					outline.getY() - PADDING - barHeight - textBarDiff + margin,
-					barWidth, barHeight - 2 * margin);
-			if (margin == 0 && width == 1.0f) {
-				if (this.barOutline == null) {
-					this.barOutline = barOutline;
-				} else {
-					barOutline.getBounds(this.barOutline);
-				}
-			}
-			return barOutline;
-		} else {
-			this.barOutline.setBounds(outline.getX() + PADDING + margin,
-					outline.getY() - PADDING - barHeight - textBarDiff + margin,
-					barWidth, barHeight - 2 * margin);
-			return this.barOutline;
+		
+		// put together the result
+		Rectangle barOutline = new Rectangle(outline.getX() + PADDING + margin,
+				outline.getY() - PADDING - barHeight - textBarDiff + margin,
+				barWidth, barHeight - 2 * margin);
+		
+		
+		// presentation specific tweaks
+		if (presentation == Presentation.ICON_LEFT_TEXT) {
+			barOutline.setX(barOutline.getX() + PADDING + barHeight);
 		}
+		
+		// possibly save the result if it is the actual outline
+		if (margin == 0 && width == 1.0f) {
+			if (this.barOutline == null) {
+				this.barOutline = barOutline;
+			} else {
+				barOutline.getBounds(this.barOutline);
+			}
+		}
+		
+		return barOutline;
 	}
 	
 	/**

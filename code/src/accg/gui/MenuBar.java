@@ -80,6 +80,28 @@ public class MenuBar extends DrawableObject {
 			return name;
 		}
 	};
+	/**
+	 * Possible presentations/layouts for items in a {@link MenuBar}.
+	 */
+	public enum Presentation {
+		ICON_LEFT_TEXT("(small) Icon left of text"),
+		ICON_ABOVE_TEXT("(large) Icon above text");
+		
+		private Presentation(String name) {
+			this.name = name;
+		}
+		
+		private String name;
+		
+		/**
+		 * Return a human-readable description of the presentation type.
+		 * 
+		 * @return A human-readable, short description.
+		 */
+		public String getName() {
+			return name;
+		}
+	};
 	
 	/**
 	 * Construct a new {@link MenuBar} at the given position.
@@ -87,11 +109,14 @@ public class MenuBar extends DrawableObject {
 	 * @param state State of the program, used to extract font from.
 	 * @param pos On which side of the window the menu bar will stick.
 	 * @param align The alignment of the menu bar on the given position.
+	 * @param presentation Layout/presentation for menu items in this bar.
 	 */
-	public MenuBar(State state, Position pos, Alignment align) {
+	public MenuBar(State state, Position pos, Alignment align,
+			Presentation presentation) {
 		this.state = state;
 		this.position = pos;
 		this.alignment = align;
+		this.presentation = presentation;
 		this.items = new ArrayList<>();
 		this.visible = true;
 		this.listeners = new ArrayList<>();
@@ -102,13 +127,13 @@ public class MenuBar extends DrawableObject {
 	 * Construct a new {@link MenuBar} with the given parent. This means
 	 * that it is shown next to the parent, on which side depends on the
 	 * position of the parent. The alignment will be inherited from the
-	 * parent too.
+	 * parent too, just like the presentation.
 	 * 
 	 * @param state State of the program, used to extract font from.
 	 * @param parent Menu bar next to which this menu should be shown.
 	 */
 	public MenuBar(State state, MenuBar parent) {
-		this(state, null, null);
+		this(state, null, null, null);
 		this.visible = false;
 		this.parent = parent;
 		
@@ -134,6 +159,15 @@ public class MenuBar extends DrawableObject {
 				
 				for (MenuBarListener mbl : listeners) {
 					mbl.onPositionChanged(newPosition);
+				}
+			}
+			
+			@Override
+			public void onPresentationChanged(Presentation newPresentation) {
+				outline = null;
+				
+				for (MenuBarListener mbl : listeners) {
+					mbl.onPresentationChanged(newPresentation);
 				}
 			}
 			
@@ -196,14 +230,19 @@ public class MenuBar extends DrawableObject {
 		glEnd();
 		
 		// draw menu items
-		if (getPosition() == Position.TOP || getPosition() == Position.BOTTOM) {
+		Position pos = getPosition();
+		Presentation pres = getPresentation();
+		if (pos == Position.TOP || pos == Position.BOTTOM) {
 			Rectangle itemOutline = new Rectangle();
 			itemOutline.setX(outline.getX());
 			itemOutline.setY(outline.getY());
 			itemOutline.setHeight(outline.getHeight());
 			itemOutline.setWidth(outline.getWidth() / items.size());
 			for (MenuBarItem item : items) {
-				item.draw(itemOutline, s.fontMenu);
+				if (pres == Presentation.ICON_LEFT_TEXT) {
+					itemOutline.setWidth(item.getPreferredWidth(s.fontMenu, pos, pres));
+				}
+				item.draw(itemOutline, s.fontMenu, pres);
 				itemOutline.setX(itemOutline.getX() + itemOutline.getWidth());
 			}
 		} else {
@@ -214,7 +253,7 @@ public class MenuBar extends DrawableObject {
 			itemOutline.setWidth(outline.getWidth());
 			for (MenuBarItem item : items) {
 				itemOutline.setY(itemOutline.getY() + itemOutline.getHeight());
-				item.draw(itemOutline, s.fontMenu);
+				item.draw(itemOutline, s.fontMenu, pres);
 			}
 		}
 		
@@ -228,7 +267,8 @@ public class MenuBar extends DrawableObject {
 	/**
 	 * Return the alignment of this menu bar.
 	 * 
-	 * @return The last set alignment of this menu bar.
+	 * @return The last set alignment of this menu bar. Or that of the parent,
+	 *         if this menu bar has a parent.
 	 */
 	public Alignment getAlignment() {
 		return (parent == null ? alignment : parent.getAlignment());
@@ -246,10 +286,21 @@ public class MenuBar extends DrawableObject {
 	/**
 	 * Return the position of this menu bar in the display.
 	 * 
-	 * @return The last set position of this menu bar.
+	 * @return The last set position of this menu bar. Or that of the parent,
+	 *         if this menu bar has a parent.
 	 */
 	public Position getPosition() {
 		return (parent == null ? position : parent.getPosition());
+	}
+	
+	/**
+	 * Return the presentation of menu items in this menu bar.
+	 * 
+	 * @return The last set presentation of this menu bar. Or that of the parent,
+	 *         if this menu bar has a parent.
+	 */
+	public Presentation getPresentation() {
+		return (parent == null ? presentation : parent.getPresentation());
 	}
 	
 	/**
@@ -305,10 +356,12 @@ public class MenuBar extends DrawableObject {
 		
 		// determine outline
 		Rectangle outline = getOutline();
+		Position pos = getPosition();
+		Presentation pres = getPresentation();
 		
 		// check if any (and if yes, which) menu item has been clicked
 		boolean handled = false;
-		if (getPosition() == Position.TOP || getPosition() == Position.BOTTOM) {
+		if (pos == Position.TOP || pos == Position.BOTTOM) {
 			// check if the vertical position matches at least
 			if (y < outline.getY() - outline.getHeight() ||
 					y > outline.getY()) {
@@ -325,6 +378,13 @@ public class MenuBar extends DrawableObject {
 			itemOutline.setHeight(outline.getHeight());
 			itemOutline.setWidth(outline.getWidth() / items.size());
 			for (MenuBarItem item : items) {
+				// presentation-specific tweaks to itemOutline
+				if (pres == Presentation.ICON_LEFT_TEXT) {
+					itemOutline.setWidth(item.getPreferredWidth(
+							state.fontMenu, pos, pres));
+				}
+				
+				// check if we have a hit and handle it
 				if (itemOutline.getX() <= x && x <= itemOutline.getX() +
 						itemOutline.getWidth())	{
 					item.setHovered(true);
@@ -335,6 +395,8 @@ public class MenuBar extends DrawableObject {
 				} else {
 					item.setHovered(false);
 				}
+				
+				// move up the itemOutline
 				itemOutline.setX(itemOutline.getX() + itemOutline.getWidth());
 			}
 		} else {
@@ -469,6 +531,17 @@ public class MenuBar extends DrawableObject {
 		}
 	}
 	
+	public void setPresentation(Presentation presentation) {
+		if (this.parent == null) {
+			this.presentation = presentation;
+			this.outline = null;
+			
+			for (MenuBarListener mbl : listeners) {
+				mbl.onPresentationChanged(presentation);
+			}
+		}
+	}
+	
 	/**
 	 * Show or hide this menu bar.
 	 * 
@@ -547,22 +620,43 @@ public class MenuBar extends DrawableObject {
 		}
 		
 		Rectangle outline = new Rectangle();
-		int itemHeight = state.fontMenu.getLineHeight() * 4 + 3 * MenuBarItem.PADDING;
+		Position pos = getPosition();
+		Presentation pres = getPresentation();
+		int itemHeight;
+		switch (pres) {
+		default :
+		case ICON_ABOVE_TEXT :
+			itemHeight = state.fontMenu.getLineHeight() * 4 +
+					3 * MenuBarItem.PADDING;
+			break;
+		case ICON_LEFT_TEXT :
+			itemHeight = state.fontMenu.getLineHeight() +
+					2 * MenuBarItem.PADDING;
+		}
 		
-		// determine maximal width of all items
-		int maxWidth = 0, itemWidth;
+		// determine maximal width of all items and sum
+		int maxWidth = 0, sumWidth = 0, itemWidth;
 		for (MenuBarItem item : items) {
-			itemWidth = item.getPreferredWidth(state.fontMenu);
+			itemWidth = item.getPreferredWidth(state.fontMenu, pos, pres);
+			sumWidth += itemWidth;
 			if (itemWidth > maxWidth) {
 				maxWidth = itemWidth;
 			}
 		}
 		
 		// determine width and height of outline
-		if (getPosition() == Position.TOP || getPosition() == Position.BOTTOM) {
+		if (pos == Position.TOP || pos == Position.BOTTOM) {
 			// all items are next to each other
 			outline.setHeight(itemHeight);
-			outline.setWidth(items.size() * maxWidth);
+			switch (pres) {
+			default :
+			case ICON_ABOVE_TEXT :
+				outline.setWidth(items.size() * maxWidth);
+				break;
+			case ICON_LEFT_TEXT :
+				outline.setWidth(sumWidth);
+				break;
+			}
 		} else {
 			// all items are below each other
 			outline.setHeight(items.size() * itemHeight);
@@ -571,7 +665,7 @@ public class MenuBar extends DrawableObject {
 		
 		// determine position of rectangle
 		Rectangle parentOutline = (parent == null ? null : parent.getOutline());
-		switch (getPosition()) {
+		switch (pos) {
 		case TOP :
 		case BOTTOM :
 			switch (getAlignment()) {
@@ -587,7 +681,7 @@ public class MenuBar extends DrawableObject {
 				break;
 			}
 			
-			if (getPosition() == Position.TOP) {
+			if (pos == Position.TOP) {
 				outline.setY(parent == null ? MARGIN + outline.getHeight()
 						: parentOutline.getY() + MARGIN + outline.getHeight());
 			} else {
@@ -596,7 +690,7 @@ public class MenuBar extends DrawableObject {
 			}
 			break;
 		default : // LEFT, RIGHT or null
-			if (getPosition() == Position.LEFT) {
+			if (pos == Position.LEFT) {
 				outline.setX(parent == null ? MARGIN
 						: parentOutline.getX() + MARGIN + parentOutline.getWidth());
 			} else {
@@ -629,6 +723,8 @@ public class MenuBar extends DrawableObject {
 	private Alignment alignment;
 	/** Position of this menu bar. */
 	private Position position;
+	/** Presentation of items in this menu bar. */
+	private Presentation presentation;
 	/** Items in this menu bar. */
 	private ArrayList<MenuBarItem> items;
 	/** Outline of menu bar. If {@code null}, can be calculated using {@link #getOutline()}. */
