@@ -54,7 +54,7 @@ public class Simulation {
 		world.setGravity(new Vector3f(0, 0, -9.81f));
 		
 		// initialize the luggage shape, that is shared for all luggage 
-		luggageShape = new BoxShape(new Vector3f(1, 1, 1));
+		luggageShape = new BoxShape(new Vector3f(0.174f, 0.131f, 0.030f));
 		
 		// initialize walls and floor
 		MotionState motion = new DefaultMotionState();
