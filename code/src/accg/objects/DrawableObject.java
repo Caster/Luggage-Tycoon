@@ -1,11 +1,21 @@
 package accg.objects;
 
+import accg.Simulation;
 import accg.State;
 
 /**
  * Any object that can be drawn in the 3D world.
  */
 public abstract class DrawableObject {
+	
+	/**
+	 * Whether this object is represented in the physics engine.
+	 * 
+	 * New objects need to be announced to the {@link Simulation} class, so that
+	 * it can be put into the physics calculation. This flag indicates whether
+	 * that has happened or not.
+	 */
+	public boolean inPhysics = false;
 	
 	/**
 	 * Draws the object. You should ensure to keep the OpenGL transform the same.

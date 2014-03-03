@@ -84,7 +84,7 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 				l.supportingBlock = null;
 				l.vx = 0;
 				l.vy = 1;
-				l.vz = -1 / 3.0;
+				l.vz = -1 / 3.0f;
 			}
 			break;
 		case DOWN:
@@ -94,7 +94,7 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 				l.supportingBlock = null;
 				l.vx = 0;
 				l.vy = -1;
-				l.vz = -1 / 3.0;
+				l.vz = -1 / 3.0f;
 			}
 			break;
 		case RIGHT:
@@ -104,7 +104,7 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 				l.supportingBlock = null;
 				l.vx = 1;
 				l.vy = 0;
-				l.vz = -1 / 3.0;
+				l.vz = -1 / 3.0f;
 			}
 			break;
 		case LEFT:
@@ -114,7 +114,7 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 				l.supportingBlock = null;
 				l.vx = -1;
 				l.vy = 0;
-				l.vz = -1 / 3.0;
+				l.vz = -1 / 3.0f;
 			}
 			break;
 		}
@@ -146,7 +146,7 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 
 	@Override
 	public void takeLuggage(Luggage l) {
-		l.z = z / 4.0 + 0.625; // TODO adjust this to the DescendingConveyorBelt
+		l.z = z / 4.0f + 0.625f; // TODO adjust this to the DescendingConveyorBelt
 		l.vz = 0;
 	}
 }

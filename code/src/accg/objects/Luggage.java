@@ -17,43 +17,43 @@ public class Luggage extends DrawableObject {
 	/**
 	 * The x-coordinate of this luggage item.
 	 */
-	public double x;
+	public float x;
 	
 	/**
 	 * The y-coordinate of this luggage item.
 	 */
-	public double y;
+	public float y;
 	
 	/**
 	 * The z-coordinate of this luggage item.
 	 */
-	public double z;
+	public float z;
 	
 	/**
 	 * The x-component of the speed of this luggage item.
 	 * This speed is relative to the world if <code>supportingBlock == null</code>,
 	 * and relative to the <code>supportingBlock</code> otherwise.
 	 */
-	public double vx;
+	public float vx;
 	
 	/**
 	 * The y-component of the speed of this luggage item.
 	 * This speed is relative to the world if <code>supportingBlock == null</code>,
 	 * and relative to the <code>supportingBlock</code> otherwise.
 	 */
-	public double vy;
+	public float vy;
 	
 	/**
 	 * The z-component of the speed of this luggage item.
 	 * This speed is relative to the world if <code>supportingBlock == null</code>,
 	 * and relative to the <code>supportingBlock</code> otherwise.
 	 */
-	public double vz;
+	public float vz;
 	
 	/**
 	 * The z-angle rotation.
 	 */
-	public double anglez;
+	public float anglez;
 	
 	/**
 	 * The supporting block of this luggage item. This indicates the
@@ -132,7 +132,7 @@ public class Luggage extends DrawableObject {
 	 * @param y The y-coordinate of this luggage item.
 	 * @param z The z-coordinate of this luggage item.
 	 */
-	public Luggage(double x, double y, double z) {
+	public Luggage(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -141,7 +141,7 @@ public class Luggage extends DrawableObject {
 		this.vy = 0;
 		this.vz = 0;
 
-		this.anglez = Math.random() * 2 * Math.PI;
+		this.anglez = (float) (Math.random() * 2 * Math.PI);
 		
 		this.color = LuggageColor.values()[(int) (Math.random() * LuggageColor.values().length)];
 		

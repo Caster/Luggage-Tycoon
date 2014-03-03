@@ -115,7 +115,7 @@ public class ACCGProgram {
 		s.world = new World(s);
 		s.textures = new Textures();
 		s.simulation = new Simulation();
-		s.startTime = Sys.getTime() / Sys.getTimerResolution();
+		s.startTime = (float) Sys.getTime() / Sys.getTimerResolution();
 		camera = new Camera(s);
 		clickedPoint = null;
 		
@@ -155,7 +155,7 @@ public class ACCGProgram {
 			
 			// update time
 			s.prevTime = s.time;
-			s.time = (float) Sys.getTime() / Sys.getTimerResolution() - s.startTime;
+			s.time = (float) ((double) Sys.getTime() / Sys.getTimerResolution() - s.startTime);
 			
 			// update simulation, if applicable
 			if (s.programMode == ProgramMode.SIMULATION_MODE) {
