@@ -52,17 +52,17 @@ public class State {
 	 * May of course not be initialized, during the rendering of the first
 	 * frame.
 	 */
-	public double prevTime;
+	public float prevTime;
 	
 	/**
 	 * The current simulation time in seconds.
 	 */
-	public double time;
+	public float time;
 	
 	/**
 	 * The time at which the simulation started.
 	 */
-	public double startTime;
+	public float startTime;
 	
 	/**
 	 * The {@link Textures} object that contains the textures for the

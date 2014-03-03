@@ -155,7 +155,7 @@ public class ACCGProgram {
 			
 			// update time
 			s.prevTime = s.time;
-			s.time = (double) Sys.getTime() / Sys.getTimerResolution() - s.startTime;
+			s.time = (float) Sys.getTime() / Sys.getTimerResolution() - s.startTime;
 			
 			// update simulation, if applicable
 			if (s.programMode == ProgramMode.SIMULATION_MODE) {

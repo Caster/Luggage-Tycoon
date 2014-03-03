@@ -2,10 +2,27 @@ package accg;
 
 import java.util.Iterator;
 
+import javax.vecmath.Vector3f;
+
 import accg.objects.Block;
 import accg.objects.Luggage;
+import accg.objects.World;
 import accg.objects.blocks.ConveyorBlock;
 import accg.utils.Utils;
+
+import com.bulletphysics.collision.broadphase.BroadphaseInterface;
+import com.bulletphysics.collision.broadphase.DbvtBroadphase;
+import com.bulletphysics.collision.dispatch.CollisionConfiguration;
+import com.bulletphysics.collision.dispatch.CollisionDispatcher;
+import com.bulletphysics.collision.dispatch.DefaultCollisionConfiguration;
+import com.bulletphysics.collision.shapes.BoxShape;
+import com.bulletphysics.collision.shapes.CollisionShape;
+import com.bulletphysics.dynamics.DiscreteDynamicsWorld;
+import com.bulletphysics.dynamics.RigidBody;
+import com.bulletphysics.dynamics.constraintsolver.ConstraintSolver;
+import com.bulletphysics.dynamics.constraintsolver.SequentialImpulseConstraintSolver;
+import com.bulletphysics.linearmath.DefaultMotionState;
+import com.bulletphysics.linearmath.MotionState;
 
 /**
  * This class manages the simulation.
@@ -15,12 +32,28 @@ public class Simulation {
 	/**
 	 * The step size of the simulation.
 	 */
-	double dt = 0.01;
+	float dt = 0.01f;
 	
 	/**
 	 * The current time in the simulation.
 	 */
-	double time = 0;
+	float time = 0;
+	
+	DiscreteDynamicsWorld world;
+	
+	public Simulation() {
+		
+		BroadphaseInterface broadphase = new DbvtBroadphase();
+		ConstraintSolver solver = new SequentialImpulseConstraintSolver();
+		CollisionConfiguration collisionConfig = new DefaultCollisionConfiguration();
+        CollisionDispatcher dispatcher = new CollisionDispatcher(collisionConfig);
+		world = new DiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
+		world.setGravity(new Vector3f(0, 0, -9.81f));
+		
+		CollisionShape shape = new BoxShape(new Vector3f(1, 1, 1));
+		MotionState motion = new DefaultMotionState();
+		RigidBody r = new RigidBody(1, motion, shape);
+	}
 	
 	/**
 	 * Depending on the time that has passed (determined using
@@ -52,7 +85,7 @@ public class Simulation {
 	 * 
 	 * @param time New simulation time.
 	 */
-	public void skipToTime(double time) {
+	public void skipToTime(float time) {
 		this.time = time;
 	}
 	
@@ -64,6 +97,7 @@ public class Simulation {
 	 * @param s The state of the program.
 	 */
 	public void update(State s) {
+		System.out.println(s.time);
 		while (this.time + dt < s.time) {
 			doSimulationStep(s);
 		}
@@ -75,45 +109,6 @@ public class Simulation {
 	 */
 	private void doSimulationStep(State s) {
 		time += dt;
-		Iterator<Luggage> it = s.world.luggage.iterator();
-		while (it.hasNext()) {
-			
-			Luggage l = it.next();
-			
-			if (l.supportingBlock == null) {
-				
-				// below floor: remove this luggage
-				if (l.z <= 0) {
-					it.remove();
-					// TODO add something like an "explosion" here :D
-				} else {
-					// gravity
-					l.vz -= 9.81 * dt;
-				}
-				
-				// update positions
-				l.x += l.vx * dt;
-				l.y += l.vy * dt;
-				l.z += l.vz * dt;
-				
-				// check for conveyor belts that can take the luggage
-				for (int z = (int) (4 * l.z - 3); z <= (int) (4 * l.z); z++) {
-					if (!s.world.bc.inBounds((int) (l.x + 0.5), (int) (l.y + 0.5), z)) {
-						continue; // TODO better check of course
-					}
-					Block b = s.world.bc.getBlock((int) (l.x + 0.5), (int) (l.y + 0.5), z);
-					if (b instanceof ConveyorBlock) {
-						if (((ConveyorBlock) b).canTakeLuggage(l)) {
-							l.supportingBlock = b;
-							((ConveyorBlock) b).takeLuggage(l);
-						}
-					}
-				}
-			} else {
-				if (l.supportingBlock instanceof ConveyorBlock) {
-					((ConveyorBlock) l.supportingBlock).furtherPosition(l, dt);
-				}
-			}
-		}
+		world.stepSimulation(dt);
 	}
 }
