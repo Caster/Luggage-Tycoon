@@ -1,11 +1,11 @@
 package accg;
 
-import java.util.ArrayList;
-
+import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 
 import accg.objects.Luggage;
 import accg.objects.World;
+import accg.simulation.LuggageMotionState;
 import accg.utils.Utils;
 
 import com.bulletphysics.collision.broadphase.BroadphaseInterface;
@@ -20,7 +20,6 @@ import com.bulletphysics.dynamics.DiscreteDynamicsWorld;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.constraintsolver.ConstraintSolver;
 import com.bulletphysics.dynamics.constraintsolver.SequentialImpulseConstraintSolver;
-import com.bulletphysics.linearmath.DefaultMotionState;
 import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 
@@ -39,12 +38,18 @@ public class Simulation {
 	 */
 	float time = 0;
 	
+	/**
+	 * The JBullet world that simulates all objects.
+	 */
 	DiscreteDynamicsWorld world;
+	
+	/**
+	 * The shape of a piece of luggage, in a form JBullet can understand.
+	 * It is shared by all pieces of luggage.
+	 */
 	CollisionShape luggageShape;
 
-	private ArrayList<RigidBody> luggageList = new ArrayList<>();
-	
-	public Simulation() {
+	public Simulation(State s) {
 		
 		BroadphaseInterface broadphase = new DbvtBroadphase();
 		ConstraintSolver solver = new SequentialImpulseConstraintSolver();
@@ -57,10 +62,41 @@ public class Simulation {
 		luggageShape = new BoxShape(new Vector3f(0.174f, 0.131f, 0.030f));
 		
 		// initialize walls and floor
-		MotionState motion = new DefaultMotionState();
 		CollisionShape floor = new StaticPlaneShape(new Vector3f(0, 0, 1), 0);
-		RigidBody r = new RigidBody(0, motion, floor);
+		RigidBody r = new RigidBody(0, null, floor);
 		world.addRigidBody(r);
+		
+		float[][] wallConstants = new float[][] {
+				new float[] {  1,  0, 0, -0.5f },
+				new float[] { -1,  0, 0, s.fieldLength - 0.5f },
+				new float[] {  0,  1, 0, -0.5f },
+				new float[] {  0, -1, 0, s.fieldWidth - 0.5f }
+			};
+		for (int i = 0; i < 4; i++) {
+			RigidBody wallBody = new RigidBody(0, null,
+					new StaticPlaneShape(new Vector3f(wallConstants[i][0],
+							wallConstants[i][1], wallConstants[i][2]), 0));
+			Transform wallTransform = new Transform();
+			Matrix4f transformMat;
+			if (i < 2) {
+				transformMat = new Matrix4f(new float[] {
+						1, 0, 0, wallConstants[i][3],
+						0, 1, 0, 0,
+						0, 0, 1, 0,
+						0, 0, 0, 1
+				});
+			} else {
+				transformMat = new Matrix4f(new float[] {
+						1, 0, 0, 0,
+						0, 1, 0, wallConstants[i][3],
+						0, 0, 1, 0,
+						0, 0, 0, 1
+				});
+			}
+			wallTransform.set(transformMat);
+			wallBody.setWorldTransform(wallTransform);
+			world.addRigidBody(wallBody);
+		}
 	}
 	
 	/**
@@ -121,30 +157,13 @@ public class Simulation {
 		for (Luggage luggage : s.world.luggage) {
 			if (!luggage.inPhysics) {
 				luggage.inPhysics = true;
-				MotionState motion = new DefaultMotionState();
+				MotionState motion = new LuggageMotionState(luggage);
 				RigidBody r = new RigidBody(1, motion, luggageShape);
-				r.setUserPointer(luggage);
-				Transform transform = new Transform();
-				transform.setIdentity();
-				transform.transform(new Vector3f(luggage.x, luggage.y, luggage.z));
-				r.setWorldTransform(transform);
 				world.addRigidBody(r);
-				luggageList.add(r);
 			}
 		}
 		
 		// do the step
 		world.stepSimulation(dt);
-		
-		for (RigidBody r : luggageList) {
-			Object object = r.getUserPointer();
-			if (object instanceof Luggage) {
-				Vector3f position = new Vector3f();
-				r.getCenterOfMassPosition(position);
-				((Luggage) object).x = position.x;
-				((Luggage) object).y = position.y;
-				((Luggage) object).z = position.z;
-			}
-		}
 	}
 }
