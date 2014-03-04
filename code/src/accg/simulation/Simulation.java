@@ -1,12 +1,12 @@
-package accg;
+package accg.simulation;
 
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 
+import accg.State;
 import accg.objects.Luggage;
 import accg.objects.World;
 import accg.objects.blocks.ConveyorBlock;
-import accg.simulation.LuggageMotionState;
 import accg.utils.Utils;
 
 import com.bulletphysics.collision.broadphase.BroadphaseInterface;

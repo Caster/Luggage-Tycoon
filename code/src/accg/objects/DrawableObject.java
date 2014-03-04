@@ -1,7 +1,7 @@
 package accg.objects;
 
-import accg.Simulation;
 import accg.State;
+import accg.simulation.Simulation;
 
 /**
  * Any object that can be drawn in the 3D world.

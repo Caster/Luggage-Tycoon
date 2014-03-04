@@ -33,6 +33,7 @@ import accg.gui.MenuBarItem.Type;
 import accg.gui.SliderMenuBarItem;
 import accg.gui.ToggleMenuBarItem;
 import accg.objects.World;
+import accg.simulation.Simulation;
 
 public class ACCGProgram {
 	

@@ -3,6 +3,7 @@ package accg;
 import org.newdawn.slick.Font;
 
 import accg.objects.World;
+import accg.simulation.Simulation;
 
 /**
  * The state of the program. This for example stores the frame number.
