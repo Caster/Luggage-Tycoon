@@ -8,7 +8,6 @@ import java.io.File;
 import java.nio.FloatBuffer;
 
 import javax.vecmath.Matrix4f;
-import javax.vecmath.Quat4f;
 
 import org.lwjgl.BufferUtils;
 
