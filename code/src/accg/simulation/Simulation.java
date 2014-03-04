@@ -171,7 +171,9 @@ public class Simulation {
 	private void addLuggageToPhysicsEngine(Luggage newLuggage) {
 		newLuggage.inPhysics = true;
 		MotionState motion = new LuggageMotionState(newLuggage);
-		RigidBody r = new RigidBody(1, motion, luggageShape);
+		Vector3f inertia = new Vector3f();
+		luggageShape.calculateLocalInertia(1, inertia);
+		RigidBody r = new RigidBody(1, motion, luggageShape, inertia);
 		world.addRigidBody(r);
 	}
 }
