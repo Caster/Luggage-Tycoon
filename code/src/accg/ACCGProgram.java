@@ -112,9 +112,9 @@ public class ACCGProgram {
 		Display.update();
 		
 		// initialize stuff here
+		s.simulation = new Simulation(s);
 		s.world = new World(s);
 		s.textures = new Textures();
-		s.simulation = new Simulation(s);
 		s.startTime = (float) Sys.getTime() / Sys.getTimerResolution();
 		camera = new Camera(s);
 		clickedPoint = null;

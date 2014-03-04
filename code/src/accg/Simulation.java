@@ -5,6 +5,7 @@ import javax.vecmath.Vector3f;
 
 import accg.objects.Luggage;
 import accg.objects.World;
+import accg.objects.blocks.ConveyorBlock;
 import accg.simulation.LuggageMotionState;
 import accg.utils.Utils;
 
@@ -100,6 +101,16 @@ public class Simulation {
 	}
 	
 	/**
+	 * Update the simulation internally so that it takes the given conveyor
+	 * block into account, at the position given by the block itself.
+	 * 
+	 * @param cb The block to be added.
+	 */
+	public void addBlock(ConveyorBlock cb) {
+		// TODO
+	}
+	
+	/**
 	 * Depending on the time that has passed (determined using
 	 * {@link State#prevTime} and {@link State#time}), possibly add one or more
 	 * objects to the {@link World} contained in this {@link State}.
@@ -145,9 +156,9 @@ public class Simulation {
 	 * @param s The state of the program.
 	 */
 	public void update(State s) {
-		while (this.time + dt < s.time) {
-			doSimulationStep(s);
-		}
+		world.stepSimulation(s.time - this.time,
+				(int) (Math.ceil((s.time - this.time) / dt) + 1), dt);
+		this.time = s.time;
 	}
 	
 	/**
@@ -162,16 +173,5 @@ public class Simulation {
 		MotionState motion = new LuggageMotionState(newLuggage);
 		RigidBody r = new RigidBody(1, motion, luggageShape);
 		world.addRigidBody(r);
-	}
-	
-	/**
-	 * Performs a single simulation step.
-	 * @param s The state of the program.
-	 */
-	private void doSimulationStep(State s) {
-		time += dt;
-		
-		// do the step
-		world.stepSimulation(dt);
 	}
 }
