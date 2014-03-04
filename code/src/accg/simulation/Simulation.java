@@ -102,7 +102,7 @@ public class Simulation {
 		blockTransform.set(new Matrix4f(new float[] {
 				1, 0, 0, cb.getX(),
 				0, 1, 0, cb.getY(),
-				0, 0, 1, cb.getZ() / 4 + 1,
+				0, 0, 1, cb.getZ() / 4 + 0.75f,
 				0, 0, 0, 1
 		}));
 		r.setWorldTransform(blockTransform);
