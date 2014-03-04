@@ -108,12 +108,16 @@ public class Simulation {
 	 */
 	public void addObjects(State s) {
 		if (Utils.hasTimePassed(s, 1.0, 0)) {
-			s.world.luggage.addObject(new Luggage((float) (2.75 + 0.5 * Math.random()),
-					(float) (6.75 + 0.5 * Math.random()), 6));
+			Luggage newLuggage = new Luggage((float) (2.75 + 0.5 * Math.random()),
+					(float) (6.75 + 0.5 * Math.random()), 6);
+			s.world.luggage.addObject(newLuggage);
+			addLuggageToPhysicsEngine(newLuggage);
 		}
 		if (Utils.hasTimePassed(s, 1.0, 0.5)) {
-			s.world.luggage.addObject(new Luggage((float) (5.75 + 0.5 * Math.random()),
-					(float) (8.75 + 0.5 * Math.random()), 4));
+			Luggage newLuggage = new Luggage((float) (5.75 + 0.5 * Math.random()),
+					(float) (8.75 + 0.5 * Math.random()), 4);
+			s.world.luggage.addObject(newLuggage);
+			addLuggageToPhysicsEngine(newLuggage);
 		}
 	}
 	
@@ -147,21 +151,25 @@ public class Simulation {
 	}
 	
 	/**
+	 * Add a rigid body to the physics engine that represents the given piece of
+	 * luggage. It will also ensure that the position and rotation of the given
+	 * piece of luggage will be updated by the engine if needed.
+	 * 
+	 * @param newLuggage Luggage to add.
+	 */
+	private void addLuggageToPhysicsEngine(Luggage newLuggage) {
+		newLuggage.inPhysics = true;
+		MotionState motion = new LuggageMotionState(newLuggage);
+		RigidBody r = new RigidBody(1, motion, luggageShape);
+		world.addRigidBody(r);
+	}
+	
+	/**
 	 * Performs a single simulation step.
 	 * @param s The state of the program.
 	 */
 	private void doSimulationStep(State s) {
 		time += dt;
-		
-		// if Bullet doesn't know some luggage yet, add it
-		for (Luggage luggage : s.world.luggage) {
-			if (!luggage.inPhysics) {
-				luggage.inPhysics = true;
-				MotionState motion = new LuggageMotionState(luggage);
-				RigidBody r = new RigidBody(1, motion, luggageShape);
-				world.addRigidBody(r);
-			}
-		}
 		
 		// do the step
 		world.stepSimulation(dt);
