@@ -5,6 +5,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
 import java.io.File;
+import java.nio.FloatBuffer;
+
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Quat4f;
+
+import org.lwjgl.BufferUtils;
 
 import accg.State;
 import accg.utils.OBJModel;
@@ -30,40 +36,9 @@ public class Luggage extends DrawableObject {
 	public float z;
 	
 	/**
-	 * The x-component of the speed of this luggage item.
-	 * This speed is relative to the world if <code>supportingBlock == null</code>,
-	 * and relative to the <code>supportingBlock</code> otherwise.
+	 * The rotation of this luggage.
 	 */
-	public float vx;
-	
-	/**
-	 * The y-component of the speed of this luggage item.
-	 * This speed is relative to the world if <code>supportingBlock == null</code>,
-	 * and relative to the <code>supportingBlock</code> otherwise.
-	 */
-	public float vy;
-	
-	/**
-	 * The z-component of the speed of this luggage item.
-	 * This speed is relative to the world if <code>supportingBlock == null</code>,
-	 * and relative to the <code>supportingBlock</code> otherwise.
-	 */
-	public float vz;
-	
-	/**
-	 * The z-angle rotation.
-	 */
-	public float anglez;
-	
-	/**
-	 * The supporting block of this luggage item. This indicates the
-	 * block on which this luggage lies, and this block is also responsible
-	 * for handling the animation.
-	 * 
-	 * If this is <code>null</code>, there is no supporting block, i.e. the
-	 * luggage is floating / falling.
-	 */
-	public Block supportingBlock;
+	public Quat4f orient;
 	
 	/**
 	 * The OBJ model for the case.
@@ -137,11 +112,7 @@ public class Luggage extends DrawableObject {
 		this.y = y;
 		this.z = z;
 		
-		this.vx = 0;
-		this.vy = 0;
-		this.vz = 0;
-
-		this.anglez = (float) (Math.random() * 2 * Math.PI);
+		this.orient = new Quat4f();
 		
 		this.color = LuggageColor.values()[(int) (Math.random() * LuggageColor.values().length)];
 		
@@ -157,7 +128,19 @@ public class Luggage extends DrawableObject {
 		
 		glPushMatrix();
 		glTranslated(x, y, z);
-		glRotated(Math.toDegrees(anglez), 0, 0, 1);
+		
+		Matrix4f matrix = new Matrix4f();
+		matrix.set(orient);
+		float[] values = new float[] {
+				matrix.m00, matrix.m01, matrix.m02, matrix.m03,
+				matrix.m10, matrix.m11, matrix.m12, matrix.m13,
+				matrix.m20, matrix.m21, matrix.m22, matrix.m23,
+				matrix.m30, matrix.m31, matrix.m32, matrix.m33
+				};
+		FloatBuffer fb = BufferUtils.createFloatBuffer(16);
+		fb.put(values);
+		fb.flip();
+		glMultMatrix(fb);
 		
 		caseModel.draw();
 		

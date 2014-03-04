@@ -32,7 +32,7 @@ public class Simulation {
 	/**
 	 * The step size of the simulation.
 	 */
-	float dt = 0.01f;
+	float dt = 0.005f;
 	
 	/**
 	 * The current time in the simulation.
