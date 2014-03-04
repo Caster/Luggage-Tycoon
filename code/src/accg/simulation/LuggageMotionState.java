@@ -27,13 +27,7 @@ public class LuggageMotionState extends MotionState {
 	public LuggageMotionState(Luggage luggage) {
 		this.luggage = luggage;
 		this.lugPos = new Transform();
-		Matrix4f transformMat = new Matrix4f(new float[] {
-				1, 0, 0, luggage.x,
-				0, 1, 0, luggage.y,
-				0, 0, 1, luggage.z,
-				0, 0, 0, 1
-		});
-		this.lugPos.set(transformMat);
+		this.lugPos.set(luggage.transform);
 	}
 	
 	@Override
@@ -47,9 +41,7 @@ public class LuggageMotionState extends MotionState {
 		this.lugPos = worldTrans;
 		Matrix4f mat = new Matrix4f();
 		this.lugPos.getMatrix(mat);
-		this.luggage.x = mat.m03;
-		this.luggage.y = mat.m13;
-		this.luggage.z = mat.m23;
+		this.luggage.transform = mat;
 	}
 
 	private Luggage luggage;

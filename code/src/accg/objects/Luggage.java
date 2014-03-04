@@ -21,24 +21,10 @@ import accg.utils.OBJModel;
 public class Luggage extends DrawableObject {
 
 	/**
-	 * The x-coordinate of this luggage item.
+	 * The matrix containing the transformation (translation and rotation)
+	 * of this luggage item.
 	 */
-	public float x;
-	
-	/**
-	 * The y-coordinate of this luggage item.
-	 */
-	public float y;
-	
-	/**
-	 * The z-coordinate of this luggage item.
-	 */
-	public float z;
-	
-	/**
-	 * The rotation of this luggage.
-	 */
-	public Quat4f orient;
+	public Matrix4f transform;
 	
 	/**
 	 * The OBJ model for the case.
@@ -101,18 +87,21 @@ public class Luggage extends DrawableObject {
 	}
 	
 	/**
-	 * Creates a new, free-floating luggage item.
+	 * Creates a new luggage item on the given position.
 	 * 
 	 * @param x The x-coordinate of this luggage item.
 	 * @param y The y-coordinate of this luggage item.
 	 * @param z The z-coordinate of this luggage item.
 	 */
 	public Luggage(float x, float y, float z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
 		
-		this.orient = new Quat4f();
+		// initialize the transform
+		transform = new Matrix4f(new float[] {
+				1, 0, 0, x,
+				0, 1, 0, y,
+				0, 0, 1, z,
+				0, 0, 0, 1
+		});
 		
 		this.color = LuggageColor.values()[(int) (Math.random() * LuggageColor.values().length)];
 		
@@ -127,15 +116,11 @@ public class Luggage extends DrawableObject {
 		glColor4f(color.getColor());
 		
 		glPushMatrix();
-		glTranslated(x, y, z);
-		
-		Matrix4f matrix = new Matrix4f();
-		matrix.set(orient);
 		float[] values = new float[] {
-				matrix.m00, matrix.m01, matrix.m02, matrix.m03,
-				matrix.m10, matrix.m11, matrix.m12, matrix.m13,
-				matrix.m20, matrix.m21, matrix.m22, matrix.m23,
-				matrix.m30, matrix.m31, matrix.m32, matrix.m33
+				transform.m00, transform.m10, transform.m20, transform.m30,
+				transform.m01, transform.m11, transform.m21, transform.m31,
+				transform.m02, transform.m12, transform.m22, transform.m32,
+				transform.m03, transform.m13, transform.m23, transform.m33
 				};
 		FloatBuffer fb = BufferUtils.createFloatBuffer(16);
 		fb.put(values);
