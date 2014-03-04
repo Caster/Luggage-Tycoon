@@ -5,8 +5,9 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
 
+import javax.vecmath.Vector3f;
+
 import org.lwjgl.util.glu.Cylinder;
-import org.lwjgl.util.vector.Vector3f;
 
 import accg.State;
 import accg.objects.Block;
@@ -42,7 +43,7 @@ public abstract class ConveyorBlock extends Block {
 	 * 
 	 * @return An ArrayList of the coordinates.
 	 */
-	protected abstract ArrayList<Vector3f> getTopCoordinatesLeft();
+	public abstract ArrayList<Vector3f> getTopCoordinatesLeft();
 	
 	/**
 	 * Returns a list of the coordinates on the right side of the top part
@@ -50,7 +51,7 @@ public abstract class ConveyorBlock extends Block {
 	 * 
 	 * @return An ArrayList of the coordinates.
 	 */
-	protected abstract ArrayList<Vector3f> getTopCoordinatesRight();
+	public abstract ArrayList<Vector3f> getTopCoordinatesRight();
 	
 	/**
 	 * Returns a list of the texture coordinates for the top part of the conveyor belt.
@@ -59,7 +60,7 @@ public abstract class ConveyorBlock extends Block {
 	 * 
 	 * @return An ArrayList of the texture coordinates.
 	 */
-	protected abstract ArrayList<Double> getTopTextureCoordinates();
+	public abstract ArrayList<Double> getTopTextureCoordinates();
 	
 	/**
 	 * Returns a list of the coordinates on the left side of the bottom part
@@ -67,7 +68,7 @@ public abstract class ConveyorBlock extends Block {
 	 * 
 	 * @return An ArrayList of the coordinates.
 	 */
-	protected abstract ArrayList<Vector3f> getBottomCoordinatesLeft();
+	public abstract ArrayList<Vector3f> getBottomCoordinatesLeft();
 	
 	/**
 	 * Returns a list of the coordinates on the right side of the bottom part
@@ -75,7 +76,7 @@ public abstract class ConveyorBlock extends Block {
 	 * 
 	 * @return An ArrayList of the coordinates.
 	 */
-	protected abstract ArrayList<Vector3f> getBottomCoordinatesRight();
+	public abstract ArrayList<Vector3f> getBottomCoordinatesRight();
 	
 	/**
 	 * Returns a list of the texture coordinates for the bottom part of the conveyor belt.
@@ -84,7 +85,7 @@ public abstract class ConveyorBlock extends Block {
 	 * 
 	 * @return An ArrayList of the texture coordinates.
 	 */
-	protected abstract ArrayList<Double> getBottomTextureCoordinates();
+	public abstract ArrayList<Double> getBottomTextureCoordinates();
 	
 	/**
 	 * Increases the position of the luggage.
@@ -144,87 +145,26 @@ public abstract class ConveyorBlock extends Block {
 		s.textures.conveyor.bind();
 		
 		glBegin(GL_QUAD_STRIP);
-		{
-			glNormal3d(0, 0, 1); // TODO calculate proper normals
-			
+		{			
 			ArrayList<Vector3f> lefts = getTopCoordinatesLeft();
 			ArrayList<Vector3f> rights = getTopCoordinatesRight();
 			ArrayList<Double> texs = getTopTextureCoordinates();
 			
 			assert lefts.size() == rights.size() && lefts.size() == texs.size();
 			
-			for (int i = 0; i < lefts.size(); i++) {
-				
-				Vector3f normal1 = new Vector3f();
-				if (i < lefts.size() - 1) {
-					Vector3f normal1h = new Vector3f();
-					Vector3f.sub(lefts.get(i), lefts.get(i + 1), normal1h);
-					Vector3f normal1v = new Vector3f();
-					Vector3f.sub(lefts.get(i), rights.get(i), normal1v);
-					Vector3f.cross(normal1v, normal1h, normal1);
-				}
-				
-				Vector3f normal2 = new Vector3f();
-				if (i > 1) {
-					Vector3f normal2h = new Vector3f();
-					Vector3f.sub(lefts.get(i), lefts.get(i - 1), normal2h);
-					Vector3f normal2v = new Vector3f();
-					Vector3f.sub(lefts.get(i), rights.get(i), normal2v);
-					Vector3f.cross(normal2h, normal2v, normal2);
-				}
-				Vector3f average = new Vector3f();
-				Vector3f.add(normal1, normal2, average);
-				average.normalise();
-				glNormal3f(average);
-				
-				glTexCoord2d(texs.get(i) - 8 * s.time, 0);
-				glVertex3f(lefts.get(i));
-				
-				glTexCoord2d(texs.get(i) - 8 * s.time, 1);
-				glVertex3f(rights.get(i));
-			}
+			putPoints(lefts, rights, texs, s);
 		}
 		glEnd();
 		
 		glBegin(GL_QUAD_STRIP);
 		{
-			
 			ArrayList<Vector3f> lefts = getBottomCoordinatesLeft();
 			ArrayList<Vector3f> rights = getBottomCoordinatesRight();
 			ArrayList<Double> texs = getBottomTextureCoordinates();
 			
 			assert lefts.size() == rights.size() && lefts.size() == texs.size();
 			
-			for (int i = 0; i < lefts.size(); i++) {
-				
-				Vector3f normal1 = new Vector3f();
-				if (i < lefts.size() - 1) {
-					Vector3f normal1h = new Vector3f();
-					Vector3f.sub(lefts.get(i), lefts.get(i + 1), normal1h);
-					Vector3f normal1v = new Vector3f();
-					Vector3f.sub(lefts.get(i), rights.get(i), normal1v);
-					Vector3f.cross(normal1v, normal1h, normal1);
-				}
-				
-				Vector3f normal2 = new Vector3f();
-				if (i > 1) {
-					Vector3f normal2h = new Vector3f();
-					Vector3f.sub(lefts.get(i), lefts.get(i - 1), normal2h);
-					Vector3f normal2v = new Vector3f();
-					Vector3f.sub(lefts.get(i), rights.get(i), normal2v);
-					Vector3f.cross(normal2h, normal2v, normal2);
-				}
-				Vector3f average = new Vector3f();
-				Vector3f.add(normal1, normal2, average);
-				average.normalise();
-				glNormal3f(average);
-				
-				glTexCoord2d(texs.get(i) - 8 * s.time, 0);
-				glVertex3f(lefts.get(i));
-				
-				glTexCoord2d(texs.get(i) - 8 * s.time, 1);
-				glVertex3f(rights.get(i));
-			}
+			putPoints(lefts, rights, texs, s);
 		}
 		glEnd();
 		
@@ -310,6 +250,48 @@ public abstract class ConveyorBlock extends Block {
 		}
 		list.add(Double.valueOf(coord));
 		return coord;
+	}
+	
+	/**
+	 * Put points of one side of a conveyor belt in OpenGL direct mode.
+	 * All three given lists should have the same length.
+	 * 
+	 * @param lefts Left side of part to add.
+	 * @param rights Right side of part to add.
+	 * @param texs Texture coordinates.
+	 * @param s State, time is read from this to shift texture.
+	 */
+	private void putPoints(ArrayList<Vector3f> lefts, ArrayList<Vector3f> rights,
+			ArrayList<Double> texs, State s) {
+		for (int i = 0; i < lefts.size(); i++) {
+			Vector3f normal1 = new Vector3f();
+			if (i < lefts.size() - 1) {
+				Vector3f normal1h = new Vector3f();
+				normal1h.sub(lefts.get(i), lefts.get(i + 1));
+				Vector3f normal1v = new Vector3f();
+				normal1v.sub(lefts.get(i), rights.get(i));
+				normal1.cross(normal1v, normal1h);
+			}
+			
+			Vector3f normal2 = new Vector3f();
+			if (i > 1) {
+				Vector3f normal2h = new Vector3f();
+				normal2h.sub(lefts.get(i), lefts.get(i - 1));
+				Vector3f normal2v = new Vector3f();
+				normal2v.sub(lefts.get(i), rights.get(i));
+				normal2.cross(normal2h, normal2v);
+			}
+			Vector3f average = new Vector3f();
+			average.add(normal1, normal2);
+			average.normalize();
+			glNormal3f(average);
+			
+			glTexCoord2d(texs.get(i) - 8 * s.time, 0);
+			glVertex3f(lefts.get(i));
+			
+			glTexCoord2d(texs.get(i) - 8 * s.time, 1);
+			glVertex3f(rights.get(i));
+		}
 	}
 	
 	/** Step that is used when generating bends. */

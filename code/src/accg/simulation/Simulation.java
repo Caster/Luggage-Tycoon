@@ -14,7 +14,6 @@ import com.bulletphysics.collision.broadphase.DbvtBroadphase;
 import com.bulletphysics.collision.dispatch.CollisionConfiguration;
 import com.bulletphysics.collision.dispatch.CollisionDispatcher;
 import com.bulletphysics.collision.dispatch.DefaultCollisionConfiguration;
-import com.bulletphysics.collision.shapes.BoxShape;
 import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.collision.shapes.StaticPlaneShape;
 import com.bulletphysics.dynamics.DiscreteDynamicsWorld;
@@ -43,12 +42,6 @@ public class Simulation {
 	 * The JBullet world that simulates all objects.
 	 */
 	DiscreteDynamicsWorld world;
-	
-	/**
-	 * The shape of a piece of luggage, in a form JBullet can understand.
-	 * It is shared by all pieces of luggage.
-	 */
-	CollisionShape luggageShape;
 
 	public Simulation(State s) {
 		
@@ -58,9 +51,6 @@ public class Simulation {
         CollisionDispatcher dispatcher = new CollisionDispatcher(collisionConfig);
 		world = new DiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
 		world.setGravity(new Vector3f(0, 0, -9.81f));
-		
-		// initialize the luggage shape, that is shared for all luggage 
-		luggageShape = new BoxShape(new Vector3f(0.174f, 0.131f, 0.030f));
 		
 		// initialize walls and floor
 		CollisionShape floor = new StaticPlaneShape(new Vector3f(0, 0, 1), 0);
@@ -107,7 +97,16 @@ public class Simulation {
 	 * @param cb The block to be added.
 	 */
 	public void addBlock(ConveyorBlock cb) {
-		// TODO
+		RigidBody r = new RigidBody(0, null, ShapeFactory.getConveyorShape(cb));
+		Transform blockTransform = new Transform();
+		blockTransform.set(new Matrix4f(new float[] {
+				1, 0, 0, cb.getX(),
+				0, 1, 0, cb.getY(),
+				0, 0, 1, cb.getZ() / 4 + 1,
+				0, 0, 0, 1
+		}));
+		r.setWorldTransform(blockTransform);
+		world.addRigidBody(r);
 	}
 	
 	/**
@@ -171,9 +170,8 @@ public class Simulation {
 	private void addLuggageToPhysicsEngine(Luggage newLuggage) {
 		newLuggage.inPhysics = true;
 		MotionState motion = new LuggageMotionState(newLuggage);
-		Vector3f inertia = new Vector3f();
-		luggageShape.calculateLocalInertia(1, inertia);
-		RigidBody r = new RigidBody(1, motion, luggageShape, inertia);
+		RigidBody r = new RigidBody(1, motion, ShapeFactory.getLuggageShape(),
+				ShapeFactory.getLuggageShapeInertia());
 		world.addRigidBody(r);
 	}
 }

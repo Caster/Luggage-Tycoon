@@ -2,7 +2,7 @@ package accg.objects.blocks;
 
 import java.util.ArrayList;
 
-import org.lwjgl.util.vector.Vector3f;
+import javax.vecmath.Vector3f;
 
 import accg.objects.Luggage;
 
@@ -13,7 +13,7 @@ public class BendLeftConveyorBlock extends ConveyorBlock {
 	}
 	
 	@Override
-	protected ArrayList<Vector3f> getTopCoordinatesLeft() {
+	public ArrayList<Vector3f> getTopCoordinatesLeft() {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
 		for (int i = 0; i <= 32; i++) {
 			lefts.add(new Vector3f(-0.375f, -0.375f, 0.375f));
@@ -22,7 +22,7 @@ public class BendLeftConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	protected ArrayList<Vector3f> getTopCoordinatesRight() {
+	public ArrayList<Vector3f> getTopCoordinatesRight() {
 		ArrayList<Vector3f> rights = new ArrayList<>();
 		for (int i = 0; i <= 32; i++) {
 			rights.add(new Vector3f(
@@ -34,7 +34,7 @@ public class BendLeftConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	protected ArrayList<Double> getTopTextureCoordinates() {
+	public ArrayList<Double> getTopTextureCoordinates() {
 		ArrayList<Double> texs = new ArrayList<>();
 		for (int i = 0; i <= 32; i++) {
 			texs.add(i / 16.0);
@@ -43,7 +43,7 @@ public class BendLeftConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	protected ArrayList<Vector3f> getBottomCoordinatesLeft() {
+	public ArrayList<Vector3f> getBottomCoordinatesLeft() {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
 		for (int i = 0; i <= 32; i++) {
 			lefts.add(new Vector3f(-0.375f, -0.375f, 0.125f));
@@ -52,7 +52,7 @@ public class BendLeftConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	protected ArrayList<Vector3f> getBottomCoordinatesRight() {
+	public ArrayList<Vector3f> getBottomCoordinatesRight() {
 		ArrayList<Vector3f> rights = new ArrayList<>();
 		for (int i = 32; i >= 0; i--) {
 			rights.add(new Vector3f(
@@ -64,7 +64,7 @@ public class BendLeftConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	protected ArrayList<Double> getBottomTextureCoordinates() {
+	public ArrayList<Double> getBottomTextureCoordinates() {
 		ArrayList<Double> texs = new ArrayList<>();
 		for (int i = 0; i <= 32; i++) {
 			texs.add(i / 16.0);

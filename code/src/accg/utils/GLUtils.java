@@ -2,7 +2,7 @@ package accg.utils;
 
 import java.awt.Color;
 
-import org.lwjgl.util.vector.Vector3f;
+import javax.vecmath.Vector3f;
 
 /**
  * This class contains several static utility methods for working with OpenGL.

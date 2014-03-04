@@ -10,7 +10,8 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import org.lwjgl.util.vector.Vector3f;
+import javax.vecmath.Vector3f;
+
 
 /**
  * A loader for OBJ (Wavefront) models.

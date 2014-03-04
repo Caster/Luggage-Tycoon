@@ -2,7 +2,7 @@ package accg.objects.blocks;
 
 import java.util.ArrayList;
 
-import org.lwjgl.util.vector.Vector3f;
+import javax.vecmath.Vector3f;
 
 import accg.objects.Luggage;
 
@@ -21,7 +21,7 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	}
 	
 	@Override
-	protected ArrayList<Vector3f> getTopCoordinatesLeft() {
+	public ArrayList<Vector3f> getTopCoordinatesLeft() {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
 		addBendYZ(lefts, Math.PI, Math.PI / 2 + Math.atan2(1, 3), -0.375f,
 				-0.375f, 0.25f, 0.125);
@@ -31,7 +31,7 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	protected ArrayList<Vector3f> getTopCoordinatesRight() {
+	public ArrayList<Vector3f> getTopCoordinatesRight() {
 		ArrayList<Vector3f> rights = new ArrayList<>();
 		addBendYZ(rights, Math.PI, Math.PI / 2 + Math.atan2(1, 3), 0.375f,
 				-0.375f, 0.25f, 0.125);
@@ -41,7 +41,7 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	protected ArrayList<Double> getTopTextureCoordinates() {
+	public ArrayList<Double> getTopTextureCoordinates() {
 		ArrayList<Double> texs = new ArrayList<>();
 		double texCoord = addBendYZTextureCoordinates(texs, Math.PI,
 				Math.PI / 2 + Math.atan2(1, 3), 0.125, 0.0);
@@ -51,7 +51,7 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	protected ArrayList<Vector3f> getBottomCoordinatesLeft() {
+	public ArrayList<Vector3f> getBottomCoordinatesLeft() {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
 		addBendYZ(lefts, 0, -Math.PI / 2 + Math.atan2(1, 3), -0.375f, 0.375f,
 				0.5f, 0.125);
@@ -61,7 +61,7 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	protected ArrayList<Vector3f> getBottomCoordinatesRight() {
+	public ArrayList<Vector3f> getBottomCoordinatesRight() {
 		ArrayList<Vector3f> rights = new ArrayList<>();
 		addBendYZ(rights, 0, -Math.PI / 2 + Math.atan2(1, 3), 0.375f, 0.375f,
 				0.5f, 0.125);
@@ -71,7 +71,7 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	protected ArrayList<Double> getBottomTextureCoordinates() {
+	public ArrayList<Double> getBottomTextureCoordinates() {
 		ArrayList<Double> texs = new ArrayList<>();
 		double texCoord = addBendYZTextureCoordinates(texs,
 				0, -Math.PI / 2 + Math.atan2(1, 3), 0.125, 0.0);
