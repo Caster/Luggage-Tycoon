@@ -17,19 +17,40 @@ public class UtilsTest {
 		s.time = 42;
 		s.prevTime = 38;
 
-		assertFalse("time > mod: expected to return false", Utils.hasTimePassed(s, 1, 2));
+		assertFalse("time > mod: expected to return false",
+				Utils.hasTimePassed(s, 2, 3));
+		assertTrue("time == mod: expected to return true in this case",
+				Utils.hasTimePassed(s, 2, 2));
+		assertFalse("time < 0: expected to return false",
+				Utils.hasTimePassed(s, 2, -1));
 		
-		// TODO: check those test cases to see whether they are valid
-		// (I don't understand the documentation completely)
-		assertTrue("38 % 10 < 0 <= 42 % 10: expected to return true", Utils.hasTimePassed(s, 10, 0));
-		assertTrue("38 % 10 < 1 <= 42 % 10: expected to return true", Utils.hasTimePassed(s, 10, 1));
-		assertTrue("38 % 10 < 2 <= 42 % 10: expected to return true", Utils.hasTimePassed(s, 10, 2));
-		assertFalse("38 % 10 < 3 <= 42 % 10: expected to return false", Utils.hasTimePassed(s, 10, 3));
-		assertFalse("38 % 10 < 4 <= 42 % 10: expected to return false", Utils.hasTimePassed(s, 10, 4));
-		assertFalse("38 % 10 < 5 <= 42 % 10: expected to return false", Utils.hasTimePassed(s, 10, 5));
-		assertFalse("38 % 10 < 6 <= 42 % 10: expected to return false", Utils.hasTimePassed(s, 10, 6));
-		assertFalse("38 % 10 < 7 <= 42 % 10: expected to return false", Utils.hasTimePassed(s, 10, 7));
-		assertFalse("38 % 10 < 8 <= 42 % 10: expected to return false", Utils.hasTimePassed(s, 10, 8));
-		assertTrue("38 % 10 < 9 <= 42 % 10: expected to return true", Utils.hasTimePassed(s, 10, 9));
+		assertTrue("Between 38 and 42, the time was 0 % 10 at some point. "
+				+ "(Namely at 40.)", Utils.hasTimePassed(s, 10, 0));
+		assertTrue("Between 38 and 42, the time was 1 % 10 at some point. "
+				+ "(Namely at 41.)", Utils.hasTimePassed(s, 10, 1));
+		assertTrue("Between 38 and 42, the time was 2 % 10 at some point. "
+				+ "(Namely at 42.)", Utils.hasTimePassed(s, 10, 2));
+		assertFalse("Between 38 and 42, the time was at no point 3 % 10.",
+				Utils.hasTimePassed(s, 10, 3));
+		assertFalse("Between 38 and 42, the time was at no point 4 % 10.",
+				Utils.hasTimePassed(s, 10, 4));
+		assertFalse("Between 38 and 42, the time was at no point 5 % 10.",
+				Utils.hasTimePassed(s, 10, 5));
+		assertFalse("Between 38 and 42, the time was at no point 6 % 10.",
+				Utils.hasTimePassed(s, 10, 6));
+		assertFalse("Between 38 and 42, the time was at no point 7 % 10.",
+				Utils.hasTimePassed(s, 10, 7));
+		assertFalse("Between 38 and 42, the time was at no point 8 % 10.",
+				Utils.hasTimePassed(s, 10, 8));
+		assertTrue("Between 38 and 42, the time was 9 % 10 at some point. "
+				+ "(Namely at 39.)", Utils.hasTimePassed(s, 10, 9));
+		assertTrue("Between 38 and 42, the time was 10 % 10 at some point. "
+				+ "(Namely at 40, because 10 % 10 == 0 % 10, of course.)",
+				Utils.hasTimePassed(s, 10, 10));
+		
+		assertTrue("Between 38 and 42, the time was 9.5 % 10 at some point. "
+				+ "(Namely at 39.5.)", Utils.hasTimePassed(s, 10, 9.5));
+		assertTrue("Between 38 and 42, the time was 8.001 % 10 at some point. "
+				+ "(Namely at 38.001.)", Utils.hasTimePassed(s, 10, 8.001));
 	}
 }
