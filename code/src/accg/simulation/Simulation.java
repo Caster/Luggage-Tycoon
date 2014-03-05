@@ -4,6 +4,7 @@ import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 
 import accg.State;
+import accg.objects.DrawableObjectListener;
 import accg.objects.Luggage;
 import accg.objects.World;
 import accg.objects.blocks.ConveyorBlock;
@@ -168,10 +169,17 @@ public class Simulation {
 	 * @param newLuggage Luggage to add.
 	 */
 	private void addLuggageToPhysicsEngine(Luggage newLuggage) {
-		newLuggage.inPhysics = true;
 		MotionState motion = new LuggageMotionState(newLuggage);
-		RigidBody r = new RigidBody(1, motion, ShapeFactory.getLuggageShape(),
+		final RigidBody r = new RigidBody(1, motion, ShapeFactory.getLuggageShape(),
 				ShapeFactory.getLuggageShapeInertia());
 		world.addRigidBody(r);
+		
+		// make sure the body is cleaned up when the luggage is removed
+		newLuggage.addListener(new DrawableObjectListener() {
+			@Override
+			public void onDestroy() {
+				world.removeRigidBody(r);
+			}
+		});
 	}
 }

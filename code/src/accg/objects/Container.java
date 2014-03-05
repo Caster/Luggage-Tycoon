@@ -42,6 +42,9 @@ public class Container<E extends DrawableObject> extends DrawableObject implemen
 	 * Removes all objects from this container.
 	 */
 	public void clear() {
+		for (DrawableObject object : objects) {
+			object.onDestroy();
+		}
 		objects.clear();
 	}
 	

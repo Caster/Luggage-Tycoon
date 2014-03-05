@@ -1,21 +1,25 @@
 package accg.objects;
 
+import java.util.ArrayList;
+
 import accg.State;
-import accg.simulation.Simulation;
 
 /**
  * Any object that can be drawn in the 3D world.
  */
 public abstract class DrawableObject {
 	
+	/** List of listeners. */
+	protected ArrayList<DrawableObjectListener> listeners = new ArrayList<>();
+	
 	/**
-	 * Whether this object is represented in the physics engine.
+	 * Attach the given listener to this object.
 	 * 
-	 * New objects need to be announced to the {@link Simulation} class, so that
-	 * it can be put into the physics calculation. This flag indicates whether
-	 * that has happened or not.
+	 * @param dol The listener to attach to this object.
 	 */
-	public boolean inPhysics = false;
+	public void addListener(DrawableObjectListener dol) {
+		listeners.add(dol);
+	}
 	
 	/**
 	 * Draws the object. You should ensure to keep the OpenGL transform the same.
@@ -24,4 +28,15 @@ public abstract class DrawableObject {
 	 * program.
 	 */
 	public abstract void draw(State s);
+	
+	/**
+	 * This function should be called right before an object is removed from the
+	 * scene. Some cleanup may be done or a body in the simulation may be
+	 * removed. The default implementation notifies its listeners.
+	 */
+	public void onDestroy() {
+		for (DrawableObjectListener dol : listeners) {
+			dol.onDestroy();
+		}
+	}
 }
