@@ -17,7 +17,7 @@ import accg.objects.Luggage;
 public class AscendingConveyorBlock extends ConveyorBlock {
 
 	public AscendingConveyorBlock(int x, int y, int z, Orientation orientation) {
-		super(x, y, z, orientation);
+		super(x, y, z, orientation, ConveyorBlockType.ASCENDING);
 	}
 	
 	@Override

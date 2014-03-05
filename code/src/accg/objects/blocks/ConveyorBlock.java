@@ -26,6 +26,13 @@ import accg.objects.Luggage;
 public abstract class ConveyorBlock extends Block {
 	
 	/**
+	 * Type of this conveyor block.
+	 */
+	public enum ConveyorBlockType {
+		ASCENDING, BEND_LEFT, BEND_RIGHT, DESCENDING, STRAIGHT
+	};
+	
+	/**
 	 * Creates a new ConveyorBlock on the specified position.
 	 * 
 	 * @param x The x-coordinate.
@@ -33,8 +40,20 @@ public abstract class ConveyorBlock extends Block {
 	 * @param z The z-coordinate.
 	 * @param orientation The orientation of this block.
 	 */
-	public ConveyorBlock(int x, int y, int z, Orientation orientation) {
+	public ConveyorBlock(int x, int y, int z, Orientation orientation,
+			ConveyorBlockType type) {
 		super(x, y, z, orientation);
+		
+	}
+	
+	/**
+	 * Return the type of conveyor block. This is useful when determining its
+	 * shape for example and may spare an instanceof operation.
+	 * 
+	 * @return The type of conveyor block.
+	 */
+	public ConveyorBlockType getConveyorBlockType() {
+		return type;
 	}
 	
 	/**
@@ -296,4 +315,6 @@ public abstract class ConveyorBlock extends Block {
 	
 	/** Step that is used when generating bends. */
 	protected static final double RAD_STEP = Math.PI / 20;
+	/** Type of this block. */
+	protected ConveyorBlockType type;
 }

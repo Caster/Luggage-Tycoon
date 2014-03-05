@@ -1,8 +1,12 @@
 package accg.simulation;
 
+import java.util.HashMap;
+
 import javax.vecmath.Vector3f;
 
+import accg.objects.Block.Orientation;
 import accg.objects.blocks.ConveyorBlock;
+import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
 
 import com.bulletphysics.collision.shapes.BoxShape;
 import com.bulletphysics.collision.shapes.CollisionShape;
@@ -21,16 +25,49 @@ public class ShapeFactory {
 	 * The shape of the given conveyor belt block.
 	 * 
 	 * @param cb The conveyor belt block of which the shape must be known.
-	 * @return A shape that matches the type (not orientation) of the given
+	 * @return A shape that matches the type (and orientation) of the given
 	 *         conveyor belt block.
 	 */
 	public static CollisionShape getConveyorShape(ConveyorBlock cb) {
+		// make sure the look-up table is ready
+		if (conveyorBlockShapeMap == null) {
+			conveyorBlockShapeMap = new HashMap<>();
+		}
+		
+		// check the look-up table first
+		if (conveyorBlockShapeMap.containsKey(cb.getConveyorBlockType())) {
+			HashMap<Orientation, CollisionShape> map =
+					conveyorBlockShapeMap.get(cb.getConveyorBlockType());
+			if (map.containsKey(cb.getOrientation())) {
+				return map.get(cb.getOrientation());
+			}
+		}
+		
+		// we did not create the shape earlier, do it now
 		ObjectArrayList<Vector3f> points = new ObjectArrayList<>();
 		points.addAll(cb.getTopCoordinatesLeft());
 		points.addAll(cb.getTopCoordinatesRight());
 		points.addAll(cb.getBottomCoordinatesLeft());
 		points.addAll(cb.getBottomCoordinatesRight());
-		return new ConvexHullShape(points);
+		rotatePoints(cb.getOrientation(), points);
+		CollisionShape result = new ConvexHullShape(points);
+		
+		// store the result in the look-up table for future reference
+		HashMap<Orientation, CollisionShape> map;
+		boolean mustAdd = false;
+		if (!conveyorBlockShapeMap.containsKey(cb.getConveyorBlockType())) {
+			map = new HashMap<>();
+			mustAdd = true;
+		} else {
+			map = conveyorBlockShapeMap.get(cb.getConveyorBlockType());
+		}
+		map.put(cb.getOrientation(), result);
+		if (mustAdd) {
+			conveyorBlockShapeMap.put(cb.getConveyorBlockType(), map);
+		}
+		
+		// return result as well :)
+		return result;
 	}
 	
 	/**
@@ -63,6 +100,48 @@ public class ShapeFactory {
 		return luggageShapeInertia;
 	}
 	
+	/**
+	 * Assuming points centered around the origin in a 1x1 tile and in the UP
+	 * orientation, rotate them to match the given orientation. For example,
+	 * when LEFT is given, all points are rotate 90 degrees counter clockwise
+	 * around the origin.
+	 * 
+	 * @param orientation Wanted orientation.
+	 * @param points List of points to adapt.
+	 */
+	private static void rotatePoints(Orientation orientation,
+			ObjectArrayList<Vector3f> points) {
+		switch (orientation) {
+		default :
+			return;
+		case LEFT :
+			for (Vector3f p : points) {
+				float px = p.x;
+				p.x = -p.y;
+				p.y = px;
+			}
+			break;
+		case RIGHT :
+			for (Vector3f p : points) {
+				float px = p.x;
+				p.x = p.y;
+				p.y = -px;
+			}
+			break;
+		case DOWN :
+			for (Vector3f p : points) {
+				p.x = -p.x;
+				p.y = -p.y;
+			}
+			break;
+		}
+	}
+	
+	/** The shape of a piece of luggage. */
 	private static CollisionShape luggageShape;
+	/** Inertia vector of a piece of luggage. */ 
 	private static Vector3f luggageShapeInertia;
+	/** Map containing shapes of conveyor blocks. */
+	private static HashMap<ConveyorBlockType,
+			HashMap<Orientation, CollisionShape>> conveyorBlockShapeMap;
 }

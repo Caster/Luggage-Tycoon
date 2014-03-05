@@ -9,7 +9,7 @@ import accg.objects.Luggage;
 public class BendLeftConveyorBlock extends ConveyorBlock {
 
 	public BendLeftConveyorBlock(int x, int y, int z, Orientation orientation) {
-		super(x, y, z, orientation);
+		super(x, y, z, orientation, ConveyorBlockType.BEND_LEFT);
 	}
 	
 	@Override

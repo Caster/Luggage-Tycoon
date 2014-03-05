@@ -170,7 +170,7 @@ public class Simulation {
 	 */
 	private void addLuggageToPhysicsEngine(Luggage newLuggage) {
 		MotionState motion = new LuggageMotionState(newLuggage);
-		final RigidBody r = new RigidBody(20, motion, ShapeFactory.getLuggageShape(),
+		final RigidBody r = new RigidBody(1, motion, ShapeFactory.getLuggageShape(),
 				ShapeFactory.getLuggageShapeInertia());
 		world.addRigidBody(r);
 		
