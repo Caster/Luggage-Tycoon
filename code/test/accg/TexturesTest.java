@@ -2,14 +2,64 @@ package accg;
 
 import static org.junit.Assert.*;
 
+import java.io.PrintStream;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import org.newdawn.slick.opengl.Texture;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 
 public class TexturesTest {
-
+	
+	private static PrintStream sysErr;
+	private static PrintStream sysOut;
+	
+	private static void toggleOutput() {
+		if (sysErr == null) {
+			sysErr = System.err;
+			sysOut = System.out;
+			System.setErr(null);
+			System.setOut(null);
+		} else {
+			System.setErr(sysErr);
+			System.setOut(sysOut);
+			sysErr = null;
+			sysOut = null;
+		}
+	}
+	
+	private static Textures t;
+	
+	@BeforeClass
+	public static void setUp() {
+		try {
+			// suppress output
+			System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+			toggleOutput();
+			
+			// create display
+			Display.setDisplayMode(new DisplayMode(1, 1));
+			Display.create();
+			
+			// initialise test object
+			t = new Textures();
+			
+			// re-enable output
+			toggleOutput();
+		} catch (LWJGLException e) {
+			fail("Could not initialise LWJGL/OpenGL context.");
+		}
+	}
+	
+	@AfterClass
+	public static void tearDown() {
+		Display.destroy();
+	}
+	
 	@Test
 	public void testTextureLoading() {
-		Textures t = new Textures();
 		assertNotNull("iconExit texture is not loaded", t.iconExit);
 		assertNotNull("iconConfigure texture is not loaded", t.iconConfigure);
 		assertNotNull("iconOpen texture is not loaded", t.iconOpen);
