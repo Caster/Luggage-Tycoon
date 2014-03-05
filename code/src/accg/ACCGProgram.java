@@ -35,6 +35,12 @@ import accg.gui.ToggleMenuBarItem;
 import accg.objects.World;
 import accg.simulation.Simulation;
 
+/**
+ * The main class for the ACCG program.
+ * 
+ * @author Thom Castermans
+ * @author Willem Sonke
+ */
 public class ACCGProgram {
 	
 	private static final int DEF_MENU_ALIGNMENT = 1;
@@ -43,10 +49,13 @@ public class ACCGProgram {
 	
 	/** If the escape key has been pressed. */
 	private boolean escPressed = false;
+	
 	/** Possible {@link DisplayMode} which the program can use. */
 	private DisplayMode windowedMode, fullScreenMode;
+	
 	/** Camera that provides an easy-to-use API for changing viewpoint and such. */
 	private Camera camera;
+	
 	/**
 	 * Menu bars used in the program.
 	 * 
@@ -57,11 +66,13 @@ public class ACCGProgram {
 	 *  4: menu presentation menu  (child of 1).
 	 */
 	private MenuBar[] menuBars;
+	
 	/**
 	 * Point where mouse was pressed. Is compared to point where mouse
 	 * is released to see if it was a click or not.
 	 */
 	private Point clickedPoint;
+	
 	/**
 	 * Preferences object. Used to store user preferences persistently.
 	 */

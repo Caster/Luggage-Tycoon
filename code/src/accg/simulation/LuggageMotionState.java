@@ -32,7 +32,7 @@ public class LuggageMotionState extends MotionState {
 	
 	@Override
 	public Transform getWorldTransform(Transform out) {
-		out.set(this.lugPos);		
+		out.set(this.lugPos);
 		return out;
 	}
 	

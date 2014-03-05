@@ -10,11 +10,19 @@ import accg.simulation.Simulation;
  */
 public class State {
 	
-	/** Enumeration of the modes in which the program can be. */
+	/**
+	 * Enumeration of the modes in which the program can be.
+	 */
 	public enum ProgramMode {
-		/** In this mode, the user can place and remove blocks. */
+		
+		/**
+		 * In this mode, the user can place and remove blocks.
+		 */
 		BUILDING_MODE,
-		/** In this mode, luggage movement is simulated over the blocks. */
+		
+		/**
+		 * In this mode, luggage movement is simulated over the blocks.
+		 */
 		SIMULATION_MODE;
 	};
 	

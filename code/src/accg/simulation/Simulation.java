@@ -43,7 +43,11 @@ public class Simulation {
 	 * The JBullet world that simulates all objects.
 	 */
 	DiscreteDynamicsWorld world;
-
+	
+	/**
+	 * Creates a new simulation.
+	 * @param s The {@link State} object.
+	 */
 	public Simulation(State s) {
 		
 		BroadphaseInterface broadphase = new DbvtBroadphase();

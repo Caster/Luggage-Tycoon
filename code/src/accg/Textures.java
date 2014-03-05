@@ -6,6 +6,9 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
+/**
+ * This class contains the textures for the application.
+ */
 public class Textures {
 	
 	// icon textures
@@ -33,6 +36,9 @@ public class Textures {
 	public Texture floorSimulationMode;
 	public Texture wall;
 	
+	/**
+	 * Creates a {@link Textures} object and reads in all of the textures.
+	 */
 	public Textures() {
 		try {
 			// icon textures

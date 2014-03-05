@@ -103,7 +103,7 @@ public class ShapeFactory {
 	/**
 	 * Assuming points centered around the origin in a 1x1 tile and in the UP
 	 * orientation, rotate them to match the given orientation. For example,
-	 * when LEFT is given, all points are rotate 90 degrees counter clockwise
+	 * when LEFT is given, all points are rotated 90 degrees counter-clockwise
 	 * around the origin.
 	 * 
 	 * @param orientation Wanted orientation.
