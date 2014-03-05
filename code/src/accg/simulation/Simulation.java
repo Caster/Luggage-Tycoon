@@ -119,7 +119,7 @@ public class Simulation {
 	 */
 	public void addObjects(State s) {
 		if (Utils.hasTimePassed(s, 1.0, 0)) {
-			Luggage newLuggage = new Luggage((float) (2.75 + 0.5 * Math.random()),
+			Luggage newLuggage = new Luggage((float) (1.75 + 0.5 * Math.random()),
 					(float) (6.75 + 0.5 * Math.random()), 6);
 			s.world.luggage.addObject(newLuggage);
 			addLuggageToPhysicsEngine(newLuggage);
@@ -170,7 +170,7 @@ public class Simulation {
 	 */
 	private void addLuggageToPhysicsEngine(Luggage newLuggage) {
 		MotionState motion = new LuggageMotionState(newLuggage);
-		final RigidBody r = new RigidBody(1, motion, ShapeFactory.getLuggageShape(),
+		final RigidBody r = new RigidBody(20, motion, ShapeFactory.getLuggageShape(),
 				ShapeFactory.getLuggageShapeInertia());
 		world.addRigidBody(r);
 		

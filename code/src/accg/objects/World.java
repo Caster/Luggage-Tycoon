@@ -48,6 +48,7 @@ public class World extends Container<DrawableObject> {
 		bc.setBlock(new StraightConveyorBlock(1, 1, 0, Orientation.LEFT));
 		bc.setBlock(new BendRightConveyorBlock(0, 1, 0, Orientation.LEFT));*/
 
+		addBlock(new StraightConveyorBlock(2, 7, 16, Orientation.RIGHT));
 		addBlock(new StraightConveyorBlock(3, 7, 15, Orientation.DOWN));
 		addBlock(new StraightConveyorBlock(3, 6, 14, Orientation.DOWN));
 		addBlock(new StraightConveyorBlock(3, 5, 13, Orientation.DOWN));
