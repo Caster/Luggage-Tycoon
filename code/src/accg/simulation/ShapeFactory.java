@@ -5,6 +5,7 @@ import java.util.HashMap;
 import javax.vecmath.Vector3f;
 
 import accg.objects.Block.Orientation;
+import accg.objects.Luggage;
 import accg.objects.blocks.ConveyorBlock;
 import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
 
@@ -94,7 +95,7 @@ public class ShapeFactory {
 	public static Vector3f getLuggageShapeInertia() {
 		if (luggageShapeInertia == null) {
 			luggageShapeInertia = new Vector3f();
-			getLuggageShape().calculateLocalInertia(1, luggageShapeInertia);
+			getLuggageShape().calculateLocalInertia(Luggage.WEIGHT, luggageShapeInertia);
 		}
 		
 		return luggageShapeInertia;

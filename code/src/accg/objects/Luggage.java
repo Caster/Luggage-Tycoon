@@ -20,6 +20,11 @@ import accg.utils.OBJModel;
 public class Luggage extends DrawableObject {
 
 	/**
+	 * The weight of a piece of luggage, can be used in the simulation.
+	 */
+	public static final float WEIGHT = 20f;
+	
+	/**
 	 * The matrix containing the transformation (translation and rotation)
 	 * of this luggage item.
 	 */

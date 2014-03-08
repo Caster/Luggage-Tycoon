@@ -42,7 +42,7 @@ public abstract class ConveyorBlock extends Block {
 	public ConveyorBlock(int x, int y, int z, Orientation orientation,
 			ConveyorBlockType type) {
 		super(x, y, z, orientation);
-		
+		this.type = type;
 	}
 	
 	/**

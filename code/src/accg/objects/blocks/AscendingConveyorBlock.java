@@ -81,10 +81,10 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	@Override
 	public Vector3f getLinearVelocity() {
 		switch (getOrientation()) {
-		case DOWN :  return new Vector3f(0, -1, 1);
-		case LEFT :  return new Vector3f(-1, 0, 1);
-		case RIGHT : return new Vector3f( 1, 0, 1);
-		default :    return new Vector3f(0,  1, 1);
+		case DOWN :  return new Vector3f(0, -1, 0);
+		case LEFT :  return new Vector3f(-1, 0, 0);
+		case RIGHT : return new Vector3f( 1, 0, 0);
+		default :    return new Vector3f(0,  1, 0);
 		}
 	}
 }

@@ -112,6 +112,7 @@ public class Simulation {
 				0, 0, 0, 1
 		}));
 		r.setWorldTransform(blockTransform);
+		r.setFriction(5f);
 		r.setLinearVelocity(cb.getLinearVelocity());
 		world.addRigidBody(r);
 	}
@@ -130,9 +131,9 @@ public class Simulation {
 			s.world.luggage.addObject(newLuggage);
 			addLuggageToPhysicsEngine(newLuggage);
 		}
-		if (Utils.hasTimePassed(s, 1.0, 0.5)) {
+		if (Utils.hasTimePassed(s, 5, 1)) {
 			Luggage newLuggage = new Luggage((float) (5.75 + 0.5 * Math.random()),
-					(float) (8.75 + 0.5 * Math.random()), 4);
+					(float) (9.75 + 0.5 * Math.random()), 2f);
 			s.world.luggage.addObject(newLuggage);
 			addLuggageToPhysicsEngine(newLuggage);
 		}
@@ -176,8 +177,9 @@ public class Simulation {
 	 */
 	private void addLuggageToPhysicsEngine(Luggage newLuggage) {
 		MotionState motion = new LuggageMotionState(newLuggage);
-		final RigidBody r = new RigidBody(1, motion, ShapeFactory.getLuggageShape(),
+		final RigidBody r = new RigidBody(Luggage.WEIGHT, motion, ShapeFactory.getLuggageShape(),
 				ShapeFactory.getLuggageShapeInertia());
+		r.setFriction(2f);
 		world.addRigidBody(r);
 		
 		// make sure the body is cleaned up when the luggage is removed
