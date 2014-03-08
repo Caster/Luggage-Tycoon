@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import javax.vecmath.Vector3f;
 
-import accg.objects.Luggage;
-
 /**
  * An {@code AscendingConveyorBlock} is a conveyor block that tilts luggage up.
  * 
@@ -81,18 +79,12 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	public void furtherPosition(Luggage l, double step) {
-		// TODO: Reconsider this API
-	}
-
-	@Override
-	public boolean canTakeLuggage(Luggage l) {
-		// TODO: Reconsider this API
-		return false;
-	}
-
-	@Override
-	public void takeLuggage(Luggage l) {
-		// TODO: Reconsider this API
+	public Vector3f getLinearVelocity() {
+		switch (getOrientation()) {
+		case DOWN :  return new Vector3f(0, -1, 1);
+		case LEFT :  return new Vector3f(-1, 0, 1);
+		case RIGHT : return new Vector3f( 1, 0, 1);
+		default :    return new Vector3f(0,  1, 1);
+		}
 	}
 }

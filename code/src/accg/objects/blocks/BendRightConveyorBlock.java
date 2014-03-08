@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import javax.vecmath.Vector3f;
 
-import accg.objects.Luggage;
-
 public class BendRightConveyorBlock extends ConveyorBlock {
 
 	public BendRightConveyorBlock(int x, int y, int z, Orientation orientation) {
@@ -73,20 +71,12 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	public void furtherPosition(Luggage l, double step) {
-		// TODO Automatisch gegenereerde methodestub
-		
-	}
-
-	@Override
-	public boolean canTakeLuggage(Luggage l) {
-		// TODO Automatisch gegenereerde methodestub
-		return false;
-	}
-
-	@Override
-	public void takeLuggage(Luggage l) {
-		// TODO Automatisch gegenereerde methodestub
-		
+	public Vector3f getLinearVelocity() {
+		switch (getOrientation()) {
+		case DOWN :  return new Vector3f(0, -1, 0);
+		case LEFT :  return new Vector3f(-1, 0, 0);
+		case RIGHT : return new Vector3f( 1, 0, 0);
+		default :    return new Vector3f(0,  1, 0);
+		}
 	}
 }

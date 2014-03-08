@@ -50,6 +50,7 @@ public class Simulation {
 	 */
 	public Simulation(State s) {
 		
+		// initialize JBullet world and solvers
 		BroadphaseInterface broadphase = new DbvtBroadphase();
 		ConstraintSolver solver = new SequentialImpulseConstraintSolver();
 		CollisionConfiguration collisionConfig = new DefaultCollisionConfiguration();
@@ -111,6 +112,7 @@ public class Simulation {
 				0, 0, 0, 1
 		}));
 		r.setWorldTransform(blockTransform);
+		r.setLinearVelocity(cb.getLinearVelocity());
 		world.addRigidBody(r);
 	}
 	

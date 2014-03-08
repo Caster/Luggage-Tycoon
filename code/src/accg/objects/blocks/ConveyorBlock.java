@@ -11,7 +11,6 @@ import org.lwjgl.util.glu.Cylinder;
 
 import accg.State;
 import accg.objects.Block;
-import accg.objects.Luggage;
 
 /**
  * Generic super class of all conveyor blocks. This class is overridden by the
@@ -55,6 +54,14 @@ public abstract class ConveyorBlock extends Block {
 	public ConveyorBlockType getConveyorBlockType() {
 		return type;
 	}
+	
+	/**
+	 * Return the linear velocity that should be applied to objects in contact
+	 * with this conveyor belt. Used in the simulation.
+	 * 
+	 * @return The linear velocity of this ConveyorBlock.
+	 */
+	public abstract Vector3f getLinearVelocity();
 	
 	/**
 	 * Returns a list of the coordinates on the left side of the top part
@@ -105,48 +112,6 @@ public abstract class ConveyorBlock extends Block {
 	 * @return An ArrayList of the texture coordinates.
 	 */
 	public abstract ArrayList<Double> getBottomTextureCoordinates();
-	
-	/**
-	 * Increases the position of the luggage.
-	 * 
-	 * This method may do two things:
-	 * 
-	 *  * update the position of the luggage;
-	 *  * "drop" the luggage (set {@link Luggage#supportingBlock} to <code>null</code>).
-	 * 
-	 * It may be assumed that the luggage is indeed on {@link Luggage#supportingBlock}.
-	 * 
-	 * This method is used for the simulation.
-	 * 
-	 * @param l The luggage item, which also contains data like the current
-	 * position on this conveyor belt.
-	 * @param step The step size in seconds.
-	 */
-	public abstract void furtherPosition(Luggage l, double step);
-	
-	/**
-	 * Checks whether this conveyor belt is able to take the given luggage.
-	 * 
-	 * We say that a conveyor belt can take luggage if the luggage is in such a position
-	 * that it "seems to be approximately" on the conveyor belt. In that situation,
-	 * the luggage can be moved exactly to the conveyor belt for the next simulation
-	 * step (with the method {@link #takeLuggage(Luggage)}).
-	 * 
-	 * @param l The luggage to check.
-	 * @return Whether the luggage can be taken (<code>true</code>) or not
-	 * (<code>false</code>).
-	 */
-	public abstract boolean canTakeLuggage(Luggage l);
-	
-	/**
-	 * Takes the luggage. That is, puts the luggage exactly on the conveyor belt.
-	 * This should only be done when {@link #canTakeLuggage(Luggage)} is <code>true</code>,
-	 * else the luggage could move a lot between two simulation steps, causing a
-	 * "jump".
-	 * 
-	 * @param l The luggage to take.
-	 */
-	public abstract void takeLuggage(Luggage l);
 	
 	@Override
 	public void draw(State s) {
