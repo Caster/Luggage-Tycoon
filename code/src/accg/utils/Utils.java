@@ -1,11 +1,19 @@
 package accg.utils;
 
+import java.util.AbstractList;
+
+import javax.vecmath.Vector3f;
+
 import accg.State;
+import accg.objects.Block.Orientation;
 
 /**
  * This class contains several static utility methods for general purposes.
  */
 public class Utils {
+	
+	/** Epsilon that can be used in comparisons. */
+	public static final float EPSILON = 0.0001f;
 	
 	/**
 	 * Returns if the time has passed a certain value. This works by considering
@@ -34,4 +42,40 @@ public class Utils {
 		return ((prev < time && time <= mod) || (0 <= time && time <= curr));
 	}
 	
+	/**
+	 * Assuming points centered around the origin in a 1x1 tile and in the UP
+	 * orientation, rotate them to match the given orientation. For example,
+	 * when LEFT is given, all points are rotated 90 degrees counter-clockwise
+	 * around the origin.
+	 * 
+	 * @param orientation Wanted orientation.
+	 * @param points List of points to adapt.
+	 */
+	public static void rotatePoints(Orientation orientation,
+			AbstractList<Vector3f> points) {
+		switch (orientation) {
+		default :
+			return;
+		case LEFT :
+			for (Vector3f p : points) {
+				float px = p.x;
+				p.x = -p.y;
+				p.y = px;
+			}
+			break;
+		case RIGHT :
+			for (Vector3f p : points) {
+				float px = p.x;
+				p.x = p.y;
+				p.y = -px;
+			}
+			break;
+		case DOWN :
+			for (Vector3f p : points) {
+				p.x = -p.x;
+				p.y = -p.y;
+			}
+			break;
+		}
+	}
 }

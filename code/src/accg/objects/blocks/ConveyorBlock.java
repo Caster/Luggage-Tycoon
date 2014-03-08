@@ -11,6 +11,7 @@ import org.lwjgl.util.glu.Cylinder;
 
 import accg.State;
 import accg.objects.Block;
+import accg.utils.Utils;
 
 /**
  * Generic super class of all conveyor blocks. This class is overridden by the
@@ -185,6 +186,28 @@ public abstract class ConveyorBlock extends Block {
 	}
 
 	/**
+	 * Add coordinates to the given list that form a bend in the XY plane.
+	 * 
+	 * @param list The list to which points should be added.
+	 * @param radStart Start in radians of bend.
+	 * @param radEnd End in radians of bend.
+	 * @paramzxCoord Z-coordinate of all added points.
+	 * @param xOffset Offset for all generated X-coordinates.
+	 * @param yOffset Offset for all generated Y-coordinates.
+	 * @param rScale Scale factor for the radius of the bend.
+	 */
+	protected void addBendXY(ArrayList<Vector3f> list, double radStart,
+			double radEnd, float zCoord, float xOffset, float yOffset, double rScale) {
+		for (double rad = radStart; (radStart < radEnd ? rad < radEnd : rad > radEnd);
+				rad += Math.signum(radEnd - radStart) * RAD_STEP) {
+			list.add(new Vector3f((float) (rScale * Math.cos(rad)) + xOffset,
+					(float) (rScale * Math.sin(rad)) + yOffset, zCoord));
+		}
+		list.add(new Vector3f((float) (rScale * Math.cos(radEnd)) + xOffset,
+				(float) (rScale * Math.sin(radEnd)) + yOffset, zCoord));
+	}
+	
+	/**
 	 * Add coordinates to the given list that form a bend in the YZ plane.
 	 * 
 	 * @param list The list to which points should be added.
@@ -209,7 +232,8 @@ public abstract class ConveyorBlock extends Block {
 	/**
 	 * Add texture coordinates to the given list of texture coordinates that would
 	 * match a bend created with
-	 * {@link #addBendYZ(ArrayList, double, double, float, float, float, double)}.
+	 * {@link #addBendYZ(ArrayList, double, double, float, float, float, double)} or
+	 * {@link #addBendXY(ArrayList, double, double, float, float, float, double)}.
 	 * Note that it is used that a distance of 0.75 maps to a distance of 2 in
 	 * texture coordinates.
 	 * 
@@ -220,12 +244,12 @@ public abstract class ConveyorBlock extends Block {
 	 * @param coordStart Offset where coordinates should start.
 	 * @return Last added texture coordinate.
 	 */
-	protected double addBendYZTextureCoordinates(ArrayList<Double> list,
+	protected double addBendTextureCoordinates(ArrayList<Double> list,
 			double radStart, double radEnd, double rScale, double coordStart) {
 		double coord = coordStart;
-		// we map 6 texture coordinates to a full circle, so we can calculate
-		// the part we map to the bend we are going to texture now
-		double coordSum = Math.abs(radStart - radEnd) / (2 * Math.PI) * 6;
+		// we map 6 texture coordinates to a full circle with a radius of 0.125,
+		// so we can calculate the part we map to the bend we are going to texture now
+		double coordSum = Math.abs(radStart - radEnd) / (2 * Math.PI) * (rScale / 0.125) * 6;
 		int numSteps = (int) Math.ceil(Math.abs(radStart - radEnd) / RAD_STEP);
 		for (double rad = radStart; (radStart < radEnd ? rad < radEnd : rad > radEnd);
 				rad += Math.signum(radEnd - radStart) * RAD_STEP) {
@@ -251,18 +275,28 @@ public abstract class ConveyorBlock extends Block {
 			Vector3f normal1 = new Vector3f();
 			if (i < lefts.size() - 1) {
 				Vector3f normal1h = new Vector3f();
-				normal1h.sub(lefts.get(i), lefts.get(i + 1));
 				Vector3f normal1v = new Vector3f();
-				normal1v.sub(lefts.get(i), rights.get(i));
+				if (!lefts.get(i).epsilonEquals(lefts.get(i + 1), Utils.EPSILON)) {
+					normal1h.sub(lefts.get(i), lefts.get(i + 1));
+					normal1v.sub(lefts.get(i), rights.get(i));
+				} else {
+					normal1h.sub(rights.get(i + 1), rights.get(i));
+					normal1v.sub(rights.get(i), lefts.get(i));
+				}
 				normal1.cross(normal1v, normal1h);
 			}
 			
 			Vector3f normal2 = new Vector3f();
 			if (i > 1) {
 				Vector3f normal2h = new Vector3f();
-				normal2h.sub(lefts.get(i), lefts.get(i - 1));
 				Vector3f normal2v = new Vector3f();
-				normal2v.sub(lefts.get(i), rights.get(i));
+				if (!lefts.get(i).epsilonEquals(lefts.get(i - 1), Utils.EPSILON)) {
+					normal2h.sub(lefts.get(i), lefts.get(i - 1));
+					normal2v.sub(lefts.get(i), rights.get(i));
+				} else {
+					normal2h.sub(rights.get(i - 1), rights.get(i));
+					normal2v.sub(rights.get(i), lefts.get(i));
+				}
 				normal2.cross(normal2h, normal2v);
 			}
 			Vector3f average = new Vector3f();

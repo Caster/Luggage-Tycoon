@@ -2,7 +2,13 @@ package accg.objects;
 
 import accg.State;
 import accg.objects.Block.Orientation;
-import accg.objects.blocks.*;
+import accg.objects.blocks.AscendingConveyorBlock;
+import accg.objects.blocks.BendLeftConveyorBlock;
+import accg.objects.blocks.BendRightConveyorBlock;
+import accg.objects.blocks.ConveyorBlock;
+import accg.objects.blocks.DescendingConveyorBlock;
+import accg.objects.blocks.StraightConveyorBlock;
+import accg.simulation.Simulation;
 
 /**
  * The world that contains all other objects.
@@ -70,6 +76,24 @@ public class World extends Container<DrawableObject> {
 		addBlock(new AscendingConveyorBlock(8, 10, 3, Orientation.DOWN));
 		addBlock(new StraightConveyorBlock(8, 9, 3, Orientation.LEFT));
 		addBlock(new AscendingConveyorBlock(7, 9, 3, Orientation.LEFT));
+		
+		addBlock(new BendRightConveyorBlock(11, 9, 3, Orientation.LEFT));
+		addBlock(new StraightConveyorBlock(11, 10, 3, Orientation.UP));
+		addBlock(new BendRightConveyorBlock(11, 11, 3, Orientation.UP));
+		addBlock(new StraightConveyorBlock(12, 11, 3, Orientation.RIGHT));
+		addBlock(new BendRightConveyorBlock(13, 11, 3, Orientation.RIGHT));
+		addBlock(new StraightConveyorBlock(13, 10, 3, Orientation.DOWN));
+		addBlock(new BendRightConveyorBlock(13, 9, 3, Orientation.DOWN));
+		addBlock(new StraightConveyorBlock(12, 9, 3, Orientation.LEFT));
+		
+		addBlock(new BendLeftConveyorBlock(11, 4, 3, Orientation.DOWN));
+		addBlock(new StraightConveyorBlock(11, 5, 3, Orientation.DOWN));
+		addBlock(new BendLeftConveyorBlock(11, 6, 3, Orientation.LEFT));
+		addBlock(new StraightConveyorBlock(12, 6, 3, Orientation.LEFT));
+		addBlock(new BendLeftConveyorBlock(13, 6, 3, Orientation.UP));
+		addBlock(new StraightConveyorBlock(13, 5, 3, Orientation.UP));
+		addBlock(new BendLeftConveyorBlock(13, 4, 3, Orientation.RIGHT));
+		addBlock(new StraightConveyorBlock(12, 4, 3, Orientation.RIGHT));
 		addObject(bc);
 		
 		luggage = new Container<>();

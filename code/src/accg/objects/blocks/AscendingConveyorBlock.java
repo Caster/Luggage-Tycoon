@@ -41,9 +41,9 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	@Override
 	public ArrayList<Double> getTopTextureCoordinates() {
 		ArrayList<Double> texs = new ArrayList<>();
-		double texCoord = addBendYZTextureCoordinates(texs, Math.PI,
+		double texCoord = addBendTextureCoordinates(texs, Math.PI,
 				Math.PI / 2 + Math.atan2(1, 3), 0.125, 0.0);
-		addBendYZTextureCoordinates(texs, Math.PI / 2 + Math.atan2(1, 3), 0,
+		addBendTextureCoordinates(texs, Math.PI / 2 + Math.atan2(1, 3), 0,
 				0.125, texCoord + 6.0);
 		return texs;
 	}
@@ -71,9 +71,9 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	@Override
 	public ArrayList<Double> getBottomTextureCoordinates() {
 		ArrayList<Double> texs = new ArrayList<>();
-		double texCoord = addBendYZTextureCoordinates(texs,
+		double texCoord = addBendTextureCoordinates(texs,
 				0, -Math.PI / 2 + Math.atan2(1, 3), 0.125, 0.0);
-		addBendYZTextureCoordinates(texs, Math.PI * 3 / 2 + Math.atan2(1, 3),
+		addBendTextureCoordinates(texs, Math.PI * 3 / 2 + Math.atan2(1, 3),
 				Math.PI, 0.125, texCoord + 6.0);
 		return texs;
 	}

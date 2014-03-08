@@ -8,6 +8,7 @@ import accg.objects.Block.Orientation;
 import accg.objects.Luggage;
 import accg.objects.blocks.ConveyorBlock;
 import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
+import accg.utils.Utils;
 
 import com.bulletphysics.collision.shapes.BoxShape;
 import com.bulletphysics.collision.shapes.CollisionShape;
@@ -50,7 +51,7 @@ public class ShapeFactory {
 		points.addAll(cb.getTopCoordinatesRight());
 		points.addAll(cb.getBottomCoordinatesLeft());
 		points.addAll(cb.getBottomCoordinatesRight());
-		rotatePoints(cb.getOrientation(), points);
+		Utils.rotatePoints(cb.getOrientation(), points);
 		CollisionShape result = new ConvexHullShape(points);
 		
 		// store the result in the look-up table for future reference
@@ -99,43 +100,6 @@ public class ShapeFactory {
 		}
 		
 		return luggageShapeInertia;
-	}
-	
-	/**
-	 * Assuming points centered around the origin in a 1x1 tile and in the UP
-	 * orientation, rotate them to match the given orientation. For example,
-	 * when LEFT is given, all points are rotated 90 degrees counter-clockwise
-	 * around the origin.
-	 * 
-	 * @param orientation Wanted orientation.
-	 * @param points List of points to adapt.
-	 */
-	private static void rotatePoints(Orientation orientation,
-			ObjectArrayList<Vector3f> points) {
-		switch (orientation) {
-		default :
-			return;
-		case LEFT :
-			for (Vector3f p : points) {
-				float px = p.x;
-				p.x = -p.y;
-				p.y = px;
-			}
-			break;
-		case RIGHT :
-			for (Vector3f p : points) {
-				float px = p.x;
-				p.x = p.y;
-				p.y = -px;
-			}
-			break;
-		case DOWN :
-			for (Vector3f p : points) {
-				p.x = -p.x;
-				p.y = -p.y;
-			}
-			break;
-		}
 	}
 	
 	/** The shape of a piece of luggage. */
