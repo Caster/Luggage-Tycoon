@@ -77,6 +77,11 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 				Math.PI, 0.125, texCoord + 6.0);
 		return texs;
 	}
+	
+	@Override
+	public Vector3f getAngularVelocity() {
+		return new Vector3f(0, 0, 0);
+	}
 
 	@Override
 	public Vector3f getLinearVelocity() {

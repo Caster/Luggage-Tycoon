@@ -57,6 +57,14 @@ public abstract class ConveyorBlock extends Block {
 	}
 	
 	/**
+	 * Return the angular velocity that should be applied to objects in contact
+	 * with this conveyor belt. Used in the simulation.
+	 * 
+	 * @return The angular velocity of this ConveyorBlock.
+	 */
+	public abstract Vector3f getAngularVelocity();
+	
+	/**
 	 * Return the linear velocity that should be applied to objects in contact
 	 * with this conveyor belt. Used in the simulation.
 	 * 

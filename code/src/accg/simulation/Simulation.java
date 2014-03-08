@@ -113,6 +113,7 @@ public class Simulation {
 		}));
 		r.setWorldTransform(blockTransform);
 		r.setFriction(1.5f);
+		r.setAngularVelocity(cb.getAngularVelocity());
 		r.setLinearVelocity(cb.getLinearVelocity());
 		world.addRigidBody(r);
 	}
@@ -133,7 +134,19 @@ public class Simulation {
 		}
 		if (Utils.hasTimePassed(s, 5, 1)) {
 			Luggage newLuggage = new Luggage((float) (5.75 + 0.5 * Math.random()),
+					(float) (8.75 + 0.5 * Math.random()), 2f);
+			s.world.luggage.addObject(newLuggage);
+			addLuggageToPhysicsEngine(newLuggage);
+		}
+		if (Utils.hasTimePassed(s, 5, 3)) {
+			Luggage newLuggage = new Luggage((float) (10.75 + 0.5 * Math.random()),
 					(float) (9.75 + 0.5 * Math.random()), 2f);
+			s.world.luggage.addObject(newLuggage);
+			addLuggageToPhysicsEngine(newLuggage);
+		}
+		if (Utils.hasTimePassed(s, 5, 4)) {
+			Luggage newLuggage = new Luggage((float) (10.75 + 0.5 * Math.random()),
+					(float) (4.75 + 0.5 * Math.random()), 2f);
 			s.world.luggage.addObject(newLuggage);
 			addLuggageToPhysicsEngine(newLuggage);
 		}

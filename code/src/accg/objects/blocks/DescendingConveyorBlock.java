@@ -71,6 +71,11 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
+	public Vector3f getAngularVelocity() {
+		return new Vector3f(0, 0, 0);
+	}
+	
+	@Override
 	public Vector3f getLinearVelocity() {
 		switch (getOrientation()) {
 		case DOWN :  return new Vector3f(0, -1, 0);
