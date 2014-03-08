@@ -112,7 +112,7 @@ public class Simulation {
 				0, 0, 0, 1
 		}));
 		r.setWorldTransform(blockTransform);
-		r.setFriction(5f);
+		r.setFriction(1.5f);
 		r.setLinearVelocity(cb.getLinearVelocity());
 		world.addRigidBody(r);
 	}
@@ -179,7 +179,7 @@ public class Simulation {
 		MotionState motion = new LuggageMotionState(newLuggage);
 		final RigidBody r = new RigidBody(Luggage.WEIGHT, motion, ShapeFactory.getLuggageShape(),
 				ShapeFactory.getLuggageShapeInertia());
-		r.setFriction(2f);
+		r.setFriction(1.1f);
 		world.addRigidBody(r);
 		
 		// make sure the body is cleaned up when the luggage is removed
