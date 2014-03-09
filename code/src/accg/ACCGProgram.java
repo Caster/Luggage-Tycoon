@@ -197,7 +197,15 @@ public class ACCGProgram {
 			shadowColor.flip();
 			glMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, shadowColor);
 			glPushMatrix();
-			glScalef(1, 1, 0);
+			FloatBuffer shadowMatrix = BufferUtils.createFloatBuffer(16);
+			shadowMatrix.put(new float[] {
+					1, 0, 0, 0,
+					0, 1, 0, 0,
+					-0.2f, 0.2f, 0, 0,
+					0, 0, 0, 1
+			});
+			shadowMatrix.flip();
+			glMultMatrix(shadowMatrix);
 			s.world.draw(s);
 			glPopMatrix();
 			glEnable(GL_COLOR_MATERIAL);
