@@ -1,5 +1,7 @@
 package accg.simulation;
 
+import java.util.Iterator;
+
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 
@@ -179,6 +181,17 @@ public class Simulation {
 		world.stepSimulation(s.time - this.time,
 				(int) (Math.ceil((s.time - this.time) / dt) + 1), dt);
 		this.time = s.time;
+		
+		// remove luggage that is on the floor
+		// TODO is there a better way to do this (using Bullet)?
+		Iterator<Luggage> it = s.world.luggage.iterator();
+		while (it.hasNext()) {
+			Luggage l = it.next();
+			if (l.transform.m23 < 0.1f) {
+				l.onDestroy();
+				it.remove();
+			}
+		}
 	}
 	
 	/**
