@@ -3,18 +3,8 @@ package accg.objects;
 import static org.lwjgl.opengl.GL11.*;
 import accg.State;
 import accg.State.ProgramMode;
-import accg.simulation.Simulation;
 
 public class Floor extends DrawableObject {
-
-	/**
-	 * State of the program, used to access {@link Simulation}.
-	 */
-	private State s;
-	
-	public Floor(State s) {
-		this.s = s;
-	}
 
 	@Override
 	public void draw(State s) {
