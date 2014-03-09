@@ -2,14 +2,37 @@ package accg.objects;
 
 import static org.lwjgl.opengl.GL11.*;
 import accg.State;
+import accg.State.ProgramMode;
+import accg.simulation.Simulation;
 
 public class Floor extends DrawableObject {
 
+	/**
+	 * State of the program, used to access {@link Simulation}.
+	 */
+	private State s;
+	
+	public Floor(State s) {
+		this.s = s;
+	}
+
 	@Override
 	public void draw(State s) {
+		
 		glColor3d(1, 1, 1);
+		glDepthMask(false);
+		glDisable(GL_DEPTH_TEST);
+		glEnable(GL_BLEND);
+		if (s.drawingShadows) {
+			glColor4f(1, 1, 1, 0.85f);
+		}
 		glEnable(GL_TEXTURE_2D);
-		s.textures.floorBuildMode.bind();
+		
+		if (s.programMode == ProgramMode.BUILDING_MODE) {
+			s.textures.floorBuildMode.bind();
+		} else {
+			s.textures.floorSimulationMode.bind();
+		}
 		glBegin(GL_QUADS);
 		{
 			for (int x = 0; x < s.fieldLength; x++) {
@@ -29,5 +52,9 @@ public class Floor extends DrawableObject {
 		}
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
+		glColor4f(1, 1, 1, 1);
+		glDisable(GL_BLEND);
+		glEnable(GL_DEPTH_TEST);
+		glDepthMask(true);
 	}
 }

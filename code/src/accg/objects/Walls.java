@@ -7,6 +7,7 @@ public class Walls extends DrawableObject {
 
 	@Override
 	public void draw(State s) {
+		
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_FRONT); // cull away only front faces
 		

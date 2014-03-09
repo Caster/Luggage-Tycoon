@@ -2,6 +2,7 @@ package accg;
 
 import org.newdawn.slick.Font;
 
+import accg.objects.Floor;
 import accg.objects.World;
 import accg.simulation.Simulation;
 
@@ -80,9 +81,15 @@ public class State {
 	public Textures textures;
 	
 	/**
-	 * The world object that contains all objects to draw.
+	 * The world object that contains all objects to draw (except for the
+	 * floor).
 	 */
 	public World world;
+	
+	/**
+	 * The floor to draw.
+	 */
+	public Floor floor;
 	
 	/**
 	 * The simulation.
@@ -99,4 +106,18 @@ public class State {
 	 * used to make the program more or less sensitive to mouse interaction.
 	 */
 	public float mouseSensitivityFactor = 1.0f;
+	
+	/**
+	 * This boolean indicates whether we are in the first or second rendering
+	 * pass. The first rendering pass, transparent objects are not rendered
+	 * (then this is <code>false</code>). In the second rendering pass, they
+	 * are rendered (then this is <code>true</code>). Then, they are combined
+	 * to make the objects really transparent.
+	 */
+	public boolean drawTransparentObjects;
+
+	/**
+	 * This boolean indicates whether we are drawing shadows or not.
+	 */
+	public boolean drawingShadows;
 }

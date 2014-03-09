@@ -133,7 +133,6 @@ public abstract class ConveyorBlock extends Block {
 		
 		// TODO draw the axes
 		
-		glColor3d(1, 1, 1);
 		glEnable(GL_TEXTURE_2D);
 		s.textures.conveyor.bind();
 		
@@ -184,10 +183,10 @@ public abstract class ConveyorBlock extends Block {
 		glTranslated(x + dx, y + dy, 0);
 
 		Cylinder c = new Cylinder();
-		c.draw(0.05f, 0.02f, 0.25f, 16, 8);
+		c.draw(0.05f, 0.02f, 0.25f, 16, 1);
 		glPushMatrix();
 		glTranslated(0, 0, 0.25f);
-		c.draw(0.02f, 0.02f, z / 4.0f, 16, 8);
+		c.draw(0.02f, 0.02f, z / 4.0f, 16, 1);
 		glPopMatrix();
 		
 		glPopMatrix();

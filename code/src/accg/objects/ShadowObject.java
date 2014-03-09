@@ -1,9 +1,10 @@
 package accg.objects;
 
+import static org.lwjgl.opengl.GL11.*;
 import accg.State;
 
 /**
- * Draws an object as a transparant "shadow" object.
+ * Draws an object as a "shadow" object.
  */
 public class ShadowObject extends DrawableObject {
 	
@@ -19,7 +20,12 @@ public class ShadowObject extends DrawableObject {
 
 	@Override
 	public void draw(State s) {
-		// TODO set alpha transparency etc.
+		
+		glEnable(GL_BLEND);
+		glColor4f(1, 1, 1, 0.50f);
+		
 		object.draw(s);
+		
+		glDisable(GL_BLEND);
 	}
 }

@@ -5,16 +5,15 @@ import static org.lwjgl.util.glu.GLU.*;
 
 import java.awt.Font;
 import java.io.InputStream;
+import java.nio.FloatBuffer;
 import java.util.prefs.Preferences;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.PixelFormat;
-import org.lwjgl.opengl.Util;
+import org.lwjgl.opengl.*;
 import org.lwjgl.util.Point;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
@@ -23,15 +22,12 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import accg.State.ProgramMode;
 import accg.camera.Camera;
-import accg.gui.GUI;
-import accg.gui.MenuBar;
+import accg.gui.*;
 import accg.gui.MenuBar.Alignment;
 import accg.gui.MenuBar.Position;
 import accg.gui.MenuBar.Presentation;
-import accg.gui.MenuBarItem;
 import accg.gui.MenuBarItem.Type;
-import accg.gui.SliderMenuBarItem;
-import accg.gui.ToggleMenuBarItem;
+import accg.objects.Floor;
 import accg.objects.World;
 import accg.simulation.Simulation;
 
@@ -126,6 +122,7 @@ public class ACCGProgram {
 		// initialize stuff here
 		s.simulation = new Simulation(s);
 		s.world = new World(s);
+		s.floor = new Floor(s);
 		s.textures = new Textures();
 		s.startTime = (float) Sys.getTime() / Sys.getTimerResolution();
 		camera = new Camera(s);
@@ -188,6 +185,28 @@ public class ACCGProgram {
 			camera.setLookAt();
 
 			// draw the scene
+			
+			// step 1: draw floor
+			s.drawingShadows = false;
+			s.floor.draw(s);
+			
+			// step 2: draw shadows
+			glDisable(GL_COLOR_MATERIAL);
+			FloatBuffer shadowColor = BufferUtils.createFloatBuffer(4);
+			shadowColor.put(new float[] {0, 0, 0, 1});
+			shadowColor.flip();
+			glMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, shadowColor);
+			glPushMatrix();
+			glScalef(1, 1, 0);
+			s.world.draw(s);
+			glPopMatrix();
+			glEnable(GL_COLOR_MATERIAL);
+			
+			// step 3: draw floor
+			s.drawingShadows = true;
+			s.floor.draw(s);
+			
+			// step 4: draw objects
 			s.world.draw(s);
 			
 			// draw the menu bars

@@ -2,12 +2,7 @@ package accg.objects;
 
 import accg.State;
 import accg.objects.Block.Orientation;
-import accg.objects.blocks.AscendingConveyorBlock;
-import accg.objects.blocks.BendLeftConveyorBlock;
-import accg.objects.blocks.BendRightConveyorBlock;
-import accg.objects.blocks.ConveyorBlock;
-import accg.objects.blocks.DescendingConveyorBlock;
-import accg.objects.blocks.StraightConveyorBlock;
+import accg.objects.blocks.*;
 import accg.simulation.Simulation;
 
 /**
@@ -26,6 +21,11 @@ public class World extends Container<DrawableObject> {
 	public Container<Luggage> luggage;
 	
 	/**
+	 * State of the program, used to access {@link Simulation}.
+	 */
+	private State state;
+	
+	/**
 	 * Creates a new world. It is supposed that a {@link Simulation} object has
 	 * been instantiated in the given {@link State} object already. This is used
 	 * to add shapes to that simulation.
@@ -35,24 +35,9 @@ public class World extends Container<DrawableObject> {
 	public World(State s) {
 		this.state = s;
 		
-		addObject(new Floor());
 		addObject(new Walls());
 		
 		bc = new BlockCollection(s.fieldLength, s.fieldWidth, s.fieldHeight);
-	/*	bc.setBlock(new StraightConveyorBlock(1, 5, 0, Orientation.DOWN));
-		bc.setBlock(new AscendingConveyorBlock(1, 4, 0, Orientation.DOWN));
-		bc.setBlock(new AscendingConveyorBlock(1, 3, 1, Orientation.DOWN));
-		bc.setBlock(new AscendingConveyorBlock(1, 2, 2, Orientation.DOWN));
-		bc.setBlock(new AscendingConveyorBlock(1, 1, 3, Orientation.DOWN));
-		bc.setBlock(new BendLeftConveyorBlock(1, 0, 4, Orientation.DOWN));
-		bc.setBlock(new DescendingConveyorBlock(2, 0, 3, Orientation.RIGHT));
-		bc.setBlock(new DescendingConveyorBlock(3, 0, 2, Orientation.RIGHT));
-		bc.setBlock(new BendLeftConveyorBlock(4, 0, 2, Orientation.RIGHT));
-		bc.setBlock(new BendLeftConveyorBlock(4, 1, 2, Orientation.UP));
-		bc.setBlock(new DescendingConveyorBlock(3, 1, 1, Orientation.LEFT));
-		bc.setBlock(new DescendingConveyorBlock(2, 1, 0, Orientation.LEFT));
-		bc.setBlock(new StraightConveyorBlock(1, 1, 0, Orientation.LEFT));
-		bc.setBlock(new BendRightConveyorBlock(0, 1, 0, Orientation.LEFT));*/
 
 		addBlock(new StraightConveyorBlock(2, 7, 16, Orientation.RIGHT));
 		addBlock(new StraightConveyorBlock(3, 7, 15, Orientation.DOWN));
@@ -96,6 +81,8 @@ public class World extends Container<DrawableObject> {
 		addBlock(new StraightConveyorBlock(12, 4, 3, Orientation.RIGHT));
 		addObject(bc);
 		
+		addObject(new ShadowObject(new StraightConveyorBlock(0, 0, 4, Orientation.LEFT)));
+		
 		luggage = new Container<>();
 		addObject(luggage);
 	}
@@ -112,7 +99,4 @@ public class World extends Container<DrawableObject> {
 		bc.setBlock(cb);
 		state.simulation.addBlock(cb);
 	}
-	
-	/** State of the program, used to access {@link Simulation}. */
-	private State state;
 }
