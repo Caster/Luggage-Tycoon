@@ -2,7 +2,8 @@
 Zo, dit typt hopelijk wat beter :P
 
 Dingen die we nog moeten doen voor het ACCG-programma:
-   PRIO     DING
++---------+------------------------------------------------------------------------------------------------+
+|  PRIO   |  DING                                                                                          |
 +---------+------------------------------------------------------------------------------------------------+
      2    - Verslag
      1    - Banden aan elkaar tekenen
@@ -12,9 +13,6 @@ Dingen die we nog moeten doen voor het ACCG-programma:
             * GUI voor de editor (kies een blok en richting etc.)
             * interface met sneltoetsen?
             * ...?
-     1    - Gekromde loopbanden (bochten)
-            * fix bug (crash) met normalen
-            * laat het werken met JBullet
      2    - Ingang/uitgang voor loopbanden
      3    - Scanners
      4    - "Game" functionaliteit
@@ -31,6 +29,15 @@ Dingen die we nog moeten doen voor het ACCG-programma:
             * animaties voor GUI (highlight met fade en zo)
             * achtergrondmuziek
             * geluidseffecten
++----------------------------------------------------------------------------------------------------------+
+|  KLAAR, HOERA!                                                                                           |
++---------+------------------------------------------------------------------------------------------------+
+|  PRIO   |  DING                                                                                          |
++---------+------------------------------------------------------------------------------------------------+
+     1    - Gekromde loopbanden (bochten)
+            * fix bug (crash) met normalen
+            * laat het werken met JBullet
++---------+------------------------------------------------------------------------------------------------+
 
 Koelkast: (brrrr....)
 - Hekjes langs loopbanden (uiterlijk houdbaar tot: Q4)
