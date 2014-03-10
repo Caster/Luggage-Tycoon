@@ -116,6 +116,11 @@ public class ACCGProgram {
 	private Vector3f mousePos3DvectorNear;
 	private Vector3f mousePos3DvectorFar;
 	private Vector3f mouseViewVector;
+	/**
+	 * Vector that can be added to a point in the scene to undo the offset
+	 * given to it.
+	 */
+	private Vector3f offsetVector = new Vector3f(0.5f, 0.5f, 0);
 	
 	/**
 	 * Construct a new instance of the program.
@@ -927,7 +932,6 @@ public class ACCGProgram {
 		result[0] = Math.max(0, result[0]);
 		Vector3f start = new Vector3f();
 		Vector3f end = new Vector3f();
-		Vector3f offsetVector = new Vector3f(0.5f, 0.5f, 0);
 		start.scaleAdd((float) result[0], mouseViewVector, mousePos3DvectorNear);
 		start.add(offsetVector);
 		end.scaleAdd((float) result[1], mouseViewVector, mousePos3DvectorNear);
