@@ -1,4 +1,4 @@
-package accg.gui;
+package accg.gui.toolkit;
 
 import static accg.utils.GLUtils.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -9,7 +9,7 @@ import org.lwjgl.util.Rectangle;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.opengl.Texture;
 
-import accg.gui.MenuBar.Presentation;
+import accg.gui.toolkit.MenuCollection.Presentation;
 
 /**
  * A SliderMenuBarItem is a {@link MenuBarItem} that has a value which can
@@ -82,13 +82,13 @@ public class SliderMenuBarItem extends MenuBarItem {
 	}
 	
 	@Override
-	public void draw(Rectangle outline, Font renderFont, Presentation presentation) {
-		super.draw(outline, renderFont, presentation);
+	public void draw() {
+		super.draw();
 		
 		// render bar if needed
 		if (this.showBar) {
 			// the height of the bar depends on that of the text
-			int textHeight = renderFont.getLineHeight();
+			int textHeight = font.getLineHeight();
 			int barHeight = textHeight;
 			int textBarDiff = (textHeight - barHeight) / 2;
 			

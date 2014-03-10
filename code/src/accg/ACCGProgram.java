@@ -3,8 +3,6 @@ package accg;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.*;
 
-import java.awt.Font;
-import java.io.InputStream;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -16,33 +14,17 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.PixelFormat;
-import org.lwjgl.opengl.Util;
+import org.lwjgl.opengl.*;
 import org.lwjgl.util.Point;
 import org.lwjgl.util.glu.GLU;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.TrueTypeFont;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.util.ResourceLoader;
 
 import accg.State.ProgramMode;
 import accg.camera.Camera;
-import accg.gui.GUI;
-import accg.gui.MenuBar;
-import accg.gui.MenuBar.Alignment;
-import accg.gui.MenuBar.Position;
-import accg.gui.MenuBar.Presentation;
-import accg.gui.MenuBarItem;
-import accg.gui.MenuBarItem.Type;
-import accg.gui.SliderMenuBarItem;
-import accg.gui.ToggleMenuBarItem;
+import accg.gui.MainGUI;
+import accg.gui.toolkit.GUIUtils;
 import accg.objects.Block.Orientation;
-import accg.objects.Floor;
-import accg.objects.ShadowObject;
-import accg.objects.World;
+import accg.objects.*;
 import accg.objects.blocks.StraightConveyorBlock;
 import accg.simulation.Simulation;
 import accg.utils.Utils;
@@ -69,15 +51,9 @@ public class ACCGProgram {
 	private Camera camera;
 	
 	/**
-	 * Menu bars used in the program.
-	 * 
-	 *  0: main menu.
-	 *  1: settings menu           (child of 0).
-	 *  2: menu position menu      (child of 1).
-	 *  3: menu alignment menu     (child of 1).
-	 *  4: menu presentation menu  (child of 1).
+	 * The GUI used in the program.
 	 */
-	private MenuBar[] menuBars;
+	private MainGUI gui;
 	
 	/**
 	 * Point where mouse was pressed. Is compared to point where mouse
@@ -151,13 +127,13 @@ public class ACCGProgram {
 		
 		// pre-initialize stuff
 		State s = new State();
-		initialiseFonts(s);
+		s.fontMenu = MainGUI.loadFont(); // TODO dit moet beter kunnen
 		
 		// show a loading message, loading textures takes some time
 		glClearColor(0.8f, 0.8f, 0.77f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glViewport(0, 0, Display.getWidth(), Display.getHeight());
-		GUI.make2D();
+		GUIUtils.make2D();
 		String loadingText = "Loading...";
 		int loadingTextWidth = s.fontMenu.getWidth(loadingText);
 		int loadingTextHeight = s.fontMenu.getHeight(loadingText);
@@ -181,16 +157,9 @@ public class ACCGProgram {
 		clickedPoint = null;
 		
 		// intialise GUI stuff
-		menuBars = new MenuBar[5];
-		menuBars[0] = new MenuBar(s, Position.values()[DEF_MENU_POSITION],
-				Alignment.values()[DEF_MENU_ALIGNMENT],
-				Presentation.values()[DEF_MENU_PRESENTATION]);
-		menuBars[1] = new MenuBar(s, menuBars[0]);
-		menuBars[2] = new MenuBar(s, menuBars[1]);
-		menuBars[3] = new MenuBar(s, menuBars[1]);
-		menuBars[4] = new MenuBar(s, menuBars[1]);
+		gui = new MainGUI(s);
 		loadPreferences(s);
-		initialiseMenus(menuBars, s);
+		gui.updateItems(); // TODO call dit iedere keer als de modus verandert
 		
 		// enable some GL stuff
 		glEnable(GL_LIGHTING);
@@ -205,7 +174,7 @@ public class ACCGProgram {
 			if (displayWidth != Display.getWidth() || displayHeight != Display.getHeight()) {
 				displayWidth = Display.getWidth();
 				displayHeight = Display.getHeight();
-				menuBars[0].handleResizeEvent(displayWidth, displayHeight);
+				//menuBars[0].handleResizeEvent(displayWidth, displayHeight); // TODO
 			}
 			
 			// update time
@@ -233,8 +202,8 @@ public class ACCGProgram {
 			// handle events
 			handleKeyEvents();
 			handlePressedKeys();
-			handleScrollEvents();
-			handleMouseEvents(s);
+			//handleScrollEvents(); // TODO
+			//handleMouseEvents(s);
 
 			// draw the scene
 			
@@ -278,9 +247,7 @@ public class ACCGProgram {
 			}
 			
 			// draw the menu bars
-			for (int i = 0; i < menuBars.length; i++) {
-				menuBars[i].draw(s);
-			}
+			gui.draw();
 			
 			// check for errors
 			Util.checkGLError();
@@ -362,10 +329,12 @@ public class ACCGProgram {
 		}
 	}
 	
+	// volgende methoden uitgecommentarieerd! TODO porten naar nieuwe API
+	
 	/**
 	 * Handles scrollwheel events from the mouse.
 	 */
-	public void handleScrollEvents() {
+	/*public void handleScrollEvents() {
 		int dWheel = Mouse.getDWheel();
 		if (dWheel == 0) {
 			return;
@@ -386,7 +355,7 @@ public class ACCGProgram {
 				camera.moveDown();
 			}
 		}
-	}
+	}*/
 	
 	/**
 	 * Handles mouse move events and such.
@@ -395,7 +364,7 @@ public class ACCGProgram {
 	 *          to see if a {@link ShadowObject} should be drawn where the
 	 *          mouse hovers or not (and also what kind of object).
 	 */
-	public void handleMouseEvents(State s) {
+	/*public void handleMouseEvents(State s) {
 		// Variable handledButton[i] holds if an event for mouse button i
 		// was handled or not. This is needed because LWJGL's API for the
 		// mouse is slightly weird. Or I just don't get it.
@@ -466,24 +435,7 @@ public class ACCGProgram {
 				}
 			}
 		}
-	}
-	
-	/**
-	 * Load fonts and set them in the given state.
-	 * 
-	 * @param s State to set fonts in.
-	 */
-	private void initialiseFonts(State s) {
-		try {
-			InputStream russoOneFontStream =
-					ResourceLoader.getResourceAsStream("res/fonts/RussoOne-Regular.ttf");
-			Font russoOneAwt = Font.createFont(Font.TRUETYPE_FONT, russoOneFontStream);
-			russoOneAwt = russoOneAwt.deriveFont(14f);
-			s.fontMenu = new TrueTypeFont(russoOneAwt, true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	}*/
 	
 	/**
 	 * Create some menu items and add those to the given menu bar.
@@ -491,7 +443,7 @@ public class ACCGProgram {
 	 * @param menus Array of menus to initialise.
 	 * @param s State to read icon textures from.
 	 */
-	private void initialiseMenus(MenuBar[] menus, final State s) {
+	/*private void initialiseMenus(MenuBar[] menus, final State s) {
 		// main menu
 		menus[0].addMenuBarItem(new ToggleMenuBarItem("Simulate",
 				s.textures.iconStart, "Stop simulation", s.textures.iconStop) {
@@ -517,10 +469,10 @@ public class ACCGProgram {
 			}
 			
 			@Override
-			public void onDrag(int x, int y) { /* ignored */ }
+			public void onDrag(int x, int y) { /* ignored / }
 			
 			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
+			public void onScroll(int dWheel) { /* ignored / }
 		});
 		
 		menus[0].addMenuBarItem(new MenuBarItem("Save", s.textures.iconSave) {
@@ -531,10 +483,10 @@ public class ACCGProgram {
 			}
 			
 			@Override
-			public void onDrag(int x, int y) { /* ignored */ }
+			public void onDrag(int x, int y) { /* ignored / }
 			
 			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
+			public void onScroll(int dWheel) { /* ignored / }
 		});
 		
 		menus[0].addMenuBarItem(new MenuBarItem("Settings", s.textures.iconConfigure) {
@@ -545,10 +497,10 @@ public class ACCGProgram {
 			}
 			
 			@Override
-			public void onDrag(int x, int y) { /* ignored */ }
+			public void onDrag(int x, int y) { /* ignored / }
 			
 			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
+			public void onScroll(int dWheel) { /* ignored / }
 		});
 		
 		menus[0].addMenuBarItem(new MenuBarItem("Exit", s.textures.iconExit) {
@@ -559,10 +511,10 @@ public class ACCGProgram {
 			}
 			
 			@Override
-			public void onDrag(int x, int y) { /* ignored */ }
+			public void onDrag(int x, int y) { /* ignored / }
 			
 			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
+			public void onScroll(int dWheel) { /* ignored / }
 		});
 		
 		// settings menu
@@ -574,10 +526,10 @@ public class ACCGProgram {
 			}
 			
 			@Override
-			public void onDrag(int x, int y) { /* ignored */ }
+			public void onDrag(int x, int y) { /* ignored / }
 			
 			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
+			public void onScroll(int dWheel) { /* ignored / }
 		});
 		
 		menus[1].addMenuBarItem(new MenuBarItem("Menu alignment", s.textures.iconConfigure) {
@@ -588,10 +540,10 @@ public class ACCGProgram {
 			}
 			
 			@Override
-			public void onDrag(int x, int y) { /* ignored */ }
+			public void onDrag(int x, int y) { /* ignored / }
 			
 			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
+			public void onScroll(int dWheel) { /* ignored / }
 		});
 		
 		menus[1].addMenuBarItem(new MenuBarItem("Menu presentation", s.textures.iconConfigure) {
@@ -602,10 +554,10 @@ public class ACCGProgram {
 			}
 			
 			@Override
-			public void onDrag(int x, int y) { /* ignored */ }
+			public void onDrag(int x, int y) { /* ignored / }
 			
 			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
+			public void onScroll(int dWheel) { /* ignored / }
 		});
 		
 		menus[1].addMenuBarItem(new SliderMenuBarItem("Mouse sensitivity",
@@ -648,7 +600,7 @@ public class ACCGProgram {
 		for (int i = 0; i < Presentation.values().length; i++) {
 			menus[4].addMenuBarItem(generatePresentationItem(i, s));
 		}
-	}
+	}*/
 	
 	/**
 	 * Generate a {@link MenuBarItem} that represents a menu alignment.
@@ -657,7 +609,7 @@ public class ACCGProgram {
 	 * @param s State, used to look up icons in.
 	 * @return A newly created {@link MenuBarItem}.
 	 */
-	private MenuBarItem generateAlignmentItem(final int index, State s) {
+	/*private MenuBarItem generateAlignmentItem(final int index, State s) {
 		final Alignment alignment = MenuBar.Alignment.values()[index];
 		// create the item
 		MenuBarItem mbi = new MenuBarItem(alignment.getName(),
@@ -669,10 +621,10 @@ public class ACCGProgram {
 			}
 			
 			@Override
-			public void onDrag(int x, int y) { /* ignored */ }
+			public void onDrag(int x, int y) { /* ignored / }
 			
 			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
+			public void onScroll(int dWheel) { /* ignored / }
 		};
 		// check the item if needed
 		if (index == prefs.getInt("menu.alignment", DEF_MENU_ALIGNMENT)) {
@@ -680,7 +632,7 @@ public class ACCGProgram {
 		}
 		// return the result
 		return mbi;
-	}
+	}*/
 	
 	/**
 	 * Generate a {@link MenuBarItem} that represents a menu position.
@@ -689,7 +641,7 @@ public class ACCGProgram {
 	 * @param s State, used to look up icons in.
 	 * @return A newly created {@link MenuBarItem}.
 	 */
-	private MenuBarItem generatePositionItem(final int index, State s) {
+	/*private MenuBarItem generatePositionItem(final int index, State s) {
 		final Position pos = MenuBar.Position.values()[index];
 		// create the item
 		MenuBarItem mbi = new MenuBarItem(pos.getName(),
@@ -701,10 +653,10 @@ public class ACCGProgram {
 			}
 			
 			@Override
-			public void onDrag(int x, int y) { /* ignored */ }
+			public void onDrag(int x, int y) { /* ignored / }
 			
 			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
+			public void onScroll(int dWheel) { /* ignored / }
 		};
 		// check the item if needed
 		if (index == prefs.getInt("menu.position", DEF_MENU_POSITION)) {
@@ -712,7 +664,7 @@ public class ACCGProgram {
 		}
 		// return the result
 		return mbi;
-	}
+	}*/
 	
 	/**
 	 * Generate a {@link MenuBarItem} that represents a menu presentation.
@@ -721,7 +673,7 @@ public class ACCGProgram {
 	 * @param s State, used to look up icons in.
 	 * @return A newly created {@link MenuBarItem}.
 	 */
-	private MenuBarItem generatePresentationItem(final int index, State s) {
+	/*private MenuBarItem generatePresentationItem(final int index, State s) {
 		final Presentation pres = MenuBar.Presentation.values()[index];
 		// create the item
 		MenuBarItem mbi = new MenuBarItem(pres.getName(),
@@ -733,10 +685,10 @@ public class ACCGProgram {
 			}
 			
 			@Override
-			public void onDrag(int x, int y) { /* ignored */ }
+			public void onDrag(int x, int y) { /* ignored / }
 			
 			@Override
-			public void onScroll(int dWheel) { /* ignored */ }
+			public void onScroll(int dWheel) { /* ignored / }
 		};
 		// check the item if needed
 		if (index == prefs.getInt("menu.presentation", DEF_MENU_PRESENTATION)) {
@@ -744,7 +696,7 @@ public class ACCGProgram {
 		}
 		// return the result
 		return mbi;
-	}
+	}*/
 	
 	/**
 	 * Return the icon that belongs to the {@link Alignment} with given ordinal index.
@@ -753,7 +705,7 @@ public class ACCGProgram {
 	 * @param s State, used to look up icons in.
 	 * @return An icon, or {@code null} if index is invalid.
 	 */
-	private Texture getAlignmentIcon(final int index, State s) {
+	/*private Texture getAlignmentIcon(final int index, State s) {
 		if (index < 0 || index >= MenuBar.Alignment.values().length) {
 			return null;
 		}
@@ -768,7 +720,7 @@ public class ACCGProgram {
 		default :
 			return null;
 		}
-	}
+	}*/
 	
 	/**
 	 * Return the icon that belongs to the {@link Position} with given ordinal index.
@@ -777,7 +729,7 @@ public class ACCGProgram {
 	 * @param s State, used to look up icons in.
 	 * @return An icon, or {@code null} if index is invalid.
 	 */
-	private Texture getPositionIcon(final int index, State s) {
+	/*private Texture getPositionIcon(final int index, State s) {
 		if (index < 0 || index >= MenuBar.Position.values().length) {
 			return null;
 		}
@@ -794,7 +746,7 @@ public class ACCGProgram {
 		default :
 			return null;
 		}
-	}
+	}*/
 	
 	/**
 	 * Return the icon that belongs to the {@link Presentation} with given ordinal index.
@@ -803,7 +755,7 @@ public class ACCGProgram {
 	 * @param s State, used to look up icons in.
 	 * @return An icon, or {@code null} if index is invalid.
 	 */
-	private Texture getPresentationIcon(final int index, State s) {
+	/*private Texture getPresentationIcon(final int index, State s) {
 		if (index < 0 || index >= MenuBar.Presentation.values().length) {
 			return null;
 		}
@@ -816,7 +768,7 @@ public class ACCGProgram {
 		default :
 			return null;
 		}
-	}
+	}*/
 	
 	/**
 	 * Try to load preferences of the user from last time.
@@ -831,11 +783,11 @@ public class ACCGProgram {
 		s.mouseSensitivityFactor = prefs.getFloat("mouse.sensitivity", 1.0f);
 		
 		int alignment = prefs.getInt("menu.alignment", DEF_MENU_ALIGNMENT);
-		setMenuAlignments(MenuBar.Alignment.values()[alignment]);
+		//setMenuAlignments(MenuCollection.Alignment.values()[alignment]); TODO
 		int position = prefs.getInt("menu.position", DEF_MENU_POSITION);
-		setMenuPositions(MenuBar.Position.values()[position]);
+		//setMenuPositions(MenuCollection.Position.values()[position]);
 		int presentation = prefs.getInt("menu.presentation", DEF_MENU_PRESENTATION);
-		setMenuPresentations(MenuBar.Presentation.values()[presentation]);
+		//setMenuPresentations(MenuCollection.Presentation.values()[presentation]);
 	}
 	
 	/**
@@ -843,39 +795,39 @@ public class ACCGProgram {
 	 * 
 	 * @param alignment New alignment for all menu bars.
 	 */
-	private void setMenuAlignments(Alignment alignment) {
+	/*private void setMenuAlignments(Alignment alignment) {
 		// only change the main menu alignment, child menu
 		// bars will follow the lead automatically
 		menuBars[0].setAlignment(alignment);
 		
 		prefs.putInt("menu.alignment", alignment.ordinal());
-	}
+	}*/
 	
 	/**
 	 * Change position of all menu bars.
 	 * 
 	 * @param pos New position for all menu bars.
 	 */
-	private void setMenuPositions(Position pos) {
+	/*private void setMenuPositions(Position pos) {
 		// only change the main menu position, child menu
 		// bars will follow the lead automatically
 		menuBars[0].setPosition(pos);
 		
 		prefs.putInt("menu.position", pos.ordinal());
-	}
+	}*/
 	
 	/**
 	 * Change position of all menu bars.
 	 * 
 	 * @param pos New position for all menu bars.
 	 */
-	private void setMenuPresentations(Presentation pres) {
+	/*private void setMenuPresentations(Presentation pres) {
 		// only change the main menu position, child menu
 		// bars will follow the lead automatically
 		menuBars[0].setPresentation(pres);
 		
 		prefs.putInt("menu.presentation", pres.ordinal());
-	}
+	}*/
 	
 	/**
 	 * Update the position of the shadow object. This function assumes that the

@@ -1,11 +1,10 @@
-package accg.gui;
+package accg.gui.toolkit;
 
 import org.newdawn.slick.Font;
 import org.newdawn.slick.opengl.Texture;
 
-import accg.gui.MenuBar.Position;
-import accg.gui.MenuBar.Presentation;
-import accg.gui.MenuBarItem.Type;
+import accg.gui.toolkit.MenuCollection.Position;
+import accg.gui.toolkit.MenuCollection.Presentation;
 
 /**
  * A ToggleMenuBarItem is a {@link MenuBarItem} that toggles between two states

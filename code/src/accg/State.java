@@ -18,7 +18,13 @@ public class State {
 	public enum ProgramMode {
 		
 		/**
-		 * In this mode, the user can place and remove blocks.
+		 * In this mode, the user can change the camera position, and choose another
+		 * mode to work further.
+		 */
+		NORMAL_MODE,
+		
+		/**
+		 * In this mode, a GUI is shown for placing and removing blocks.
 		 */
 		BUILDING_MODE,
 		
@@ -34,7 +40,7 @@ public class State {
 	 * At the moment, this is either the building mode or the simulation
 	 * mode, also see {@link State.ProgramMode}.
 	 */
-	public ProgramMode programMode = ProgramMode.BUILDING_MODE;
+	public ProgramMode programMode = ProgramMode.NORMAL_MODE;
 	
 	/**
 	 * Length of the field, in number of grid squares.
