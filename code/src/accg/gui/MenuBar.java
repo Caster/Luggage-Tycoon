@@ -4,8 +4,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
 
-import javax.vecmath.Vector3f;
-
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.Rectangle;
@@ -265,9 +263,6 @@ public class MenuBar extends DrawableObject {
 		// switch back to 3D rendering and restore transforms and such
 		GUI.make3D();
 	}
-
-	@Override
-	public void setPosition(Vector3f position) { /* ignored */ }
 	
 	/**
 	 * Return the alignment of this menu bar.

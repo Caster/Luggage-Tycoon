@@ -3,8 +3,6 @@ package accg.objects;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.vecmath.Vector3f;
-
 import accg.State;
 
 /**
@@ -69,9 +67,6 @@ public class Container<E extends DrawableObject> extends DrawableObject implemen
 			object.draw(s);
 		}
 	}
-
-	@Override
-	public void setPosition(Vector3f position) { /* ignored */ }
 	
 	@Override
 	public Iterator<E> iterator() {

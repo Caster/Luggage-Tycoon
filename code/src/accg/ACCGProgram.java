@@ -42,7 +42,7 @@ import accg.gui.SliderMenuBarItem;
 import accg.gui.ToggleMenuBarItem;
 import accg.objects.Block.Orientation;
 import accg.objects.Floor;
-import accg.objects.ShadowObject;
+import accg.objects.ShadowBlock;
 import accg.objects.World;
 import accg.objects.blocks.StraightConveyorBlock;
 import accg.simulation.Simulation;
@@ -188,7 +188,7 @@ public class ACCGProgram {
 		s.textures = new Textures();
 		// TODO: This is only temporary, for testing. This should be controlled through some
 		//       kind of menu where blocks or 'nothing' can be selected.
-		s.shadowObject = new ShadowObject(new StraightConveyorBlock(0, 0, 0, Orientation.LEFT));
+		s.shadowObject = new ShadowBlock(new StraightConveyorBlock(0, 0, 0, Orientation.LEFT));
 		s.startTime = (float) Sys.getTime() / Sys.getTimerResolution();
 		camera = new Camera(s);
 		clickedPoint = null;
@@ -407,7 +407,7 @@ public class ACCGProgram {
 	 * Handles mouse move events and such.
 	 * 
 	 * @param s State of the program, used to determine in which mode we are
-	 *          to see if a {@link ShadowObject} should be drawn where the
+	 *          to see if a {@link ShadowBlock} should be drawn where the
 	 *          mouse hovers or not (and also what kind of object).
 	 */
 	public void handleMouseEvents(State s) {

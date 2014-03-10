@@ -5,8 +5,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
 
-import javax.vecmath.Vector3f;
-
 import accg.State;
 import accg.State.ProgramMode;
 
@@ -93,7 +91,4 @@ public class Floor extends DrawableObject {
 				bgCol.getGreen() / 255f, bgCol.getBlue() / 255f,
 				SHADOW_TRANSPARENCY);
 	}
-	
-	@Override
-	public void setPosition(Vector3f position) { /* ignored */ }
 }

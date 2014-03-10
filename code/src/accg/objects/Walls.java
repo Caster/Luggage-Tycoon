@@ -1,9 +1,6 @@
 package accg.objects;
 
 import static org.lwjgl.opengl.GL11.*;
-
-import javax.vecmath.Vector3f;
-
 import accg.State;
 
 public class Walls extends DrawableObject {
@@ -65,7 +62,4 @@ public class Walls extends DrawableObject {
 		
 		glDisable(GL_CULL_FACE);
 	}
-	
-	@Override
-	public void setPosition(Vector3f position) { /* ignored */ }
 }

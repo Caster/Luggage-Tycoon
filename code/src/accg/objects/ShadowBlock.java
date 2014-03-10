@@ -9,16 +9,17 @@ import accg.State;
 /**
  * Draws an object as a "shadow" object.
  */
-public class ShadowObject extends DrawableObject {
+public class ShadowBlock extends Block {
 	
-	private DrawableObject object;
+	private Block object;
 	private boolean visible;
 	
 	/**
 	 * Creates a new shadow object with the given object.
 	 * @param object The object to draw.
 	 */
-	public ShadowObject(DrawableObject object) {
+	public ShadowBlock(Block object) {
+		super(object.x, object.y, object.z, object.orientation);
 		this.object = object;
 		this.visible = false;
 	}
@@ -38,13 +39,22 @@ public class ShadowObject extends DrawableObject {
 		glDisable(GL_BLEND);
 	}
 	
+
+	@Override
+	public int getHeight() {
+		return object.getHeight();
+	}
+	
 	/**
-	 * Change the position of this object.
+	 * Change the position of this object. Note that the contents of the given
+	 * vector are cast to integers.
 	 * 
 	 * @param position New position.
 	 */
 	public void setPosition(Vector3f position) {
-		this.object.setPosition(position);
+		this.object.x = (int) position.x;
+		this.object.y = (int) position.y;
+		this.object.z = (int) position.z;
 	}
 	
 	/**

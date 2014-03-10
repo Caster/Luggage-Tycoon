@@ -2,8 +2,6 @@ package accg.objects;
 
 import java.util.ArrayList;
 
-import javax.vecmath.Vector3f;
-
 import accg.State;
 
 /**
@@ -30,13 +28,6 @@ public abstract class DrawableObject {
 	 * program.
 	 */
 	public abstract void draw(State s);
-	
-	/**
-	 * Change the position of this object.
-	 * 
-	 * @param position New position.
-	 */
-	public abstract void setPosition(Vector3f position);
 	
 	/**
 	 * This function should be called right before an object is removed from the

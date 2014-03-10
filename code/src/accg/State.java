@@ -3,7 +3,7 @@ package accg;
 import org.newdawn.slick.Font;
 
 import accg.objects.Floor;
-import accg.objects.ShadowObject;
+import accg.objects.ShadowBlock;
 import accg.objects.World;
 import accg.simulation.Simulation;
 
@@ -126,5 +126,5 @@ public class State {
 	 * If not null, indicates that this object should be drawn where the mouse
 	 * hovers the scene (using ray projection/intersection et cetera).
 	 */
-	public ShadowObject shadowObject;
+	public ShadowBlock shadowObject;
 }
