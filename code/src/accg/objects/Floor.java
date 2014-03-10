@@ -17,7 +17,7 @@ public class Floor extends DrawableObject {
 		glDisable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		if (s.drawingShadows) {
-			glColor4f(1, 1, 1, 0.85f);
+			glColor4f(1, 1, 1, 0.6f);
 		}
 		glEnable(GL_TEXTURE_2D);
 		
