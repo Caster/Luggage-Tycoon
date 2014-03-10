@@ -1,5 +1,9 @@
 package accg.objects;
 
+import java.util.ArrayList;
+
+import javax.vecmath.Vector3f;
+
 import accg.State;
 import accg.objects.Block.Orientation;
 import accg.objects.blocks.*;
@@ -81,8 +85,6 @@ public class World extends Container<DrawableObject> {
 		addBlock(new StraightConveyorBlock(12, 4, 3, Orientation.RIGHT));
 		addObject(bc);
 		
-		addObject(new ShadowObject(new StraightConveyorBlock(0, 0, 4, Orientation.LEFT)));
-		
 		luggage = new Container<>();
 		addObject(luggage);
 	}
@@ -98,5 +100,28 @@ public class World extends Container<DrawableObject> {
 	public void addBlock(ConveyorBlock cb) {
 		bc.setBlock(cb);
 		state.simulation.addBlock(cb);
+	}
+
+	/**
+	 * Return the index of the first coordinate in the given list on which a
+	 * block is positioned. If no block is occupied, the length of the given
+	 * list is returned.
+	 * 
+	 * @param coordinates List of coordinates to check.
+	 * @return Index of a coordinate, or length of given list.
+	 */
+	public int getFirstTakenIndex(ArrayList<Vector3f> coordinates) {
+		int i, cx, cy, cz;
+		Vector3f coord;
+		for (i = 0; i < coordinates.size(); i++) {
+			coord = coordinates.get(i);
+			cx = (int) coord.x;
+			cy = (int) coord.y;
+			cz = (int) coord.z;
+			if (bc.inBounds(cx, cy, cz) && bc.getBlock(cx, cy, cz) != null) {
+				break;
+			}
+		}
+		return i;
 	}
 }

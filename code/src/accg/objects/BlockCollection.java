@@ -1,5 +1,7 @@
 package accg.objects;
 
+import javax.vecmath.Vector3f;
+
 import accg.State;
 
 /**
@@ -159,4 +161,7 @@ public class BlockCollection extends DrawableObject {
 			}
 		}
 	}
+	
+	@Override
+	public void setPosition(Vector3f position) { /* ignored */ }
 }

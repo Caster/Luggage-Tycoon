@@ -3,6 +3,7 @@ package accg;
 import org.newdawn.slick.Font;
 
 import accg.objects.Floor;
+import accg.objects.ShadowObject;
 import accg.objects.World;
 import accg.simulation.Simulation;
 
@@ -120,4 +121,10 @@ public class State {
 	 * This boolean indicates whether we are drawing shadows or not.
 	 */
 	public boolean drawingShadows;
+	
+	/**
+	 * If not null, indicates that this object should be drawn where the mouse
+	 * hovers the scene (using ray projection/intersection et cetera).
+	 */
+	public ShadowObject shadowObject;
 }

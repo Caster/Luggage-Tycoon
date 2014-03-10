@@ -165,6 +165,13 @@ public abstract class ConveyorBlock extends Block {
 		glPopMatrix();
 	}
 	
+	@Override
+	public void setPosition(Vector3f position) {
+		this.x = (int) position.x;
+		this.y = (int) position.y;
+		this.z = (int) position.z;
+	}
+	
 	/**
 	 * Draws the scaffolding below the block.
 	 * @param s The state object.

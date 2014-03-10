@@ -3,7 +3,7 @@ package accg.camera;
 import static accg.utils.GLUtils.*;
 import static org.lwjgl.util.glu.GLU.*;
 
-import org.lwjgl.util.vector.Vector3f;
+import javax.vecmath.Vector3f;
 
 import accg.State;
 
@@ -56,6 +56,34 @@ public class Camera {
 	private Vector3f camUpPos = new Vector3f(INITIAL_CAM_UP);
 
 	// Public methods
+	/**
+	 * Return the viewing direction of the camera as a vector.
+	 * This vector will be normalised.
+	 * 
+	 * @return The viewing direction of the camera as a vector.
+	 */
+	public Vector3f getCameraViewVector() {
+		// where is the camera?
+		Vector3f camPos = getCameraPosition();
+		// where is it looking at?
+		Vector3f camSphericalForward = new Vector3f(camSpherical);
+		camSphericalForward.x *= 1.1;
+		Vector3f camLookAt = sphericalToCartesian(camSphericalForward, camLookPos);
+		// construct a difference vector
+		Vector3f result = new Vector3f();
+		result.sub(camPos, camLookAt);
+		result.normalize();
+		return result;
+	}
+	
+	/**
+	 * Return the position the camera is at.
+	 * 
+	 * @return The position the camera is at.
+	 */
+	public Vector3f getCameraPosition() {
+		return sphericalToCartesian(camSpherical, camLookPos);
+	}
 	
 	/**
 	 * Call lookAt method of glu so that camera is repositioned.
@@ -249,10 +277,11 @@ public class Camera {
 	private void moveForwardBackward(float scale) {
 		Vector3f addVector = sphericalToCartesian(camSpherical, ZERO_ORIGIN);
 		addVector.z = 0;
-		addVector.normalise().scale(scale * state.mouseSensitivityFactor);
-		Vector3f.add(camLookPos, addVector, camLookPos);
+		addVector.normalize();
+		addVector.scale(scale * state.mouseSensitivityFactor);
+		camLookPos.add(camLookPos, addVector);
 		if (!ensureBounds(camSpherical)) {
-			Vector3f.sub(camLookPos, addVector, camLookPos);
+			camLookPos.sub(camLookPos, addVector);
 		}
 	}
 	
@@ -268,11 +297,12 @@ public class Camera {
 	 */
 	private void moveLeftRight(float scale) {
 		Vector3f addVector = sphericalToCartesian(camSpherical, ZERO_ORIGIN);
-		Vector3f.cross(addVector, camUpPos, addVector);
-		addVector.normalise().scale(scale * state.mouseSensitivityFactor);
-		Vector3f.add(camLookPos, addVector, camLookPos);
+		addVector.cross(addVector, camUpPos);
+		addVector.normalize();
+		addVector.scale(scale * state.mouseSensitivityFactor);
+		camLookPos.add(camLookPos, addVector);
 		if (!ensureBounds(camSpherical)) {
-			Vector3f.sub(camLookPos, addVector, camLookPos);
+			camLookPos.sub(camLookPos, addVector);
 		}
 	}
 	

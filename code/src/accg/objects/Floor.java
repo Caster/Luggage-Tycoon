@@ -1,6 +1,9 @@
 package accg.objects;
 
 import static org.lwjgl.opengl.GL11.*;
+
+import javax.vecmath.Vector3f;
+
 import accg.State;
 import accg.State.ProgramMode;
 
@@ -47,4 +50,7 @@ public class Floor extends DrawableObject {
 		glEnable(GL_DEPTH_TEST);
 		glDepthMask(true);
 	}
+	
+	@Override
+	public void setPosition(Vector3f position) { /* ignored */ }
 }

@@ -6,15 +6,23 @@ import static org.lwjgl.util.glu.GLU.*;
 import java.awt.Font;
 import java.io.InputStream;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.prefs.Preferences;
+
+import javax.vecmath.Vector3f;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.PixelFormat;
+import org.lwjgl.opengl.Util;
 import org.lwjgl.util.Point;
+import org.lwjgl.util.glu.GLU;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
@@ -22,14 +30,22 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import accg.State.ProgramMode;
 import accg.camera.Camera;
-import accg.gui.*;
+import accg.gui.GUI;
+import accg.gui.MenuBar;
 import accg.gui.MenuBar.Alignment;
 import accg.gui.MenuBar.Position;
 import accg.gui.MenuBar.Presentation;
+import accg.gui.MenuBarItem;
 import accg.gui.MenuBarItem.Type;
+import accg.gui.SliderMenuBarItem;
+import accg.gui.ToggleMenuBarItem;
+import accg.objects.Block.Orientation;
 import accg.objects.Floor;
+import accg.objects.ShadowObject;
 import accg.objects.World;
+import accg.objects.blocks.StraightConveyorBlock;
 import accg.simulation.Simulation;
+import accg.utils.Utils;
 
 /**
  * The main class for the ACCG program.
@@ -73,6 +89,39 @@ public class ACCGProgram {
 	 * Preferences object. Used to store user preferences persistently.
 	 */
 	private Preferences prefs;
+	
+	/**
+	 * Buffer in which the model matrix of OpenGL can be stored.
+	 */
+	private FloatBuffer modelMatrix;
+	/**
+	 * Buffer in which the projection matrix of OpenGL can be stored.
+	 */
+	private FloatBuffer projectionMatrix;
+	/**
+	 * Buffer in which the viewport matrix of OpenGL can be stored.
+	 */
+	private IntBuffer viewport;
+	/**
+	 * Buffers in which mouse object coordinates can be stored.
+	 */
+	private FloatBuffer mousePos3D;
+	private Vector3f mousePos3DvectorNear;
+	private Vector3f mousePos3DvectorFar;
+	private Vector3f mouseViewVector;
+	
+	/**
+	 * Construct a new instance of the program.
+	 */
+	public ACCGProgram() {
+		modelMatrix = BufferUtils.createFloatBuffer(16);
+		projectionMatrix = BufferUtils.createFloatBuffer(16);
+		viewport = BufferUtils.createIntBuffer(16); // 16 is minimal size...
+		mousePos3D = BufferUtils.createFloatBuffer(16); // 16 is minimal size...
+		mousePos3DvectorNear = new Vector3f();
+		mousePos3DvectorFar = new Vector3f();
+		mouseViewVector = new Vector3f();
+	}
 	
 	public static void main(String[] args) {
 		ACCGProgram p = new ACCGProgram();
@@ -124,6 +173,9 @@ public class ACCGProgram {
 		s.world = new World(s);
 		s.floor = new Floor();
 		s.textures = new Textures();
+		// TODO: This is only temporary, for testing. This should be controlled through some
+		//       kind of menu where blocks or 'nothing' can be selected.
+		s.shadowObject = new ShadowObject(new StraightConveyorBlock(0, 0, 0, Orientation.LEFT));
 		s.startTime = (float) Sys.getTime() / Sys.getTimerResolution();
 		camera = new Camera(s);
 		clickedPoint = null;
@@ -148,12 +200,6 @@ public class ACCGProgram {
 		glEnable(GL_DEPTH_TEST);
 		
 		while (!Display.isCloseRequested() && !escPressed) {
-			
-			// handle events
-			handleKeyEvents();
-			handlePressedKeys();
-			handleScrollEvents();
-			handleMouseEvents();
 			
 			// handle resize events
 			if (displayWidth != Display.getWidth() || displayHeight != Display.getHeight()) {
@@ -183,6 +229,12 @@ public class ACCGProgram {
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 			camera.setLookAt();
+			
+			// handle events
+			handleKeyEvents();
+			handlePressedKeys();
+			handleScrollEvents();
+			handleMouseEvents(s);
 
 			// draw the scene
 			
@@ -207,6 +259,10 @@ public class ACCGProgram {
 			shadowMatrix.flip();
 			glMultMatrix(shadowMatrix);
 			s.world.draw(s);
+			if (s.programMode == ProgramMode.BUILDING_MODE &&
+					s.shadowObject != null) {
+				s.shadowObject.draw(s);
+			}
 			glPopMatrix();
 			glEnable(GL_COLOR_MATERIAL);
 			
@@ -216,6 +272,10 @@ public class ACCGProgram {
 			
 			// step 4: draw objects
 			s.world.draw(s);
+			if (s.programMode == ProgramMode.BUILDING_MODE &&
+					s.shadowObject != null) {
+				s.shadowObject.draw(s);
+			}
 			
 			// draw the menu bars
 			for (int i = 0; i < menuBars.length; i++) {
@@ -330,8 +390,12 @@ public class ACCGProgram {
 	
 	/**
 	 * Handles mouse move events and such.
+	 * 
+	 * @param s State of the program, used to determine in which mode we are
+	 *          to see if a {@link ShadowObject} should be drawn where the
+	 *          mouse hovers or not (and also what kind of object).
 	 */
-	public void handleMouseEvents() {
+	public void handleMouseEvents(State s) {
 		// Variable handledButton[i] holds if an event for mouse button i
 		// was handled or not. This is needed because LWJGL's API for the
 		// mouse is slightly weird. Or I just don't get it.
@@ -370,9 +434,18 @@ public class ACCGProgram {
 				
 				// handle general mouse move
 				if (!handledMouseMove) {
+					// see if a menubar is hovered
 					for (int i = 0; i < menuBars.length; i++) {
 						handledMouseMoveByMenu = (menuBars[i].handleMouseMoveEvent(
 								Mouse.getX(), Mouse.getY()) || handledMouseMoveByMenu);
+					}
+					
+					// in building mode, we might have to draw an object where the mouse
+					// hovers (that is, calculate intersection of a projected ray from the
+					// mouse with the scene, et cetera)
+					if (!handledMouseMoveByMenu && s.programMode == ProgramMode.BUILDING_MODE &&
+							s.shadowObject != null) {
+						updateShadowObjectPosition(Mouse.getX(), Mouse.getY(), s);
 					}
 					
 					handledMouseMove = true;
@@ -802,5 +875,64 @@ public class ACCGProgram {
 		menuBars[0].setPresentation(pres);
 		
 		prefs.putInt("menu.presentation", pres.ordinal());
+	}
+	
+	/**
+	 * Update the position of the shadow object. This function assumes that the
+	 * shadow object is not null to begin with. It accesses the global camera
+	 * variable to determine the viewing vector.
+	 * 
+	 * @param mouseX X-coordinate of mouse position on screen.
+	 * @param mouseY Y-coordinate of mouse position on screen.
+	 * @param s State, used to access shadow object.
+	 */
+	private void updateShadowObjectPosition(int mouseX, int mouseY, State s) {
+		// find the intersection of the camera viewing ray with the scene AABB
+		glGetFloat(GL_MODELVIEW_MATRIX, modelMatrix);
+		glGetFloat(GL_PROJECTION_MATRIX, projectionMatrix);
+		glGetInteger(GL_VIEWPORT, viewport);
+		GLU.gluUnProject(mouseX, mouseY, 0, modelMatrix, projectionMatrix,
+				viewport, mousePos3D);
+		mousePos3DvectorNear.x = mousePos3D.get(0);
+		mousePos3DvectorNear.y = mousePos3D.get(1);
+		mousePos3DvectorNear.z = mousePos3D.get(2) * 4;
+		GLU.gluUnProject(mouseX, mouseY, 1, modelMatrix, projectionMatrix,
+				viewport, mousePos3D);
+		mousePos3DvectorFar.x = mousePos3D.get(0);
+		mousePos3DvectorFar.y = mousePos3D.get(1);
+		mousePos3DvectorFar.z = mousePos3D.get(2) * 4;
+		mouseViewVector.sub(mousePos3DvectorFar, mousePos3DvectorNear);
+		mouseViewVector.normalize();
+		
+		double[] result = Utils.getIntersectWithBox(mousePos3DvectorNear,
+				mouseViewVector, -0.5, s.fieldLength - 0.5, -0.5, s.fieldWidth -
+				0.5, 0.0, s.fieldHeight);
+		// are we even hovering the scene?
+		if (result == null) {
+			s.shadowObject.setVisible(false);
+			return;
+		}
+		
+		// we do not want to start behind the camera
+		result[0] = Math.max(0, result[0]);
+		Vector3f start = new Vector3f();
+		Vector3f end = new Vector3f();
+		start.scaleAdd((float) result[0], mouseViewVector, mousePos3DvectorNear);
+		end.scaleAdd((float) result[1], mouseViewVector, mousePos3DvectorNear);
+		// go a little further, just to be sure to process everything
+		mouseViewVector.scale(0.5f);
+		end.add(mouseViewVector);
+		// find interesting grid cells
+		ArrayList<Vector3f> interestingCells = Utils.bresenham3D(start, end);
+		// position the shadowobject just before the first cell that contains a
+		// block, or hide it if the first block is taken already
+		int firstTakenIndex = s.world.getFirstTakenIndex(interestingCells);
+		if (firstTakenIndex < interestingCells.size() - 1 ||
+				interestingCells.get(firstTakenIndex - 1).z > 0) {
+			s.shadowObject.setVisible(false);
+		} else {
+			s.shadowObject.setVisible(true);
+			s.shadowObject.setPosition(interestingCells.get(firstTakenIndex - 1));
+		}
 	}
 }
