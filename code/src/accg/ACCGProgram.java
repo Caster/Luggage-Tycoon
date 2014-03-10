@@ -917,10 +917,15 @@ public class ACCGProgram {
 		result[0] = Math.max(0, result[0]);
 		Vector3f start = new Vector3f();
 		Vector3f end = new Vector3f();
+		Vector3f offsetVector = new Vector3f(0.5f, 0.5f, 0);
 		start.scaleAdd((float) result[0], mouseViewVector, mousePos3DvectorNear);
-		start.add(new Vector3f(0.5f, 0.5f, 0));
+		start.add(offsetVector);
 		end.scaleAdd((float) result[1], mouseViewVector, mousePos3DvectorNear);
-		end.add(new Vector3f(0.5f, 0.5f, 0));
+		end.add(offsetVector);
+		// go a little further, to make sure we do not miss the cell on the ground
+		mouseViewVector.scale(0.5f);
+		end.add(mouseViewVector);
+		
 		// find interesting grid cells
 		ArrayList<Vector3f> interestingCells = Utils.bresenham3D(start, end);
 		// position the shadowobject just before the first cell that contains a
@@ -931,7 +936,9 @@ public class ACCGProgram {
 			s.shadowObject.setVisible(false);
 		} else {
 			s.shadowObject.setVisible(true);
-			s.shadowObject.setPosition(interestingCells.get(firstTakenIndex - 1));
+			end.sub(mouseViewVector);
+			end.z = 0;
+			s.shadowObject.setPosition(end);
 		}
 	}
 }
