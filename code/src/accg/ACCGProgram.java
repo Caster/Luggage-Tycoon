@@ -122,7 +122,7 @@ public class ACCGProgram {
 		// initialize stuff here
 		s.simulation = new Simulation(s);
 		s.world = new World(s);
-		s.floor = new Floor(s);
+		s.floor = new Floor();
 		s.textures = new Textures();
 		s.startTime = (float) Sys.getTime() / Sys.getTimerResolution();
 		camera = new Camera(s);
