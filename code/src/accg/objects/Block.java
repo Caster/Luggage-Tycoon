@@ -103,7 +103,13 @@ public abstract class Block extends DrawableObject {
 	public int getZ() {
 		return z;
 	}
-
+	
+	/**
+	 * Returns the height of this block.
+	 * @return The height.
+	 */
+	public abstract int getHeight();
+	
 	/**
 	 * Returns the orientation of this block.
 	 * @return The orientation.

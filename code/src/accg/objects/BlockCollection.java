@@ -110,7 +110,8 @@ public class BlockCollection extends DrawableObject {
 	}
 	
 	/**
-	 * Returns the block on the given coordinate.
+	 * Returns the block that is exactly on the given coordinate. This method will
+	 * return a block only if it is defined to be exactly on that coordinate.
 	 * 
 	 * @param x The x-coordinate.
 	 * @param y The y-coordinate.
@@ -122,6 +123,30 @@ public class BlockCollection extends DrawableObject {
 	 */
 	public Block getBlock(int x, int y, int z) {
 		return blocks[x][y][z];
+	}
+	
+	/**
+	 * Returns the block that is exactly on the given coordinate, or extends
+	 * to the given coordinate.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @param z The z-coordinate (divided by 4).
+	 * @return The block on coordinate (x, y, z / 4), or <code>null</code> if
+	 * there is no block there.
+	 * @throws ArrayIndexOutOfBoundsException If {@link #inBounds(int, int, int)}
+	 * returns <code>false</code> for this coordinate.
+	 */
+	public Block getBlockFuzzy(int x, int y, int z) {
+		for (int z2 = z; z2 >= 0; z2--) {
+			Block block = blocks[x][y][z2];
+			
+			if (block != null && z2 + block.getHeight() > z) {
+				return block;
+			}
+		}
+		
+		return null;
 	}
 	
 	/**

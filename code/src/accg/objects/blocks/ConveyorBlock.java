@@ -330,4 +330,9 @@ public abstract class ConveyorBlock extends Block {
 	protected static final double RAD_STEP = Math.PI / 20;
 	/** Type of this block. */
 	protected ConveyorBlockType type;
+	
+	@Override
+	public int getHeight() {
+		return 4; // conveyor belts have block 4
+	}
 }
