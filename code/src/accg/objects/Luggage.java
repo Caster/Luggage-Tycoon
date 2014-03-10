@@ -31,9 +31,14 @@ public class Luggage extends DrawableObject {
 	public Matrix4f transform;
 	
 	/**
-	 * The OBJ model for the case.
+	 * The OBJ model for the colored parts of the case.
 	 */
-	private static OBJModel caseModel;
+	private static OBJModel caseModelColor;
+	
+	/**
+	 * The OBJ model for the black parts of the case.
+	 */
+	private static OBJModel caseModelBlack;
 	
 	/**
 	 * The color of this luggage.
@@ -109,15 +114,16 @@ public class Luggage extends DrawableObject {
 		
 		this.color = LuggageColor.values()[(int) (Math.random() * LuggageColor.values().length)];
 		
-		if (caseModel == null) {
-			caseModel = new OBJModel(new File("res/suitcase.obj"));
+		if (caseModelColor == null) {
+			caseModelColor = new OBJModel(new File("res/suitcase-color.obj"));
+		}
+		if (caseModelBlack == null) {
+			caseModelBlack = new OBJModel(new File("res/suitcase-black.obj"));
 		}
 	}
 	
 	@Override
 	public void draw(State s) {
-		
-		glColor4f(color.getColor());
 		
 		glPushMatrix();
 		float[] values = new float[] {
@@ -131,7 +137,11 @@ public class Luggage extends DrawableObject {
 		fb.flip();
 		glMultMatrix(fb);
 		
-		caseModel.draw();
+		glColor4f(color.getColor());
+		caseModelColor.draw();
+		
+		glColor4f(0.1f, 0.1f, 0.1f, 1);
+		caseModelBlack.draw();
 		
 		glPopMatrix();
 	}
