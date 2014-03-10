@@ -1,5 +1,6 @@
 package accg;
 
+import static accg.utils.GLUtils.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.*;
 
@@ -55,8 +56,14 @@ import accg.utils.Utils;
  */
 public class ACCGProgram {
 	
+	/** Background color of the scene. */
+	private static final java.awt.Color BACKGROUND_COLOR =
+			new java.awt.Color(0.8f, 0.8f, 0.77f, 1.0f);
+	/** Default menu alignment (index in enumeration). */
 	private static final int DEF_MENU_ALIGNMENT = 1;
+	/** Default menu position (index in enumeration). */
 	private static final int DEF_MENU_POSITION = 0;
+	/** Default menu presentation (index in enumeration). */
 	private static final int DEF_MENU_PRESENTATION = 1;
 	
 	/** If the escape key has been pressed. */
@@ -172,6 +179,7 @@ public class ACCGProgram {
 		s.simulation = new Simulation(s);
 		s.world = new World(s);
 		s.floor = new Floor();
+		s.floor.setBackgroundColor(BACKGROUND_COLOR);
 		s.textures = new Textures();
 		// TODO: This is only temporary, for testing. This should be controlled through some
 		//       kind of menu where blocks or 'nothing' can be selected.
@@ -199,6 +207,19 @@ public class ACCGProgram {
 		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 		glEnable(GL_DEPTH_TEST);
 		
+		// initialise some GL stuff
+		FloatBuffer shadowColor = BufferUtils.createFloatBuffer(4);
+		shadowColor.put(new float[] {0, 0, 0, 1});
+		shadowColor.flip();
+		FloatBuffer shadowMatrix = BufferUtils.createFloatBuffer(16);
+		shadowMatrix.put(new float[] {
+				1, 0, 0, 0,
+				0, 1, 0, 0,
+				-0.2f, 0.2f, 0, 0,
+				0, 0, 0, 1
+		});
+		shadowMatrix.flip();
+		
 		while (!Display.isCloseRequested() && !escPressed) {
 			
 			// handle resize events
@@ -219,7 +240,7 @@ public class ACCGProgram {
 			}
 			
 			// start rendering stuff
-			glClearColor(0.8f, 0.8f, 0.77f, 1.0f);
+			glClearColor(BACKGROUND_COLOR);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glViewport(0, 0, Display.getWidth(), Display.getHeight());
 			glMatrixMode(GL_PROJECTION);
@@ -244,19 +265,8 @@ public class ACCGProgram {
 			
 			// step 2: draw shadows
 			glDisable(GL_COLOR_MATERIAL);
-			FloatBuffer shadowColor = BufferUtils.createFloatBuffer(4);
-			shadowColor.put(new float[] {0, 0, 0, 1});
-			shadowColor.flip();
 			glMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, shadowColor);
 			glPushMatrix();
-			FloatBuffer shadowMatrix = BufferUtils.createFloatBuffer(16);
-			shadowMatrix.put(new float[] {
-					1, 0, 0, 0,
-					0, 1, 0, 0,
-					-0.2f, 0.2f, 0, 0,
-					0, 0, 0, 1
-			});
-			shadowMatrix.flip();
 			glMultMatrix(shadowMatrix);
 			s.world.draw(s);
 			if (s.programMode == ProgramMode.BUILDING_MODE &&
