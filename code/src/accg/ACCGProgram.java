@@ -918,10 +918,9 @@ public class ACCGProgram {
 		Vector3f start = new Vector3f();
 		Vector3f end = new Vector3f();
 		start.scaleAdd((float) result[0], mouseViewVector, mousePos3DvectorNear);
+		start.add(new Vector3f(0.5f, 0.5f, 0));
 		end.scaleAdd((float) result[1], mouseViewVector, mousePos3DvectorNear);
-		// go a little further, just to be sure to process everything
-		mouseViewVector.scale(0.5f);
-		end.add(mouseViewVector);
+		end.add(new Vector3f(0.5f, 0.5f, 0));
 		// find interesting grid cells
 		ArrayList<Vector3f> interestingCells = Utils.bresenham3D(start, end);
 		// position the shadowobject just before the first cell that contains a

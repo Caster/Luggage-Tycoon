@@ -30,9 +30,9 @@ public class Utils {
 		// http://www.ict.griffith.edu.au/anthony/info/graphics/bresenham.procs
 		Vector3f pixel = new Vector3f((float) Math.floor(start.x),
 				(float) Math.floor(start.y), (float) Math.floor(start.z));
-		int dx = (int) (Math.ceil(end.x) - Math.floor(start.x));
-		int dy = (int) (Math.ceil(end.y) - Math.floor(start.y));
-		int dz = (int) (Math.ceil(end.z) - Math.floor(start.z));
+		int dx = (int) (Math.floor(end.x) - Math.floor(start.x));
+		int dy = (int) (Math.floor(end.y) - Math.floor(start.y));
+		int dz = (int) (Math.floor(end.z) - Math.floor(start.z));
 		int xInc = (dx < 0 ? -1 : 1);
 		int l = Math.abs(dx);
 		int yInc = (dy < 0 ? -1 : 1);
@@ -51,8 +51,7 @@ public class Utils {
 				if (err1 > 0) {
 					pixel.y += yInc;
 					err1 -= dx2;
-				}
-				if (err2 > 0) {
+				} else if (err2 > 0) {
 					pixel.z += zInc;
 					err2 -= dx2;
 				}
@@ -68,8 +67,7 @@ public class Utils {
 				if (err1 > 0) {
 					pixel.x += xInc;
 					err1 -= dy2;
-				}
-				if (err2 > 0) {
+				} else if (err2 > 0) {
 					pixel.z += zInc;
 					err2 -= dy2;
 				}
@@ -85,8 +83,7 @@ public class Utils {
 				if (err1 > 0) {
 					pixel.y += yInc;
 					err1 -= dz2;
-				}
-				if (err2 > 0) {
+				} else if (err2 > 0) {
 					pixel.x += xInc;
 					err2 -= dz2;
 				}
