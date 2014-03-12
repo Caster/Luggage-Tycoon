@@ -1,10 +1,18 @@
 package accg.gui.toolkit;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * A GUI container. This is a component that can contain other components,
  * and is responsible for layouting them.
  */
 public abstract class Container extends Component {
+	
+	/**
+	 * Whether the outline needs to be recomputed.
+	 */
+	protected boolean needsLayout = true;
 	
 	/**
 	 * Adds a new child to this container.
@@ -22,10 +30,19 @@ public abstract class Container extends Component {
 	public abstract void layout();
 	
 	/**
+	 * Returns a list of all children.
+	 * 
+	 * The resulting list may not be modified; else behaviour is undefined.
+	 * 
+	 * @return A list of the children of this container.
+	 */
+	public abstract Collection<? extends Component> getChildren();
+	
+	/**
 	 * Flags that the outline needs to be recalculated.
 	 */
 	public void needsLayout() {
-		outline = null;
+		needsLayout = true;
 	}
 	
 	/**
@@ -33,7 +50,7 @@ public abstract class Container extends Component {
 	 * (by calling {@link #layout()}).
 	 */
 	public void layoutIfNeeded() {
-		if (outline == null) {
+		if (needsLayout) {
 			layout();
 		}
 	}

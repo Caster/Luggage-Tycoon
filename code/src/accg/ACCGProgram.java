@@ -14,6 +14,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.Point;
 import org.lwjgl.util.glu.GLU;
@@ -127,7 +128,7 @@ public class ACCGProgram {
 		
 		// pre-initialize stuff
 		State s = new State();
-		s.fontMenu = MainGUI.loadFont(); // TODO dit moet beter kunnen
+		s.fontMenu = MainGUI.loadFont();
 		
 		// show a loading message, loading textures takes some time
 		glClearColor(0.8f, 0.8f, 0.77f, 1.0f);
@@ -159,7 +160,9 @@ public class ACCGProgram {
 		// intialise GUI stuff
 		gui = new MainGUI(s);
 		loadPreferences(s);
-		gui.updateItems(); // TODO call dit iedere keer als de modus verandert
+		gui.updateItems();
+		gui.setWidth(displayWidth);
+		gui.setHeight(displayHeight);
 		
 		// enable some GL stuff
 		glEnable(GL_LIGHTING);
@@ -174,7 +177,8 @@ public class ACCGProgram {
 			if (displayWidth != Display.getWidth() || displayHeight != Display.getHeight()) {
 				displayWidth = Display.getWidth();
 				displayHeight = Display.getHeight();
-				//menuBars[0].handleResizeEvent(displayWidth, displayHeight); // TODO
+				gui.setWidth(displayWidth);
+				gui.setHeight(displayHeight);
 			}
 			
 			// update time
@@ -203,7 +207,7 @@ public class ACCGProgram {
 			handleKeyEvents();
 			handlePressedKeys();
 			//handleScrollEvents(); // TODO
-			//handleMouseEvents(s);
+			handleMouseEvents(s);
 
 			// draw the scene
 			
@@ -247,7 +251,10 @@ public class ACCGProgram {
 			}
 			
 			// draw the menu bars
+			GUIUtils.make2D();
+			gui.outputDebug();
 			gui.draw();
+			GUIUtils.make3D();
 			
 			// check for errors
 			Util.checkGLError();
@@ -364,7 +371,8 @@ public class ACCGProgram {
 	 *          to see if a {@link ShadowObject} should be drawn where the
 	 *          mouse hovers or not (and also what kind of object).
 	 */
-	/*public void handleMouseEvents(State s) {
+	public void handleMouseEvents(State s) {
+		
 		// Variable handledButton[i] holds if an event for mouse button i
 		// was handled or not. This is needed because LWJGL's API for the
 		// mouse is slightly weird. Or I just don't get it.
@@ -381,14 +389,9 @@ public class ACCGProgram {
 						clickedPoint = new Point(Mouse.getX(), Mouse.getY());
 					} else {
 						if (clickedPoint != null) {
-							if (Math.abs(clickedPoint.getX() -
-										Mouse.getX()) < 3 &&
-									Math.abs(clickedPoint.getY() -
-											Mouse.getY()) < 3) {
-								for (int i = 0; i < menuBars.length; i++) {
-									menuBars[i].handleMouseClickEvent(
-											Mouse.getX(), Mouse.getY());
-								}
+							if (Math.abs(clickedPoint.getX() - Mouse.getX()) < 3 &&
+									Math.abs(clickedPoint.getY() - Mouse.getY()) < 3) {
+								gui.handleMouseClickEvent(Mouse.getX(), Mouse.getY());
 							}
 							
 							clickedPoint = null;
@@ -397,6 +400,7 @@ public class ACCGProgram {
 				}
 			}
 			
+			/* TODO
 			if (!Mouse.getEventButtonState()) {
 				int dx = Mouse.getEventDX();
 				int dy = Mouse.getEventDY();
@@ -433,9 +437,9 @@ public class ACCGProgram {
 					
 					handledButton[2] = true;
 				}
-			}
+			}*/
 		}
-	}*/
+	}
 	
 	/**
 	 * Create some menu items and add those to the given menu bar.

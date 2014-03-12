@@ -6,10 +6,11 @@ import static org.lwjgl.opengl.GL11.*;
 import java.awt.Color;
 
 import org.lwjgl.util.Rectangle;
-import org.newdawn.slick.Font;
 import org.newdawn.slick.opengl.Texture;
 
-import accg.gui.toolkit.MenuCollection.Presentation;
+import accg.gui.toolkit.event.MouseClickEvent;
+import accg.gui.toolkit.event.MouseDragEvent;
+import accg.gui.toolkit.event.MouseScrollEvent;
 
 /**
  * A SliderMenuBarItem is a {@link MenuBarItem} that has a value which can
@@ -57,6 +58,22 @@ public class SliderMenuBarItem extends MenuBarItem {
 		this.max = max;
 		this.val = value;
 		this.step = step;
+		
+		addListener(new Listener() {
+			
+			@Override
+			public void event(Event e) {
+				if (e instanceof MouseClickEvent) {
+					onClick(((MouseClickEvent) e).getX(), ((MouseClickEvent) e).getY());
+				}
+				if (e instanceof MouseDragEvent) {
+					onDrag(((MouseDragEvent) e).getX(), ((MouseDragEvent) e).getY());
+				}
+				if (e instanceof MouseScrollEvent) {
+					onScroll(((MouseScrollEvent) e).getdWheel());
+				}
+			}
+		});
 	}
 
 	/**
@@ -94,21 +111,20 @@ public class SliderMenuBarItem extends MenuBarItem {
 			
 			// outline
 			glColor4f(SLIDER_BAR_EDGE_COLOR);
-			drawBar(outline, presentation, barHeight, textBarDiff, 0, 1f);
+			drawBar(outline, getPresentation(), barHeight, textBarDiff, 0, 1f);
 			
 			// background
 			glColor4f(SLIDER_BAR_BACKGROUND_COLOR);
-			drawBar(outline, presentation, barHeight, textBarDiff, SLIDER_BAR_EDGE_WIDTH, 1f);
+			drawBar(outline, getPresentation(), barHeight, textBarDiff, SLIDER_BAR_EDGE_WIDTH, 1f);
 			
 			// actual bar
 			glColor4f(SLIDER_BAR_COLOR);
-			drawBar(outline, presentation, barHeight, textBarDiff, SLIDER_BAR_EDGE_WIDTH,
+			drawBar(outline, getPresentation(), barHeight, textBarDiff, SLIDER_BAR_EDGE_WIDTH,
 					(val - min) / (max - min));
 		}
 	}
 	
-	@Override
-	public void onClick(int x, int y) {
+	protected void onClick(int x, int y) {
 		// when clicking inside the bar, change the value
 		if (this.showBar && this.barOutline.contains(x, y)) {
 			updateValueFromPoint(x, y);
@@ -119,16 +135,14 @@ public class SliderMenuBarItem extends MenuBarItem {
 		}
 	}
 	
-	@Override
-	public void onDrag(int x, int y) {
+	protected void onDrag(int x, int y) {
 		// see if the drag is inside the bar
 		if (this.showBar && this.barOutline.contains(x, y)) {
 			updateValueFromPoint(x, y);
 		}
 	}
 	
-	@Override
-	public void onScroll(int dWheel) {
+	protected void onScroll(int dWheel) {
 		// only respond if the bar is actually shown
 		if (this.showBar) {
 			this.val = clamp(this.val + Math.signum(dWheel) * this.step,

@@ -9,6 +9,7 @@ import org.newdawn.slick.util.ResourceLoader;
 import accg.State;
 import accg.State.ProgramMode;
 import accg.gui.toolkit.MenuCollection;
+import accg.gui.toolkit.event.MouseClickEvent;
 
 /**
  * This class manages the GUI.
@@ -30,8 +31,8 @@ public class MainGUI extends MenuCollection {
 		setFont(loadFont());
 		
 		addMenuBar(ProgramMode.NORMAL_MODE, new NormalModeMenuBar(state));
-		//addMenuBar(ProgramMode.BUILDING_MODE, new BuildingModeMenuBar(state)); // TODO
-		//addMenuBar(ProgramMode.SIMULATION_MODE, new SimulationModeMenuBar(state));
+		addMenuBar(ProgramMode.BUILDING_MODE, new BuildingModeMenuBar(state));
+		addMenuBar(ProgramMode.SIMULATION_MODE, new SimulationModeMenuBar(state));
 	}
 	
 	/**
@@ -62,5 +63,15 @@ public class MainGUI extends MenuCollection {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * Handles a mouse event by giving it to the GUI.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 */
+	public void handleMouseClickEvent(int x, int y) {
+		sendEvent(new MouseClickEvent(x, y));
 	}
 }

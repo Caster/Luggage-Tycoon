@@ -13,14 +13,6 @@ import java.util.ArrayList;
  * A MenuBar can have one child, that is also drawn by this MenuBar.
  */
 public class MenuBar extends Container {
-
-	/**
-	 * Distance between edge of screen and the menu bar.
-	 * 
-	 * In case this is a submenu, the menu bar is drawn directly next
-	 * to its parent.
-	 */
-	public static final int MARGIN = 10;
 	
 	/**
 	 * Items in this menu bar.
@@ -96,8 +88,8 @@ public class MenuBar extends Container {
 			int maxHeight = 0;
 			for (MenuBarItem item : items) {
 				totalItemWidth += item.getPreferredWidth();
-				if (item.getHeight() > maxHeight) {
-					maxHeight = item.getHeight();
+				if (item.getPreferredHeight() > maxHeight) {
+					maxHeight = item.getPreferredHeight();
 				}
 			}
 			int extraWidth = (getWidth() - totalItemWidth) / items.size();
@@ -122,8 +114,8 @@ public class MenuBar extends Container {
 			int maxWidth = 0;
 			for (MenuBarItem item : items) {
 				totalItemHeight += item.getPreferredHeight();
-				if (item.getWidth() > maxWidth) {
-					maxWidth = item.getWidth();
+				if (item.getPreferredWidth() > maxWidth) {
+					maxWidth = item.getPreferredWidth();
 				}
 			}
 			int extraHeight = (getWidth() - totalItemHeight) / items.size();
@@ -199,60 +191,6 @@ public class MenuBar extends Container {
 			outline.setHeight(items.size() * itemHeight);
 			outline.setWidth(maxWidth);
 		}*/
-		
-		/*
-		// determine position of rectangle
-		Rectangle parentOutline = (parent == null ? null : parent.getOutline());
-		switch (pos) {
-		case TOP :
-		case BOTTOM :
-			switch (getAlignment()) {
-			case BEGIN :
-				outline.setX(MARGIN);
-				break;
-			case END :
-				outline.setX(width - MARGIN - outline.getWidth());
-				break;
-			default : // CENTER or null
-				outline.setX(MARGIN + (width - 2 * MARGIN -
-						outline.getWidth()) / 2);
-				break;
-			}
-			
-			if (pos == Position.TOP) {
-				outline.setY(parent == null ? MARGIN + outline.getHeight()
-						: parentOutline.getY() + MARGIN + outline.getHeight());
-			} else {
-				outline.setY(parent == null ? height - MARGIN
-						: parentOutline.getY() - parentOutline.getHeight() - MARGIN);
-			}
-			break;
-		default : // LEFT, RIGHT or null
-			if (pos == Position.LEFT) {
-				outline.setX(parent == null ? MARGIN
-						: parentOutline.getX() + MARGIN + parentOutline.getWidth());
-			} else {
-				outline.setX(parent == null ? width - MARGIN - outline.getWidth()
-						: parentOutline.getX() - MARGIN - outline.getWidth());
-			}
-			
-			switch (getAlignment()) {
-			case BEGIN :
-				outline.setY(MARGIN + outline.getHeight());
-				break;
-			case END :
-				outline.setY(height - MARGIN);
-				break;
-			default : // CENTER or null
-				outline.setY(MARGIN + (height - 2 * MARGIN -
-						outline.getHeight()) / 2 + outline.getHeight());
-				break;
-			}
-			break;
-		}
-		
-		this.outline = outline;
-		return outline;*/
 	}
 
 	@Override
@@ -266,8 +204,9 @@ public class MenuBar extends Container {
 		// if needed, compute layout
 		layoutIfNeeded();
 		
-		// switch to 2D rendering
-		GUIUtils.make2D();
+		// apply the transformation
+		glPushMatrix();
+		glTranslatef(outline.getX(), outline.getY(), 0);
 		
 		// enable transparency
 		glEnable(GL_BLEND);
@@ -289,8 +228,18 @@ public class MenuBar extends Container {
 		// disable transparency again
 		glDisable(GL_BLEND);
 		
-		// switch back to 3D rendering and restore transforms and such
-		GUIUtils.make3D();
+		// restore the transformation
+		glPopMatrix();
+	}
+
+	@Override
+	public ArrayList<? extends Component> getChildren() {
+		return items;
+	}
+	
+	@Override
+	public String getComponentName() {
+		return "MenuBar";
 	}
 	
 	/**
@@ -468,10 +417,10 @@ public class MenuBar extends Container {
 	 * on the correct spot.
 	 */
 	private void drawBackground() {
-		glVertex2d(outline.getX(), outline.getY() - outline.getHeight());
-		glVertex2d(outline.getX() + outline.getWidth(), outline.getY() - outline.getHeight());
-		glVertex2d(outline.getX() + outline.getWidth(), outline.getY());
-		glVertex2d(outline.getX(), outline.getY());
+		glVertex2d(0, outline.getHeight());
+		glVertex2d(outline.getWidth(), outline.getHeight());
+		glVertex2d(outline.getWidth(), 0);
+		glVertex2d(0, 0);
 	}
 
 	@Override

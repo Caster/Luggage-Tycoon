@@ -1,12 +1,25 @@
 package accg.gui.toolkit;
 
+import static org.lwjgl.opengl.GL11.*;
+
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.lwjgl.util.Rectangle;
 
 /**
  * This class manages a GUI with several possible menu bars.
  */
-public class MenuCollection extends Component {
+public class MenuCollection extends Container {
+
+	/**
+	 * Distance between edge of screen and the menu bar.
+	 * 
+	 * In case this is a submenu, the menu bar is drawn directly next
+	 * to its parent.
+	 */
+	public static final int MARGIN = 10;
 	
 	/**
 	 * The menu bars, with associated keys.
@@ -90,6 +103,109 @@ public class MenuCollection extends Component {
 	 */
 	public MenuCollection() {
 		menuBars = new HashMap<>();
+		
+		alignment = Alignment.CENTER;
+		position = Position.TOP;
+	}
+	
+	@Override
+	public void draw() {
+		
+		// if needed, compute layout
+		layoutIfNeeded();
+		
+		// apply the transformation
+		glPushMatrix();
+		glTranslatef(outline.getX(), outline.getY(), 0);
+		
+		// actually draw the menu (TODO)
+		if (visibleMenu != null) {
+			visibleMenu.draw();
+		}
+		
+		// restore the transformation
+		glPopMatrix();
+	}
+	
+	@Override
+	public int getPreferredWidth() {
+		return 0; // TODO preferred width of a menu collection is weird
+	}
+	
+	@Override
+	public int getPreferredHeight() {
+		return 0; // TODO preferred height of a menu collection is weird
+	}
+
+	@Override
+	public void layout() {
+		
+		// first compute and set the width and height of the menu
+		if (visibleMenu.getPreferredWidth() < getWidth() - 2 * MARGIN) {
+			visibleMenu.setWidth(visibleMenu.getPreferredWidth());
+		} else {
+			visibleMenu.setWidth(getWidth() - 2 * MARGIN);
+		}
+		
+		if (visibleMenu.getPreferredHeight() < getHeight() - 2 * MARGIN) {
+			visibleMenu.setHeight(visibleMenu.getPreferredHeight());
+		} else {
+			visibleMenu.setHeight(getHeight() - 2 * MARGIN);
+		}
+		
+		// determine position of the menu, based on the width and height
+		switch (position) {
+		case TOP:
+		case BOTTOM:
+			switch (getAlignment()) {
+			case BEGIN:
+				visibleMenu.setX(MARGIN);
+				break;
+			case END:
+				visibleMenu.setX(getWidth() - MARGIN - outline.getWidth());
+				break;
+			default: // CENTER or null
+				visibleMenu.setX(MARGIN + (getWidth() - 2 * MARGIN -
+						visibleMenu.getWidth()) / 2);
+				break;
+			}
+			
+			if (position == Position.TOP) {
+				outline.setY(MARGIN);
+			} else {
+				outline.setY(getHeight() - MARGIN - visibleMenu.getHeight());
+			}
+			break;
+		default: // LEFT, RIGHT or null
+			if (position == Position.LEFT) {
+				outline.setX(MARGIN);
+			} else {
+				outline.setX(getWidth() - MARGIN - outline.getWidth());
+			}
+			
+			switch (getAlignment()) {
+			case BEGIN:
+				outline.setY(MARGIN);
+				break;
+			case END:
+				outline.setY(getHeight() - visibleMenu.getHeight() - MARGIN);
+				break;
+			default: // CENTER or null
+				outline.setY(MARGIN + (visibleMenu.getHeight() - 2 * MARGIN) / 2);
+				break;
+			}
+			break;
+		}
+	}
+	
+	@Override
+	public String getComponentName() {
+		return "MenuCollection";
+	}
+	
+	@Override
+	public void add(Component toAdd) {
+		throw new UnsupportedOperationException("Adding to a MenuCollection is not supported; see addMenuBar() instead");
 	}
 	
 	/**
@@ -160,13 +276,6 @@ public class MenuCollection extends Component {
 		visibleMenu = null;
 	}
 	
-	@Override
-	public void draw() {
-		if (visibleMenu != null) {
-			visibleMenu.draw();
-		}
-	}
-	
 	/**
 	 * Changes the alignment of this menu collection.
 	 * @param alignment New alignment for this menu collection.
@@ -200,14 +309,7 @@ public class MenuCollection extends Component {
 	}
 
 	@Override
-	public int getPreferredWidth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getPreferredHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+	public Collection<? extends Component> getChildren() {
+		return menuBars.values();
 	}
 }

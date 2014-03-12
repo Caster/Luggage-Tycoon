@@ -1,5 +1,6 @@
 package accg.gui.toolkit;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 import org.lwjgl.util.Rectangle;
@@ -12,8 +13,7 @@ import org.newdawn.slick.Font;
 public abstract class Component {
 	
 	/**
-	 * The bounds to draw this component in. This is <code>null</code> if it
-	 * still needs to be computed.
+	 * The bounds to draw this component in.
 	 * 
 	 * The coordinate system is relative to the parent.
 	 */
@@ -235,6 +235,40 @@ public abstract class Component {
 	public void sendEvent(Event e) {
 		for (Listener l : listeners) {
 			l.event(e);
+		}
+	}
+	
+	public abstract String getComponentName();
+	
+	public void outputDebug() {
+		outputDebug(System.out);
+	}
+	
+	public void outputDebug(PrintStream out) {
+		outputDebug(out, 0);
+	}
+	
+	public void outputDebug(PrintStream out, int indent) {
+		for (int i = 0; i < indent; i++) {
+			out.print(" ");
+		}
+		
+		String className = this.getClass().getSimpleName();
+		if (className.equals(getComponentName())) {
+			out.print(className);
+		} else {
+			out.print(className + " (= " + getComponentName() + ")");
+		}
+		out.print(";  ");
+		out.print("pos: (" + getX() + ", " + getY() + ")");
+		out.print(";  ");
+		out.print("size: " + getWidth() + " x " + getHeight() + "");
+		out.println();
+		
+		if (this instanceof Container) {
+			for (Component c : ((Container) this).getChildren()) {
+				c.outputDebug(out, indent + 2);
+			}
 		}
 	}
 }

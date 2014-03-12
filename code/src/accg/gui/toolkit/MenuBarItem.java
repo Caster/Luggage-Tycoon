@@ -50,7 +50,8 @@ public class MenuBarItem extends Component implements Listener {
 	private Presentation presentation = Presentation.ICON_ABOVE_TEXT;
 	
 	/**
-	 * Possible presentations/layouts for items in a {@link MenuBar}.
+	 * Possible presentations/layouts for items in a {@link MenuBar}. A
+	 * presentation defines the style of button.
 	 */
 	public enum Presentation {
 		ICON_LEFT_TEXT("(small) Icon left of text"),
@@ -127,17 +128,21 @@ public class MenuBarItem extends Component implements Listener {
 	
 	@Override
 	public void draw() {
+		
+		// apply the transformation
+		glPushMatrix();
+		glTranslatef(outline.getX(), outline.getY(), 0);
+		
 		// render hovered background, if needed
 		if ((this.hovered && this.drawHoveredBackground) ||
 				(this.checked && this.drawCheckedBackground)) {
 			glColor4d(1, 1, 1, 1);
 			glBegin(GL_QUADS);
 			{
-				glVertex2d(outline.getX(), outline.getY() - outline.getHeight());
-				glVertex2d(outline.getX() + outline.getWidth(),
-						outline.getY() - outline.getHeight());
-				glVertex2d(outline.getX() + outline.getWidth(), outline.getY());
-				glVertex2d(outline.getX(), outline.getY());
+				glVertex2d(0, outline.getHeight());
+				glVertex2d(outline.getWidth(), outline.getHeight());
+				glVertex2d(outline.getWidth(), 0);
+				glVertex2d(0, 0);
 			}
 			glEnd();
 		}
@@ -149,13 +154,13 @@ public class MenuBarItem extends Component implements Listener {
 			switch (presentation) {
 			default :
 			case ICON_ABOVE_TEXT :
-				getFont().drawString(outline.getX() + (outline.getWidth() -
-						textWidth) / 2, outline.getY() - PADDING - textHeight,
+				getFont().drawString(0 + (outline.getWidth() -
+						textWidth) / 2, getHeight() - PADDING - textHeight,
 						text, Color.black);
 				break;
 			case ICON_LEFT_TEXT :
-				getFont().drawString(outline.getX() + getFont().getLineHeight() +
-						2 * PADDING, outline.getY() - PADDING - textHeight,
+				getFont().drawString(0 + getFont().getLineHeight() +
+						2 * PADDING, getHeight() - PADDING - textHeight,
 						text, Color.black);
 				break;
 			}
@@ -170,14 +175,13 @@ public class MenuBarItem extends Component implements Listener {
 			case ICON_ABOVE_TEXT:
 				iconSize = Math.min(outline.getWidth() - 2 * PADDING,
 						outline.getHeight() - 3 * PADDING - textHeight);
-				iconX = outline.getX() + (outline.getWidth() - iconSize) / 2;
-				iconY = outline.getY() - textHeight - 2 * PADDING -
-						(outline.getHeight() - 3 * PADDING - textHeight - iconSize) / 2;
+				iconX = (outline.getWidth() - iconSize) / 2;
+				iconY = (outline.getHeight() - 3 * PADDING - textHeight - iconSize) / 2;
 				break;
 			case ICON_LEFT_TEXT:
 				iconSize = textHeight;
-				iconX = outline.getX() + PADDING;
-				iconY = outline.getY() - PADDING;
+				iconX = PADDING;
+				iconY = PADDING;
 			}
 			
 			glColor3d(1, 1, 1);
@@ -186,17 +190,25 @@ public class MenuBarItem extends Component implements Listener {
 			glBegin(GL_QUADS);
 			{
 				glTexCoord2d(0, 0);
-				glVertex2d(iconX, iconY - iconSize);
-				glTexCoord2d(1, 0);
-				glVertex2d(iconX + iconSize, iconY - iconSize);
-				glTexCoord2d(1, 1);
-				glVertex2d(iconX + iconSize, iconY);
-				glTexCoord2d(0, 1);
 				glVertex2d(iconX, iconY);
+				glTexCoord2d(1, 0);
+				glVertex2d(iconX + iconSize, iconY);
+				glTexCoord2d(1, 1);
+				glVertex2d(iconX + iconSize, iconY + iconSize);
+				glTexCoord2d(0, 1);
+				glVertex2d(iconX, iconY + iconSize);
 			}
 			glEnd();
 			glDisable(GL_TEXTURE_2D);
 		}
+		
+		// restore the transformation
+		glPopMatrix();
+	}
+	
+	@Override
+	public String getComponentName() {
+		return "MenuBarItem";
 	}
 	
 	/**
