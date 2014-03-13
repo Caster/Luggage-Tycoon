@@ -441,6 +441,10 @@ public class ACCGProgram {
 				if (eventButton == 0) {
 					if (Mouse.getEventButtonState()) {
 						clickedPoint = new Point(Mouse.getX(), Mouse.getY());
+						// make ShadowBlock not transparent anymore
+						if (s.shadowBlock != null && s.shadowBlock.isVisible()) {
+							s.shadowBlock.setTransparent(false);
+						}
 					} else {
 						if (clickedPoint != null) {
 							if (Math.abs(clickedPoint.getX() -
@@ -454,6 +458,16 @@ public class ACCGProgram {
 							}
 							
 							clickedPoint = null;
+						}
+						
+						// check if the mouse was released after a drag: in that
+						// case, add a new block at that position
+						if (s.shadowBlock != null && 
+								s.shadowBlock.isVisible() &&
+								!s.shadowBlock.isTransparent()) {
+							s.world.addBlock(
+									(ConveyorBlock) s.shadowBlock.clone());
+							s.shadowBlock.setTransparent(true);
 						}
 					}
 				}
@@ -476,13 +490,7 @@ public class ACCGProgram {
 					// mouse with the scene, et cetera)
 					if (!handledMouseMoveByMenu && s.programMode == ProgramMode.BUILDING_MODE &&
 							s.shadowBlock != null && !Mouse.isButtonDown(0)) {
-						// check if the mouse was released after a drag: in that
-						// case, add a new block at that position
-						if (s.shadowBlock.isVisible() && !s.shadowBlock.isTransparent()) {
-							s.world.addBlock((ConveyorBlock) s.shadowBlock.clone());
-						}
 						updateShadowObjectPosition(Mouse.getX(), Mouse.getY(), s);
-						s.shadowBlock.setTransparent(true);
 					}
 					
 					handledMouseMove = true;
@@ -492,7 +500,6 @@ public class ACCGProgram {
 				if (!handledButton[0] && !handledMouseMoveByMenu && Mouse.isButtonDown(0)) {
 					if (s.programMode == ProgramMode.BUILDING_MODE && s.shadowBlock != null) {
 						updateShadowObjectHeight(Mouse.getX(), Mouse.getY(), s);
-						s.shadowBlock.setTransparent(false);
 					} else {
 						camera.moveByMouse(dx, dy);
 					}
