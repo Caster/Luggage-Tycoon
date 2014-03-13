@@ -55,22 +55,27 @@ public class ShadowBlock extends Block {
 
 	@Override
 	public int getHeight() {
-		return object.getHeight();
+		return this.object.getHeight();
 	}
 	
 	@Override
 	public int getX() {
-		return this.object.x;
+		return this.object.getX();
 	}
 	
 	@Override
 	public int getY() {
-		return this.object.y;
+		return this.object.getY();
 	}
 	
 	@Override
 	public int getZ() {
-		return this.object.z;
+		return this.object.getZ();
+	}
+	
+	@Override
+	public Orientation getOrientation() {
+		return this.object.getOrientation();
 	}
 	
 	/**
@@ -102,6 +107,11 @@ public class ShadowBlock extends Block {
 	@Override
 	public void setZ(int z) {
 		this.object.setZ(z);
+	}
+	
+	@Override
+	public void setOrientation(Orientation orientation) {
+		this.object.setOrientation(orientation);
 	}
 	
 	/**

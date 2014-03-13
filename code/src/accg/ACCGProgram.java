@@ -259,7 +259,7 @@ public class ACCGProgram {
 			camera.setLookAt();
 			
 			// handle events
-			handleKeyEvents();
+			handleKeyEvents(s);
 			handlePressedKeys();
 			handleScrollEvents();
 			handleMouseEvents(s);
@@ -312,8 +312,10 @@ public class ACCGProgram {
 	
 	/**
 	 * Handles pressed / released key events.
+	 * 
+	 * @param s State, used to access ShadowBlock.
 	 */
-	public void handleKeyEvents() {
+	public void handleKeyEvents(State s) {
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) {
 				switch (Keyboard.getEventKey()) {
@@ -339,6 +341,18 @@ public class ACCGProgram {
 					break;
 				case Keyboard.KEY_ESCAPE:
 					escPressed = true;
+					break;
+				case Keyboard.KEY_R:
+					if (s.shadowBlock != null && s.shadowBlock.isVisible()) {
+						if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ||
+								Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+							s.shadowBlock.setOrientation(
+									s.shadowBlock.getOrientation().rotateLeft());
+						} else {
+							s.shadowBlock.setOrientation(
+									s.shadowBlock.getOrientation().rotateRight());
+						}
+					}
 					break;
 				}
 			}

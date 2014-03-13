@@ -1,6 +1,7 @@
 package accg.objects;
 
 
+
 /**
  * Abstract super class of all blocks.
  * 
@@ -62,6 +63,25 @@ public abstract class Block extends DrawableObject {
 		
 		Orientation(double angle) {
 			this.angle = angle;
+		}
+
+		/**
+		 * Return the orientation you would obtain when turning left 90 degrees
+		 * when in the current orientation.
+		 * @return The rotated orientation.
+		 */
+		public Orientation rotateLeft() {
+			return Orientation.values()[(ordinal() - 1 + values().length) %
+			                            values().length];
+		}
+		
+		/**
+		 * Return the orientation you would obtain when turning right 90 degrees
+		 * when in the current orientation.
+		 * @return The rotated orientation.
+		 */
+		public Orientation rotateRight() {
+			return Orientation.values()[(ordinal() + 1) % values().length];
 		}
 	}
 	
@@ -145,5 +165,13 @@ public abstract class Block extends DrawableObject {
 	 */
 	public void setZ(int z) {
 		this.z = z;
+	}
+	
+	/**
+	 * Change the orientation of this block.
+	 * @param orientation The new orientation.
+	 */
+	public void setOrientation(Orientation orientation) {
+		this.orientation = orientation;
 	}
 }
