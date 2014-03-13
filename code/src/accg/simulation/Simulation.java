@@ -12,10 +12,12 @@ import accg.objects.World;
 import accg.objects.blocks.ConveyorBlock;
 import accg.utils.Utils;
 
+import com.bulletphysics.BulletGlobals;
 import com.bulletphysics.collision.broadphase.BroadphaseInterface;
 import com.bulletphysics.collision.broadphase.DbvtBroadphase;
 import com.bulletphysics.collision.dispatch.CollisionConfiguration;
 import com.bulletphysics.collision.dispatch.CollisionDispatcher;
+import com.bulletphysics.collision.dispatch.CollisionFlags;
 import com.bulletphysics.collision.dispatch.DefaultCollisionConfiguration;
 import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.collision.shapes.StaticPlaneShape;
@@ -60,9 +62,15 @@ public class Simulation {
 		world = new DiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfig);
 		world.setGravity(new Vector3f(0, 0, -9.81f));
 		
+		// set contact callback
+		BulletGlobals.setContactProcessedCallback(new SimulationCallback(s.world,
+				world, BulletGlobals.getContactProcessedCallback()));
+		
 		// initialize walls and floor
 		CollisionShape floor = new StaticPlaneShape(new Vector3f(0, 0, 1), 0);
 		RigidBody r = new RigidBody(0, null, floor);
+		r.setCollisionFlags(r.getCollisionFlags() | CollisionFlags.CUSTOM_MATERIAL_CALLBACK);
+		r.setUserPointer(SimulationBodyType.FLOOR);
 		world.addRigidBody(r);
 		
 		float[][] wallConstants = new float[][] {
@@ -94,6 +102,7 @@ public class Simulation {
 			}
 			wallTransform.set(transformMat);
 			wallBody.setWorldTransform(wallTransform);
+			wallBody.setUserPointer(SimulationBodyType.WALL);
 			world.addRigidBody(wallBody);
 		}
 	}
@@ -117,6 +126,7 @@ public class Simulation {
 		r.setFriction(1.5f);
 		r.setAngularVelocity(cb.getAngularVelocity());
 		r.setLinearVelocity(cb.getLinearVelocity());
+		r.setUserPointer(SimulationBodyType.CONVEYOR_BLOCK);
 		world.addRigidBody(r);
 	}
 	
@@ -206,6 +216,7 @@ public class Simulation {
 		final RigidBody r = new RigidBody(Luggage.WEIGHT, motion, ShapeFactory.getLuggageShape(),
 				ShapeFactory.getLuggageShapeInertia());
 		r.setFriction(1.1f);
+		r.setUserPointer(new SimulationBodyInfo(newLuggage, SimulationBodyType.LUGGAGE));
 		world.addRigidBody(r);
 		
 		// make sure the body is cleaned up when the luggage is removed
