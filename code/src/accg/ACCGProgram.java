@@ -44,8 +44,10 @@ import accg.objects.Block.Orientation;
 import accg.objects.Floor;
 import accg.objects.ShadowBlock;
 import accg.objects.World;
+import accg.objects.blocks.ConveyorBlock;
 import accg.objects.blocks.StraightConveyorBlock;
 import accg.simulation.Simulation;
+import accg.utils.GLUtils;
 import accg.utils.Utils;
 
 /**
@@ -188,7 +190,7 @@ public class ACCGProgram {
 		s.textures = new Textures();
 		// TODO: This is only temporary, for testing. This should be controlled through some
 		//       kind of menu where blocks or 'nothing' can be selected.
-		s.shadowObject = new ShadowBlock(new StraightConveyorBlock(0, 0, 0, Orientation.LEFT));
+		s.shadowBlock = new ShadowBlock(new StraightConveyorBlock(0, 0, 0, Orientation.LEFT));
 		s.startTime = (float) Sys.getTime() / Sys.getTimerResolution();
 		camera = new Camera(s);
 		clickedPoint = null;
@@ -275,8 +277,8 @@ public class ACCGProgram {
 			glMultMatrix(shadowMatrix);
 			s.world.draw(s);
 			if (s.programMode == ProgramMode.BUILDING_MODE &&
-					s.shadowObject != null) {
-				s.shadowObject.draw(s);
+					s.shadowBlock != null) {
+				s.shadowBlock.draw(s);
 			}
 			glPopMatrix();
 			glEnable(GL_COLOR_MATERIAL);
@@ -288,8 +290,8 @@ public class ACCGProgram {
 			// step 4: draw objects
 			s.world.draw(s);
 			if (s.programMode == ProgramMode.BUILDING_MODE &&
-					s.shadowObject != null) {
-				s.shadowObject.draw(s);
+					s.shadowBlock != null) {
+				s.shadowBlock.draw(s);
 			}
 			
 			// draw the menu bars
@@ -459,8 +461,14 @@ public class ACCGProgram {
 					// hovers (that is, calculate intersection of a projected ray from the
 					// mouse with the scene, et cetera)
 					if (!handledMouseMoveByMenu && s.programMode == ProgramMode.BUILDING_MODE &&
-							s.shadowObject != null) {
+							s.shadowBlock != null && !Mouse.isButtonDown(0)) {
+						// check if the mouse was released after a drag: in that
+						// case, add a new block at that position
+						if (s.shadowBlock.isVisible() && !s.shadowBlock.isTransparent()) {
+							s.world.addBlock((ConveyorBlock) s.shadowBlock.clone());
+						}
 						updateShadowObjectPosition(Mouse.getX(), Mouse.getY(), s);
+						s.shadowBlock.setTransparent(true);
 					}
 					
 					handledMouseMove = true;
@@ -468,7 +476,12 @@ public class ACCGProgram {
 				
 				// handle left mouse button: mouse button 0
 				if (!handledButton[0] && !handledMouseMoveByMenu && Mouse.isButtonDown(0)) {
-					camera.moveByMouse(dx, dy);
+					if (s.programMode == ProgramMode.BUILDING_MODE && s.shadowBlock != null) {
+						updateShadowObjectHeight(Mouse.getX(), Mouse.getY(), s);
+						s.shadowBlock.setTransparent(false);
+					} else {
+						camera.moveByMouse(dx, dy);
+					}
 					
 					handledButton[0] = true;
 				}
@@ -893,16 +906,13 @@ public class ACCGProgram {
 	}
 	
 	/**
-	 * Update the position of the shadow object. This function assumes that the
-	 * shadow object is not null to begin with. It accesses the global camera
-	 * variable to determine the viewing vector.
+	 * Find the vector describing the viewing ray shot from the mouse and
+	 * store it in a global variable.
 	 * 
 	 * @param mouseX X-coordinate of mouse position on screen.
 	 * @param mouseY Y-coordinate of mouse position on screen.
-	 * @param s State, used to access shadow object.
 	 */
-	private void updateShadowObjectPosition(int mouseX, int mouseY, State s) {
-		// find the intersection of the camera viewing ray with the scene AABB
+	private void findMouseViewVector(int mouseX, int mouseY) {
 		glGetFloat(GL_MODELVIEW_MATRIX, modelMatrix);
 		glGetFloat(GL_PROJECTION_MATRIX, projectionMatrix);
 		glGetInteger(GL_VIEWPORT, viewport);
@@ -918,13 +928,53 @@ public class ACCGProgram {
 		mousePos3DvectorFar.z = mousePos3D.get(2) * 4;
 		mouseViewVector.sub(mousePos3DvectorFar, mousePos3DvectorNear);
 		mouseViewVector.normalize();
-		
+	}
+	
+	/**
+	 * Update the height of the shadow object. This function assumes that the
+	 * shadow object is not null to begin with.
+	 * 
+	 * @param mouseX X-coordinate of mouse position on screen.
+	 * @param mouseY Y-coordinate of mouse position on screen.
+	 * @param s State, used to access shadow object.
+	 */
+	private void updateShadowObjectHeight(int mouseX, int mouseY, State s) {
+		// find the intersection of the camera viewing ray with the block AABB
+		findMouseViewVector(mouseX, mouseY);
+		double[] result = Utils.getIntersectWithBox(mousePos3DvectorNear,
+				mouseViewVector, s.shadowBlock.getX() - 0.5,
+				s.shadowBlock.getX() + 0.5, s.shadowBlock.getY() - 0.5,
+				s.shadowBlock.getY() + 0.5, 0, s.fieldHeight);
+		// are we even hovering the scene?
+		if (result == null) {
+			s.shadowBlock.setVisible(false);
+			return;
+		}
+		// find the position halfway
+		Vector3f halfway = new Vector3f();
+		halfway.scaleAdd((float) ((result[0] + result[1]) / 2), mouseViewVector,
+				mousePos3DvectorNear);
+		s.shadowBlock.setZ((int) GLUtils.clamp(halfway.z, 0, s.fieldHeight - 1));
+		s.shadowBlock.setVisible(true);
+	}
+	
+	/**
+	 * Update the position of the shadow object. This function assumes that the
+	 * shadow object is not null to begin with.
+	 * 
+	 * @param mouseX X-coordinate of mouse position on screen.
+	 * @param mouseY Y-coordinate of mouse position on screen.
+	 * @param s State, used to access shadow object.
+	 */
+	private void updateShadowObjectPosition(int mouseX, int mouseY, State s) {
+		// find the intersection of the camera viewing ray with the scene AABB
+		findMouseViewVector(mouseX, mouseY);		
 		double[] result = Utils.getIntersectWithBox(mousePos3DvectorNear,
 				mouseViewVector, -0.5, s.fieldLength - 0.5, -0.5, s.fieldWidth -
 				0.5, 0.0, s.fieldHeight);
 		// are we even hovering the scene?
 		if (result == null) {
-			s.shadowObject.setVisible(false);
+			s.shadowBlock.setVisible(false);
 			return;
 		}
 		
@@ -947,12 +997,12 @@ public class ACCGProgram {
 		int firstTakenIndex = s.world.getFirstTakenIndex(interestingCells);
 		if (firstTakenIndex < interestingCells.size() - 1 ||
 				interestingCells.get(firstTakenIndex - 1).z > 0) {
-			s.shadowObject.setVisible(false);
+			s.shadowBlock.setVisible(false);
 		} else {
-			s.shadowObject.setVisible(true);
+			s.shadowBlock.setVisible(true);
 			end.sub(mouseViewVector);
 			end.z = 0;
-			s.shadowObject.setPosition(end);
+			s.shadowBlock.setPosition(end);
 		}
 	}
 }

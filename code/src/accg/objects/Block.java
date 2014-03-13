@@ -81,6 +81,11 @@ public abstract class Block extends DrawableObject {
 	}
 	
 	/**
+	 * Return an exact copy of this block.
+	 */
+	public abstract Block clone();
+	
+	/**
 	 * Returns the x-coordinate of this block.
 	 * @return The x-coordinate.
 	 */
@@ -116,5 +121,29 @@ public abstract class Block extends DrawableObject {
 	 */
 	public Orientation getOrientation() {
 		return orientation;
+	}
+	
+	/**
+	 * Change the x-coordinate of this block.
+	 * @param x The new x-coordinate.
+	 */
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	/**
+	 * Change the y-coordinate of this block.
+	 * @param y The new y-coordinate.
+	 */
+	public void setY(int y) {
+		this.y = y;
+	}
+	
+	/**
+	 * Change the z-coordinate of this block.
+	 * @param z The new z-coordinate.
+	 */
+	public void setZ(int z) {
+		this.z = z;
 	}
 }

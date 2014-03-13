@@ -12,6 +12,7 @@ import accg.State;
 public class ShadowBlock extends Block {
 	
 	private Block object;
+	private boolean transparent;
 	private boolean visible;
 	
 	/**
@@ -21,9 +22,15 @@ public class ShadowBlock extends Block {
 	public ShadowBlock(Block object) {
 		super(object.x, object.y, object.z, object.orientation);
 		this.object = object;
+		this.transparent = true;
 		this.visible = false;
 	}
 
+	@Override
+	public Block clone() {
+		return this.object.clone();
+	}
+	
 	@Override
 	public void draw(State s) {
 		
@@ -31,18 +38,70 @@ public class ShadowBlock extends Block {
 			return;
 		}
 		
-		glEnable(GL_BLEND);
-		glColor4f(1, 1, 1, 0.50f);
+		if (transparent) {
+			glEnable(GL_BLEND);
+			glColor4f(1, 1, 1, 0.50f);
+		} else {
+			glColor4f(1,  1, 1, 1);
+		}
 		
 		object.draw(s);
 		
-		glDisable(GL_BLEND);
+		if (transparent) {
+			glDisable(GL_BLEND);
+		}
 	}
 	
 
 	@Override
 	public int getHeight() {
 		return object.getHeight();
+	}
+	
+	@Override
+	public int getX() {
+		return this.object.x;
+	}
+	
+	@Override
+	public int getY() {
+		return this.object.y;
+	}
+	
+	@Override
+	public int getZ() {
+		return this.object.z;
+	}
+	
+	/**
+	 * Return if this block is currently transparent.
+	 * @return If this block would be drawn semi-transparently.
+	 */
+	public boolean isTransparent() {
+		return transparent;
+	}
+	
+	/**
+	 * Return if this block is currently visible.
+	 * @return If this block would be drawn.
+	 */
+	public boolean isVisible() {
+		return visible;
+	}
+	
+	@Override
+	public void setX(int x) {
+		this.object.setX(x);
+	}
+	
+	@Override
+	public void setY(int y) {
+		this.object.setY(y);
+	}
+	
+	@Override
+	public void setZ(int z) {
+		this.object.setZ(z);
 	}
 	
 	/**
@@ -55,6 +114,15 @@ public class ShadowBlock extends Block {
 		this.object.x = (int) position.x;
 		this.object.y = (int) position.y;
 		this.object.z = (int) position.z;
+	}
+	
+	/**
+	 * Change if this block is drawn semi-transparently or not.
+	 * 
+	 * @param transparent If the block should be drawn semi-transparently or not.
+	 */
+	public void setTransparent(boolean transparent) {
+		this.transparent = transparent;
 	}
 	
 	/**

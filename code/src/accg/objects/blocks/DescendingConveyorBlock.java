@@ -4,10 +4,17 @@ import java.util.ArrayList;
 
 import javax.vecmath.Vector3f;
 
+import accg.objects.Block;
+
 public class DescendingConveyorBlock extends ConveyorBlock {
 
 	public DescendingConveyorBlock(int x, int y, int z, Orientation orientation) {
 		super(x, y, z, orientation, ConveyorBlockType.DESCENDING);
+	}
+	
+	@Override
+	public Block clone() {
+		return new DescendingConveyorBlock(x, y, z, orientation);
 	}
 	
 	@Override

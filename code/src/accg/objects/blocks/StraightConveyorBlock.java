@@ -4,10 +4,17 @@ import java.util.ArrayList;
 
 import javax.vecmath.Vector3f;
 
+import accg.objects.Block;
+
 public class StraightConveyorBlock extends ConveyorBlock {
 
 	public StraightConveyorBlock(int x, int y, int z, Orientation orientation) {
 		super(x, y, z, orientation, ConveyorBlockType.STRAIGHT);
+	}
+	
+	@Override
+	public Block clone() {
+		return new StraightConveyorBlock(x, y, z, orientation);
 	}
 	
 	@Override

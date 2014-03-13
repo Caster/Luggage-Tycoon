@@ -126,5 +126,5 @@ public class State {
 	 * If not null, indicates that this object should be drawn where the mouse
 	 * hovers the scene (using ray projection/intersection et cetera).
 	 */
-	public ShadowBlock shadowObject;
+	public ShadowBlock shadowBlock;
 }
