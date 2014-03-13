@@ -1046,8 +1046,6 @@ public class ACCGProgram {
 				s.world.bc.getBlock((int) end.x, (int) end.y, 0) != null) {
 			s.shadowBlock.setAlerted(true);
 			s.shadowBlock.setVisible(true);
-			end.sub(mouseViewVector);
-			end.z = 0;
 			s.shadowBlock.setPosition(end);
 		} else if (firstTakenIndex < interestingCells.size() - 1 ||
 				interestingCells.get(firstTakenIndex - 1).z > 0) {
