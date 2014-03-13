@@ -1039,7 +1039,15 @@ public class ACCGProgram {
 		// position the shadowobject just before the first cell that contains a
 		// block, or hide it if the first block is taken already
 		int firstTakenIndex = s.world.getFirstTakenIndex(interestingCells);
-		if (firstTakenIndex < interestingCells.size() - 1 ||
+		if (firstTakenIndex >= interestingCells.size() - 2 &&
+				firstTakenIndex < interestingCells.size() &&
+				interestingCells.get(firstTakenIndex).z == 0) {
+			s.shadowBlock.setAlerted(true);
+			s.shadowBlock.setVisible(true);
+			end.sub(mouseViewVector);
+			end.z = 0;
+			s.shadowBlock.setPosition(end);
+		} else if (firstTakenIndex < interestingCells.size() - 1 ||
 				interestingCells.get(firstTakenIndex - 1).z > 0) {
 			s.shadowBlock.setVisible(false);
 		} else {
@@ -1047,6 +1055,7 @@ public class ACCGProgram {
 			end.sub(mouseViewVector);
 			end.z = 0;
 			s.shadowBlock.setPosition(end);
+			updateShadowBlockAlerted(s);
 		}
 	}
 }
