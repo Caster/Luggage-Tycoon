@@ -46,16 +46,11 @@ public class ShadowBlock extends Block {
 		
 		if (alerted) {
 			glColor4f(0.75f, 0.01f, 0.01f, (transparent ? 0.50f : 1));
-			block.setScaleFactor(1.05f);
 		} else {
 			glColor4f(1, 1, 1, (transparent ? 0.50f : 1));
 		}
 		
 		block.draw(s);
-		
-		if (alerted) {
-			block.setScaleFactor(1);
-		}
 		
 		if (transparent) {
 			glDisable(GL_BLEND);
@@ -151,6 +146,7 @@ public class ShadowBlock extends Block {
 	 */
 	public void setAlerted(boolean alerted) {
 		this.alerted = alerted;
+		block.setScaleFactor(alerted ? 1.05f : 1);
 	}
 	
 	/**
