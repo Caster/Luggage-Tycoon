@@ -1038,10 +1038,12 @@ public class ACCGProgram {
 		ArrayList<Vector3f> interestingCells = Utils.bresenham3D(start, end);
 		// position the shadowobject just before the first cell that contains a
 		// block, or hide it if the first block is taken already
+		end.sub(mouseViewVector);
+		end.z = 0;
 		int firstTakenIndex = s.world.getFirstTakenIndex(interestingCells);
 		if (firstTakenIndex >= interestingCells.size() - 2 &&
 				firstTakenIndex < interestingCells.size() &&
-				interestingCells.get(firstTakenIndex).z == 0) {
+				s.world.bc.getBlock((int) end.x, (int) end.y, 0) != null) {
 			s.shadowBlock.setAlerted(true);
 			s.shadowBlock.setVisible(true);
 			end.sub(mouseViewVector);
@@ -1052,8 +1054,6 @@ public class ACCGProgram {
 			s.shadowBlock.setVisible(false);
 		} else {
 			s.shadowBlock.setVisible(true);
-			end.sub(mouseViewVector);
-			end.z = 0;
 			s.shadowBlock.setPosition(end);
 			updateShadowBlockAlerted(s);
 		}
