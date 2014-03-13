@@ -31,6 +31,11 @@ public abstract class Block extends DrawableObject {
 	protected Orientation orientation;
 	
 	/**
+	 * Factor that may be used when drawing the block.
+	 */
+	protected float scaleFactor;
+	
+	/**
 	 * Possible orientations for a block.
 	 */
 	public static enum Orientation {
@@ -98,6 +103,7 @@ public abstract class Block extends DrawableObject {
 		this.y = y;
 		this.z = z;
 		this.orientation = orientation;
+		this.scaleFactor = 1;
 	}
 	
 	/**
@@ -144,6 +150,14 @@ public abstract class Block extends DrawableObject {
 	}
 	
 	/**
+	 * Returns the scale factor of this block.
+	 * @return The scale factor.
+	 */
+	public double getScaleFactor() {
+		return scaleFactor;
+	}
+	
+	/**
 	 * Change the x-coordinate of this block.
 	 * @param x The new x-coordinate.
 	 */
@@ -173,5 +187,13 @@ public abstract class Block extends DrawableObject {
 	 */
 	public void setOrientation(Orientation orientation) {
 		this.orientation = orientation;
+	}
+	
+	/**
+	 * Change the scale factor of this block.
+	 * @param scaleFactor The new scale factor.
+	 */
+	public void setScaleFactor(float scaleFactor) {
+		this.scaleFactor = scaleFactor;
 	}
 }

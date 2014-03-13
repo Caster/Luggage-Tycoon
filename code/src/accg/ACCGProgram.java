@@ -444,6 +444,7 @@ public class ACCGProgram {
 						// make ShadowBlock not transparent anymore
 						if (s.shadowBlock != null && s.shadowBlock.isVisible()) {
 							s.shadowBlock.setTransparent(false);
+							updateShadowBlockAlerted(s);
 						}
 					} else {
 						if (clickedPoint != null) {
@@ -462,11 +463,15 @@ public class ACCGProgram {
 						
 						// check if the mouse was released after a drag: in that
 						// case, add a new block at that position
-						if (s.shadowBlock != null && 
-								s.shadowBlock.isVisible() &&
-								!s.shadowBlock.isTransparent()) {
-							s.world.addBlock(
-									(ConveyorBlock) s.shadowBlock.clone());
+						if (s.shadowBlock != null) {
+							if (s.shadowBlock.isVisible() &&
+									!s.shadowBlock.isAlerted() &&
+									!s.shadowBlock.isTransparent()) {
+								s.world.addBlock(
+										(ConveyorBlock) s.shadowBlock.clone());
+							}
+							
+							s.shadowBlock.setAlerted(false);
 							s.shadowBlock.setTransparent(true);
 						}
 					}
@@ -490,7 +495,7 @@ public class ACCGProgram {
 					// mouse with the scene, et cetera)
 					if (!handledMouseMoveByMenu && s.programMode == ProgramMode.BUILDING_MODE &&
 							s.shadowBlock != null && !Mouse.isButtonDown(0)) {
-						updateShadowObjectPosition(Mouse.getX(), Mouse.getY(), s);
+						updateShadowBlockPosition(Mouse.getX(), Mouse.getY(), s);
 					}
 					
 					handledMouseMove = true;
@@ -499,7 +504,7 @@ public class ACCGProgram {
 				// handle left mouse button: mouse button 0
 				if (!handledButton[0] && !handledMouseMoveByMenu && Mouse.isButtonDown(0)) {
 					if (s.programMode == ProgramMode.BUILDING_MODE && s.shadowBlock != null) {
-						updateShadowObjectHeight(Mouse.getX(), Mouse.getY(), s);
+						updateShadowBlockHeight(Mouse.getX(), Mouse.getY(), s);
 					} else {
 						camera.moveByMouse(dx, dy);
 					}
@@ -952,6 +957,23 @@ public class ACCGProgram {
 	}
 	
 	/**
+	 * Update the alerted property of the shadow block, assuming that this block
+	 * is not {@code null} and placed at the position where it will remain for
+	 * as long as the alerted property should hold.
+	 * 
+	 * @param s State, used to look-up ShadowBlock in.
+	 */
+	private void updateShadowBlockAlerted(State s) {
+		s.shadowBlock.setAlerted(s.world.bc.getBlockFuzzy(s.shadowBlock.getX(),
+				s.shadowBlock.getY(), s.shadowBlock.getZ()) != null);
+		if (!s.world.bc.checkBlockFuzzy(s.shadowBlock.getX(),
+				s.shadowBlock.getY(), s.shadowBlock.getZ(),
+				s.shadowBlock.getHeight())) {
+			s.shadowBlock.setAlerted(true);
+		}
+	}
+	
+	/**
 	 * Update the height of the shadow object. This function assumes that the
 	 * shadow object is not null to begin with.
 	 * 
@@ -959,7 +981,7 @@ public class ACCGProgram {
 	 * @param mouseY Y-coordinate of mouse position on screen.
 	 * @param s State, used to access shadow object.
 	 */
-	private void updateShadowObjectHeight(int mouseX, int mouseY, State s) {
+	private void updateShadowBlockHeight(int mouseX, int mouseY, State s) {
 		// find the intersection of the camera viewing ray with the block AABB
 		findMouseViewVector(mouseX, mouseY);
 		double[] result = Utils.getIntersectWithBox(mousePos3DvectorNear,
@@ -977,6 +999,7 @@ public class ACCGProgram {
 				mousePos3DvectorNear);
 		s.shadowBlock.setZ((int) GLUtils.clamp(halfway.z, 0, s.fieldHeight - 1));
 		s.shadowBlock.setVisible(true);
+		updateShadowBlockAlerted(s);
 	}
 	
 	/**
@@ -987,7 +1010,7 @@ public class ACCGProgram {
 	 * @param mouseY Y-coordinate of mouse position on screen.
 	 * @param s State, used to access shadow object.
 	 */
-	private void updateShadowObjectPosition(int mouseX, int mouseY, State s) {
+	private void updateShadowBlockPosition(int mouseX, int mouseY, State s) {
 		// find the intersection of the camera viewing ray with the scene AABB
 		findMouseViewVector(mouseX, mouseY);		
 		double[] result = Utils.getIntersectWithBox(mousePos3DvectorNear,

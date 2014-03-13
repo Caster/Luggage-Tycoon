@@ -148,6 +148,28 @@ public class BlockCollection extends DrawableObject {
 	}
 	
 	/**
+	 * Returns if it would be possible to place a block with the given height at
+	 * the given position. This checks if there are no blocks in the way.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @param z The z-coordinate (divided by 4).
+	 * @param height Height of the block to check.
+	 * @return If a block with given height could be placed at the given position.
+	 * @throws ArrayIndexOutOfBoundsException If {@link #inBounds(int, int, int)}
+	 * returns <code>false</code> for this coordinate.
+	 */
+	public boolean checkBlockFuzzy(int x, int y, int z, int height) {
+		for (int z2 = z + height - 1; z2 >= z; z2--) {
+			if (blocks[x][y][z2] != null) {
+				return false;
+			}
+		}
+		
+		return (getBlockFuzzy(x, y, z) == null);
+	}
+	
+	/**
 	 * Returns the X-size of this {@link BlockCollection}.
 	 * @return The size.
 	 */

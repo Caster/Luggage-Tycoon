@@ -11,7 +11,8 @@ import accg.State;
  */
 public class ShadowBlock extends Block {
 	
-	private Block object;
+	private Block block;
+	private boolean alerted;
 	private boolean transparent;
 	private boolean visible;
 	
@@ -21,14 +22,15 @@ public class ShadowBlock extends Block {
 	 */
 	public ShadowBlock(Block object) {
 		super(object.x, object.y, object.z, object.orientation);
-		this.object = object;
+		this.block = object;
+		this.alerted = false;
 		this.transparent = true;
 		this.visible = false;
 	}
 
 	@Override
 	public Block clone() {
-		return this.object.clone();
+		return this.block.clone();
 	}
 	
 	@Override
@@ -40,42 +42,58 @@ public class ShadowBlock extends Block {
 		
 		if (transparent) {
 			glEnable(GL_BLEND);
-			glColor4f(1, 1, 1, 0.50f);
-		} else {
-			glColor4f(1,  1, 1, 1);
 		}
 		
-		object.draw(s);
+		if (alerted) {
+			glColor4f(0.75f, 0.01f, 0.01f, (transparent ? 0.50f : 1));
+			block.setScaleFactor(1.05f);
+		} else {
+			glColor4f(1, 1, 1, (transparent ? 0.50f : 1));
+		}
+		
+		block.draw(s);
+		
+		if (alerted) {
+			block.setScaleFactor(1);
+		}
 		
 		if (transparent) {
 			glDisable(GL_BLEND);
 		}
 	}
-	
 
 	@Override
 	public int getHeight() {
-		return this.object.getHeight();
+		return this.block.getHeight();
 	}
 	
 	@Override
 	public int getX() {
-		return this.object.getX();
+		return this.block.getX();
 	}
 	
 	@Override
 	public int getY() {
-		return this.object.getY();
+		return this.block.getY();
 	}
 	
 	@Override
 	public int getZ() {
-		return this.object.getZ();
+		return this.block.getZ();
 	}
 	
 	@Override
 	public Orientation getOrientation() {
-		return this.object.getOrientation();
+		return this.block.getOrientation();
+	}
+	
+	/**
+	 * Return if this block has the 'alert' status, so if it is drawn in some
+	 * kind of 'alert' color.
+	 * @return If this block is 'alerted'.
+	 */
+	public boolean isAlerted() {
+		return alerted;
 	}
 	
 	/**
@@ -96,22 +114,22 @@ public class ShadowBlock extends Block {
 	
 	@Override
 	public void setX(int x) {
-		this.object.setX(x);
+		this.block.setX(x);
 	}
 	
 	@Override
 	public void setY(int y) {
-		this.object.setY(y);
+		this.block.setY(y);
 	}
 	
 	@Override
 	public void setZ(int z) {
-		this.object.setZ(z);
+		this.block.setZ(z);
 	}
 	
 	@Override
 	public void setOrientation(Orientation orientation) {
-		this.object.setOrientation(orientation);
+		this.block.setOrientation(orientation);
 	}
 	
 	/**
@@ -121,9 +139,18 @@ public class ShadowBlock extends Block {
 	 * @param position New position.
 	 */
 	public void setPosition(Vector3f position) {
-		this.object.x = (int) position.x;
-		this.object.y = (int) position.y;
-		this.object.z = (int) position.z;
+		this.block.x = (int) position.x;
+		this.block.y = (int) position.y;
+		this.block.z = (int) position.z;
+	}
+	
+	/**
+	 * Change if this block is drawn 'alerted' or not.
+	 * 
+	 * @param alerted If the block should be drawn 'alerted'.
+	 */
+	public void setAlerted(boolean alerted) {
+		this.alerted = alerted;
 	}
 	
 	/**

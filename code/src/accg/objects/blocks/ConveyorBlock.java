@@ -139,7 +139,9 @@ public abstract class ConveyorBlock extends Block {
 		glBegin(GL_QUAD_STRIP);
 		{			
 			ArrayList<Vector3f> lefts = getTopCoordinatesLeft();
+			Utils.scaleList(lefts, scaleFactor);
 			ArrayList<Vector3f> rights = getTopCoordinatesRight();
+			Utils.scaleList(rights, scaleFactor);
 			ArrayList<Double> texs = getTopTextureCoordinates();
 			
 			assert lefts.size() == rights.size() && lefts.size() == texs.size();
@@ -151,7 +153,9 @@ public abstract class ConveyorBlock extends Block {
 		glBegin(GL_QUAD_STRIP);
 		{
 			ArrayList<Vector3f> lefts = getBottomCoordinatesLeft();
+			Utils.scaleList(lefts, scaleFactor);
 			ArrayList<Vector3f> rights = getBottomCoordinatesRight();
+			Utils.scaleList(rights, scaleFactor);
 			ArrayList<Double> texs = getBottomTextureCoordinates();
 			
 			assert lefts.size() == rights.size() && lefts.size() == texs.size();
@@ -183,10 +187,10 @@ public abstract class ConveyorBlock extends Block {
 		glTranslated(x + dx, y + dy, 0);
 
 		Cylinder c = new Cylinder();
-		c.draw(0.05f, 0.02f, 0.25f, 16, 1);
+		c.draw(0.05f * scaleFactor, 0.02f * scaleFactor, 0.25f, 16, 1);
 		glPushMatrix();
 		glTranslated(0, 0, 0.25f);
-		c.draw(0.02f, 0.02f, z / 4.0f, 16, 1);
+		c.draw(0.02f * scaleFactor, 0.02f * scaleFactor, z / 4.0f, 16, 1);
 		glPopMatrix();
 		
 		glPopMatrix();
