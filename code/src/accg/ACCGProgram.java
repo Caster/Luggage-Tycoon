@@ -493,9 +493,13 @@ public class ACCGProgram {
 					// in building mode, we might have to draw an object where the mouse
 					// hovers (that is, calculate intersection of a projected ray from the
 					// mouse with the scene, et cetera)
-					if (!handledMouseMoveByMenu && s.programMode == ProgramMode.BUILDING_MODE &&
+					if (s.programMode == ProgramMode.BUILDING_MODE &&
 							s.shadowBlock != null && !Mouse.isButtonDown(0)) {
-						updateShadowBlockPosition(Mouse.getX(), Mouse.getY(), s);
+						if (handledMouseMoveByMenu) {
+							s.shadowBlock.setVisible(false);
+						} else {
+							updateShadowBlockPosition(Mouse.getX(), Mouse.getY(), s);
+						}
 					}
 					
 					handledMouseMove = true;
