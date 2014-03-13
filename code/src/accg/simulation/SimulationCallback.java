@@ -5,7 +5,6 @@ import accg.objects.Luggage;
 
 import com.bulletphysics.ContactProcessedCallback;
 import com.bulletphysics.collision.narrowphase.ManifoldPoint;
-import com.bulletphysics.dynamics.DynamicsWorld;
 import com.bulletphysics.dynamics.RigidBody;
 
 public class SimulationCallback extends ContactProcessedCallback {
@@ -16,11 +15,10 @@ public class SimulationCallback extends ContactProcessedCallback {
 	 * @param state State, used to access world in which objects are drawn.
 	 * @param contactProcessedCallback Current callback.
 	 */
-	public SimulationCallback(State state, DynamicsWorld world,
+	public SimulationCallback(State state,
 			ContactProcessedCallback contactProcessedCallback) {
 		this.processedCallback = contactProcessedCallback;
 		this.state = state;
-		this.simWorld = world;
 	}
 	
 	@Override
@@ -36,11 +34,9 @@ public class SimulationCallback extends ContactProcessedCallback {
 					SimulationBodyInfo rb1info = (SimulationBodyInfo) rb1.getUserPointer();
 					if (rb0info.getBodyType() == SimulationBodyType.FLOOR &&
 							rb1info.getBodyType() == SimulationBodyType.LUGGAGE) {
-						simWorld.removeRigidBody(rb1);
 						state.world.luggage.remove((Luggage) rb1info.getUserPointer());
 					} else if (rb0info.getBodyType() == SimulationBodyType.LUGGAGE &&
 							rb1info.getBodyType() == SimulationBodyType.FLOOR) {
-						simWorld.removeRigidBody(rb0);
 						state.world.luggage.remove((Luggage) rb0info.getUserPointer());
 					}
 				}
@@ -53,6 +49,4 @@ public class SimulationCallback extends ContactProcessedCallback {
 	private ContactProcessedCallback processedCallback;
 	/** State of program, used to access visual world. */
 	private State state;
-	/** Reference to simulation world. */
-	private DynamicsWorld simWorld;
 }

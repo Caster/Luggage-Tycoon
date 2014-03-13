@@ -62,7 +62,7 @@ public class Simulation {
 		
 		// set contact callback
 		BulletGlobals.setContactProcessedCallback(new SimulationCallback(s,
-				world, BulletGlobals.getContactProcessedCallback()));
+				BulletGlobals.getContactProcessedCallback()));
 		
 		// initialize walls and floor
 		CollisionShape floor = new StaticPlaneShape(new Vector3f(0, 0, 1), 0);

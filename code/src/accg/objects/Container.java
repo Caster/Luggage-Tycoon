@@ -56,9 +56,14 @@ public class Container<E extends DrawableObject> extends DrawableObject implemen
 	 * <code>object</code>.
 	 */
 	public void remove(E object) {
-		if (!objects.remove(object)) {
+		int index = objects.indexOf(object);
+		
+		if (index < 0) {
 			throw new IllegalStateException("This container does not contain the element to remove");
 		}
+		
+		object.onDestroy();
+		objects.remove(index);
 	}
 	
 	@Override
