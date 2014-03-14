@@ -109,10 +109,12 @@ public class Simulation {
 	 * Update the simulation internally so that it takes the given conveyor
 	 * block into account, at the position given by the block itself.
 	 * 
+	 * @param s State, used to find neighbors of the block to determine its shape.
 	 * @param cb The block to be added.
 	 */
-	public void addBlock(ConveyorBlock cb) {
-		RigidBody r = new RigidBody(0, null, ShapeFactory.getConveyorShape(cb));
+	public void addBlock(State s, ConveyorBlock cb) {
+		final RigidBody r = new RigidBody(0, null,
+				ShapeFactory.getConveyorShape(s, cb));
 		Transform blockTransform = new Transform();
 		blockTransform.set(new Matrix4f(new float[] {
 				1, 0, 0, cb.getX(),
@@ -126,6 +128,14 @@ public class Simulation {
 		r.setLinearVelocity(cb.getLinearVelocity());
 		r.setUserPointer(SimulationBodyType.CONVEYOR_BLOCK);
 		world.addRigidBody(r);
+		
+		// make sure the body is cleaned up when the conveyorblock is removed
+		cb.addListener(new DrawableObjectListener() {
+			@Override
+			public void onDestroy() {
+				world.removeRigidBody(r);
+			}
+		});
 	}
 	
 	/**

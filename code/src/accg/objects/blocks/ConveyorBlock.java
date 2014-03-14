@@ -79,7 +79,8 @@ public abstract class ConveyorBlock extends Block {
 	 * 
 	 * @return An ArrayList of the coordinates.
 	 */
-	public abstract ArrayList<Vector3f> getTopCoordinatesLeft();
+	public abstract ArrayList<Vector3f> getTopCoordinatesLeft(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2);
 	
 	/**
 	 * Returns a list of the coordinates on the right side of the top part
@@ -87,7 +88,8 @@ public abstract class ConveyorBlock extends Block {
 	 * 
 	 * @return An ArrayList of the coordinates.
 	 */
-	public abstract ArrayList<Vector3f> getTopCoordinatesRight();
+	public abstract ArrayList<Vector3f> getTopCoordinatesRight(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2);
 	
 	/**
 	 * Returns a list of the texture coordinates for the top part of the conveyor belt.
@@ -96,7 +98,8 @@ public abstract class ConveyorBlock extends Block {
 	 * 
 	 * @return An ArrayList of the texture coordinates.
 	 */
-	public abstract ArrayList<Double> getTopTextureCoordinates();
+	public abstract ArrayList<Double> getTopTextureCoordinates(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2);
 	
 	/**
 	 * Returns a list of the coordinates on the left side of the bottom part
@@ -104,7 +107,8 @@ public abstract class ConveyorBlock extends Block {
 	 * 
 	 * @return An ArrayList of the coordinates.
 	 */
-	public abstract ArrayList<Vector3f> getBottomCoordinatesLeft();
+	public abstract ArrayList<Vector3f> getBottomCoordinatesLeft(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2);
 	
 	/**
 	 * Returns a list of the coordinates on the right side of the bottom part
@@ -112,7 +116,8 @@ public abstract class ConveyorBlock extends Block {
 	 * 
 	 * @return An ArrayList of the coordinates.
 	 */
-	public abstract ArrayList<Vector3f> getBottomCoordinatesRight();
+	public abstract ArrayList<Vector3f> getBottomCoordinatesRight(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2);
 	
 	/**
 	 * Returns a list of the texture coordinates for the bottom part of the conveyor belt.
@@ -121,7 +126,8 @@ public abstract class ConveyorBlock extends Block {
 	 * 
 	 * @return An ArrayList of the texture coordinates.
 	 */
-	public abstract ArrayList<Double> getBottomTextureCoordinates();
+	public abstract ArrayList<Double> getBottomTextureCoordinates(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2);
 	
 	@Override
 	public void draw(State s) {
@@ -137,13 +143,21 @@ public abstract class ConveyorBlock extends Block {
 		glEnable(GL_TEXTURE_2D);
 		s.textures.conveyor.bind();
 		
+		ConveyorBlock[] neighbors = s.world.getNeighbors(x, y, z);
+		if (neighbors == null) {
+				neighbors = new ConveyorBlock[] { null, null };
+		}
+		
 		glBegin(GL_QUAD_STRIP);
 		{			
-			ArrayList<Vector3f> lefts = getTopCoordinatesLeft();
+			ArrayList<Vector3f> lefts = getTopCoordinatesLeft(neighbors[0],
+					neighbors[1]);
 			Utils.scaleList(lefts, scaleFactor);
-			ArrayList<Vector3f> rights = getTopCoordinatesRight();
+			ArrayList<Vector3f> rights = getTopCoordinatesRight(neighbors[0],
+					neighbors[1]);
 			Utils.scaleList(rights, scaleFactor);
-			ArrayList<Double> texs = getTopTextureCoordinates();
+			ArrayList<Double> texs = getTopTextureCoordinates(neighbors[0],
+					neighbors[1]);
 			
 			assert lefts.size() == rights.size() && lefts.size() == texs.size();
 			
@@ -153,11 +167,14 @@ public abstract class ConveyorBlock extends Block {
 		
 		glBegin(GL_QUAD_STRIP);
 		{
-			ArrayList<Vector3f> lefts = getBottomCoordinatesLeft();
+			ArrayList<Vector3f> lefts = getBottomCoordinatesLeft(neighbors[0],
+					neighbors[1]);
 			Utils.scaleList(lefts, scaleFactor);
-			ArrayList<Vector3f> rights = getBottomCoordinatesRight();
+			ArrayList<Vector3f> rights = getBottomCoordinatesRight(neighbors[0],
+					neighbors[1]);
 			Utils.scaleList(rights, scaleFactor);
-			ArrayList<Double> texs = getBottomTextureCoordinates();
+			ArrayList<Double> texs = getBottomTextureCoordinates(neighbors[0],
+					neighbors[1]);
 			
 			assert lefts.size() == rights.size() && lefts.size() == texs.size();
 			
@@ -285,34 +302,56 @@ public abstract class ConveyorBlock extends Block {
 			ArrayList<Double> texs, State s) {
 		for (int i = 0; i < lefts.size(); i++) {
 			Vector3f normal1 = new Vector3f();
-			if (i < lefts.size() - 1) {
-				Vector3f normal1h = new Vector3f();
-				Vector3f normal1v = new Vector3f();
-				if (!lefts.get(i).epsilonEquals(lefts.get(i + 1), Utils.EPSILON)) {
+			Vector3f normal1h = new Vector3f();
+			Vector3f normal1v = new Vector3f();
+			if (!lefts.get(i).epsilonEquals(lefts.get((i + 1) % lefts.size()),
+					Utils.EPSILON)) {
+				if (i < lefts.size() - 1) {
 					normal1h.sub(lefts.get(i), lefts.get(i + 1));
-					normal1v.sub(lefts.get(i), rights.get(i));
-				} else {
-					normal1h.sub(rights.get(i + 1), rights.get(i));
-					normal1v.sub(rights.get(i), lefts.get(i));
+				} else if (lefts.size() <= 2) {
+					normal1h.sub(lefts.get(0), lefts.get(i));
 				}
-				normal1.cross(normal1v, normal1h);
+				normal1v.sub(lefts.get(i), rights.get(i));
+			} else {
+				if (i < rights.size() - 1) {
+					normal1h.sub(rights.get(i + 1), rights.get(i));
+				} else if (lefts.size() <= 2) {
+					normal1h.sub(rights.get(i), rights.get(0));
+				}
+				normal1v.sub(rights.get(i), lefts.get(i));
 			}
+			normal1.cross(normal1v, normal1h);
 			
 			Vector3f normal2 = new Vector3f();
-			if (i > 1) {
-				Vector3f normal2h = new Vector3f();
-				Vector3f normal2v = new Vector3f();
-				if (!lefts.get(i).epsilonEquals(lefts.get(i - 1), Utils.EPSILON)) {
+			Vector3f normal2h = new Vector3f();
+			Vector3f normal2v = new Vector3f();
+			if (!lefts.get(i).epsilonEquals(lefts.get((i - 1 + lefts.size()) %
+					lefts.size()), Utils.EPSILON)) {
+				if (i > 1) {
 					normal2h.sub(lefts.get(i), lefts.get(i - 1));
-					normal2v.sub(lefts.get(i), rights.get(i));
-				} else {
-					normal2h.sub(rights.get(i - 1), rights.get(i));
-					normal2v.sub(rights.get(i), lefts.get(i));
+				} else if (lefts.size() <= 2) {
+					normal2h.sub(lefts.get(lefts.size() - 1), lefts.get(i));
 				}
-				normal2.cross(normal2h, normal2v);
+				normal2v.sub(lefts.get(i), rights.get(i));
+			} else {
+				if (i > 1) {
+					normal2h.sub(rights.get(i - 1), rights.get(i));
+				} else if (lefts.size() <= 2) {
+					normal2h.sub(rights.get(rights.size() - 1), rights.get(i - 1));
+				}
+				normal2v.sub(rights.get(i), lefts.get(i));
 			}
-			Vector3f average = new Vector3f();
-			average.add(normal1, normal2);
+			normal2.cross(normal2h, normal2v);
+			
+			Vector3f average;
+			if (normal1.lengthSquared() <= Utils.EPSILON) {
+				average = normal2;
+			} else if (normal2.lengthSquared() <= Utils.EPSILON) {
+				average = normal1;
+			} else {
+				average = new Vector3f();
+				average.add(normal1, normal2);
+			}
 			average.normalize();
 			glNormal3f(average);
 			

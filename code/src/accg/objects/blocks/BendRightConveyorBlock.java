@@ -19,7 +19,8 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 	}
 	
 	@Override
-	public ArrayList<Vector3f> getTopCoordinatesLeft() {
+	public ArrayList<Vector3f> getTopCoordinatesLeft(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
 		addBendYZ(lefts, Math.PI, Math.PI / 2, -0.375f, -0.375f, 0.25f, 0.125);
 		
@@ -34,7 +35,8 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	public ArrayList<Vector3f> getTopCoordinatesRight() {
+	public ArrayList<Vector3f> getTopCoordinatesRight(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> rights = new ArrayList<>();
 		addBendYZ(rights, Math.PI, Math.PI / 2, 0.375f, -0.375f, 0.25f, 0.125);
 		
@@ -49,7 +51,8 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	public ArrayList<Double> getTopTextureCoordinates() {
+	public ArrayList<Double> getTopTextureCoordinates(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Double> texs = new ArrayList<>();
 		double texCoord = addBendTextureCoordinates(texs, Math.PI, Math.PI / 2,
 				0.125, 0.0);
@@ -59,7 +62,8 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	public ArrayList<Vector3f> getBottomCoordinatesLeft() {
+	public ArrayList<Vector3f> getBottomCoordinatesLeft(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
 		addBendYZ(lefts, Math.PI * 2, Math.PI * 3 / 2, -0.375f, 0.375f, 0.25f, 0.125);
 		Utils.rotatePoints(Orientation.RIGHT, lefts);
@@ -72,7 +76,8 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	public ArrayList<Vector3f> getBottomCoordinatesRight() {
+	public ArrayList<Vector3f> getBottomCoordinatesRight(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> rights = new ArrayList<>();
 		addBendYZ(rights, Math.PI * 2, Math.PI * 3 / 2, 0.375f, 0.375f, 0.25f, 0.125);
 		Utils.rotatePoints(Orientation.RIGHT, rights);
@@ -85,7 +90,8 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	public ArrayList<Double> getBottomTextureCoordinates() {
+	public ArrayList<Double> getBottomTextureCoordinates(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Double> texs = new ArrayList<>();
 		double texCoord = addBendTextureCoordinates(texs, Math.PI * 2,
 				Math.PI * 3 / 2, 0.125, 0.0);

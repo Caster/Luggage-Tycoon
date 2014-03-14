@@ -18,7 +18,8 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 	}
 	
 	@Override
-	public ArrayList<Vector3f> getTopCoordinatesLeft() {
+	public ArrayList<Vector3f> getTopCoordinatesLeft(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
 		addBendYZ(lefts, Math.PI, Math.PI / 2 - Math.atan2(1, 3), -0.375f,
 				-0.375f, 0.5f, 0.125);
@@ -28,7 +29,8 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	public ArrayList<Vector3f> getTopCoordinatesRight() {
+	public ArrayList<Vector3f> getTopCoordinatesRight(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> rights = new ArrayList<>();
 		addBendYZ(rights, Math.PI, Math.PI / 2 - Math.atan2(1, 3), 0.375f,
 				-0.375f, 0.5f, 0.125);
@@ -38,7 +40,8 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	public ArrayList<Double> getTopTextureCoordinates() {
+	public ArrayList<Double> getTopTextureCoordinates(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Double> texs = new ArrayList<>();
 		double texCoord = addBendTextureCoordinates(texs, Math.PI,
 				Math.PI / 2 - Math.atan2(1, 3), 0.125, 0.0);
@@ -48,7 +51,8 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	public ArrayList<Vector3f> getBottomCoordinatesLeft() {
+	public ArrayList<Vector3f> getBottomCoordinatesLeft(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
 		addBendYZ(lefts, 0, -Math.PI / 2 - Math.atan2(1, 3), -0.375f, 0.375f,
 				0.25f, 0.125);
@@ -58,7 +62,8 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	public ArrayList<Vector3f> getBottomCoordinatesRight() {
+	public ArrayList<Vector3f> getBottomCoordinatesRight(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> rights = new ArrayList<>();
 		addBendYZ(rights, 0, -Math.PI / 2 - Math.atan2(1, 3), 0.375f, 0.375f,
 				0.25f, 0.125);
@@ -68,7 +73,8 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 	}
 
 	@Override
-	public ArrayList<Double> getBottomTextureCoordinates() {
+	public ArrayList<Double> getBottomTextureCoordinates(
+			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Double> texs = new ArrayList<>();
 		double texCoord = addBendTextureCoordinates(texs,
 				0, -Math.PI / 2 - Math.atan2(1, 3), 0.125, 0.0);

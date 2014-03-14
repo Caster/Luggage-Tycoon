@@ -1,5 +1,7 @@
 package accg.objects;
 
+import javax.vecmath.Vector3f;
+
 
 
 /**
@@ -73,6 +75,20 @@ public abstract class Block extends DrawableObject {
 			this.angle = angle;
 		}
 
+		/**
+		 * Given a position in 3D, return a position next to this position on the
+		 * same height that one would be in if doing one step in the direction
+		 * represented by this Orientation.
+		 * @param startPos Position to move from.
+		 * @param distance Distance to move in given direction.
+		 * @return Position where one would end up.
+		 */
+		public Vector3f moveFrom(Vector3f startPos, float distance) {
+			float dx = (this == RIGHT ? distance : 0) + (this == LEFT ? -distance : 0);
+			float dy = (this == UP ? distance : 0) + (this == DOWN ? -distance : 0);
+			return new Vector3f(startPos.x + dx, startPos.y + dy, startPos.z);
+		}
+		
 		/**
 		 * Return the orientation you would obtain when turning left 90 degrees
 		 * when in the current orientation.
