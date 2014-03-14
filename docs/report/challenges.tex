@@ -1,11 +1,26 @@
 \textit{In this section, we will discuss some challenges we might encounter/will encounter/encountered while implementing the program. This will not include very practical stuff, like getting some library to work properly, but things like: converting a point in 2D space (position of a mouse click) to a point in the 3D space of the scene, to determine where the user wants to place a block in the editor. It may also include how we animate the conveyor belts and/or luggage, the simulation of the luggage, et cetera.}
 
+In this section, we discuss several challenges we encountered while implementing the program, and we will mention how we will solve them.
+
 \textit{Some possible challenges may be the ones presented in these proposed subsections.}
 
-\subsection{Building a(n intuitive) GUI in OpenGL}
+\subsection{Building a GUI in OpenGL}
+\textbf{\ldots\ is dit niet te veel ``practical stuff''?}
 
-\subsection{Constructing \& animating conveyor belts}
+\subsection{Drawing conveyor belts}
+\textbf{TO DO schetsen van de verschillende soorten banden en hoe ze eruit zien -- of dit in de vorige sectie misschien?}
 
-\subsection{Transforming a 2D point into the 3D model space}
+\textbf{TO DO het aan elkaar tekenen van banden.}
+
+\subsection{Texturing conveyor belts}
+\textbf{TO DO het gepuzzel om de textureco\"ordinaten goed te krijgen.}
+
+\subsection{Choosing a block in 3D}
+\textbf{@Thom: hier iets over dat lijn-in-cel-algoritme?}
 
 \subsection{Simulating luggage movement in a conveyor belt system}
+We initially implemented a simulation module ourselves, that was able to move luggage over the conveyor belts, but it did not support rotations. This means that luggage did not for example rotate when climbing an ascending conveyor belt or when it dropped of a belt. Furthermore the system was not really realistic, since we only used a very simple physics model. This meant that there was no collision detection between luggage items at all, and one piece of luggage could be placed inside another one.
+
+After searching information about how to implement a more realistic physics system, we found out that it is extremely difficult to do so, and we decided to use an external library for the physics, named \emph{Bullet} (more accurately, a Java port of Bullet called \emph{JBullet}). Now we had to integrate JBullet in our application, which was not too difficult to do.
+
+\textbf{TO DO een verhaaltje hier over hoe we de ``bewegende wrijving'' doen (setVelocity op een static ding, woei!)}
