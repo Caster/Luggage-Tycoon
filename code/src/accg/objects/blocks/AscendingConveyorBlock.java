@@ -29,10 +29,22 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	public ArrayList<Vector3f> getTopCoordinatesLeft(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
-		addBendYZ(lefts, Math.PI, Math.PI / 2 + Math.atan2(1, 3), -0.375f,
-				-0.375f, 0.25f, 0.125);
-		addBendYZ(lefts, Math.PI / 2 + Math.atan2(1, 3), 0, -0.375f, 0.375f,
-				0.5f, 0.125);
+		if (neighbor1 == null) {
+			addBendYZ(lefts, Math.PI, Math.PI / 2 + Math.atan2(1, 3), -0.375f,
+					-0.375f, 0.25f, 0.125);
+		} else {
+			lefts.add(new Vector3f(-0.375f, -0.5f, 0.375f));
+			addBendYZ(lefts, -Math.PI / 2, -Math.PI / 2 + Math.atan2(1, 3),
+					-0.375f, -0.375f, 0.5f, 0.125);
+		}
+		if (neighbor2 == null) {
+			addBendYZ(lefts, Math.PI / 2 + Math.atan2(1, 3), 0, -0.375f, 0.375f,
+					0.5f, 0.125);
+		} else {
+			addBendYZ(lefts, Math.PI / 2 + Math.atan2(1, 3), Math.PI / 2,
+					-0.375f, 0.375f, 0.5f, 0.125);
+			lefts.add(new Vector3f(-0.375f, 0.5f, 0.625f));
+		}
 		return lefts;
 	}
 
@@ -40,10 +52,22 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	public ArrayList<Vector3f> getTopCoordinatesRight(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> rights = new ArrayList<>();
-		addBendYZ(rights, Math.PI, Math.PI / 2 + Math.atan2(1, 3), 0.375f,
-				-0.375f, 0.25f, 0.125);
-		addBendYZ(rights, Math.PI / 2 + Math.atan2(1, 3), 0, 0.375f, 0.375f,
-				0.5f, 0.125);
+		if (neighbor1 == null) {
+			addBendYZ(rights, Math.PI, Math.PI / 2 + Math.atan2(1, 3), 0.375f,
+					-0.375f, 0.25f, 0.125);
+		} else {
+			rights.add(new Vector3f(0.375f, -0.5f, 0.375f));
+			addBendYZ(rights, -Math.PI / 2, -Math.PI / 2 + Math.atan2(1, 3),
+					0.375f, -0.375f, 0.5f, 0.125);
+		}
+		if (neighbor2 == null) {
+			addBendYZ(rights, Math.PI / 2 + Math.atan2(1, 3), 0, 0.375f, 0.375f,
+					0.5f, 0.125);
+		} else {
+			addBendYZ(rights, Math.PI / 2 + Math.atan2(1, 3), Math.PI / 2,
+					0.375f, 0.375f, 0.5f, 0.125);
+			rights.add(new Vector3f(0.375f, 0.5f, 0.625f));
+		}
 		return rights;
 	}
 
@@ -51,10 +75,24 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	public ArrayList<Double> getTopTextureCoordinates(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Double> texs = new ArrayList<>();
-		double texCoord = addBendTextureCoordinates(texs, Math.PI,
-				Math.PI / 2 + Math.atan2(1, 3), 0.125, 0.0);
-		addBendTextureCoordinates(texs, Math.PI / 2 + Math.atan2(1, 3), 0,
-				0.125, texCoord + 6.0);
+		double texCoord;
+		if (neighbor1 == null) {
+			texCoord = addBendTextureCoordinates(texs, Math.PI,
+					Math.PI / 2 + Math.atan2(1, 3), 0.125, 0.0);
+		} else {
+			texs.add(0.0);
+			texCoord = 1;
+			texCoord = addBendTextureCoordinates(texs,
+					-Math.PI / 2, -Math.PI / 2 + Math.atan2(1, 3), 0.125, texCoord);
+		}
+		if (neighbor2 == null) {
+			addBendTextureCoordinates(texs, Math.PI / 2 + Math.atan2(1, 3), 0,
+					0.125, texCoord + 6.0);
+		} else {
+			addBendTextureCoordinates(texs, Math.PI / 2 + Math.atan2(1, 3),
+					Math.PI / 2, 0.125, texCoord + 6.0);
+			texs.add(9.0);
+		}
 		return texs;
 	}
 
@@ -62,10 +100,22 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	public ArrayList<Vector3f> getBottomCoordinatesLeft(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
-		addBendYZ(lefts, 0, -Math.PI / 2 + Math.atan2(1, 3), -0.375f, 0.375f,
-				0.5f, 0.125);
-		addBendYZ(lefts, Math.PI * 3 / 2 + Math.atan2(1, 3), Math.PI, -0.375f,
-				-0.375f, 0.25f, 0.125);
+		if (neighbor2 == null) {
+			addBendYZ(lefts, 0, -Math.PI / 2 + Math.atan2(1, 3), -0.375f, 0.375f,
+					0.5f, 0.125);
+		} else {
+			lefts.add(new Vector3f(-0.375f, 0.5f, 0.375f));
+			addBendYZ(lefts, Math.PI / 2, Math.PI / 2 + Math.atan2(1, 3), -0.375f, 0.375f,
+					0.25f, 0.125);
+		}
+		if (neighbor1 == null) {
+			addBendYZ(lefts, Math.PI * 3 / 2 + Math.atan2(1, 3), Math.PI, -0.375f,
+					-0.375f, 0.25f, 0.125);
+		} else {
+			addBendYZ(lefts, Math.PI * 3 / 2 + Math.atan2(1, 3), Math.PI * 3 / 2, -0.375f,
+					-0.375f, 0.25f, 0.125);
+			lefts.add(new Vector3f(-0.375f, -0.5f, 0.125f));
+		}
 		return lefts;
 	}
 
@@ -73,10 +123,22 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	public ArrayList<Vector3f> getBottomCoordinatesRight(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> rights = new ArrayList<>();
-		addBendYZ(rights, 0, -Math.PI / 2 + Math.atan2(1, 3), 0.375f, 0.375f,
-				0.5f, 0.125);
-		addBendYZ(rights, Math.PI * 3 / 2 + Math.atan2(1, 3), Math.PI, 0.375f,
-				-0.375f, 0.25f, 0.125);
+		if (neighbor2 == null) {
+			addBendYZ(rights, 0, -Math.PI / 2 + Math.atan2(1, 3), 0.375f, 0.375f,
+					0.5f, 0.125);
+		} else {
+			rights.add(new Vector3f(0.375f, 0.5f, 0.375f));
+			addBendYZ(rights, Math.PI / 2, Math.PI / 2 + Math.atan2(1, 3), 0.375f, 0.375f,
+					0.25f, 0.125);
+		}
+		if (neighbor1 == null) {
+			addBendYZ(rights, Math.PI * 3 / 2 + Math.atan2(1, 3), Math.PI, 0.375f,
+					-0.375f, 0.25f, 0.125);
+		} else {
+			addBendYZ(rights, Math.PI * 3 / 2 + Math.atan2(1, 3), Math.PI * 3 / 2, 0.375f,
+					-0.375f, 0.25f, 0.125);
+			rights.add(new Vector3f(0.375f, -0.5f, 0.125f));
+		}
 		return rights;
 	}
 
@@ -84,10 +146,24 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	public ArrayList<Double> getBottomTextureCoordinates(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Double> texs = new ArrayList<>();
-		double texCoord = addBendTextureCoordinates(texs,
-				0, -Math.PI / 2 + Math.atan2(1, 3), 0.125, 0.0);
-		addBendTextureCoordinates(texs, Math.PI * 3 / 2 + Math.atan2(1, 3),
-				Math.PI, 0.125, texCoord + 6.0);
+		double texCoord;
+		if (neighbor2 == null) {
+			texCoord = addBendTextureCoordinates(texs,
+					0, -Math.PI / 2 + Math.atan2(1, 3), 0.125, 0.0);
+		} else {
+			texs.add(0.0);
+			texCoord = 1;
+			texCoord = addBendTextureCoordinates(texs,
+					Math.PI / 2, Math.PI / 2 + Math.atan2(1, 3), 0.125, 0.0);
+		}
+		if (neighbor1 == null) {
+			addBendTextureCoordinates(texs, Math.PI * 3 / 2 + Math.atan2(1, 3),
+					Math.PI, 0.125, texCoord + 6.0);
+		} else {
+			addBendTextureCoordinates(texs, Math.PI * 3 / 2 + Math.atan2(1, 3),
+					Math.PI * 3 / 2, 0.125, texCoord + 6.0);
+			texs.add(9.0);
+		}
 		return texs;
 	}
 	
