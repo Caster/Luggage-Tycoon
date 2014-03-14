@@ -1,3 +1,13 @@
+For viewing the conveyor belt system, it is of course important that the user is able to see the properties of every conveyor belt clearly. That is, the following three properties should be visible:
+\begin{itemize}
+ \item the \textit{shape} (is it horizontal, ascending\,/\,descending or a bend);
+ \item the \textit{orientation} (is the conveyor belt oriented in the $x$- or the $y$-direction);
+ \item the \textit{direction} (towards which of the two possible directions does it move).
+\end{itemize}
+The first two properties do not need a lot of realism: only a rough approximation of the shape will suffice for that. However, for the user to be able to see the direction, just the drawn shape will not be enough.
+
+In the building mode, we can simply draw arrows on top of the conveyor belts that indicate the direction. During the simulation however, we think that looks very bad. Instead, we want the conveyor belts to look like they really move. To do this in an easy way, we can use a texture on the surface of the conveyor belt, and animate its texture coordinates.
+
 \textbf{TO DO schetsen van de verschillende soorten banden en hoe ze eruit zien -- of dit in de vorige sectie misschien?}
 
 \textbf{TO DO het aan elkaar tekenen van banden.}
