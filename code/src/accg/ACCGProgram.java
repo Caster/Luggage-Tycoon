@@ -252,7 +252,7 @@ public class ACCGProgram {
 			
 			// draw the menu bars
 			GUIUtils.make2D();
-			gui.outputDebug();
+			//gui.outputDebug();
 			gui.draw();
 			GUIUtils.make3D();
 			
@@ -400,7 +400,6 @@ public class ACCGProgram {
 				}
 			}
 			
-			/* TODO
 			if (!Mouse.getEventButtonState()) {
 				int dx = Mouse.getEventDX();
 				int dy = Mouse.getEventDY();
@@ -408,10 +407,8 @@ public class ACCGProgram {
 				// handle general mouse move
 				if (!handledMouseMove) {
 					// see if a menubar is hovered
-					for (int i = 0; i < menuBars.length; i++) {
-						handledMouseMoveByMenu = (menuBars[i].handleMouseMoveEvent(
-								Mouse.getX(), Mouse.getY()) || handledMouseMoveByMenu);
-					}
+					handledMouseMoveByMenu = false; // TODO hier iets op vinden!!!
+					gui.handleMouseMoveEvent(Mouse.getX(), Mouse.getY());
 					
 					// in building mode, we might have to draw an object where the mouse
 					// hovers (that is, calculate intersection of a projected ray from the
@@ -437,7 +434,7 @@ public class ACCGProgram {
 					
 					handledButton[2] = true;
 				}
-			}*/
+			}
 		}
 	}
 	

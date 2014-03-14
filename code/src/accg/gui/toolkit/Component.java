@@ -230,12 +230,29 @@ public abstract class Component {
 	
 	/**
 	 * Sends an event to all of the listeners attached to this component.
+	 * 
 	 * @param e The event to send.
+	 * @return Whether the event has been consumed.
 	 */
-	public void sendEvent(Event e) {
-		for (Listener l : listeners) {
-			l.event(e);
+	public boolean sendEvent(Event e) {
+		
+		// TODO remove this debug output
+		System.out.print("*** " + e.getClass().getSimpleName() + " on ");
+		String className = this.getClass().getSimpleName();
+		if (className.equals(getComponentName())) {
+			System.out.print(className);
+		} else {
+			System.out.print(className + " (= " + getComponentName() + ")");
 		}
+		System.out.println(" ***");
+		
+		boolean consumed = false;
+		
+		for (Listener l : listeners) {
+			consumed = consumed || l.event(e);
+		}
+		
+		return consumed;
 	}
 	
 	public abstract String getComponentName();

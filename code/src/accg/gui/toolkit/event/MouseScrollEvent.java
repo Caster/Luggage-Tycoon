@@ -3,7 +3,7 @@ package accg.gui.toolkit.event;
 import accg.gui.toolkit.Event;
 
 /**
- * Event that indicates that a mouse-click has occurred in the component.
+ * Event that indicates that a mouse scroll has occurred in the component.
  */
 public class MouseScrollEvent extends Event {
 	

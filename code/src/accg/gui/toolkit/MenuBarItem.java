@@ -6,6 +6,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 
 import accg.gui.toolkit.event.MouseClickEvent;
+import accg.gui.toolkit.event.MouseMoveEvent;
 
 /**
  * A MenuBarItem can be placed inside a {@link MenuBar} and has text and an
@@ -107,6 +108,8 @@ public class MenuBarItem extends Component implements Listener {
 		this.type = type;
 		this.hovered = false;
 		this.checked = false;
+		
+		addListener(this);
 	}
 
 	@Override
@@ -233,7 +236,7 @@ public class MenuBarItem extends Component implements Listener {
 	}
 
 	@Override
-	public void event(Event event) {
+	public boolean event(Event event) {
 		if (event instanceof MouseClickEvent) {
 			if (this.type == Type.CHECKABLE || this.type == Type.CHECKABLE_UNIQUE) {
 				this.checked = !this.checked;
@@ -242,7 +245,12 @@ public class MenuBarItem extends Component implements Listener {
 					((MenuBar) parent).uncheckOtherItems(this);
 				}
 			}
+			return true;
 		}
+		if (event instanceof MouseMoveEvent) {
+			this.hovered = true;
+		}
+		return false;
 	}
 	
 	/**

@@ -62,16 +62,20 @@ public class SliderMenuBarItem extends MenuBarItem {
 		addListener(new Listener() {
 			
 			@Override
-			public void event(Event e) {
+			public boolean event(Event e) {
 				if (e instanceof MouseClickEvent) {
 					onClick(((MouseClickEvent) e).getX(), ((MouseClickEvent) e).getY());
+					return true;
 				}
 				if (e instanceof MouseDragEvent) {
 					onDrag(((MouseDragEvent) e).getX(), ((MouseDragEvent) e).getY());
+					return true;
 				}
 				if (e instanceof MouseScrollEvent) {
 					onScroll(((MouseScrollEvent) e).getdWheel());
+					return true;
 				}
+				return false;
 			}
 		});
 	}

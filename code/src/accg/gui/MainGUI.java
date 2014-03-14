@@ -9,7 +9,7 @@ import org.newdawn.slick.util.ResourceLoader;
 import accg.State;
 import accg.State.ProgramMode;
 import accg.gui.toolkit.MenuCollection;
-import accg.gui.toolkit.event.MouseClickEvent;
+import accg.gui.toolkit.event.*;
 
 /**
  * This class manages the GUI.
@@ -66,12 +66,41 @@ public class MainGUI extends MenuCollection {
 	}
 	
 	/**
-	 * Handles a mouse event by giving it to the GUI.
+	 * Handles a mouse click event by giving it to the GUI.
 	 * 
 	 * @param x The x-coordinate.
 	 * @param y The y-coordinate.
 	 */
 	public void handleMouseClickEvent(int x, int y) {
-		sendEvent(new MouseClickEvent(x, y));
+		sendEvent(new MouseClickEvent(x, getHeight() - y));
+	}
+	
+	/**
+	 * Handles a mouse drag event by giving it to the GUI.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 */
+	public void handleMouseDragEvent(int x, int y) {
+		sendEvent(new MouseDragEvent(x, getHeight() - y));
+	}
+	
+	/**
+	 * Handles a mouse move event by giving it to the GUI.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 */
+	public void handleMouseMoveEvent(int x, int y) {
+		sendEvent(new MouseMoveEvent(x, getHeight() - y));
+	}
+	
+	/**
+	 * Handles a mouse scroll event by giving it to the GUI.
+	 * 
+	 * @param dWheel The amount of scroll steps.
+	 */
+	public void handleMouseScrollEvent(int dWheel) {
+		sendEvent(new MouseScrollEvent(dWheel));
 	}
 }

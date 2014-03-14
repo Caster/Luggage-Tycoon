@@ -3,14 +3,14 @@ package accg.gui.toolkit.event;
 import accg.gui.toolkit.Event;
 
 /**
- * Event that indicates that a mouse-click has occurred in the component.
+ * Event that indicates that a mouse-move has occurred in the component.
  */
-public class MouseDragEvent extends MouseEvent {
+public class MouseMoveEvent extends MouseEvent {
 	
 	protected int x;
 	protected int y;
 	
-	public MouseDragEvent(int x, int y) {
+	public MouseMoveEvent(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}

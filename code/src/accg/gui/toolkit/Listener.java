@@ -7,7 +7,9 @@ public interface Listener {
 	
 	/**
 	 * Called whenever there is an event.
+	 * 
 	 * @param event The event that occurred.
+	 * @return Whether the event has been consumed.
 	 */
-	public void event(Event event);
+	public boolean event(Event event);
 }

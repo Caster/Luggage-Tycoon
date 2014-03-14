@@ -1,9 +1,8 @@
 package accg.gui;
 
 import accg.State;
-import accg.gui.toolkit.MenuBar;
-import accg.gui.toolkit.MenuBarItem;
-import accg.gui.toolkit.SliderMenuBarItem;
+import accg.gui.toolkit.*;
+import accg.gui.toolkit.event.MouseClickEvent;
 
 /**
  * Menu bar for the normal mode.
@@ -15,7 +14,18 @@ public class NormalModeMenuBar extends MenuBar {
 		add(new MenuBarItem("Open", s.textures.iconOpen));
 		add(new MenuBarItem("Save", s.textures.iconSave));
 		add(new MenuBarItem("Settings", s.textures.iconConfigure));
-		add(new MenuBarItem("Quit", s.textures.iconExit));
+		MenuBarItem quitItem = new MenuBarItem("Quit", s.textures.iconExit);
+		quitItem.addListener(new Listener() {
+			
+			@Override
+			public boolean event(Event e) {
+				if (e instanceof MouseClickEvent) {
+					System.err.println("QUIT!");
+				}
+				return true;
+			}
+		});
+		add(quitItem);
 		add(new SliderMenuBarItem("Test!", s.textures.iconExit, 0, 10, 5, 1));
 	}
 }

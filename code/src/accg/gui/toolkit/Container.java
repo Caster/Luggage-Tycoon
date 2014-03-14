@@ -1,7 +1,8 @@
 package accg.gui.toolkit;
 
-import java.util.ArrayList;
 import java.util.Collection;
+
+import accg.gui.toolkit.event.MouseEvent;
 
 /**
  * A GUI container. This is a component that can contain other components,
@@ -53,5 +54,40 @@ public abstract class Container extends Component {
 		if (needsLayout) {
 			layout();
 		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * This is overridden in {@link Container} since here we also check if we
+	 * can relay the event to one of the children.
+	 */
+	@Override
+	public boolean sendEvent(Event e) {
+		
+		boolean consumed = false;
+		
+		for (Component c : getChildren()) {
+			boolean shouldRelay = true;
+			if (e instanceof MouseEvent) {
+				// only relay mouse events if the mouse is over the object
+				if (!c.getOutline().contains(((MouseEvent) e).getX(), ((MouseEvent) e).getY())) {
+					shouldRelay = false;
+				}
+				((MouseEvent) e).translate(-((MouseEvent) e).getX(), -((MouseEvent) e).getY());
+			}
+			if (shouldRelay) {
+				consumed = consumed || c.sendEvent(e);
+			}
+			if (e instanceof MouseEvent) {
+				((MouseEvent) e).translate(((MouseEvent) e).getX(), ((MouseEvent) e).getY());
+			}
+		}
+		
+		if (consumed) {
+			return true;
+		}
+		
+		return super.sendEvent(e);
 	}
 }
