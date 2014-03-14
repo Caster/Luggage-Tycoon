@@ -17,6 +17,7 @@ public class NormalModeMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
+					s.simulation.skipToTime(s.time);
 					s.programMode = ProgramMode.SIMULATION_MODE;
 					s.gui.updateItems();
 				}

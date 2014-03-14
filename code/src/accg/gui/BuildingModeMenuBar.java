@@ -17,7 +17,6 @@ public class BuildingModeMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					System.err.println("BLAAAAAAA");
 					s.programMode = ProgramMode.NORMAL_MODE;
 					s.gui.updateItems();
 				}

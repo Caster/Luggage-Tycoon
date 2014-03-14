@@ -17,6 +17,7 @@ public class SimulationModeMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
+					s.simulation.clearObjects(s);
 					s.programMode = ProgramMode.NORMAL_MODE;
 					s.gui.updateItems();
 				}
