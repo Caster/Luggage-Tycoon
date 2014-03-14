@@ -1,5 +1,5 @@
 \subsection{Requirements}
-The program that we built is a combination of an editor and a simulator: the user is able to construct a conveyor belt system in the editor, after which the movement of luggage in that system can be simulated. Therefore, we have two kinds of requirements. One for the editor part of the program, one for the simulation part of the program.
+The program that we built is a combination of an editor and a simulator: the user is able to construct a conveyor belt system in the editor, after which the movement of luggage in that system can be simulated. Therefore, we have two kinds of requirements: one for the editor part of the program, one for the simulation part of the program.
 
 \subsubsection{Design goals for the editor}
 \label{subsubsec:design-goals-editor}
@@ -10,6 +10,19 @@ An optional requirement is that we implement some kind of tutorial system that g
 The single most important requirement on the editor is that placement of blocks is easy, also the placements of multiple blocks that form a line (or more generally, a ``route'') of linked conveyor belts. It must be possible for the user to navigate through the scene in an intuitive way. Also, placing a new block in the scene or selecting a block to build from there or remove it (also refer to Section~\textbf{TO~DO}) should be possible by a simple point-and-select interface. That is, the program should be capable of transforming 2D coordinates of a mouse click into 3D scene coordinates. This transformation will result in a line, so the program must also be able to determine what the user means (clicking the object closest to the user on that line). Details on how we implemented this are given in Section~\textbf{TO~DO}.
 
 Finally, the program should not only be fault-tolerant, but moreover be fault-preventing. For example, if the user tries to place a block on a cell where a block is placed already, then this should be indicated somehow. In no case should the program crash if the user tries to do something that is not possible. We describe in Section~\textbf{TO~DO} how we implemented visual clues in case an impossible situation is (possibly) requested by the user.
+
+\subsubsection{Required functionality for the editor}
+\label{subsubsec:req-functionality-simulator}
+The program should have support for three types of basic conveyor belts: horizontal belts, sloped belts (ascending \,/\,descending) and bends. (Since we are not modelling a real-world system, this choice is of course somewhat arbitrary; we just chose three simple building blocks with which the user can make useful systems.) Sketches of those three types of belts are given in Figure~\ref{fig:blocks-sketch}.
+\begin{figure}
+  \begin{center}
+    \includegraphics{blocks-sketch}
+    \caption{Sketches of the three types of basic conveyor belt blocks available to the user.}
+    \label{fig:blocks-sketch}
+  \end{center}
+\end{figure}
+
+Furthermore, we will add some special blocks to make the system more interesting. First of all, we need an input block that produces luggage, and an output block that the user should move the luggage to. As an optional feature, there could be \emph{scanner} blocks, that scan the type of luggage (as shown by the color of the luggage item) and depending on this type, put the luggage on one of several outgoing conveyor belts. This way, the user can ``sort'' luggage.
 
 \subsubsection{Design goals for the simulator}
 \label{subsubsec:design-goals-simulator}
