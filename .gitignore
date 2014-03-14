@@ -19,6 +19,8 @@ docs/presentation/tuestyle2008.sty
 *.snm
 *.toc
 *.vrb
+*.bbl
+*.blg
 *.kilepr
 *.backup
 *.xcf
