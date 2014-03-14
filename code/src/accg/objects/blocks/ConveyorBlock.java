@@ -263,7 +263,7 @@ public abstract class ConveyorBlock extends Block {
 	 * match a bend created with
 	 * {@link #addBendYZ(ArrayList, double, double, float, float, float, double)} or
 	 * {@link #addBendXY(ArrayList, double, double, float, float, float, double)}.
-	 * Note that it is used that a distance of 0.75 maps to a distance of 2 in
+	 * Note that it is used that a distance of 1/8 maps to a distance of 1 in
 	 * texture coordinates.
 	 * 
 	 * @param list List of texture coordinates to add to.
