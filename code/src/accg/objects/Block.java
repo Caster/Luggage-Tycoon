@@ -107,8 +107,9 @@ public abstract class Block extends DrawableObject {
 	}
 	
 	/**
-	 * Return an exact copy of this block.
+	 * Returns an exact copy of this block.
 	 */
+	@Override
 	public abstract Block clone();
 	
 	/**
