@@ -74,13 +74,13 @@ public abstract class Container extends Component {
 				if (!c.getOutline().contains(((MouseEvent) e).getX(), ((MouseEvent) e).getY())) {
 					shouldRelay = false;
 				}
-				((MouseEvent) e).translate(-((MouseEvent) e).getX(), -((MouseEvent) e).getY());
+				((MouseEvent) e).translate(-c.getX(), -c.getY());
 			}
 			if (shouldRelay) {
 				consumed = consumed || c.sendEvent(e);
 			}
 			if (e instanceof MouseEvent) {
-				((MouseEvent) e).translate(((MouseEvent) e).getX(), ((MouseEvent) e).getY());
+				((MouseEvent) e).translate(c.getX(), c.getY());
 			}
 		}
 		

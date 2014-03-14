@@ -19,6 +19,7 @@ public class NormalModeMenuBar extends MenuBar {
 			
 			@Override
 			public boolean event(Event e) {
+				System.err.println("HOI! event type = " + e.getClass().getSimpleName());
 				if (e instanceof MouseClickEvent) {
 					System.err.println("QUIT!");
 				}

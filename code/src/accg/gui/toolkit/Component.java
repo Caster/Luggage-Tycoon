@@ -249,7 +249,7 @@ public abstract class Component {
 		boolean consumed = false;
 		
 		for (Listener l : listeners) {
-			consumed = consumed || l.event(e);
+			consumed = l.event(e) || consumed;
 		}
 		
 		return consumed;

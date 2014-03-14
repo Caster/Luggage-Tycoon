@@ -10,6 +10,7 @@ import accg.gui.toolkit.MenuBarItem;
 public class BuildingModeMenuBar extends MenuBar {
 	public BuildingModeMenuBar(State s) {
 		add(new MenuBarItem("Back", s.textures.iconExit));
+		add(new MenuBarItem("Rotate", s.textures.iconMouse));
 		add(new MenuBarItem("Straight", s.textures.iconExit));
 		add(new MenuBarItem("Up", s.textures.iconExit));
 		add(new MenuBarItem("Down", s.textures.iconExit));

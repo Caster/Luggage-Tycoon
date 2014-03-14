@@ -129,12 +129,12 @@ public class MenuCollection extends Container {
 	
 	@Override
 	public int getPreferredWidth() {
-		return 0; // TODO preferred width of a menu collection is weird
+		return visibleMenu.getPreferredWidth();
 	}
 	
 	@Override
 	public int getPreferredHeight() {
-		return 0; // TODO preferred height of a menu collection is weird
+		return visibleMenu.getPreferredHeight();
 	}
 
 	@Override
