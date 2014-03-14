@@ -1,6 +1,6 @@
 During the implementation phase, we made some design decisions that we document in this section. This also includes interesting implementation details, for example solutions to some non-trivial implementation issues.
 
-\subsection{Simulating luggage movement in a conveyor belt system}
+\subsection{Simulating luggage movement}
 We initially implemented a simulation module ourselves, that was able to move luggage over the conveyor belts, but it did not support rotations. This means that luggage did not for example rotate when climbing an ascending conveyor belt or when it dropped of a belt. Furthermore the system was not really realistic, since we only used a very simple physics model. This meant that there was no collision detection between luggage items at all, and one piece of luggage could be placed inside another one.
 
 After searching information about how to implement a more realistic physics system, we found out that it is extremely difficult to do so, and we decided to use an external library for the physics, named \emph{Bullet} (more accurately, a Java port of Bullet called \emph{JBullet}). Now we had to integrate JBullet in our application, which was not too difficult to do.
