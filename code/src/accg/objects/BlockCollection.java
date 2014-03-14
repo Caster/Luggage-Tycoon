@@ -1,7 +1,5 @@
 package accg.objects;
 
-import javax.vecmath.Vector3f;
-
 import accg.State;
 
 /**
@@ -41,7 +39,9 @@ public class BlockCollection extends DrawableObject {
 	/**
 	 * Creates a new {@link BlockCollection} of the given size.
 	 * 
-	 * @param size The size, in number of blocks.
+	 * @param sizeX The size in the x-direction.
+	 * @param sizeY The size in the y-direction.
+	 * @param sizeZ The size in the z-direction.
 	 */
 	public BlockCollection(int sizeX, int sizeY, int sizeZ) {
 		this.blocks = new Block[sizeX][sizeY][sizeZ];
@@ -134,10 +134,15 @@ public class BlockCollection extends DrawableObject {
 	 * @param z The z-coordinate (divided by 4).
 	 * @return The block on coordinate (x, y, z / 4), or <code>null</code> if
 	 * there is no block there.
-	 * @throws ArrayIndexOutOfBoundsException If {@link #inBounds(int, int, int)}
+	 * @throws IllegalArgumentException If {@link #inBounds(int, int, int)}
 	 * returns <code>false</code> for this coordinate.
 	 */
 	public Block getBlockFuzzy(int x, int y, int z) {
+		
+		if (!inBounds(x, y, z)) {
+			throw new IllegalArgumentException("Block outside bounds");
+		}
+		
 		for (int z2 = z; z2 >= 0; z2--) {
 			Block block = blocks[x][y][z2];
 			
@@ -147,6 +152,28 @@ public class BlockCollection extends DrawableObject {
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Returns if it would be possible to place a block with the given height at
+	 * the given position. This checks if there are no blocks in the way.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @param z The z-coordinate (divided by 4).
+	 * @param height Height of the block to check.
+	 * @return If a block with given height could be placed at the given position.
+	 * @throws ArrayIndexOutOfBoundsException If {@link #inBounds(int, int, int)}
+	 * returns <code>false</code> for this coordinate.
+	 */
+	public boolean checkBlockFuzzy(int x, int y, int z, int height) {
+		for (int z2 = z + height - 1; z2 >= z; z2--) {
+			if (!inBounds(x, y, z2) || blocks[x][y][z2] != null) {
+				return false;
+			}
+		}
+		
+		return (getBlockFuzzy(x, y, z) == null);
 	}
 	
 	/**
@@ -186,7 +213,4 @@ public class BlockCollection extends DrawableObject {
 			}
 		}
 	}
-	
-	@Override
-	public void setPosition(Vector3f position) { /* ignored */ }
 }

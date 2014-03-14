@@ -12,6 +12,10 @@ import accg.State;
  */
 public class Camera {
 	
+	/**
+	 * Creates a new Camera object.
+	 * @param s The state of the program.
+	 */
 	public Camera(State s) {
 		this.state = s;
 	}
@@ -99,12 +103,27 @@ public class Camera {
 					camUpPos.x, camUpPos.y, camUpPos.z);
 	}
 	
+	/**
+	 * Calls <code>gluLookAt</code> with the given camera and view positions,
+	 * and up vector (0, 0, 1).
+	 * 
+	 * @param camPos The camera position.
+	 * @param viewPos The view position.
+	 */
 	public void setLookAt(Vector3f camPos, Vector3f viewPos) {
 		gluLookAt(camPos.x, camPos.y, camPos.z,
 					viewPos.x, viewPos.y, viewPos.z,
 					0.0f, 1.0f, 0.0f);
 	}
 	
+	/**
+	 * Calls <code>gluLookAt</code> with the given camera and view positions
+	 * and up vector.
+	 * 
+	 * @param camPos The camera position.
+	 * @param viewPos The view position.
+	 * @param upPos The up vector.
+	 */
 	public void setLookAt(Vector3f camPos, Vector3f viewPos, Vector3f upPos) {
 		gluLookAt(camPos.x, camPos.y, camPos.z,
 					viewPos.x, viewPos.y, viewPos.z,
@@ -191,38 +210,69 @@ public class Camera {
 		turnDownUp(CAM_TURN * amount);
 	}
 	
+	/**
+	 * Moves the camera forwards by a default amount.
+	 */
 	public void moveForward() {
 		moveForward(camSpherical.x / INITIAL_CAM_POS.x);
 	}
-	
+
+	/**
+	 * Moves the camera forwards by a given amount.
+	 * @param amount The distance to move.
+	 */
 	public void moveForward(float amount) {
 		moveForwardBackward(-CAM_MOVE * amount);
 	}
-
+	
+	/**
+	 * Moves the camera backwards by a default amount.
+	 */
 	public void moveBackward() {
 		moveBackward(camSpherical.x / INITIAL_CAM_POS.x);
 	}
-	
+
+	/**
+	 * Moves the camera backwards by a given amount.
+	 * @param amount The distance to move.
+	 */
 	public void moveBackward(float amount) {
 		moveForwardBackward(CAM_MOVE * amount);
 	}
 	
+	/**
+	 * Moves the camera to the left by a default amount.
+	 */
 	public void moveLeft() {
 		moveLeft(camSpherical.x / INITIAL_CAM_POS.x);
 	}
-	
+
+	/**
+	 * Moves the camera to the left by a given amount.
+	 * @param amount The distance to move.
+	 */
 	public void moveLeft(float amount) {
 		moveLeftRight(CAM_MOVE * amount);
 	}
-	
+
+	/**
+	 * Moves the camera to the right by a default amount.
+	 */
 	public void moveRight() {
 		moveRight(camSpherical.x / INITIAL_CAM_POS.x);
 	}
 	
+	/**
+	 * Moves the camera to the right by a given amount.
+	 * @param amount The distance to move.
+	 */
 	public void moveRight(float amount) {
 		moveLeftRight(-CAM_MOVE * amount);
 	}
-	
+
+	/**
+	 * Moves the camera upwards by a default amount.
+	 */
 	public void moveUp() {
 		camSpherical.x *= 1.1;
 		if (!ensureBounds(camSpherical)) {
@@ -230,6 +280,9 @@ public class Camera {
 		}
 	}
 	
+	/**
+	 * Moves the camera downwards by a default amount.
+	 */
 	public void moveDown() {
 		camSpherical.x /= 1.1;
 		if (!ensureBounds(camSpherical)) {

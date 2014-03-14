@@ -8,7 +8,6 @@ import java.io.File;
 import java.nio.FloatBuffer;
 
 import javax.vecmath.Matrix4f;
-import javax.vecmath.Vector3f;
 
 import org.lwjgl.BufferUtils;
 
@@ -145,12 +144,5 @@ public class Luggage extends DrawableObject {
 		caseModelBlack.draw();
 		
 		glPopMatrix();
-	}
-	
-	@Override
-	public void setPosition(Vector3f position) {
-		transform.m03 = position.x;
-		transform.m13 = position.y;
-		transform.m23 = position.z;
 	}
 }

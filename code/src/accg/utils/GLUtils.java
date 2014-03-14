@@ -1,5 +1,7 @@
 package accg.utils;
 
+import static org.lwjgl.opengl.GL11.*;
+
 import java.awt.Color;
 
 import javax.vecmath.Vector3f;
@@ -41,6 +43,24 @@ public class GLUtils {
 	}
 	
 	/**
+	 * Put glVertex3d commands that form a quad. Note that this function should
+	 * be embedded in a glBegin(GL_QUADS)/glEnd() block for proper use. The quad
+	 * is drawn at Z = 0.
+	 * 
+	 * @param xMin Minimum X-coordinate of quad to draw.
+	 * @param xMax Maximum X-coordinate of quad to draw.
+	 * @param yMin Minimum Y-coordinate of quad to draw.
+	 * @param yMax Maximum Y-coordinate of quad to draw.
+	 */
+	public static void drawQuad(double xMin, double xMax, double yMin,
+			double yMax) {
+		glVertex3d(xMin, yMin, 0);
+		glVertex3d(xMin, yMax, 0);
+		glVertex3d(xMax, yMax, 0);
+		glVertex3d(xMax, yMin, 0);
+	}
+	
+	/**
 	 * Return the given value modulo 2*PI, where the value is guaranteed
 	 * to be between 0 and 2*PI (so it is not negative).
 	 * 
@@ -67,6 +87,15 @@ public class GLUtils {
 	 */
 	public static float modulo(float value, float min, float max) {
 		return min + ((((value - min) % (max - min)) + (max - min)) % (max - min));
+	}
+	
+	/**
+	 * Issues a glClearColor(...) call based on a Color.
+	 * @param c The color to use.
+	 */
+	public static void glClearColor(Color c) {
+		org.lwjgl.opengl.GL11.glClearColor(c.getRed() / 255f,
+				c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
 	}
 	
 	/**

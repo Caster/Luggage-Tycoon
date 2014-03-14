@@ -1,11 +1,11 @@
 package accg.objects;
 
 import static org.lwjgl.opengl.GL11.*;
-
-import javax.vecmath.Vector3f;
-
 import accg.State;
 
+/**
+ * The walls of the building.
+ */
 public class Walls extends DrawableObject {
 
 	@Override
@@ -65,7 +65,4 @@ public class Walls extends DrawableObject {
 		
 		glDisable(GL_CULL_FACE);
 	}
-	
-	@Override
-	public void setPosition(Vector3f position) { /* ignored */ }
 }

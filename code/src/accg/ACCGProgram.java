@@ -1,5 +1,6 @@
 package accg;
 
+import static accg.utils.GLUtils.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.*;
 
@@ -26,8 +27,10 @@ import accg.gui.MainGUI;
 import accg.gui.toolkit.GUIUtils;
 import accg.objects.Block.Orientation;
 import accg.objects.*;
+import accg.objects.blocks.ConveyorBlock;
 import accg.objects.blocks.StraightConveyorBlock;
 import accg.simulation.Simulation;
+import accg.utils.GLUtils;
 import accg.utils.Utils;
 
 /**
@@ -38,8 +41,14 @@ import accg.utils.Utils;
  */
 public class ACCGProgram {
 	
+	/** Background color of the scene. */
+	private static final java.awt.Color BACKGROUND_COLOR =
+			new java.awt.Color(0.8f, 0.8f, 0.77f, 1.0f);
+	/** Default menu alignment (index in enumeration). */
 	private static final int DEF_MENU_ALIGNMENT = 1;
+	/** Default menu position (index in enumeration). */
 	private static final int DEF_MENU_POSITION = 0;
+	/** Default menu presentation (index in enumeration). */
 	private static final int DEF_MENU_PRESENTATION = 1;
 	
 	/** If the escape key has been pressed. */
@@ -86,6 +95,11 @@ public class ACCGProgram {
 	private Vector3f mousePos3DvectorNear;
 	private Vector3f mousePos3DvectorFar;
 	private Vector3f mouseViewVector;
+	/**
+	 * Vector that can be added to a point in the scene to undo the offset
+	 * given to it.
+	 */
+	private Vector3f offsetVector = new Vector3f(0.5f, 0.5f, 0);
 	
 	/**
 	 * Construct a new instance of the program.
@@ -100,11 +114,20 @@ public class ACCGProgram {
 		mouseViewVector = new Vector3f();
 	}
 	
+	/**
+	 * The main method of the application.
+	 * @param args The command-line arguments (ignored).
+	 */
 	public static void main(String[] args) {
 		ACCGProgram p = new ACCGProgram();
 		p.start();
 	}
 	
+	/**
+	 * Starts and initializes the program.
+	 * 
+	 * This method contains the main rendering loop.
+	 */
 	public void start() {
 		
 		windowedMode = new DisplayMode(1024, 576);
@@ -149,10 +172,11 @@ public class ACCGProgram {
 		s.simulation = new Simulation(s);
 		s.world = new World(s);
 		s.floor = new Floor();
+		s.floor.setBackgroundColor(BACKGROUND_COLOR);
 		s.textures = new Textures();
 		// TODO: This is only temporary, for testing. This should be controlled through some
 		//       kind of menu where blocks or 'nothing' can be selected.
-		s.shadowObject = new ShadowObject(new StraightConveyorBlock(0, 0, 0, Orientation.LEFT));
+		s.shadowBlock = new ShadowBlock(new StraightConveyorBlock(0, 0, 0, Orientation.LEFT));
 		s.startTime = (float) Sys.getTime() / Sys.getTimerResolution();
 		camera = new Camera(s);
 		clickedPoint = null;
@@ -170,6 +194,19 @@ public class ACCGProgram {
 		glEnable(GL_COLOR_MATERIAL);
 		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 		glEnable(GL_DEPTH_TEST);
+		
+		// initialise some GL stuff
+		FloatBuffer shadowColor = BufferUtils.createFloatBuffer(4);
+		shadowColor.put(new float[] {0, 0, 0, 1});
+		shadowColor.flip();
+		FloatBuffer shadowMatrix = BufferUtils.createFloatBuffer(16);
+		shadowMatrix.put(new float[] {
+				1, 0, 0, 0,
+				0, 1, 0, 0,
+				-0.2f, 0.2f, 0, 0,
+				0, 0, 0, 1
+		});
+		shadowMatrix.flip();
 		
 		while (!Display.isCloseRequested() && !escPressed) {
 			
@@ -192,7 +229,7 @@ public class ACCGProgram {
 			}
 			
 			// start rendering stuff
-			glClearColor(0.8f, 0.8f, 0.77f, 1.0f);
+			glClearColor(BACKGROUND_COLOR);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glViewport(0, 0, Display.getWidth(), Display.getHeight());
 			glMatrixMode(GL_PROJECTION);
@@ -204,7 +241,7 @@ public class ACCGProgram {
 			camera.setLookAt();
 			
 			// handle events
-			handleKeyEvents();
+			handleKeyEvents(s);
 			handlePressedKeys();
 			//handleScrollEvents(); // TODO
 			handleMouseEvents(s);
@@ -217,24 +254,13 @@ public class ACCGProgram {
 			
 			// step 2: draw shadows
 			glDisable(GL_COLOR_MATERIAL);
-			FloatBuffer shadowColor = BufferUtils.createFloatBuffer(4);
-			shadowColor.put(new float[] {0, 0, 0, 1});
-			shadowColor.flip();
 			glMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, shadowColor);
 			glPushMatrix();
-			FloatBuffer shadowMatrix = BufferUtils.createFloatBuffer(16);
-			shadowMatrix.put(new float[] {
-					1, 0, 0, 0,
-					0, 1, 0, 0,
-					-0.2f, 0.2f, 0, 0,
-					0, 0, 0, 1
-			});
-			shadowMatrix.flip();
 			glMultMatrix(shadowMatrix);
 			s.world.draw(s);
 			if (s.programMode == ProgramMode.BUILDING_MODE &&
-					s.shadowObject != null) {
-				s.shadowObject.draw(s);
+					s.shadowBlock != null) {
+				s.shadowBlock.draw(s);
 			}
 			glPopMatrix();
 			glEnable(GL_COLOR_MATERIAL);
@@ -246,8 +272,8 @@ public class ACCGProgram {
 			// step 4: draw objects
 			s.world.draw(s);
 			if (s.programMode == ProgramMode.BUILDING_MODE &&
-					s.shadowObject != null) {
-				s.shadowObject.draw(s);
+					s.shadowBlock != null) {
+				s.shadowBlock.draw(s);
 			}
 			
 			// draw the menu bars
@@ -269,8 +295,10 @@ public class ACCGProgram {
 	
 	/**
 	 * Handles pressed / released key events.
+	 * 
+	 * @param s State, used to access ShadowBlock.
 	 */
-	public void handleKeyEvents() {
+	public void handleKeyEvents(State s) {
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) {
 				switch (Keyboard.getEventKey()) {
@@ -296,6 +324,18 @@ public class ACCGProgram {
 					break;
 				case Keyboard.KEY_ESCAPE:
 					escPressed = true;
+					break;
+				case Keyboard.KEY_R:
+					if (s.shadowBlock != null && s.shadowBlock.isVisible()) {
+						if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ||
+								Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+							s.shadowBlock.setOrientation(
+									s.shadowBlock.getOrientation().rotateLeft());
+						} else {
+							s.shadowBlock.setOrientation(
+									s.shadowBlock.getOrientation().rotateRight());
+						}
+					}
 					break;
 				}
 			}
@@ -368,7 +408,7 @@ public class ACCGProgram {
 	 * Handles mouse move events and such.
 	 * 
 	 * @param s State of the program, used to determine in which mode we are
-	 *          to see if a {@link ShadowObject} should be drawn where the
+	 *          to see if a {@link ShadowBlock} should be drawn where the
 	 *          mouse hovers or not (and also what kind of object).
 	 */
 	public void handleMouseEvents(State s) {
@@ -387,6 +427,11 @@ public class ACCGProgram {
 				if (eventButton == 0) {
 					if (Mouse.getEventButtonState()) {
 						clickedPoint = new Point(Mouse.getX(), Mouse.getY());
+						// make ShadowBlock not transparent anymore
+						if (s.shadowBlock != null && s.shadowBlock.isVisible()) {
+							s.shadowBlock.setTransparent(false);
+							updateShadowBlockAlerted(s);
+						}
 					} else {
 						if (clickedPoint != null) {
 							if (Math.abs(clickedPoint.getX() - Mouse.getX()) < 3 &&
@@ -395,6 +440,20 @@ public class ACCGProgram {
 							}
 							
 							clickedPoint = null;
+						}
+						
+						// check if the mouse was released after a drag: in that
+						// case, add a new block at that position
+						if (s.shadowBlock != null) {
+							if (s.shadowBlock.isVisible() &&
+									!s.shadowBlock.isAlerted() &&
+									!s.shadowBlock.isTransparent()) {
+								s.world.addBlock(
+										(ConveyorBlock) s.shadowBlock.clone());
+							}
+							
+							s.shadowBlock.setAlerted(false);
+							s.shadowBlock.setTransparent(true);
 						}
 					}
 				}
@@ -413,9 +472,13 @@ public class ACCGProgram {
 					// in building mode, we might have to draw an object where the mouse
 					// hovers (that is, calculate intersection of a projected ray from the
 					// mouse with the scene, et cetera)
-					if (!handledMouseMoveByMenu && s.programMode == ProgramMode.BUILDING_MODE &&
-							s.shadowObject != null) {
-						updateShadowObjectPosition(Mouse.getX(), Mouse.getY(), s);
+					if (s.programMode == ProgramMode.BUILDING_MODE &&
+							s.shadowBlock != null && !Mouse.isButtonDown(0)) {
+						if (handledMouseMoveByMenu) {
+							s.shadowBlock.setVisible(false);
+						} else {
+							updateShadowBlockPosition(Mouse.getX(), Mouse.getY(), s);
+						}
 					}
 					
 					handledMouseMove = true;
@@ -423,7 +486,11 @@ public class ACCGProgram {
 				
 				// handle left mouse button: mouse button 0
 				if (!handledButton[0] && !handledMouseMoveByMenu && Mouse.isButtonDown(0)) {
-					camera.moveByMouse(dx, dy);
+					if (s.programMode == ProgramMode.BUILDING_MODE && s.shadowBlock != null) {
+						updateShadowBlockHeight(Mouse.getX(), Mouse.getY(), s);
+					} else {
+						camera.moveByMouse(dx, dy);
+					}
 					
 					handledButton[0] = true;
 				}
@@ -831,16 +898,13 @@ public class ACCGProgram {
 	}*/
 	
 	/**
-	 * Update the position of the shadow object. This function assumes that the
-	 * shadow object is not null to begin with. It accesses the global camera
-	 * variable to determine the viewing vector.
+	 * Find the vector describing the viewing ray shot from the mouse and
+	 * store it in a global variable.
 	 * 
 	 * @param mouseX X-coordinate of mouse position on screen.
 	 * @param mouseY Y-coordinate of mouse position on screen.
-	 * @param s State, used to access shadow object.
 	 */
-	private void updateShadowObjectPosition(int mouseX, int mouseY, State s) {
-		// find the intersection of the camera viewing ray with the scene AABB
+	private void findMouseViewVector(int mouseX, int mouseY) {
 		glGetFloat(GL_MODELVIEW_MATRIX, modelMatrix);
 		glGetFloat(GL_PROJECTION_MATRIX, projectionMatrix);
 		glGetInteger(GL_VIEWPORT, viewport);
@@ -856,13 +920,71 @@ public class ACCGProgram {
 		mousePos3DvectorFar.z = mousePos3D.get(2) * 4;
 		mouseViewVector.sub(mousePos3DvectorFar, mousePos3DvectorNear);
 		mouseViewVector.normalize();
-		
+	}
+	
+	/**
+	 * Update the alerted property of the shadow block, assuming that this block
+	 * is not {@code null} and placed at the position where it will remain for
+	 * as long as the alerted property should hold.
+	 * 
+	 * @param s State, used to look-up ShadowBlock in.
+	 */
+	private void updateShadowBlockAlerted(State s) {
+		s.shadowBlock.setAlerted(s.world.bc.getBlockFuzzy(s.shadowBlock.getX(),
+				s.shadowBlock.getY(), s.shadowBlock.getZ()) != null);
+		if (!s.world.bc.checkBlockFuzzy(s.shadowBlock.getX(),
+				s.shadowBlock.getY(), s.shadowBlock.getZ(),
+				s.shadowBlock.getHeight())) {
+			s.shadowBlock.setAlerted(true);
+		}
+	}
+	
+	/**
+	 * Update the height of the shadow object. This function assumes that the
+	 * shadow object is not null to begin with.
+	 * 
+	 * @param mouseX X-coordinate of mouse position on screen.
+	 * @param mouseY Y-coordinate of mouse position on screen.
+	 * @param s State, used to access shadow object.
+	 */
+	private void updateShadowBlockHeight(int mouseX, int mouseY, State s) {
+		// find the intersection of the camera viewing ray with the block AABB
+		findMouseViewVector(mouseX, mouseY);
+		double[] result = Utils.getIntersectWithBox(mousePos3DvectorNear,
+				mouseViewVector, s.shadowBlock.getX() - 0.5,
+				s.shadowBlock.getX() + 0.5, s.shadowBlock.getY() - 0.5,
+				s.shadowBlock.getY() + 0.5, 0, s.fieldHeight);
+		// are we even hovering the scene?
+		if (result == null) {
+			s.shadowBlock.setVisible(false);
+			return;
+		}
+		// find the position halfway
+		Vector3f halfway = new Vector3f();
+		halfway.scaleAdd((float) ((result[0] + result[1]) / 2), mouseViewVector,
+				mousePos3DvectorNear);
+		s.shadowBlock.setZ((int) GLUtils.clamp(halfway.z, 0, s.fieldHeight - 1));
+		s.shadowBlock.setVisible(true);
+		updateShadowBlockAlerted(s);
+	}
+	
+	/**
+	 * Update the position of the shadow object. This function assumes that the
+	 * shadow object is not null to begin with.
+	 * 
+	 * @param mouseX X-coordinate of mouse position on screen.
+	 * @param mouseY Y-coordinate of mouse position on screen.
+	 * @param s State, used to access shadow object.
+	 */
+	private void updateShadowBlockPosition(int mouseX, int mouseY, State s) {
+		// find the intersection of the camera viewing ray with the scene AABB
+		findMouseViewVector(mouseX, mouseY);		
 		double[] result = Utils.getIntersectWithBox(mousePos3DvectorNear,
 				mouseViewVector, -0.5, s.fieldLength - 0.5, -0.5, s.fieldWidth -
 				0.5, 0.0, s.fieldHeight);
 		// are we even hovering the scene?
 		if (result == null) {
-			s.shadowObject.setVisible(false);
+			s.shadowBlock.setVisible(false);
 			return;
 		}
 		
@@ -871,20 +993,40 @@ public class ACCGProgram {
 		Vector3f start = new Vector3f();
 		Vector3f end = new Vector3f();
 		start.scaleAdd((float) result[0], mouseViewVector, mousePos3DvectorNear);
-		start.add(new Vector3f(0.5f, 0.5f, 0));
+		start.add(offsetVector);
 		end.scaleAdd((float) result[1], mouseViewVector, mousePos3DvectorNear);
-		end.add(new Vector3f(0.5f, 0.5f, 0));
+		end.add(offsetVector);
+		// go a little further, to make sure we do not miss the cell on the ground
+		mouseViewVector.scale(0.5f);
+		end.add(mouseViewVector);
+		
 		// find interesting grid cells
 		ArrayList<Vector3f> interestingCells = Utils.bresenham3D(start, end);
+		// update end position to something that makes more sense
+		end.sub(mouseViewVector);
+		end.z = 0;
+		// check if the position for the block is in bounds, this may not be the case
+		// in some corner cases (particular view on edge of scene)
+		if (!s.world.bc.inBounds((int) end.x, (int) end.y, (int) end.z)) {
+			s.shadowBlock.setVisible(false);
+			return;
+		}
 		// position the shadowobject just before the first cell that contains a
 		// block, or hide it if the first block is taken already
 		int firstTakenIndex = s.world.getFirstTakenIndex(interestingCells);
-		if (firstTakenIndex < interestingCells.size() - 1 ||
+		if (firstTakenIndex >= interestingCells.size() - 2 &&
+				firstTakenIndex < interestingCells.size() &&
+				s.world.bc.getBlock((int) end.x, (int) end.y, 0) != null) {
+			s.shadowBlock.setAlerted(true);
+			s.shadowBlock.setVisible(true);
+			s.shadowBlock.setPosition(end);
+		} else if (firstTakenIndex < interestingCells.size() - 1 ||
 				interestingCells.get(firstTakenIndex - 1).z > 0) {
-			s.shadowObject.setVisible(false);
+			s.shadowBlock.setVisible(false);
 		} else {
-			s.shadowObject.setVisible(true);
-			s.shadowObject.setPosition(interestingCells.get(firstTakenIndex - 1));
+			s.shadowBlock.setVisible(true);
+			s.shadowBlock.setPosition(end);
+			updateShadowBlockAlerted(s);
 		}
 	}
 }

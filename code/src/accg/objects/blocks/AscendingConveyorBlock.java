@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 import javax.vecmath.Vector3f;
 
+import accg.objects.Block;
+
 /**
  * An {@code AscendingConveyorBlock} is a conveyor block that tilts luggage up.
  * 
  * Its coordinate space is within [-0.5, 0.5] x [-0.5, 0.5], just like other
- * {@link ConveyorBelt}. The cylinders of this belt are located at [-0.375; -0.25]
+ * {@link ConveyorBlock}. The cylinders of this belt are located at [-0.375; -0.25]
  * and [0.375; 0.0] in the YZ plane (and span in the X direction). The radii of
  * these cylinders is 0.125.
  */
@@ -16,6 +18,11 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 
 	public AscendingConveyorBlock(int x, int y, int z, Orientation orientation) {
 		super(x, y, z, orientation, ConveyorBlockType.ASCENDING);
+	}
+	
+	@Override
+	public Block clone() {
+		return new AscendingConveyorBlock(x, y, z, orientation);
 	}
 	
 	@Override

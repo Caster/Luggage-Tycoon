@@ -2,6 +2,7 @@ package accg.utils;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.vecmath.Vector3f;
 
@@ -22,7 +23,7 @@ public class Utils {
 	 * 
 	 * @param start Position to start.
 	 * @param end Position to end.
-	 * @return
+	 * @return A list of the cells on the line.
 	 */
 	public static ArrayList<Vector3f> bresenham3D(Vector3f start, Vector3f end) {
 		ArrayList<Vector3f> result = new ArrayList<>();
@@ -242,6 +243,23 @@ public class Utils {
 				p.y = -p.y;
 			}
 			break;
+		}
+	}
+	
+	/**
+	 * Scale all vectors in the given list with the given factor.
+	 * 
+	 * @param vecList List of vectors to scale.
+	 * @param scaleFactor Factor to scale vectors with.
+	 */
+	public static void scaleList(List<Vector3f> vecList, float scaleFactor) {
+		// spare a loop :)
+		if (scaleFactor == 1) {
+			return;
+		}
+		
+		for (Vector3f vec : vecList) {
+			vec.scale(scaleFactor);
 		}
 	}
 	

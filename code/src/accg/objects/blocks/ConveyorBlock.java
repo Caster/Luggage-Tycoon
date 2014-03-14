@@ -30,7 +30,7 @@ public abstract class ConveyorBlock extends Block {
 	 */
 	public enum ConveyorBlockType {
 		ASCENDING, BEND_LEFT, BEND_RIGHT, DESCENDING, STRAIGHT
-	};
+	}
 	
 	/**
 	 * Creates a new ConveyorBlock on the specified position.
@@ -39,6 +39,7 @@ public abstract class ConveyorBlock extends Block {
 	 * @param y The y-coordinate.
 	 * @param z The z-coordinate.
 	 * @param orientation The orientation of this block.
+	 * @param type The type of the block.
 	 */
 	public ConveyorBlock(int x, int y, int z, Orientation orientation,
 			ConveyorBlockType type) {
@@ -139,7 +140,9 @@ public abstract class ConveyorBlock extends Block {
 		glBegin(GL_QUAD_STRIP);
 		{			
 			ArrayList<Vector3f> lefts = getTopCoordinatesLeft();
+			Utils.scaleList(lefts, scaleFactor);
 			ArrayList<Vector3f> rights = getTopCoordinatesRight();
+			Utils.scaleList(rights, scaleFactor);
 			ArrayList<Double> texs = getTopTextureCoordinates();
 			
 			assert lefts.size() == rights.size() && lefts.size() == texs.size();
@@ -151,7 +154,9 @@ public abstract class ConveyorBlock extends Block {
 		glBegin(GL_QUAD_STRIP);
 		{
 			ArrayList<Vector3f> lefts = getBottomCoordinatesLeft();
+			Utils.scaleList(lefts, scaleFactor);
 			ArrayList<Vector3f> rights = getBottomCoordinatesRight();
+			Utils.scaleList(rights, scaleFactor);
 			ArrayList<Double> texs = getBottomTextureCoordinates();
 			
 			assert lefts.size() == rights.size() && lefts.size() == texs.size();
@@ -163,13 +168,6 @@ public abstract class ConveyorBlock extends Block {
 		glDisable(GL_TEXTURE_2D);
 		
 		glPopMatrix();
-	}
-	
-	@Override
-	public void setPosition(Vector3f position) {
-		this.x = (int) position.x;
-		this.y = (int) position.y;
-		this.z = (int) position.z;
 	}
 	
 	/**
@@ -190,10 +188,10 @@ public abstract class ConveyorBlock extends Block {
 		glTranslated(x + dx, y + dy, 0);
 
 		Cylinder c = new Cylinder();
-		c.draw(0.05f, 0.02f, 0.25f, 16, 1);
+		c.draw(0.05f * scaleFactor, 0.02f * scaleFactor, 0.25f, 16, 1);
 		glPushMatrix();
 		glTranslated(0, 0, 0.25f);
-		c.draw(0.02f, 0.02f, z / 4.0f, 16, 1);
+		c.draw(0.02f * scaleFactor, 0.02f * scaleFactor, z / 4.0f, 16, 1);
 		glPopMatrix();
 		
 		glPopMatrix();
@@ -205,7 +203,7 @@ public abstract class ConveyorBlock extends Block {
 	 * @param list The list to which points should be added.
 	 * @param radStart Start in radians of bend.
 	 * @param radEnd End in radians of bend.
-	 * @paramzxCoord Z-coordinate of all added points.
+	 * @param zCoord Z-coordinate of all added points.
 	 * @param xOffset Offset for all generated X-coordinates.
 	 * @param yOffset Offset for all generated Y-coordinates.
 	 * @param rScale Scale factor for the radius of the bend.

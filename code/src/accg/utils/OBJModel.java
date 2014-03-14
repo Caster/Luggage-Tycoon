@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 
 import javax.vecmath.Vector3f;
 
-
 /**
  * A loader for OBJ (Wavefront) models.
  */
@@ -23,6 +22,10 @@ public class OBJModel {
 	private ArrayList<ArrayList<Vector3f>> facesVertices;
 	private ArrayList<ArrayList<Vector3f>> facesNormals;
 	
+	/**
+	 * Creates a new model by reading the given file.
+	 * @param file The file to read from.
+	 */
 	public OBJModel(File file) {
 		
 		this.vertices = new ArrayList<>();
@@ -89,7 +92,10 @@ public class OBJModel {
 			}
 		}
 	}
-
+	
+	/**
+	 * Draws the model.
+	 */
 	public void draw() {
 		glBegin(GL_TRIANGLES);
 		{
