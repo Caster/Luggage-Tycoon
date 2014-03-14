@@ -14,12 +14,12 @@ public class NormalModeMenuBar extends MenuBar {
 		add(new MenuBarItem("Open", s.textures.iconOpen));
 		add(new MenuBarItem("Save", s.textures.iconSave));
 		add(new MenuBarItem("Settings", s.textures.iconConfigure));
+		
 		MenuBarItem quitItem = new MenuBarItem("Quit", s.textures.iconExit);
 		quitItem.addListener(new Listener() {
 			
 			@Override
 			public boolean event(Event e) {
-				System.err.println("HOI! event type = " + e.getClass().getSimpleName());
 				if (e instanceof MouseClickEvent) {
 					System.err.println("QUIT!");
 				}
@@ -27,6 +27,7 @@ public class NormalModeMenuBar extends MenuBar {
 			}
 		});
 		add(quitItem);
+		
 		add(new SliderMenuBarItem("Test!", s.textures.iconExit, 0, 10, 5, 1));
 	}
 }
