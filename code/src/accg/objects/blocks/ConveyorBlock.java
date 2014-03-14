@@ -30,7 +30,7 @@ public abstract class ConveyorBlock extends Block {
 	 */
 	public enum ConveyorBlockType {
 		ASCENDING, BEND_LEFT, BEND_RIGHT, DESCENDING, STRAIGHT
-	};
+	}
 	
 	/**
 	 * Creates a new ConveyorBlock on the specified position.

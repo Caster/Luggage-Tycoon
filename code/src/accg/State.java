@@ -26,7 +26,7 @@ public class State {
 		 * In this mode, luggage movement is simulated over the blocks.
 		 */
 		SIMULATION_MODE;
-	};
+	}
 	
 	/**
 	 * Mode in which the program can be.
