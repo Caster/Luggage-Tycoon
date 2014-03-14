@@ -194,6 +194,7 @@ public class ACCGProgram {
 		// initialize stuff here
 		s.simulation = new Simulation(s);
 		s.world = new World(s);
+		s.world.initialiseSomeBlocks();
 		s.floor = new Floor();
 		s.floor.setBackgroundColor(BACKGROUND_COLOR);
 		s.textures = new Textures();
@@ -476,7 +477,7 @@ public class ACCGProgram {
 							if (s.shadowBlock.isVisible() &&
 									!s.shadowBlock.isAlerted() &&
 									!s.shadowBlock.isTransparent()) {
-								s.world.addBlock(
+								s.world.addBlock(s,
 										(ConveyorBlock) s.shadowBlock.clone());
 							}
 							
