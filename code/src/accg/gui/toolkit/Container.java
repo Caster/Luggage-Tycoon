@@ -40,6 +40,22 @@ public abstract class Container extends Component {
 	public abstract Collection<? extends Component> getChildren();
 	
 	/**
+	 * Whether this container is <i>transparent</i>.
+	 * 
+	 * When a container is non-transparent, events will not be passed on to
+	 * parent containers, also if no child handled the event. (In that case,
+	 * only the listeners of this container itself are notified.)
+	 * 
+	 * When a container is transparent, events will be passed on to the parent
+	 * if no child handled them. In that case, the listeners of this container
+	 * will not be notified.
+	 * 
+	 * @return Whether the container is transparent (<code>true</code>) or
+	 * not (<code>false</code>).
+	 */
+	protected abstract boolean isTransparent();
+	
+	/**
 	 * Flags that the outline needs to be recalculated.
 	 */
 	public void needsLayout() {
@@ -65,7 +81,7 @@ public abstract class Container extends Component {
 	@Override
 	public boolean sendEvent(Event e) {
 		
-		boolean consumed = false;
+		boolean handled = false;
 		
 		for (Component c : getChildren()) {
 			boolean shouldRelay = true;
@@ -77,17 +93,21 @@ public abstract class Container extends Component {
 				((MouseEvent) e).translate(-c.getX(), -c.getY());
 			}
 			if (shouldRelay) {
-				consumed = consumed || c.sendEvent(e);
+				handled = c.sendEvent(e) || handled;
 			}
 			if (e instanceof MouseEvent) {
 				((MouseEvent) e).translate(c.getX(), c.getY());
 			}
 		}
 		
-		if (consumed) {
-			return true;
+		// handle the event ourselves
+		if (!handled) {
+			super.sendEvent(e);
 		}
 		
-		return super.sendEvent(e);
+		if (isTransparent()) {
+			return handled;
+		}
+		return true;
 	}
 }

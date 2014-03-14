@@ -232,7 +232,8 @@ public abstract class Component {
 	 * Sends an event to all of the listeners attached to this component.
 	 * 
 	 * @param e The event to send.
-	 * @return Whether the event has been consumed.
+	 * @return Whether the event has been handled by this component or a child of
+	 * it.
 	 */
 	public boolean sendEvent(Event e) {
 		
@@ -246,13 +247,11 @@ public abstract class Component {
 		}
 		System.out.println(" ***");
 		
-		boolean consumed = false;
-		
 		for (Listener l : listeners) {
-			consumed = l.event(e) || consumed;
+			l.event(e);
 		}
 		
-		return consumed;
+		return true;
 	}
 	
 	public abstract String getComponentName();

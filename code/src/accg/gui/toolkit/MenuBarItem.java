@@ -248,7 +248,7 @@ public class MenuBarItem extends Component implements Listener {
 	}
 
 	@Override
-	public boolean event(Event event) {
+	public void event(Event event) {
 		if (event instanceof MouseClickEvent) {
 			if (this.type == Type.CHECKABLE || this.type == Type.CHECKABLE_UNIQUE) {
 				this.checked = !this.checked;
@@ -257,7 +257,6 @@ public class MenuBarItem extends Component implements Listener {
 					((MenuBar) parent).uncheckOtherItems(this);
 				}
 			}
-			return true;
 		}
 		if (event instanceof MouseEnterEvent) {
 			this.hovered = true;
@@ -265,7 +264,6 @@ public class MenuBarItem extends Component implements Listener {
 		if (event instanceof MouseExitEvent) {
 			this.hovered = false;
 		}
-		return false;
 	}
 	
 	/**

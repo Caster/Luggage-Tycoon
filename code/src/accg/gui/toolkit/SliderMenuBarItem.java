@@ -62,20 +62,16 @@ public class SliderMenuBarItem extends MenuBarItem {
 		addListener(new Listener() {
 			
 			@Override
-			public boolean event(Event e) {
+			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
 					onClick(((MouseClickEvent) e).getX(), ((MouseClickEvent) e).getY());
-					return true;
 				}
 				if (e instanceof MouseDragEvent) {
 					onDrag(((MouseDragEvent) e).getX(), ((MouseDragEvent) e).getY());
-					return true;
 				}
 				if (e instanceof MouseScrollEvent) {
 					onScroll(((MouseScrollEvent) e).getdWheel());
-					return true;
 				}
-				return false;
 			}
 		});
 	}
@@ -126,6 +122,11 @@ public class SliderMenuBarItem extends MenuBarItem {
 			drawBar(outline, getPresentation(), barHeight, textBarDiff, SLIDER_BAR_EDGE_WIDTH,
 					(val - min) / (max - min));
 		}
+	}
+	
+	@Override
+	public String getComponentName() {
+		return "SliderMenuBarItem";
 	}
 	
 	protected void onClick(int x, int y) {

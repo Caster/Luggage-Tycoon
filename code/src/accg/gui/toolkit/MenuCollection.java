@@ -140,6 +140,8 @@ public class MenuCollection extends Container {
 	@Override
 	public void layout() {
 		
+		visibleMenu.layout();
+		
 		// first compute and set the width and height of the menu
 		if (visibleMenu.getPreferredWidth() < getWidth() - 2 * MARGIN) {
 			visibleMenu.setWidth(visibleMenu.getPreferredWidth());
@@ -206,6 +208,11 @@ public class MenuCollection extends Container {
 	@Override
 	public void add(Component toAdd) {
 		throw new UnsupportedOperationException("Adding to a MenuCollection is not supported; see addMenuBar() instead");
+	}
+
+	@Override
+	protected boolean isTransparent() {
+		return true;
 	}
 	
 	/**

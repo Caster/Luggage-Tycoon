@@ -434,6 +434,11 @@ public class MenuBar extends Container {
 		items.add(item);
 		item.setParent(this);
 	}
+
+	@Override
+	protected boolean isTransparent() {
+		return false;
+	}
 	
 	/**
 	 * Sets the orientation of this menu bar.

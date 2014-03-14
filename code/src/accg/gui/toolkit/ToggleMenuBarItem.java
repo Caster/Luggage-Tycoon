@@ -48,6 +48,11 @@ public class ToggleMenuBarItem extends MenuBarItem {
 	}
 	
 	@Override
+	public String getComponentName() {
+		return "ToggleMenuBarItem";
+	}
+	
+	@Override
 	public int getPreferredWidth(Font renderFont, Position position,
 			Presentation presentation) {
 		// in case we have text next to the icon and position top or bottom,

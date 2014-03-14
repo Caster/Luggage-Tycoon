@@ -187,6 +187,7 @@ public class ACCGProgram {
 		gui.updateItems();
 		gui.setWidth(displayWidth);
 		gui.setHeight(displayHeight);
+		s.gui = gui;
 		
 		// enable some GL stuff
 		glEnable(GL_LIGHTING);
@@ -243,7 +244,7 @@ public class ACCGProgram {
 			// handle events
 			handleKeyEvents(s);
 			handlePressedKeys();
-			//handleScrollEvents(); // TODO
+			handleScrollEvents();
 			handleMouseEvents(s);
 
 			// draw the scene
@@ -376,23 +377,17 @@ public class ACCGProgram {
 		}
 	}
 	
-	// volgende methoden uitgecommentarieerd! TODO porten naar nieuwe API
-	
 	/**
 	 * Handles scrollwheel events from the mouse.
 	 */
-	/*public void handleScrollEvents() {
+	public void handleScrollEvents() {
 		int dWheel = Mouse.getDWheel();
 		if (dWheel == 0) {
 			return;
 		}
 		
 		// first see if the menu wants to handle this
-		boolean handledByMenu = false;
-		for (int i = 0; i < menuBars.length; i++) {
-			handledByMenu = (menuBars[i].handleMouseWheelEvent(
-					Mouse.getX(), Mouse.getY(), dWheel) || handledByMenu);
-		}
+		boolean handledByMenu = gui.handleMouseScrollEvent(dWheel);
 		
 		// otherwise, let the camera handle it
 		if (!handledByMenu) {
@@ -402,7 +397,7 @@ public class ACCGProgram {
 				camera.moveDown();
 			}
 		}
-	}*/
+	}
 	
 	/**
 	 * Handles mouse move events and such.
@@ -466,8 +461,7 @@ public class ACCGProgram {
 				// handle general mouse move
 				if (!handledMouseMove) {
 					// see if a menubar is hovered
-					handledMouseMoveByMenu = false; // TODO hier iets op vinden!!!
-					gui.handleMouseMoveEvent(Mouse.getX(), Mouse.getY());
+					handledMouseMoveByMenu = gui.handleMouseMoveEvent(Mouse.getX(), Mouse.getY());
 					
 					// in building mode, we might have to draw an object where the mouse
 					// hovers (that is, calculate intersection of a projected ray from the
@@ -504,6 +498,8 @@ public class ACCGProgram {
 			}
 		}
 	}
+	
+	// volgende methoden uitgecommentarieerd! TODO porten naar nieuwe API
 	
 	/**
 	 * Create some menu items and add those to the given menu bar.

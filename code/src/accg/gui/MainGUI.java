@@ -71,8 +71,8 @@ public class MainGUI extends MenuCollection {
 	 * @param x The x-coordinate.
 	 * @param y The y-coordinate.
 	 */
-	public void handleMouseClickEvent(int x, int y) {
-		sendEvent(new MouseClickEvent(x, getHeight() - y));
+	public boolean handleMouseClickEvent(int x, int y) {
+		return sendEvent(new MouseClickEvent(x, getHeight() - y));
 	}
 	
 	/**
@@ -81,8 +81,8 @@ public class MainGUI extends MenuCollection {
 	 * @param x The x-coordinate.
 	 * @param y The y-coordinate.
 	 */
-	public void handleMouseDragEvent(int x, int y) {
-		sendEvent(new MouseDragEvent(x, getHeight() - y));
+	public boolean handleMouseDragEvent(int x, int y) {
+		return sendEvent(new MouseDragEvent(x, getHeight() - y));
 	}
 	
 	/**
@@ -91,8 +91,8 @@ public class MainGUI extends MenuCollection {
 	 * @param x The x-coordinate.
 	 * @param y The y-coordinate.
 	 */
-	public void handleMouseMoveEvent(int x, int y) {
-		sendEvent(new MouseMoveEvent(x, getHeight() - y));
+	public boolean handleMouseMoveEvent(int x, int y) {
+		return sendEvent(new MouseMoveEvent(x, getHeight() - y));
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public class MainGUI extends MenuCollection {
 	 * 
 	 * @param dWheel The amount of scroll steps.
 	 */
-	public void handleMouseScrollEvent(int dWheel) {
-		sendEvent(new MouseScrollEvent(dWheel));
+	public boolean handleMouseScrollEvent(int dWheel) {
+		return sendEvent(new MouseScrollEvent(dWheel));
 	}
 }

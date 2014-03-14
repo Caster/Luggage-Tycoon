@@ -2,6 +2,7 @@ package accg;
 
 import org.newdawn.slick.Font;
 
+import accg.gui.MainGUI;
 import accg.objects.Floor;
 import accg.objects.ShadowBlock;
 import accg.objects.World;
@@ -133,4 +134,9 @@ public class State {
 	 * hovers the scene (using ray projection/intersection et cetera).
 	 */
 	public ShadowBlock shadowBlock;
+	
+	/**
+	 * The GUI object.
+	 */
+	public MainGUI gui;
 }

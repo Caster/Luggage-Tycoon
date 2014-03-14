@@ -1,6 +1,7 @@
 package accg.gui;
 
 import accg.State;
+import accg.State.ProgramMode;
 import accg.gui.toolkit.*;
 import accg.gui.toolkit.event.MouseClickEvent;
 
@@ -8,9 +9,22 @@ import accg.gui.toolkit.event.MouseClickEvent;
  * Menu bar for the normal mode.
  */
 public class NormalModeMenuBar extends MenuBar {
-	public NormalModeMenuBar(State s) {
+	public NormalModeMenuBar(final State s) {
 		add(new MenuBarItem("Simulate", s.textures.iconStart));
-		add(new MenuBarItem("Build", s.textures.iconZoomIn));
+		
+		MenuBarItem buildItem = new MenuBarItem("Build", s.textures.iconZoomIn);
+		buildItem.addListener(new Listener() {
+			
+			@Override
+			public void event(Event e) {
+				if (e instanceof MouseClickEvent) {
+					s.programMode = ProgramMode.BUILDING_MODE;
+					s.gui.updateItems();
+				}
+			}
+		});
+		add(buildItem);
+		
 		add(new MenuBarItem("Open", s.textures.iconOpen));
 		add(new MenuBarItem("Save", s.textures.iconSave));
 		add(new MenuBarItem("Settings", s.textures.iconConfigure));
@@ -19,15 +33,12 @@ public class NormalModeMenuBar extends MenuBar {
 		quitItem.addListener(new Listener() {
 			
 			@Override
-			public boolean event(Event e) {
+			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
 					System.err.println("QUIT!");
 				}
-				return true;
 			}
 		});
 		add(quitItem);
-		
-		add(new SliderMenuBarItem("Test!", s.textures.iconExit, 0, 10, 5, 1));
 	}
 }
