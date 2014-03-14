@@ -132,10 +132,15 @@ public class BlockCollection extends DrawableObject {
 	 * @param z The z-coordinate (divided by 4).
 	 * @return The block on coordinate (x, y, z / 4), or <code>null</code> if
 	 * there is no block there.
-	 * @throws ArrayIndexOutOfBoundsException If {@link #inBounds(int, int, int)}
+	 * @throws IllegalArgumentException If {@link #inBounds(int, int, int)}
 	 * returns <code>false</code> for this coordinate.
 	 */
 	public Block getBlockFuzzy(int x, int y, int z) {
+		
+		if (!inBounds(x, y, z)) {
+			throw new IllegalArgumentException("Block outside bounds");
+		}
+		
 		for (int z2 = z; z2 >= 0; z2--) {
 			Block block = blocks[x][y][z2];
 			
