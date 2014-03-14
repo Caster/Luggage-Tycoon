@@ -10,7 +10,19 @@ import accg.gui.toolkit.event.MouseClickEvent;
  */
 public class NormalModeMenuBar extends MenuBar {
 	public NormalModeMenuBar(final State s) {
-		add(new MenuBarItem("Simulate", s.textures.iconStart));
+
+		MenuBarItem simulateItem = new MenuBarItem("Simulate", s.textures.iconStart);
+		simulateItem.addListener(new Listener() {
+			
+			@Override
+			public void event(Event e) {
+				if (e instanceof MouseClickEvent) {
+					s.programMode = ProgramMode.SIMULATION_MODE;
+					s.gui.updateItems();
+				}
+			}
+		});
+		add(simulateItem);
 		
 		MenuBarItem buildItem = new MenuBarItem("Build", s.textures.iconZoomIn);
 		buildItem.addListener(new Listener() {
