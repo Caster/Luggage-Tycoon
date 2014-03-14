@@ -161,7 +161,7 @@ public class BlockCollection extends DrawableObject {
 	 */
 	public boolean checkBlockFuzzy(int x, int y, int z, int height) {
 		for (int z2 = z + height - 1; z2 >= z; z2--) {
-			if (blocks[x][y][z2] != null) {
+			if (!inBounds(x, y, z2) || blocks[x][y][z2] != null) {
 				return false;
 			}
 		}
