@@ -6,7 +6,8 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 
 import accg.gui.toolkit.event.MouseClickEvent;
-import accg.gui.toolkit.event.MouseMoveEvent;
+import accg.gui.toolkit.event.MouseEnterEvent;
+import accg.gui.toolkit.event.MouseExitEvent;
 
 /**
  * A MenuBarItem can be placed inside a {@link MenuBar} and has text and an
@@ -132,6 +133,13 @@ public class MenuBarItem extends Component implements Listener {
 	@Override
 	public void draw() {
 		
+		if (hovered && hoverAmount < 10) {
+			hoverAmount++;
+		}
+		if (!hovered && hoverAmount > 0) {
+			hoverAmount--;
+		}
+		
 		// apply the transformation
 		glPushMatrix();
 		glTranslatef(outline.getX(), outline.getY(), 0);
@@ -139,7 +147,11 @@ public class MenuBarItem extends Component implements Listener {
 		// render hovered background, if needed
 		if ((this.hovered && this.drawHoveredBackground) ||
 				(this.checked && this.drawCheckedBackground)) {
-			glColor4d(1, 1, 1, 1);
+			if (this.checked) {
+				glColor4d(1, 1, 1, 1);
+			} else {
+				glColor4d(1, 1, 1, hoverAmount / 10f);
+			}
 			glBegin(GL_QUADS);
 			{
 				glVertex2d(0, outline.getHeight());
@@ -247,8 +259,11 @@ public class MenuBarItem extends Component implements Listener {
 			}
 			return true;
 		}
-		if (event instanceof MouseMoveEvent) {
+		if (event instanceof MouseEnterEvent) {
 			this.hovered = true;
+		}
+		if (event instanceof MouseExitEvent) {
+			this.hovered = false;
 		}
 		return false;
 	}
@@ -299,6 +314,8 @@ public class MenuBarItem extends Component implements Listener {
 	protected Type type;
 	/** Indicates if this menu item is being hovered by the mouse. */
 	protected boolean hovered;
+	/** In [0, 10); used for the hover animation. */
+	protected int hoverAmount;
 	/** Indicates if this menu item is checked. */
 	protected boolean checked;
 	
