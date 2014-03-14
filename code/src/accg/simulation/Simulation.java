@@ -164,6 +164,7 @@ public class Simulation {
 	
 	/**
 	 * Delete any objects from the state that were added by the simulation.
+	 * @param s The state of the program.
 	 */
 	public void clearObjects(State s) {
 		s.world.luggage.clear();

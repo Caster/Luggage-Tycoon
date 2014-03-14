@@ -137,11 +137,20 @@ public class ACCGProgram {
 		mouseViewVector = new Vector3f();
 	}
 	
+	/**
+	 * The main method of the application.
+	 * @param args The command-line arguments (ignored).
+	 */
 	public static void main(String[] args) {
 		ACCGProgram p = new ACCGProgram();
 		p.start();
 	}
 	
+	/**
+	 * Starts and initializes the program.
+	 * 
+	 * This method contains the main rendering loop.
+	 */
 	public void start() {
 		
 		windowedMode = new DisplayMode(1024, 576);

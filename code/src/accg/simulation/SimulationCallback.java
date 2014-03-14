@@ -7,6 +7,10 @@ import com.bulletphysics.ContactProcessedCallback;
 import com.bulletphysics.collision.narrowphase.ManifoldPoint;
 import com.bulletphysics.dynamics.RigidBody;
 
+/**
+ * Representation of a callback that is fired when there is a new contact.
+ * The callback ensures that luggage that touches the ground is deleted.
+ */
 public class SimulationCallback extends ContactProcessedCallback {
 
 	/**

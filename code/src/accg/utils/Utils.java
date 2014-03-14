@@ -23,7 +23,7 @@ public class Utils {
 	 * 
 	 * @param start Position to start.
 	 * @param end Position to end.
-	 * @return
+	 * @return A list of the cells on the line.
 	 */
 	public static ArrayList<Vector3f> bresenham3D(Vector3f start, Vector3f end) {
 		ArrayList<Vector3f> result = new ArrayList<>();

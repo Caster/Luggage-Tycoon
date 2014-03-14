@@ -8,6 +8,9 @@ import java.awt.Color;
 import accg.State;
 import accg.State.ProgramMode;
 
+/**
+ * The floor of the building where the conveyor block system is built.
+ */
 public class Floor extends DrawableObject {
 	
 	/**

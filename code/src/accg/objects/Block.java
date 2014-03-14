@@ -64,6 +64,9 @@ public abstract class Block extends DrawableObject {
 		 */
 		DOWN(180);
 		
+		/**
+		 * The rotation angle that this {@link Orientation} represents.
+		 */
 		public double angle;
 		
 		Orientation(double angle) {

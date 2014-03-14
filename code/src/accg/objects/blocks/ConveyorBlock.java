@@ -39,6 +39,7 @@ public abstract class ConveyorBlock extends Block {
 	 * @param y The y-coordinate.
 	 * @param z The z-coordinate.
 	 * @param orientation The orientation of this block.
+	 * @param type The type of the block.
 	 */
 	public ConveyorBlock(int x, int y, int z, Orientation orientation,
 			ConveyorBlockType type) {
@@ -202,7 +203,7 @@ public abstract class ConveyorBlock extends Block {
 	 * @param list The list to which points should be added.
 	 * @param radStart Start in radians of bend.
 	 * @param radEnd End in radians of bend.
-	 * @paramzxCoord Z-coordinate of all added points.
+	 * @param zCoord Z-coordinate of all added points.
 	 * @param xOffset Offset for all generated X-coordinates.
 	 * @param yOffset Offset for all generated Y-coordinates.
 	 * @param rScale Scale factor for the radius of the bend.

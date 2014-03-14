@@ -39,7 +39,9 @@ public class BlockCollection extends DrawableObject {
 	/**
 	 * Creates a new {@link BlockCollection} of the given size.
 	 * 
-	 * @param size The size, in number of blocks.
+	 * @param sizeX The size in the x-direction.
+	 * @param sizeY The size in the y-direction.
+	 * @param sizeZ The size in the z-direction.
 	 */
 	public BlockCollection(int sizeX, int sizeY, int sizeZ) {
 		this.blocks = new Block[sizeX][sizeY][sizeZ];

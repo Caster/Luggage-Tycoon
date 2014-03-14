@@ -3,6 +3,9 @@ package accg.objects;
 import static org.lwjgl.opengl.GL11.*;
 import accg.State;
 
+/**
+ * The walls of the building.
+ */
 public class Walls extends DrawableObject {
 
 	@Override
