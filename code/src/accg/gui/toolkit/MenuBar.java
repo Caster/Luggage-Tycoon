@@ -196,22 +196,6 @@ public class MenuBar extends Container {
 	@Override
 	public void draw() {
 		
-		// should we draw in the first place? TODO is this a task for Component?
-		if (!this.visible || items.size() == 0) {
-			return;
-		}
-		
-		// if needed, compute layout
-		layoutIfNeeded();
-		
-		// apply the transformation
-		glPushMatrix();
-		glTranslatef(outline.getX(), outline.getY(), 0);
-		
-		// enable transparency
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		
 		// draw menu bar background, which is semi-transparent
 		glColor4d(1, 1, 1, 0.5);
 		glBegin(GL_QUADS);
@@ -220,16 +204,7 @@ public class MenuBar extends Container {
 		}
 		glEnd();
 		
-		// draw all items
-		for (MenuBarItem item : items) {
-			item.draw();
-		}
-		
-		// disable transparency again
-		glDisable(GL_BLEND);
-		
-		// restore the transformation
-		glPopMatrix();
+		super.draw();
 	}
 
 	@Override

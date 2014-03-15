@@ -109,25 +109,6 @@ public class MenuCollection extends Container {
 	}
 	
 	@Override
-	public void draw() {
-		
-		// if needed, compute layout
-		layoutIfNeeded();
-		
-		// apply the transformation
-		glPushMatrix();
-		glTranslatef(outline.getX(), outline.getY(), 0);
-		
-		// actually draw the menu (TODO)
-		if (visibleMenu != null) {
-			visibleMenu.draw();
-		}
-		
-		// restore the transformation
-		glPopMatrix();
-	}
-	
-	@Override
 	public int getPreferredWidth() {
 		return visibleMenu.getPreferredWidth();
 	}

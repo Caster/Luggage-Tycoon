@@ -1,5 +1,7 @@
 package accg.gui.toolkit;
 
+import static org.lwjgl.opengl.GL11.*;
+
 import java.util.Collection;
 
 import accg.gui.toolkit.event.MouseEvent;
@@ -29,6 +31,26 @@ public abstract class Container extends Component {
 	 * Computes and sets the positions and sizes of the children.
 	 */
 	public abstract void layout();
+	
+	@Override
+	public void draw() {
+		
+		// if needed, compute layout
+		layoutIfNeeded();
+		
+		// actually draw the children
+		for (Component c : getChildren()) {
+			
+			// apply the transformation
+			glPushMatrix();
+			glTranslatef(c.getOutline().getX(), c.getOutline().getY(), 0);
+			
+			c.draw();
+			
+			// restore the transformation
+			glPopMatrix();
+		}
+	}
 	
 	/**
 	 * Returns a list of all children.

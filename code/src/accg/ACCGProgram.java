@@ -281,7 +281,9 @@ public class ACCGProgram {
 			// draw the menu bars
 			GUIUtils.make2D();
 			//gui.outputDebug();
+			glEnable(GL_BLEND);
 			gui.draw();
+			glDisable(GL_BLEND);
 			GUIUtils.make3D();
 			
 			// check for errors

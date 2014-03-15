@@ -140,10 +140,6 @@ public class MenuBarItem extends Component implements Listener {
 			hoverAmount--;
 		}
 		
-		// apply the transformation
-		glPushMatrix();
-		glTranslatef(outline.getX(), outline.getY(), 0);
-		
 		// render hovered background, if needed
 		if ((this.hovered && this.drawHoveredBackground) ||
 				(this.checked && this.drawCheckedBackground)) {
@@ -216,9 +212,6 @@ public class MenuBarItem extends Component implements Listener {
 			glEnd();
 			glDisable(GL_TEXTURE_2D);
 		}
-		
-		// restore the transformation
-		glPopMatrix();
 	}
 	
 	@Override
