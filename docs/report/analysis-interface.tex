@@ -1,0 +1,22 @@
+We discussed in Section~\ref{subsubsec:design-goals-editor} what we expect from the interface of the program. Since we plan to implement our tool in Java, using a thin wrapper\footnote{LWJGL to be precise, see \url{http://lwjgl.org/}.} around OpenGL, we will have to use some kind of GUI toolkit, or write our own. We did a quick search and did not find any useful toolkits, so we will write our own (basic) GUI toolkit. This toolkit should be able to render components in OpenGL, using the 2D OpenGL capabilities to render a GUI on top of the 3D scene. It should furthermore be easily extendable, flexible in the sense that placements of menu bars should be configurable for example and finally it must be capable of handling input events quickly and without complex API. Since we want everything to look good, the toolkit should support buttons (in menu bars) with icons and a configurable font. Preferably, the toolkit also supports animations. For example, when a button is hovered, its background colour may change. This change might be animated, simply because it looks good.
+
+If we add tooltips to our menu items and buttons, the toolkit must be of course able to render those. Preferably, tooltips are shown and hidden with a fading animation, but this is not a hard requirement. In case the toolkit does support animations at all, it would however be good if it does so in a as-generic-as-possible way, so that the functionality can be used for different purposes (hover animations, tooltip animations, \ldots).
+
+\subsubsection{Switching between program modes}
+\label{subsubsec:switch-program-modes}
+There are multiple modes in which the program can be. In Section~\ref{sec:introduction} the building mode was discussed shortly. There are two other modes in which the program can be. We list those modes below. The interface should provide a way to switch between those modes in an intuitve way, for example via a button or menu item. The interface may also provide shortcuts to switch.
+\begin{longtabu} to \linewidth {lX<{\strut}}
+  \toprule
+  \textit{Program mode} & \textit{Description} \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endfoot
+  Normal mode & The program starts up in this mode. The user can do the following: switching to another mode, control the camera freely to view the scene from any angle he/she likes, saving his/her conveyor belt system, loading a system or changing settings.  \\
+  Building mode & In building mode, the user can place new conveyor blocks in the scene. See Section~\ref{subsubsec:interface-placing-blocks} for details. It should also be possible to go to the simulation mode to test the conveyor belt system. \\
+  Simulation mode & In the simulation mode, luggage is introduced to the conveyor belt system. The user can control the camera freely to see how his/her system behaves. It is possibly to stop the simulation, returning to the building mode. It may be possible to pause/continue the simulation. \\
+\end{longtabu}
+
+\subsubsection{Interface for placing blocks}
+\label{subsubsec:interface-placing-blocks}
+In the building mode (see Section~\ref{subsubsec:switch-program-modes}) the user should be presented with an intuitive interface to place new blocks quickly. It should be possible to click an existing block or place a new block by clicking the floor and then optionally dragging the block upwards to the desired height. In both cases, after that a special interface should be shown which the user can use to build a block from the lastly placed (or selected) block. The camera should look in the direction in which the user is building and this direction should be indicated by an arrow. It should be possible to select the next block that will be placed or go back to a free camera mode to place a new block or select another one. The special interface that is shown when building blocks should present the user with all different types of block, to change which block is being built next. It should also make it possible for the user to delete the lastly built (or selected) block. Finally, an option to change the direction of the next block should be presented (rotate left and rotate right). Of course, the direction in which is being built must change automatically in case a curved conveyor belt is being built.

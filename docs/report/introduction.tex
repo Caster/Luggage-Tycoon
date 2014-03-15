@@ -1,1 +1,15 @@
-\textit{In this section, we will describe the goal of the project.}
+In this report, we describe the program we created to simulate a system of conveyor belts that transport luggage items.
+
+The system could potentially be used as a tool for modelling for example a luggage system at an airport. However, we have decided to make our application more like a game, since a real simulation system would be difficult to make and furthermore require specialised domain knowledge about the system to simulate. This means that we provide conveyor belts that have a given friction with the luggage and all luggage items have the same size, weight and shape. In a proper simulation program, this should probably be somehow configurable by the user, but we consider that outside the scope of this project. The main focus in our program lies on user interaction and good visualisation. Hence, the program should be easy to use, it should not be hard to get to know the program and it should look good.
+
+Before we started working on the project, we created a mock-up, as shown in Figure~\ref{fig:mockup}. Note that the arrows on the conveyor belts are purely there to indicate the direction in this sketchy figure, we intended to not show arrows from the start. Instead, we animate the conveyor belts and make it apparent to the user in that way in which direction a conveyor belt runs. Only when the user is placing new conveyor belts, in the so-called \emph{building mode}, we indicate with an arrow in which direction the user is building. The building mode (and the other modes in which the program can be) are described in more detail in Section~\ref{subsubsec:switch-program-modes}. The mock-up was part of a process in which we determined how the program should behave and what it should be able to do. The requirements that we set are described in the following section.
+
+\begin{figure}[b!]
+  \begin{center}
+    \includegraphics{mockup}
+    \caption{A mock-up of the program we wanted to create.}
+    \label{fig:mockup}
+  \end{center}
+\end{figure}
+
+\input{description}

@@ -1,0 +1,29 @@
+In this section, we divide the problem into subproblems, and analyse them separately.
+
+We can divide the requirements into the two following subproblems.
+\begin{itemize}
+ \item \emph{The editor.} We need to show the conveyor belt system, and enable the user to edit it by adding new conveyor belts and removing them. This includes a GUI for the user to for example choose blocks.
+ \item \emph{The simulator.} We need to simulate and show movement of luggage over the conveyor belts.
+\end{itemize}
+We can subdivide the editor again in several parts.
+\begin{itemize}
+ \item \emph{Viewing conveyor belts.} We need to show the conveyor belt system to the user in 3D.
+ \item \emph{The interface.} We need to have an interface with which the user can choose different kinds of blocks, rotate them, and so on.
+ \item \emph{Placing blocks.} Finally, the user needs to have a way to indicate where blocks should be placed or removed; therefore, we need to be able to convert 2D mouse clicks to the corresponding 3D location.
+\end{itemize}
+
+\subsection{Viewing}
+\label{subsec:analysis-viewing}
+\input{analysis-viewing}
+
+\subsection{Interface}
+\label{subsec:analysis-interface}
+\input{analysis-interface}
+
+\subsection{Placing}
+\label{subsec:analysis-placing}
+\input{analysis-placement}
+
+\subsection{Simulation}
+\label{subsec:analysis-simulation}
+\input{analysis-simulation}

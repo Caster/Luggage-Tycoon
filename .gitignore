@@ -9,6 +9,7 @@ docs/presentation/beamerthemetue2008.sty
 docs/presentation/logos/
 docs/presentation/tuelogo.eps
 docs/presentation/tuestyle2008.sty
+.directory
 *.aux
 *.log
 *.out
@@ -18,6 +19,8 @@ docs/presentation/tuestyle2008.sty
 *.snm
 *.toc
 *.vrb
+*.bbl
+*.blg
 *.kilepr
 *.backup
 *.xcf

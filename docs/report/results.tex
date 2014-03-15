@@ -1,1 +1,41 @@
-\textit{In this section, we will present the resulting program. To this end we will likely include some screenshots. We will also discuss if we reached our goal and to what end.}
+\textit{The program is not done yet; when it is, we will expand this section.}
+
+In Figure~\ref{fig:simulation}, a screenshot is shown of the program, while a simulation is running. The main menu bar of the interface is also visible in that figure. \textit{Note: this interface will be changed for the final version still, as will this figure.} Note that the shadows are drawn using a generic OpenGL approach, using a particular transformation and drawing the scene twice. This means that the luggage casts a shadow in real-time as well. There are no shadows on other objects (like the wall for example) however, unfortunately. In Figure~\ref{fig:drawing-together} and Figure~\ref{fig:shadow-block} some other aspects of the program are illustrated.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\linewidth]{simulation}
+    \caption{Screenshot of the program, showing a running simulation.}
+    \label{fig:simulation}
+  \end{center}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.7\linewidth]{drawing-together}
+    \caption{Adjacent conveyor belts are drawn together as one large conveyor belt.}
+    \label{fig:drawing-together}
+  \end{center}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[height=0.3\linewidth]{shadow-block-1}
+    \quad
+    \includegraphics[height=0.3\linewidth]{shadow-block-2}
+    \caption{Adding a new block. \textit{Left:} The block that is going to be added is shown as a ``ghost block'' under the cursor. \textit{Right:} If it is not possible to place the block on the indicated location, the ghost block becomes red to show this.}
+    \label{fig:shadow-block}
+  \end{center}
+\end{figure}
+
+\subsection{To be done}
+There are quite some tasks that still need to be done at the moment.
+\begin{itemize}
+  \item Drawing more details for the conveyor belts (for example the axes are missing at the moment).
+  \item Drawing arrows to show the direction of conveyor belts in the building mode. More general, giving more clues to the user what to do (arrows, et cetera).
+  \item Being able to choose an existing block to start building from (right now, the user needs to indicate the height for every new block by dragging, which is not very efficient).
+  \item Improvements to the graphical interface.
+  \item Adding scanner blocks.
+  \item Making the program more like a game, for example by adding levels and a scoring system.
+  \item Being able to open and save conveyor belt systems.
+\end{itemize}

@@ -14,10 +14,11 @@
 \linespread{1.05}
 
 \newcommand*{\accgtitle}{Building a conveyor belt system editor \& simulator\xspace}
-\newcommand*{\accgversion}{Draft, v1\xspace}
+\newcommand*{\accgversion}{Draft, v2\xspace}
 
 \usepackage[hidelinks]{hyperref}
 \hypersetup{pdftitle={2IV05: \accgtitle}, pdfauthor={Thom Castermans \& Willem Sonke}}
+\usepackage[format=hang]{caption}
 
 \usepackage{graphicx}
 \graphicspath{ {img/} }
@@ -27,6 +28,9 @@
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 
 \usepackage{changepage}
+
+\usepackage[nottoc,notlof,notlot]{tocbibind} 
+\tocotherhead{subsection}
 
 \begin{document}
 
@@ -39,17 +43,29 @@
 \label{sec:introduction}
 \input{introduction}
 
-\section{Program description}
-\label{sec:description}
-\input{description}
+\section{Analysis}
+\label{sec:analysis}
+\input{analysis}
 
-\section{Challenges \& solutions}
-\label{sec:challenges}
-\input{challenges}
+\section{Choices}
+\label{sec:choices}
+\input{choices}
 
-\section{Result \& discussion}
+\section{Literature}
+\label{sec:literature}
+\input{literature}
+
+%\section{Challenges \& solutions} % [ws] TODO waar moet dit heen?
+%\label{sec:challenges}
+%\input{challenges}
+
+\section{Results \& evaluation}
 \label{sec:results}
 \input{results}
+
+\section{Conclusion}
+\label{sec:conclusion}
+\input{conclusion}
 
 \section{Future work}
 \label{sec:future-work}
