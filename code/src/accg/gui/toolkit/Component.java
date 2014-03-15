@@ -198,7 +198,7 @@ public abstract class Component {
 	 * Returns whether this component is visible.
 	 * @return The visibility.
 	 */
-	public boolean getVisible() {
+	public boolean isVisible() {
 		return visible;
 	}
 	

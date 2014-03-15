@@ -84,6 +84,12 @@ public abstract class Container extends Component {
 		boolean handled = false;
 		
 		for (Component c : getChildren()) {
+			
+			// do not relay events to non-visible children
+			if (!c.isVisible()) {
+				continue;
+			}
+			
 			boolean shouldRelay = true;
 			if (e instanceof MouseEvent) {
 				// only relay mouse events if the mouse is over the object
