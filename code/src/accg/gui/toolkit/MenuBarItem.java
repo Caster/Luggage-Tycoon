@@ -141,7 +141,7 @@ public class MenuBarItem extends Component implements Listener {
 		}
 		
 		// render hovered background, if needed
-		if ((this.hovered && this.drawHoveredBackground) ||
+		if ((hoverAmount > 0 && this.drawHoveredBackground) ||
 				(this.checked && this.drawCheckedBackground)) {
 			if (this.checked) {
 				glColor4d(1, 1, 1, 1);
