@@ -72,11 +72,6 @@ public class ACCGProgram {
 	private Point clickedPoint;
 	
 	/**
-	 * Preferences object. Used to store user preferences persistently.
-	 */
-	private Preferences prefs;
-	
-	/**
 	 * Buffer in which the model matrix of OpenGL can be stored.
 	 */
 	private FloatBuffer modelMatrix;
@@ -843,17 +838,17 @@ public class ACCGProgram {
 	 * @param s
 	 */
 	private void loadPreferences(State s) {
-		if (prefs == null) {
-			prefs = Preferences.userNodeForPackage(ACCGProgram.class);
+		if (s.prefs == null) {
+			s.prefs = Preferences.userNodeForPackage(ACCGProgram.class);
 		}
 		
-		s.mouseSensitivityFactor = prefs.getFloat("mouse.sensitivity", 1.0f);
+		s.mouseSensitivityFactor = s.prefs.getFloat("mouse.sensitivity", 1.0f);
 		
-		int alignment = prefs.getInt("menu.alignment", DEF_MENU_ALIGNMENT);
+		int alignment = s.prefs.getInt("menu.alignment", DEF_MENU_ALIGNMENT);
 		//setMenuAlignments(MenuCollection.Alignment.values()[alignment]); TODO
-		int position = prefs.getInt("menu.position", DEF_MENU_POSITION);
+		int position = s.prefs.getInt("menu.position", DEF_MENU_POSITION);
 		//setMenuPositions(MenuCollection.Position.values()[position]);
-		int presentation = prefs.getInt("menu.presentation", DEF_MENU_PRESENTATION);
+		int presentation = s.prefs.getInt("menu.presentation", DEF_MENU_PRESENTATION);
 		//setMenuPresentations(MenuCollection.Presentation.values()[presentation]);
 	}
 	

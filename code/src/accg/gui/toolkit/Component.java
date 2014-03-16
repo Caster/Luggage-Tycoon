@@ -7,6 +7,7 @@ import org.lwjgl.util.Rectangle;
 import org.newdawn.slick.Font;
 
 import accg.gui.toolkit.event.MouseClickEvent;
+import accg.gui.toolkit.event.MouseExitEvent;
 import accg.gui.toolkit.event.MouseMoveEvent;
 
 /**
