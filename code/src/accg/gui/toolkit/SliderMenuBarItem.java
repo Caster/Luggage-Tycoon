@@ -8,9 +8,7 @@ import java.awt.Color;
 import org.lwjgl.util.Rectangle;
 import org.newdawn.slick.opengl.Texture;
 
-import accg.gui.toolkit.event.MouseClickEvent;
-import accg.gui.toolkit.event.MouseDragEvent;
-import accg.gui.toolkit.event.MouseScrollEvent;
+import accg.gui.toolkit.event.*;
 
 /**
  * A SliderMenuBarItem is a {@link MenuBarItem} that has a value which can
@@ -96,6 +94,30 @@ public class SliderMenuBarItem extends MenuBarItem {
 	public SliderMenuBarItem(String text, Texture icon, float min, float max,
 			float value) {
 		this(text, icon, min, max, value, (max - min) / 10f);
+	}
+	
+	/**
+	 * Changes the value of this slider menu item.
+	 * 
+	 * @param value The value.
+	 * @throws IllegalArgumentException If <code>value</code> is not between
+	 * <code>min</code> and <code>max</code>.
+	 */
+	public void setValue(float value) {
+		
+		if (value < min || value > max) {
+			throw new IllegalArgumentException("Cannot set slider to value out of range");
+		}
+		
+		this.val = value;
+	}
+	
+	/**
+	 * Returns the value of this slider menu item.
+	 * @return The value.
+	 */
+	public float getValue() {
+		return val;
 	}
 	
 	@Override
@@ -246,6 +268,8 @@ public class SliderMenuBarItem extends MenuBarItem {
 		this.val = this.min + ((x - this.barOutline.getX()) /
 				((float) this.barOutline.getWidth() - 2 * SLIDER_BAR_EDGE_WIDTH)) *
 				(this.max - this.min);
+		
+		sendEvent(new ValueChangeEvent());
 	}
 	
 	/** The minimal value of this slider. */
