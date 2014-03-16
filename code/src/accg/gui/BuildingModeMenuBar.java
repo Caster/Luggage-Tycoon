@@ -26,9 +26,9 @@ public class BuildingModeMenuBar extends MenuBar {
 		
 		add(new MenuBarItem("Rotate", s.textures.iconMouse));
 		add(new MenuBarItem("Straight", s.textures.iconExit));
-		add(new MenuBarItem("Up", s.textures.iconExit));
-		add(new MenuBarItem("Down", s.textures.iconExit));
-		add(new MenuBarItem("Left", s.textures.iconExit));
-		add(new MenuBarItem("Right", s.textures.iconExit));
+		add(new MenuBarItem("Up", s.textures.iconGoUp));
+		add(new MenuBarItem("Down", s.textures.iconGoDown));
+		add(new MenuBarItem("Left", s.textures.iconGoLeft));
+		add(new MenuBarItem("Right", s.textures.iconGoRight));
 	}
 }
