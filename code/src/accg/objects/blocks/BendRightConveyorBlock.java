@@ -22,14 +22,26 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 	public ArrayList<Vector3f> getTopCoordinatesLeft(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
-		addBendYZ(lefts, Math.PI, Math.PI / 2, -0.375f, -0.375f, 0.25f, 0.125);
-		
-		addBendXY(lefts, Math.PI, Math.PI / 2, 0.375f, 0.375f, -0.375f, 0.75);
-		
-		ArrayList<Vector3f> leftsAppend = new ArrayList<>();
-		addBendYZ(leftsAppend, Math.PI / 2, 0, -0.375f, 0.375f, 0.25f, 0.125);
-		Utils.rotatePoints(Orientation.RIGHT, leftsAppend);
-		lefts.addAll(leftsAppend);
+		if (neighbor1 != null && neighbor2 != null) {
+			addBendXY(lefts, Math.PI, Math.PI / 2, 0.375f, 0.5f, -0.5f, 0.875);
+		} else {
+			if (neighbor1 == null) {
+				addBendYZ(lefts, Math.PI, Math.PI / 2, -0.375f, -0.375f, 0.25f, 0.125);
+			} else {
+				lefts.add(new Vector3f(-0.375f, -0.5f, 0.375f));
+			}
+			
+			addBendXY(lefts, Math.PI, Math.PI / 2, 0.375f, 0.375f, -0.375f, 0.75);
+			
+			if (neighbor2 == null) {
+				ArrayList<Vector3f> leftsAppend = new ArrayList<>();
+				addBendYZ(leftsAppend, Math.PI / 2, 0, -0.375f, 0.375f, 0.25f, 0.125);
+				Utils.rotatePoints(Orientation.RIGHT, leftsAppend);
+				lefts.addAll(leftsAppend);
+			} else {
+				lefts.add(new Vector3f(0.5f, 0.375f, 0.375f));
+			}
+		}
 		
 		return lefts;
 	}
@@ -38,14 +50,26 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 	public ArrayList<Vector3f> getTopCoordinatesRight(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> rights = new ArrayList<>();
-		addBendYZ(rights, Math.PI, Math.PI / 2, 0.375f, -0.375f, 0.25f, 0.125);
-		
-		addBendXY(rights, Math.PI, Math.PI / 2, 0.375f, 0.375f, -0.375f, 0);
-		
-		ArrayList<Vector3f> rightsAppend = new ArrayList<>();
-		addBendYZ(rightsAppend, Math.PI / 2, 0, 0.375f, 0.375f, 0.25f, 0.125);
-		Utils.rotatePoints(Orientation.RIGHT, rightsAppend);
-		rights.addAll(rightsAppend);
+		if (neighbor1 != null && neighbor2 != null) {
+			addBendXY(rights, Math.PI, Math.PI / 2, 0.375f, 0.5f, -0.5f, 0.125);
+		} else {
+			if (neighbor1 == null) {
+				addBendYZ(rights, Math.PI, Math.PI / 2, 0.375f, -0.375f, 0.25f, 0.125);
+			} else {
+				rights.add(new Vector3f(0.375f, -0.5f, 0.375f));
+			}
+			
+			addBendXY(rights, Math.PI, Math.PI / 2, 0.375f, 0.375f, -0.375f, 0);
+			
+			if (neighbor2 == null) {
+				ArrayList<Vector3f> rightsAppend = new ArrayList<>();
+				addBendYZ(rightsAppend, Math.PI / 2, 0, 0.375f, 0.375f, 0.25f, 0.125);
+				Utils.rotatePoints(Orientation.RIGHT, rightsAppend);
+				rights.addAll(rightsAppend);
+			} else {
+				rights.add(new Vector3f(0.5f, -0.375f, 0.375f));
+			}
+		}
 		
 		return rights;
 	}
@@ -54,10 +78,23 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 	public ArrayList<Double> getTopTextureCoordinates(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Double> texs = new ArrayList<>();
-		double texCoord = addBendTextureCoordinates(texs, Math.PI, Math.PI / 2,
-				0.125, 0.0);
-		texCoord = addBendTextureCoordinates(texs, Math.PI, Math.PI / 2, 0.75, texCoord);
-		addBendTextureCoordinates(texs, Math.PI / 2, 0, 0.125, texCoord);
+		double texCoord = 0;
+		if (neighbor1 == null) {
+			texCoord = addBendTextureCoordinates(texs, Math.PI, Math.PI / 2,
+					0.125, 0.0);
+		} else if (neighbor2 == null) {
+			texs.add(0.0);
+			texCoord = 1;
+		}
+		
+		texCoord = addBendTextureCoordinates(texs, Math.PI, Math.PI / 2,
+				(neighbor1 != null && neighbor2 != null ? 0.75 : 0.625), texCoord);
+		
+		if (neighbor2 == null) {
+			addBendTextureCoordinates(texs, Math.PI / 2, 0, 0.125, texCoord);
+		} else if (neighbor1 == null) {
+			texs.add(texCoord + 1);
+		}
 		return texs;
 	}
 
@@ -65,12 +102,24 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 	public ArrayList<Vector3f> getBottomCoordinatesLeft(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
-		addBendYZ(lefts, Math.PI * 2, Math.PI * 3 / 2, -0.375f, 0.375f, 0.25f, 0.125);
-		Utils.rotatePoints(Orientation.RIGHT, lefts);
-		
-		addBendXY(lefts, Math.PI / 2, Math.PI, 0.125f, 0.375f, -0.375f, 0.75);
-		
-		addBendYZ(lefts, Math.PI * 3 / 2, Math.PI, -0.375f, -0.375f, 0.25f, 0.125);
+		if (neighbor1 != null && neighbor2 != null) {
+			addBendXY(lefts, Math.PI / 2, Math.PI, 0.125f, 0.5f, -0.5f, 0.875);
+		} else {
+			if (neighbor2 == null) {
+				addBendYZ(lefts, Math.PI * 2, Math.PI * 3 / 2, -0.375f, 0.375f, 0.25f, 0.125);
+				Utils.rotatePoints(Orientation.RIGHT, lefts);
+			} else {
+				lefts.add(new Vector3f(0.5f, 0.375f, 0.125f));
+			}
+			
+			addBendXY(lefts, Math.PI / 2, Math.PI, 0.125f, 0.375f, -0.375f, 0.75);
+			
+			if (neighbor1 == null) {
+				addBendYZ(lefts, Math.PI * 3 / 2, Math.PI, -0.375f, -0.375f, 0.25f, 0.125);
+			} else {
+				lefts.add(new Vector3f(-0.375f, -0.5f, 0.125f));
+			}
+		}
 		
 		return lefts;
 	}
@@ -79,12 +128,24 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 	public ArrayList<Vector3f> getBottomCoordinatesRight(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> rights = new ArrayList<>();
-		addBendYZ(rights, Math.PI * 2, Math.PI * 3 / 2, 0.375f, 0.375f, 0.25f, 0.125);
-		Utils.rotatePoints(Orientation.RIGHT, rights);
-		
-		addBendXY(rights, Math.PI / 2, Math.PI, 0.125f, 0.375f, -0.375f, 0);
-		
-		addBendYZ(rights, Math.PI * 3 / 2, Math.PI, 0.375f, -0.375f, 0.25f, 0.125);
+		if (neighbor1 != null && neighbor2 != null) {
+			addBendXY(rights, Math.PI / 2, Math.PI, 0.125f, 0.5f, -0.5f, 0.125);
+		} else {
+			if (neighbor2 == null) {
+				addBendYZ(rights, Math.PI * 2, Math.PI * 3 / 2, 0.375f, 0.375f, 0.25f, 0.125);
+				Utils.rotatePoints(Orientation.RIGHT, rights);
+			} else {
+				rights.add(new Vector3f(0.5f, -0.375f, 0.125f));
+			}
+			
+			addBendXY(rights, Math.PI / 2, Math.PI, 0.125f, 0.375f, -0.375f, 0);
+			
+			if (neighbor1 == null) {
+				addBendYZ(rights, Math.PI * 3 / 2, Math.PI, 0.375f, -0.375f, 0.25f, 0.125);
+			} else {
+				rights.add(new Vector3f(0.375f, -0.5f, 0.125f));
+			}
+		}
 		
 		return rights;
 	}
@@ -93,10 +154,21 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 	public ArrayList<Double> getBottomTextureCoordinates(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Double> texs = new ArrayList<>();
-		double texCoord = addBendTextureCoordinates(texs, Math.PI * 2,
-				Math.PI * 3 / 2, 0.125, 0.0);
-		texCoord = addBendTextureCoordinates(texs, Math.PI / 2, Math.PI, 0.625, texCoord);
-		addBendTextureCoordinates(texs, Math.PI * 3 / 2, Math.PI, 0.125, texCoord);
+		double texCoord = 0;
+		if (neighbor2 == null) {
+			texCoord = addBendTextureCoordinates(texs, Math.PI * 2,
+					Math.PI * 3 / 2, 0.125, 0.0);
+		} else if (neighbor1 == null) {
+			texs.add(0.0);
+			texCoord = 1;
+		}
+		
+		texCoord = addBendTextureCoordinates(texs, Math.PI / 2, Math.PI,
+				(neighbor1 != null && neighbor2 != null ? 0.875 : 0.75), texCoord);
+		
+		if (neighbor1 == null || neighbor2 == null) {
+			addBendTextureCoordinates(texs, Math.PI * 3 / 2, Math.PI, 0.125, texCoord);
+		}
 		return texs;
 	}
 
