@@ -41,6 +41,11 @@ public abstract class Container extends Component {
 		// actually draw the children
 		for (Component c : getChildren()) {
 			
+			// do not draw non-visible children
+			if (!c.isVisible()) {
+				continue;
+			}
+			
 			// apply the transformation
 			glPushMatrix();
 			glTranslatef(c.getOutline().getX(), c.getOutline().getY(), 0);

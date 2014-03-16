@@ -228,6 +228,11 @@ public class MenuCollection extends Container {
 					+ "contain a menu with key [" + key + "]");
 		}
 		
+		for (MenuBar m : menuBars.values()) {
+			m.setVisible(false);
+		}
+		newMenu.setVisible(true);
+		
 		visibleMenu = newMenu;
 	}
 	
