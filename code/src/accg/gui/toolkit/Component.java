@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.lwjgl.util.Rectangle;
 import org.newdawn.slick.Font;
 
+import accg.gui.toolkit.event.MouseClickEvent;
 import accg.gui.toolkit.event.MouseMoveEvent;
 
 /**
@@ -256,7 +257,14 @@ public abstract class Component {
 			l.event(e);
 		}
 		
-		return true;
+		// return !e.shouldPropagate(); // TODO introduce API like this
+		
+		// temporary solution?
+		if (e instanceof MouseClickEvent) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public abstract String getComponentName();
