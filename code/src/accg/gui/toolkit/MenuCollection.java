@@ -145,7 +145,7 @@ public class MenuCollection extends Container {
 				visibleMenu.setX(MARGIN);
 				break;
 			case END:
-				visibleMenu.setX(getWidth() - MARGIN - outline.getWidth());
+				visibleMenu.setX(getWidth() - MARGIN - visibleMenu.getWidth());
 				break;
 			default: // CENTER or null
 				visibleMenu.setX(MARGIN + (getWidth() - 2 * MARGIN -
@@ -154,27 +154,27 @@ public class MenuCollection extends Container {
 			}
 			
 			if (position == Position.TOP) {
-				outline.setY(MARGIN);
+				visibleMenu.setY(MARGIN);
 			} else {
-				outline.setY(getHeight() - MARGIN - visibleMenu.getHeight());
+				visibleMenu.setY(getHeight() - MARGIN - visibleMenu.getHeight());
 			}
 			break;
 		default: // LEFT, RIGHT or null
 			if (position == Position.LEFT) {
-				outline.setX(MARGIN);
+				visibleMenu.setX(MARGIN);
 			} else {
-				outline.setX(getWidth() - MARGIN - outline.getWidth());
+				visibleMenu.setX(getWidth() - MARGIN - visibleMenu.getWidth());
 			}
 			
 			switch (getAlignment()) {
 			case BEGIN:
-				outline.setY(MARGIN);
+				visibleMenu.setY(MARGIN);
 				break;
 			case END:
-				outline.setY(getHeight() - visibleMenu.getHeight() - MARGIN);
+				visibleMenu.setY(getHeight() - visibleMenu.getHeight() - MARGIN);
 				break;
 			default: // CENTER or null
-				outline.setY(MARGIN + (visibleMenu.getHeight() - 2 * MARGIN) / 2);
+				visibleMenu.setY(MARGIN + (visibleMenu.getHeight() - 2 * MARGIN) / 2);
 				break;
 			}
 			break;
