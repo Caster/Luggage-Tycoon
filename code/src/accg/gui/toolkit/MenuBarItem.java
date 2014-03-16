@@ -118,7 +118,8 @@ public class MenuBarItem extends Component implements Listener {
 		switch (getPresentation()) {
 		default:
 		case ICON_ABOVE_TEXT:
-			return getFont().getWidth(text) + 2 * PADDING;
+			return Math.max(getPreferredHeight(), getFont().getWidth(text))
+					+ 2 * PADDING;
 		case ICON_LEFT_TEXT:
 			return getFont().getWidth(text) + 3 * PADDING + getFont().getLineHeight();
 		}
@@ -126,8 +127,13 @@ public class MenuBarItem extends Component implements Listener {
 
 	@Override
 	public int getPreferredHeight() {
-		// TODO Auto-generated method stub
-		return 100; // TODO
+		switch (getPresentation()) {
+		default:
+		case ICON_ABOVE_TEXT:
+			return 100; // TODO
+		case ICON_LEFT_TEXT:
+			return getFont().getLineHeight() + 2 * PADDING;
+		}
 	}
 	
 	@Override
