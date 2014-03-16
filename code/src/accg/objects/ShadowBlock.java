@@ -5,6 +5,13 @@ import static org.lwjgl.opengl.GL11.*;
 import javax.vecmath.Vector3f;
 
 import accg.State;
+import accg.objects.blocks.AscendingConveyorBlock;
+import accg.objects.blocks.BendLeftConveyorBlock;
+import accg.objects.blocks.BendRightConveyorBlock;
+import accg.objects.blocks.ConveyorBlock;
+import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
+import accg.objects.blocks.DescendingConveyorBlock;
+import accg.objects.blocks.StraightConveyorBlock;
 
 /**
  * Draws an object as a "shadow" object.
@@ -57,6 +64,21 @@ public class ShadowBlock extends Block {
 		}
 	}
 
+	/**
+	 * In case the block that is 'shadowed' by this object is an instance of a
+	 * ConveyorBlock, return its type. Otherwise, return {@code null}.
+	 * 
+	 * @return Type of ConveyorBlock that is shadowed, if the shadowed block is
+	 *         a ConveyorBlock. If not, {@code null}.
+	 */
+	public ConveyorBlockType getConveyorBlockType() {
+		if (this.block instanceof ConveyorBlock) {
+			return ((ConveyorBlock) this.block).getConveyorBlockType();
+		} else {
+			return null;
+		}
+	}
+	
 	@Override
 	public int getHeight() {
 		return this.block.getHeight();
@@ -105,6 +127,37 @@ public class ShadowBlock extends Block {
 	 */
 	public boolean isVisible() {
 		return visible;
+	}
+	
+	/**
+	 * Change the 'shadowed' block to match the given type. Does nothing if the
+	 * given type is {@code null} or equal to the type returned by the method
+	 * {@link #getConveyorBlockType()}.
+	 * 
+	 * <p>The position and orientation of the block that is 'shadowed' are kept.
+	 * 
+	 * @param type The (possibly new) type to change to.
+	 */
+	public void setConveyorBlockType(ConveyorBlockType type) {
+		if (type == null || type == getConveyorBlockType()) {
+			return;
+		}
+		
+		switch (type) {
+		case ASCENDING: this.block = new AscendingConveyorBlock(getX(), getY(),
+				getZ(), getOrientation()); break;
+		case BEND_LEFT: this.block = new BendLeftConveyorBlock(getX(), getY(),
+				getZ(), getOrientation()); break;
+		case BEND_RIGHT: this.block = new BendRightConveyorBlock(getX(), getY(),
+				getZ(), getOrientation()); break;
+		case DESCENDING: this.block = new DescendingConveyorBlock(getX(), getY(),
+				getZ(), getOrientation()); break;
+		case STRAIGHT: this.block = new StraightConveyorBlock(getX(), getY(),
+				getZ(), getOrientation());
+		}
+		
+		// also initialize scale factor properly
+		setAlerted(this.alerted);
 	}
 	
 	@Override

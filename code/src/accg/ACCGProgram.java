@@ -45,6 +45,7 @@ import accg.objects.Floor;
 import accg.objects.ShadowBlock;
 import accg.objects.World;
 import accg.objects.blocks.ConveyorBlock;
+import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
 import accg.objects.blocks.StraightConveyorBlock;
 import accg.simulation.Simulation;
 import accg.utils.GLUtils;
@@ -95,6 +96,12 @@ public class ACCGProgram {
 	private Point clickedPoint;
 	
 	/**
+	 * This boolean indicates if 'c' has been pressed in building mode, meaning
+	 * that the user wants to change the block being built.
+	 */
+	private boolean changingBlock;
+	
+	/**
 	 * Preferences object. Used to store user preferences persistently.
 	 */
 	private Preferences prefs;
@@ -128,6 +135,8 @@ public class ACCGProgram {
 	 * Construct a new instance of the program.
 	 */
 	public ACCGProgram() {
+		changingBlock = false;
+		
 		modelMatrix = BufferUtils.createFloatBuffer(16);
 		projectionMatrix = BufferUtils.createFloatBuffer(16);
 		viewport = BufferUtils.createIntBuffer(16); // 16 is minimal size...
@@ -325,7 +334,7 @@ public class ACCGProgram {
 	 * 
 	 * @param s State, used to access ShadowBlock.
 	 */
-	public void handleKeyEvents(State s) {
+	public void handleKeyEvents(State s) {		
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) {
 				switch (Keyboard.getEventKey()) {
@@ -352,8 +361,10 @@ public class ACCGProgram {
 				case Keyboard.KEY_ESCAPE:
 					escPressed = true;
 					break;
+				// *R*otate a block in building mode
 				case Keyboard.KEY_R:
-					if (s.shadowBlock != null && s.shadowBlock.isVisible()) {
+					if (s.programMode == ProgramMode.BUILDING_MODE &&
+							s.shadowBlock != null && s.shadowBlock.isVisible()) {
 						if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ||
 								Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
 							s.shadowBlock.setOrientation(
@@ -364,6 +375,47 @@ public class ACCGProgram {
 						}
 					}
 					break;
+				// switch to *C*hanging the block being placed
+				case Keyboard.KEY_C:
+					if (s.programMode == ProgramMode.BUILDING_MODE) {
+						changingBlock = true;
+					}
+					break;
+				// switch to *F*lat conveyor block in building mode 
+				case Keyboard.KEY_F:
+					if (changingBlock) {
+						s.shadowBlock.setConveyorBlockType(ConveyorBlockType.STRAIGHT);
+					}
+					break;
+				// switch to *A*scending conveyor block in building mode
+				case Keyboard.KEY_A:
+					if (changingBlock) {
+						s.shadowBlock.setConveyorBlockType(ConveyorBlockType.ASCENDING);
+					}
+					break;
+				// switch to *D*escending conveyor block in building mode
+				case Keyboard.KEY_D:
+				if (changingBlock) {
+					s.shadowBlock.setConveyorBlockType(ConveyorBlockType.DESCENDING);
+				}
+				break;
+				// switch to bend *L*eft conveyor block in building mode
+				case Keyboard.KEY_B:
+				if (changingBlock) {
+					if (s.shadowBlock.getConveyorBlockType() == ConveyorBlockType.BEND_LEFT) {
+						s.shadowBlock.setConveyorBlockType(ConveyorBlockType.BEND_RIGHT);
+					} else {
+						s.shadowBlock.setConveyorBlockType(ConveyorBlockType.BEND_LEFT);
+					}
+				}
+				break;
+				}
+			} else {
+				switch (Keyboard.getEventKey()) {
+				// switch to not *C*hanging the block being placed anymore
+				case Keyboard.KEY_C:
+					changingBlock = false;
+					break;
 				}
 			}
 		}
@@ -373,6 +425,10 @@ public class ACCGProgram {
 	 * Handles keys that are pressed.
 	 */
 	public void handlePressedKeys() {
+		
+		if (changingBlock) {
+			return;
+		}
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
 			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) || Keyboard.isKeyDown(Keyboard.KEY_A)) {
