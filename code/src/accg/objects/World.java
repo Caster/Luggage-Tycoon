@@ -192,12 +192,19 @@ public class World extends Container<DrawableObject> {
 		
 		ConveyorBlock[] result = new ConveyorBlock[2];
 		Vector3f pos = new Vector3f(x, y, z);
+		Orientation blockOrientation = cb.getOrientation();
+		Orientation blockOrientationRot;
+		switch (cb.getConveyorBlockType()) {
+		case BEND_LEFT:  blockOrientationRot = blockOrientation.rotateLeft(); break;
+		case BEND_RIGHT: blockOrientationRot = blockOrientation.rotateRight(); break;
+		default:         blockOrientationRot = blockOrientation;
+		}
 		
 		// check first neighbor
 		if (cb.getConveyorBlockType() == ConveyorBlockType.ASCENDING) {
 			pos.z += 1;
 		}
-		pos = cb.getOrientation().moveFrom(pos, 1);
+		pos = blockOrientationRot.moveFrom(pos, 1);
 		Block b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z);
 		if (b instanceof ConveyorBlock) {
 			ConveyorBlock cbn = (ConveyorBlock) b;
@@ -224,7 +231,7 @@ public class World extends Container<DrawableObject> {
 			// block before is higher
 			pos.z += 1;
 		}
-		pos = cb.getOrientation().moveFrom(pos, -2);
+		pos = blockOrientation.moveFrom(blockOrientationRot.moveFrom(pos, -1), -1);
 		b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z);
 		if (b instanceof ConveyorBlock) {
 			ConveyorBlock cbn = (ConveyorBlock) b;
