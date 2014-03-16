@@ -1,8 +1,8 @@
 package accg.gui.toolkit;
 
 import accg.gui.toolkit.MenuBarItem.Presentation;
-import accg.gui.toolkit.MenuCollection.Alignment;
-import accg.gui.toolkit.MenuCollection.Position;
+import accg.gui.toolkit.MenuStack.Alignment;
+import accg.gui.toolkit.MenuStack.Position;
 
 /**
  * Listener that can be used to hide a {@link MenuBar} when its parent is

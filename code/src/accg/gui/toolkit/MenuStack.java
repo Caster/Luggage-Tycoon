@@ -10,8 +10,26 @@ import org.lwjgl.util.Rectangle;
 
 /**
  * This class manages a GUI with several possible menu bars.
+ * 
+ * The GUI consists of several menu bars, that are associated with keys to refer
+ * to them. Then, one or more of these menu bars can be shown on the screen in a
+ * stack of menu bars. Normally, the first one in the stack will be the one that
+ * is shown first and from there other menu bars can be opened (so those are sub
+ * menu bars).
+ * 
+ * In the {@link Listener} of a {@link MenuBarItem}, one can for example use the
+ * following code to open a new sub menu:
+ * <pre>
+ *     addMenuBelow(menuThisButtonIsIn, menuToAdd);
+ * </pre>
+ * In this case the sub menu that was already there (and other sub menus of that
+ * sub menu) are hidden automatically and replaced by <code>menuToAdd</code>. To
+ * close all sub menus below the given menu, you can use:
+ * <pre>
+ *     removeAllBelow(menuThisButtonIsIn);
+ * </pre>
  */
-public class MenuCollection extends Container {
+public class MenuStack extends Container {
 
 	/**
 	 * Distance between edge of screen and the menu bar.
@@ -38,7 +56,7 @@ public class MenuCollection extends Container {
 	private Alignment alignment;
 	
 	/**
-	 * Possible alignments for items inside the {@link MenuBar}.
+	 * Possible alignments for menu bars inside the {@link MenuStack}.
 	 * 
 	 * Picking an alignment will move the menu bar to the according position
 	 * on the screen.
@@ -73,7 +91,7 @@ public class MenuCollection extends Container {
 	private Position position;
 	
 	/**
-	 * Possible positions for a {@link MenuBar}.
+	 * Possible positions for a {@link MenuStack}.
 	 */
 	public enum Position {
 		TOP, RIGHT, BOTTOM, LEFT;
@@ -101,7 +119,7 @@ public class MenuCollection extends Container {
 	/**
 	 * Creates a new menu collection, with no menu bars.
 	 */
-	public MenuCollection() {
+	public MenuStack() {
 		menuBars = new HashMap<>();
 		
 		alignment = Alignment.CENTER;

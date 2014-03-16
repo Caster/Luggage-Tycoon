@@ -8,13 +8,13 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import accg.State;
 import accg.State.ProgramMode;
-import accg.gui.toolkit.MenuCollection;
+import accg.gui.toolkit.MenuStack;
 import accg.gui.toolkit.event.*;
 
 /**
  * This class manages the GUI.
  */
-public class MainGUI extends MenuCollection {
+public class MainGUI extends MenuStack {
 	
 	/**
 	 * The state of the program.
