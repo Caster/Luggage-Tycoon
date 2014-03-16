@@ -4,7 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.util.Collection;
 
-import accg.gui.toolkit.event.MouseEvent;
+import accg.gui.toolkit.event.*;
 
 /**
  * A GUI container. This is a component that can contain other components,
@@ -16,6 +16,13 @@ public abstract class Container extends Component {
 	 * Whether the outline needs to be recomputed.
 	 */
 	protected boolean needsLayout = true;
+	
+	/**
+	 * Creates a new container.
+	 */
+	public Container() {
+		addListener(new MouseEnterEventListener());
+	}
 	
 	/**
 	 * Adds a new child to this container.
@@ -76,6 +83,9 @@ public abstract class Container extends Component {
 	 * When a container is transparent, events will be passed on to the parent
 	 * if no child handled them. In that case, the listeners of this container
 	 * will not be notified.
+	 * 
+	 * <b>Note:</b> mouse move events will always be passed on to the parent
+	 * container, regardless of whether the container is transparent or not.
 	 * 
 	 * @return Whether the container is transparent (<code>true</code>) or
 	 * not (<code>false</code>).
@@ -138,9 +148,58 @@ public abstract class Container extends Component {
 			super.sendEvent(e);
 		}
 		
+		// always relay MouseMoveEvents
+		if (e instanceof MouseMoveEvent) {
+			return false;
+		}
+		
 		if (isTransparent()) {
 			return handled;
 		}
 		return true;
+	}
+	
+	/**
+	 * A listener that generates {@link MouseEnterEvent}s and
+	 * {@link MouseExitEvent}s for the children of this container.
+	 */
+	protected class MouseEnterEventListener implements Listener {
+		
+		/**
+		 * The previous x-coordinate of the mouse.
+		 */
+		protected int previousX = -1;
+		
+		/**
+		 * The previous y-coordinate of the mouse.
+		 */
+		protected int previousY = -1;
+
+		@Override
+		public void event(Event event) {
+			
+			// only consider MouseMoveEvents
+			if (!(event instanceof MouseMoveEvent)) {
+				return;
+			}
+			
+			MouseMoveEvent mme = (MouseMoveEvent) event;
+			
+			for (Component c : getChildren()) {
+				// should we fire a MouseEnterEvent?
+				if (!c.contains(previousX, previousY) && c.contains(mme.getX(), mme.getY())) {
+					c.sendEvent(new MouseEnterEvent(mme.getX() - c.getX(), mme.getY() - c.getY()));
+				}
+				
+				// should we fire a MouseExitEvent?
+				if (c.contains(previousX, previousY) && !c.contains(mme.getX(), mme.getY())) {
+					c.sendEvent(new MouseExitEvent(previousX - c.getX(), previousY - c.getY()));
+				}
+			}
+			
+			// update previousX and previousY
+			previousX = mme.getX();
+			previousY = mme.getY();
+		}
 	}
 }

@@ -1,10 +1,32 @@
 package accg.gui.toolkit.event;
 
-import accg.gui.toolkit.Event;
 
 /**
  * Event that indicates that the mouse has entered the component.
- * TODO fire these in some way...
  */
-public class MouseEnterEvent extends Event {
+public class MouseEnterEvent extends MouseEvent {
+
+	protected int x;
+	protected int y;
+	
+	public MouseEnterEvent(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	@Override
+	public int getX() {
+		return x;
+	}
+	
+	@Override
+	public int getY() {
+		return y;
+	}
+
+	@Override
+	public void translate(int dx, int dy) {
+		x += dx;
+		y += dy;
+	}
 }
