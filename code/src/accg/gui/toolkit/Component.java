@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import org.lwjgl.util.Rectangle;
 import org.newdawn.slick.Font;
 
+import accg.gui.toolkit.event.MouseMoveEvent;
+
 /**
  * A component (widget) in the GUI. This is the superclass of all GUI
  * components.
@@ -238,14 +240,17 @@ public abstract class Component {
 	public boolean sendEvent(Event e) {
 		
 		// TODO remove this debug output
-		System.out.print("*** " + e.getClass().getSimpleName() + " on ");
-		String className = this.getClass().getSimpleName();
-		if (className.equals(getComponentName())) {
-			System.out.print(className);
-		} else {
-			System.out.print(className + " (= " + getComponentName() + ")");
+		
+		if (!(e instanceof MouseMoveEvent)) {
+			System.out.print("*** " + e.getClass().getSimpleName() + " on ");
+			String className = this.getClass().getSimpleName();
+			if (className.equals(getComponentName())) {
+				System.out.print(className);
+			} else {
+				System.out.print(className + " (= " + getComponentName() + ")");
+			}
+			System.out.println(" ***");
 		}
-		System.out.println(" ***");
 		
 		for (Listener l : listeners) {
 			l.event(e);
