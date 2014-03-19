@@ -277,6 +277,8 @@ public class MenuStack extends Container {
 	public void addMenuOnPosition(int index, MenuBar newChild) {
 		removeAllBelow(index);
 		visibleMenus.add(newChild);
+		
+		needsLayout();
 	}
 	
 	/**
@@ -301,6 +303,8 @@ public class MenuStack extends Container {
 		while (visibleMenus.size() > index) {
 			visibleMenus.remove(visibleMenus.get(visibleMenus.size() - 1));
 		}
+		
+		needsLayout();
 	}
 
 	/**
