@@ -206,14 +206,14 @@ public class MenuStack extends Container {
 			if (position == Position.TOP) {
 				m.setY(coord + MARGIN);
 			} else {
-				m.setY(getHeight() - MARGIN - m.getHeight());
+				m.setY(getHeight() - coord - MARGIN - m.getHeight());
 			}
 			break;
 		default: // LEFT, RIGHT or null
 			if (position == Position.LEFT) {
-				m.setX(MARGIN);
+				m.setX(coord + MARGIN);
 			} else {
-				m.setX(getWidth() - MARGIN - m.getWidth());
+				m.setX(getWidth() - coord - MARGIN - m.getWidth());
 			}
 			
 			switch (getAlignment()) {
@@ -229,6 +229,12 @@ public class MenuStack extends Container {
 			}
 			break;
 		}
+		
+		return coord + MARGIN +
+				((position == Position.TOP || position == Position.BOTTOM) ?
+						m.getHeight() :
+						m.getWidth()
+				);
 	}
 	
 	@Override
