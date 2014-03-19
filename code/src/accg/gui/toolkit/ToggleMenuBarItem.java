@@ -1,9 +1,7 @@
 package accg.gui.toolkit;
 
-import org.newdawn.slick.Font;
 import org.newdawn.slick.opengl.Texture;
 
-import accg.gui.toolkit.MenuStack.Position;
 import accg.gui.toolkit.event.MouseClickEvent;
 
 /**
@@ -39,7 +37,7 @@ public class ToggleMenuBarItem extends MenuBarItem {
 	 *              In case this is {@code null}, {@code text1} is used.
 	 * @param icon2 Icon that is displayed in alternate state.
 	 *              In case this is {@code null}, {@code icon1} is used.
-	 * @param type {@link Type} of the menu item.
+	 * @param type {@link MenuBarItem.Type} of the menu item.
 	 */
 	public ToggleMenuBarItem(String text1, Texture icon1, String text2,
 			Texture icon2, Type type) {
