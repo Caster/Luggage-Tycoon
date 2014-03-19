@@ -235,8 +235,8 @@ public class SliderMenuBarItem extends MenuBarItem {
 		}
 		
 		// put together the result
-		Rectangle barOutline = new Rectangle(outline.getX() + PADDING + margin,
-				outline.getY() - PADDING - barHeight - textBarDiff + margin,
+		Rectangle barOutline = new Rectangle(PADDING + margin,
+				outline.getHeight() - PADDING - barHeight - textBarDiff + margin,
 				barWidth, barHeight - 2 * margin);
 		
 		
