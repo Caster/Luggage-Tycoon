@@ -148,69 +148,79 @@ public class MenuStack extends Container {
 		
 		// we iterate over all menus to position them one by one
 		for (MenuBar m : visibleMenus) {
+			layoutMenuBar(m);
+		}
+	}
+	
+	/**
+	 * Layouts a single menu bar. This is called from {@link #layout()}
+	 * for every menu bar.
+	 * 
+	 * Override this if you want to change the layout behaviour; alternatively,
+	 * you may override {@link #layout()}.
+	 * 
+	 * @param m The menu bar to layout.
+	 */
+	protected void layoutMenuBar(MenuBar m) {
 
-			// layout all visible menus first
-			m.layout();
-			
-			// TODO EXTRACT METHOD FROM HERE
-
-			// first compute and set the width and height of the menu
-			if (m.getPreferredWidth() < getWidth() - 2 * MARGIN) {
-				m.setWidth(m.getPreferredWidth());
-			} else {
-				m.setWidth(getWidth() - 2 * MARGIN);
-			}
-			
-			if (m.getPreferredHeight() < getHeight() - 2 * MARGIN) {
-				m.setHeight(m.getPreferredHeight());
-			} else {
-				m.setHeight(getHeight() - 2 * MARGIN);
-			}
-			
-			// determine position of the menu, based on the width and height
-			switch (position) {
-			case TOP:
-			case BOTTOM:
-				switch (getAlignment()) {
-				case BEGIN:
-					m.setX(MARGIN);
-					break;
-				case END:
-					m.setX(getWidth() - MARGIN - m.getWidth());
-					break;
-				default: // CENTER or null
-					m.setX(MARGIN + (getWidth() - 2 * MARGIN -
-							m.getWidth()) / 2);
-					break;
-				}
-				
-				if (position == Position.TOP) {
-					m.setY(MARGIN);
-				} else {
-					m.setY(getHeight() - MARGIN - m.getHeight());
-				}
+		// layout all visible menus first
+		m.layoutIfNeeded();
+		
+		// first compute and set the width and height of the menu
+		if (m.getPreferredWidth() < getWidth() - 2 * MARGIN) {
+			m.setWidth(m.getPreferredWidth());
+		} else {
+			m.setWidth(getWidth() - 2 * MARGIN);
+		}
+		
+		if (m.getPreferredHeight() < getHeight() - 2 * MARGIN) {
+			m.setHeight(m.getPreferredHeight());
+		} else {
+			m.setHeight(getHeight() - 2 * MARGIN);
+		}
+		
+		// determine position of the menu, based on the width and height
+		switch (position) {
+		case TOP:
+		case BOTTOM:
+			switch (getAlignment()) {
+			case BEGIN:
+				m.setX(MARGIN);
 				break;
-			default: // LEFT, RIGHT or null
-				if (position == Position.LEFT) {
-					m.setX(MARGIN);
-				} else {
-					m.setX(getWidth() - MARGIN - m.getWidth());
-				}
-				
-				switch (getAlignment()) {
-				case BEGIN:
-					m.setY(MARGIN);
-					break;
-				case END:
-					m.setY(getHeight() - m.getHeight() - MARGIN);
-					break;
-				default: // CENTER or null
-					m.setY(MARGIN + (m.getHeight() - 2 * MARGIN) / 2);
-					break;
-				}
+			case END:
+				m.setX(getWidth() - MARGIN - m.getWidth());
+				break;
+			default: // CENTER or null
+				m.setX(MARGIN + (getWidth() - 2 * MARGIN -
+						m.getWidth()) / 2);
 				break;
 			}
-			// EXTRACT METHOD TO HERE
+			
+			if (position == Position.TOP) {
+				m.setY(MARGIN);
+			} else {
+				m.setY(getHeight() - MARGIN - m.getHeight());
+			}
+			break;
+		default: // LEFT, RIGHT or null
+			if (position == Position.LEFT) {
+				m.setX(MARGIN);
+			} else {
+				m.setX(getWidth() - MARGIN - m.getWidth());
+			}
+			
+			switch (getAlignment()) {
+			case BEGIN:
+				m.setY(MARGIN);
+				break;
+			case END:
+				m.setY(getHeight() - m.getHeight() - MARGIN);
+				break;
+			default: // CENTER or null
+				m.setY(MARGIN + (m.getHeight() - 2 * MARGIN) / 2);
+				break;
+			}
+			break;
 		}
 	}
 	
@@ -244,6 +254,8 @@ public class MenuStack extends Container {
 		
 		menuBar.setParent(this);
 		menuBars.put(key, menuBar);
+		
+		updateVisibilities();
 	}
 	
 	/**
@@ -278,6 +290,8 @@ public class MenuStack extends Container {
 		removeAllBelow(index);
 		visibleMenus.add(newChild);
 		
+		updateVisibilities();
+		
 		needsLayout();
 	}
 	
@@ -304,6 +318,8 @@ public class MenuStack extends Container {
 			visibleMenus.remove(visibleMenus.get(visibleMenus.size() - 1));
 		}
 		
+		updateVisibilities();
+		
 		needsLayout();
 	}
 
@@ -323,20 +339,42 @@ public class MenuStack extends Container {
 					+ "contain a menu with key [" + key + "]");
 		}
 		
+		visibleMenus.clear();
+		visibleMenus.add(newMenu);
+		
+		updateVisibilities();
+	}
+	
+	/**
+	 * For every menu in the collection, update its visibility property based
+	 * on whether it should be visible in the stack.
+	 * 
+	 * This method should be called after every modification of the stack or
+	 * collection.
+	 * 
+	 * TODO An alternative approach would of course be to call
+	 * {@link #setVisible(boolean)} immediately when needed.
+	 */
+	protected void updateVisibilities() {
+		
 		for (MenuBar m : menuBars.values()) {
 			m.setVisible(false);
 		}
-		newMenu.setVisible(true);
 		
-		visibleMenus.clear();
-		visibleMenus.add(newMenu);
+		for (MenuBar m : visibleMenus) {
+			m.setVisible(true);
+		}
 	}
 	
 	/**
 	 * Hides the menu bar, so that no menu bar is visible anymore.
 	 * 
 	 * To show the menu bar again, use {@link #setMenuBar(Object)}.
+	 * 
+	 * @deprecated This method does not make any sense anymore; use
+	 * {@link #setVisible(boolean)} instead.
 	 */
+	@Deprecated
 	public void hideMenuBar() {
 		visibleMenus = null;
 	}
