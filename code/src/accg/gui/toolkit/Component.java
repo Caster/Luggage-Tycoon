@@ -17,6 +17,11 @@ import accg.gui.toolkit.event.MouseMoveEvent;
 public abstract class Component {
 	
 	/**
+	 * If <code>true</code>, debug messages will be shown for every event.
+	 */
+	public static boolean DEBUG = false;
+	
+	/**
 	 * The bounds to draw this component in.
 	 * 
 	 * The coordinate system is relative to the parent.
@@ -241,17 +246,17 @@ public abstract class Component {
 	 */
 	public boolean sendEvent(Event e) {
 		
-		// TODO remove this debug output
-		
-		if (!(e instanceof MouseMoveEvent)) {
-			System.out.print("*** " + e.getClass().getSimpleName() + " on ");
-			String className = this.getClass().getSimpleName();
-			if (className.equals(getComponentName())) {
-				System.out.print(className);
-			} else {
-				System.out.print(className + " (= " + getComponentName() + ")");
+		if (DEBUG) {
+			if (!(e instanceof MouseMoveEvent)) {
+				System.out.print("*** " + e.getClass().getSimpleName() + " on ");
+				String className = this.getClass().getSimpleName();
+				if (className.equals(getComponentName())) {
+					System.out.print(className);
+				} else {
+					System.out.print(className + " (= " + getComponentName() + ")");
+				}
+				System.out.println(" ***");
 			}
-			System.out.println(" ***");
 		}
 		
 		for (Listener l : listeners) {
