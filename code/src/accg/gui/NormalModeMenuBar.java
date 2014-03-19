@@ -48,7 +48,7 @@ public class NormalModeMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					stack.addMenuBelow(NormalModeMenuBar.this, MainGUI.SETTINGS_MENU);
+					stack.addMenuBelowOrClose(NormalModeMenuBar.this, MainGUI.SETTINGS_MENU);
 				}
 			}
 		});

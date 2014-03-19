@@ -14,7 +14,7 @@ import java.util.*;
  * In the {@link Listener} of a {@link MenuBarItem}, one can for example use the
  * following code to open a new sub menu:
  * <pre>
- *     addMenuBelow(menuThisButtonIsIn, menuToAdd);
+ *     addMenuBelowOrClose(menuThisButtonIsIn, menuToAdd);
  * </pre>
  * In this case the sub menu that was already there (and other sub menus of that
  * sub menu) are hidden automatically and replaced by <code>menuToAdd</code>. To
@@ -270,6 +270,38 @@ public class MenuStack extends Container {
 		
 		updateVisibilities();
 	}
+
+	/**
+	 * Adds a new menu bar below the <code>parent</code>, except if the same
+	 * menu bar is already shown there: in that case this is removed.
+	 * 
+	 * This is the behaviour you usually want from toggle buttons that show
+	 * a sub menu when selected. If you do not want the closing behaviour,
+	 * use {@link #addMenuBelow(MenuBar, Object)}.
+	 * 
+	 * @param origin The menu bar to put the new sub menu below.
+	 * @param key The key of the sub menu to add.
+	 * @throws IllegalArgumentException If <code>parent</code> is not
+	 * <code>null</code> and it is not visible.
+	 */
+	public void addMenuBelowOrClose(MenuBar origin, Object key) {
+		if (origin == null) {
+			addMenuOnPosition(0, menuBars.get(key));
+		}
+		
+		int index = visibleMenus.indexOf(origin);
+		if (index == -1) {
+			throw new IllegalArgumentException("Origin menu is not visible");
+		}
+		
+		// if we have the same menu already, close it
+		if (visibleMenus.size() > index + 1
+				&& visibleMenus.get(index + 1) == menuBars.get(key)) {
+			removeAllBelow(index + 1);
+		} else {
+			addMenuOnPosition(index + 1, key);
+		}
+	}
 	
 	/**
 	 * Adds a new menu bar below the <code>parent</code>.
@@ -281,7 +313,7 @@ public class MenuStack extends Container {
 	 */
 	public void addMenuBelow(MenuBar origin, Object key) {
 		if (origin == null) {
-			addMenuOnPosition(0, menuBars.get(key));
+			addMenuOnPosition(0, key);
 		}
 		
 		int index = visibleMenus.indexOf(origin);
@@ -289,7 +321,7 @@ public class MenuStack extends Container {
 			throw new IllegalArgumentException("Origin menu is not visible");
 		}
 
-		addMenuOnPosition(index + 1, menuBars.get(key));
+		addMenuOnPosition(index + 1, key);
 	}
 	
 	/**
@@ -297,11 +329,11 @@ public class MenuStack extends Container {
 	 * on that index, and all menu bars below that, are removed. 
 	 * 
 	 * @param index The index to put the new menu bar on.
-	 * @param newChild The sub menu to add.
+	 * @param key The key of the sub menu to add.
 	 */
-	public void addMenuOnPosition(int index, MenuBar newChild) {
+	public void addMenuOnPosition(int index, Object key) {
 		removeAllBelow(index);
-		visibleMenus.add(newChild);
+		visibleMenus.add(menuBars.get(key));
 		
 		updateVisibilities();
 		
