@@ -9,7 +9,8 @@ import accg.gui.toolkit.event.MouseClickEvent;
  * Menu bar for the building mode.
  */
 public class BuildingModeMenuBar extends MenuBar {
-	public BuildingModeMenuBar(final State s) {
+	
+	public BuildingModeMenuBar(final MenuStack stack, final State s) {
 		
 		MenuBarItem backItem = new MenuBarItem("Back", s.textures.iconExit);
 		backItem.addListener(new Listener() {

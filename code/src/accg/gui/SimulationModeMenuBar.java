@@ -9,7 +9,8 @@ import accg.gui.toolkit.event.MouseClickEvent;
  * Menu bar for the simulation mode.
  */
 public class SimulationModeMenuBar extends MenuBar {
-	public SimulationModeMenuBar(final State s) {
+	
+	public SimulationModeMenuBar(final MenuStack stack, final State s) {
 
 		MenuBarItem simulateItem = new MenuBarItem("Stop", s.textures.iconStop);
 		simulateItem.addListener(new Listener() {

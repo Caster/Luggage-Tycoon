@@ -15,7 +15,7 @@ public class SettingsMenuBar extends MenuBar {
 	MenuBarItem presentationItem;
 	SliderMenuBarItem sensitivityItem;
 	
-	public SettingsMenuBar(final State s) {
+	public SettingsMenuBar(final MenuStack stack, final State s) {
 
 		positionItem = new MenuBarItem("Menu position", s.textures.iconConfigure);
 		positionItem.addListener(new Listener() {

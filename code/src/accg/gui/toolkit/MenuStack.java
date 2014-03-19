@@ -1,12 +1,6 @@
 package accg.gui.toolkit;
 
-import static org.lwjgl.opengl.GL11.*;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.lwjgl.util.Rectangle;
+import java.util.*;
 
 /**
  * This class manages a GUI with several possible menu bars.
@@ -42,18 +36,20 @@ public class MenuStack extends Container {
 	/**
 	 * The menu bars, with associated keys.
 	 */
-	private Map<Object, MenuBar> menuBars;
+	protected Map<Object, MenuBar> menuBars;
 	
 	/**
-	 * The menu bar that is currently visible. If <code>null</code>, no menu is
-	 * visible at the moment.
+	 * The menu bars that are currently visible.
+	 * 
+	 * The first element in this list is the one that is shown closest to the
+	 * screen edge.
 	 */
-	private MenuBar visibleMenu;
+	protected ArrayList<MenuBar> visibleMenus;
 	
 	/**
 	 * Alignment of this menu collection.
 	 */
-	private Alignment alignment;
+	protected Alignment alignment;
 	
 	/**
 	 * Possible alignments for menu bars inside the {@link MenuStack}.
@@ -88,7 +84,7 @@ public class MenuStack extends Container {
 	/**
 	 * Position of this menu collection.
 	 */
-	private Position position;
+	protected Position position;
 	
 	/**
 	 * Possible positions for a {@link MenuStack}.
@@ -121,6 +117,7 @@ public class MenuStack extends Container {
 	 */
 	public MenuStack() {
 		menuBars = new HashMap<>();
+		visibleMenus = new ArrayList<>();
 		
 		alignment = Alignment.CENTER;
 		position = Position.TOP;
@@ -128,74 +125,92 @@ public class MenuStack extends Container {
 	
 	@Override
 	public int getPreferredWidth() {
-		return visibleMenu.getPreferredWidth();
+		// take the maximum preferred width of all visible menus
+		int width = 0;
+		
+		for (MenuBar m : visibleMenus) {
+			int mWidth = m.getPreferredWidth();
+			if (mWidth > width) {
+				width = mWidth;
+			}
+		}
+		
+		return width;
 	}
 	
 	@Override
 	public int getPreferredHeight() {
-		return visibleMenu.getPreferredHeight();
+		return 0; // TODO implement this (although it is not used...)
 	}
 
 	@Override
 	public void layout() {
 		
-		visibleMenu.layout();
-		
-		// first compute and set the width and height of the menu
-		if (visibleMenu.getPreferredWidth() < getWidth() - 2 * MARGIN) {
-			visibleMenu.setWidth(visibleMenu.getPreferredWidth());
-		} else {
-			visibleMenu.setWidth(getWidth() - 2 * MARGIN);
-		}
-		
-		if (visibleMenu.getPreferredHeight() < getHeight() - 2 * MARGIN) {
-			visibleMenu.setHeight(visibleMenu.getPreferredHeight());
-		} else {
-			visibleMenu.setHeight(getHeight() - 2 * MARGIN);
-		}
-		
-		// determine position of the menu, based on the width and height
-		switch (position) {
-		case TOP:
-		case BOTTOM:
-			switch (getAlignment()) {
-			case BEGIN:
-				visibleMenu.setX(MARGIN);
-				break;
-			case END:
-				visibleMenu.setX(getWidth() - MARGIN - visibleMenu.getWidth());
-				break;
-			default: // CENTER or null
-				visibleMenu.setX(MARGIN + (getWidth() - 2 * MARGIN -
-						visibleMenu.getWidth()) / 2);
-				break;
+		// we iterate over all menus to position them one by one
+		for (MenuBar m : visibleMenus) {
+
+			// layout all visible menus first
+			m.layout();
+			
+			// TODO EXTRACT METHOD FROM HERE
+
+			// first compute and set the width and height of the menu
+			if (m.getPreferredWidth() < getWidth() - 2 * MARGIN) {
+				m.setWidth(m.getPreferredWidth());
+			} else {
+				m.setWidth(getWidth() - 2 * MARGIN);
 			}
 			
-			if (position == Position.TOP) {
-				visibleMenu.setY(MARGIN);
+			if (m.getPreferredHeight() < getHeight() - 2 * MARGIN) {
+				m.setHeight(m.getPreferredHeight());
 			} else {
-				visibleMenu.setY(getHeight() - MARGIN - visibleMenu.getHeight());
-			}
-			break;
-		default: // LEFT, RIGHT or null
-			if (position == Position.LEFT) {
-				visibleMenu.setX(MARGIN);
-			} else {
-				visibleMenu.setX(getWidth() - MARGIN - visibleMenu.getWidth());
+				m.setHeight(getHeight() - 2 * MARGIN);
 			}
 			
-			switch (getAlignment()) {
-			case BEGIN:
-				visibleMenu.setY(MARGIN);
+			// determine position of the menu, based on the width and height
+			switch (position) {
+			case TOP:
+			case BOTTOM:
+				switch (getAlignment()) {
+				case BEGIN:
+					m.setX(MARGIN);
+					break;
+				case END:
+					m.setX(getWidth() - MARGIN - m.getWidth());
+					break;
+				default: // CENTER or null
+					m.setX(MARGIN + (getWidth() - 2 * MARGIN -
+							m.getWidth()) / 2);
+					break;
+				}
+				
+				if (position == Position.TOP) {
+					m.setY(MARGIN);
+				} else {
+					m.setY(getHeight() - MARGIN - m.getHeight());
+				}
 				break;
-			case END:
-				visibleMenu.setY(getHeight() - visibleMenu.getHeight() - MARGIN);
-				break;
-			default: // CENTER or null
-				visibleMenu.setY(MARGIN + (visibleMenu.getHeight() - 2 * MARGIN) / 2);
+			default: // LEFT, RIGHT or null
+				if (position == Position.LEFT) {
+					m.setX(MARGIN);
+				} else {
+					m.setX(getWidth() - MARGIN - m.getWidth());
+				}
+				
+				switch (getAlignment()) {
+				case BEGIN:
+					m.setY(MARGIN);
+					break;
+				case END:
+					m.setY(getHeight() - m.getHeight() - MARGIN);
+					break;
+				default: // CENTER or null
+					m.setY(MARGIN + (m.getHeight() - 2 * MARGIN) / 2);
+					break;
+				}
 				break;
 			}
-			break;
+			// EXTRACT METHOD TO HERE
 		}
 	}
 	
@@ -215,14 +230,14 @@ public class MenuStack extends Container {
 	}
 	
 	/**
-	 * Adds a new menu bar.
+	 * Adds a new menu bar to the collection.
 	 * 
 	 * @param key A key. This can be any object; you can use this to retrieve
 	 * the menu bar later.
 	 * @param menuBar The menu bar to add.
 	 * @throws NullPointerException If <code>menuBar == null</code>.
 	 */
-	public void addMenuBar(Object key, MenuBar menuBar) {
+	public void addToCollection(Object key, MenuBar menuBar) {
 		if (menuBar == null) {
 			throw new NullPointerException("Cannot add null menu bar to collection");
 		}
@@ -232,12 +247,70 @@ public class MenuStack extends Container {
 	}
 	
 	/**
+	 * Adds a new menu bar below the <code>parent</code>.
+	 * 
+	 * @param origin The menu bar to put the new sub menu below.
+	 * @param key The key of the sub menu to add.
+	 * @throws IllegalArgumentException If <code>parent</code> is not
+	 * <code>null</code> and it is not visible.
+	 */
+	public void addMenuBelow(MenuBar origin, Object key) {
+		if (origin == null) {
+			addMenuOnPosition(0, menuBars.get(key));
+		}
+		
+		int index = visibleMenus.indexOf(origin);
+		if (index == -1) {
+			throw new IllegalArgumentException("Origin menu is not visible");
+		}
+
+		addMenuOnPosition(index + 1, menuBars.get(key));
+	}
+	
+	/**
+	 * Adds a new menu bar at the given index. The menu bar that currently may be
+	 * on that index, and all menu bars below that, are removed. 
+	 * 
+	 * @param index The index to put the new menu bar on.
+	 * @param newChild The sub menu to add.
+	 */
+	public void addMenuOnPosition(int index, MenuBar newChild) {
+		removeAllBelow(index);
+		visibleMenus.add(newChild);
+	}
+	
+	/**
+	 * Removes all menu bars at and below the given menu bar.
+	 * 
+	 * @param origin The highest menu bar to remove.
+	 */
+	public void removeAllBelow(MenuBar origin) {
+		int index = visibleMenus.indexOf(origin);
+		if (index == -1) {
+			throw new IllegalArgumentException("Origin menu is not visible");
+		}
+		removeAllBelow(index);
+	}
+	
+	/**
+	 * Removes all menu bars at and below the given index.
+	 * 
+	 * @param index The index of the highest menu bar to remove.
+	 */
+	public void removeAllBelow(int index) {
+		while (visibleMenus.size() > index) {
+			visibleMenus.remove(visibleMenus.get(visibleMenus.size() - 1));
+		}
+	}
+
+	/**
 	 * Sets the currently visible menu bar.
 	 * 
 	 * @param key The key of the menu bar to show, as defined when calling
-	 * {@link #addMenuBar(Object, MenuBar)}.
+	 * {@link #addToCollection(Object, MenuBar)}.
 	 * @throws IllegalArgumentException If there is no menu with the given key.
 	 */
+	@Deprecated
 	public void setMenuBar(Object key) {
 		MenuBar newMenu = menuBars.get(key);
 		
@@ -251,31 +324,8 @@ public class MenuStack extends Container {
 		}
 		newMenu.setVisible(true);
 		
-		visibleMenu = newMenu;
-	}
-	
-	/**
-	 * Removes the menu bar with the given key. If this menu bar was currently
-	 * visible, no menu will be visible anymore afterwards (as if
-	 * {@link #hideMenuBar()} was called).
-	 * 
-	 * @param key The key of the menu bar to remove, as defined when calling
-	 * {@link #addMenuBar(Object, MenuBar)}.
-	 * @throws IllegalArgumentException If there is no menu with the given key.
-	 */
-	public void removeMenuBar(Object key) {
-		MenuBar menuToRemove = menuBars.get(key);
-		
-		if (menuToRemove == null) {
-			throw new IllegalArgumentException("Menu collection does not "
-					+ "contain a menu with key [" + key + "]");
-		}
-		
-		if (visibleMenu == menuToRemove) {
-			hideMenuBar();
-		}
-		
-		menuBars.remove(key);
+		visibleMenus.clear();
+		visibleMenus.add(newMenu);
 	}
 	
 	/**
@@ -284,7 +334,7 @@ public class MenuStack extends Container {
 	 * To show the menu bar again, use {@link #setMenuBar(Object)}.
 	 */
 	public void hideMenuBar() {
-		visibleMenu = null;
+		visibleMenus = null;
 	}
 	
 	/**

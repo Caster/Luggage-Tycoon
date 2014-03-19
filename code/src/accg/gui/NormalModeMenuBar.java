@@ -9,7 +9,8 @@ import accg.gui.toolkit.event.MouseClickEvent;
  * Menu bar for the normal mode.
  */
 public class NormalModeMenuBar extends MenuBar {
-	public NormalModeMenuBar(final State s) {
+	
+	public NormalModeMenuBar(final MenuStack stack, final State s) {
 
 		MenuBarItem simulateItem = new MenuBarItem("Simulate", s.textures.iconStart);
 		simulateItem.addListener(new Listener() {
@@ -40,7 +41,18 @@ public class NormalModeMenuBar extends MenuBar {
 		
 		add(new MenuBarItem("Open", s.textures.iconOpen));
 		add(new MenuBarItem("Save", s.textures.iconSave));
-		add(new MenuBarItem("Settings", s.textures.iconConfigure));
+
+		MenuBarItem settingsItem = new MenuBarItem("Settings", s.textures.iconConfigure);
+		settingsItem.addListener(new Listener() {
+			
+			@Override
+			public void event(Event e) {
+				if (e instanceof MouseClickEvent) {
+					stack.addMenuBelow(NormalModeMenuBar.this, MainGUI.SETTINGS_MENU);
+				}
+			}
+		});
+		add(settingsItem);
 		
 		MenuBarItem quitItem = new MenuBarItem("Quit", s.textures.iconExit);
 		quitItem.addListener(new Listener() {

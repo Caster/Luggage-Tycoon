@@ -16,6 +16,8 @@ import accg.gui.toolkit.event.*;
  */
 public class MainGUI extends MenuStack {
 	
+	public static final String SETTINGS_MENU = "settings";
+	
 	/**
 	 * The state of the program.
 	 */
@@ -30,9 +32,10 @@ public class MainGUI extends MenuStack {
 		
 		setFont(loadFont());
 		
-		addMenuBar(ProgramMode.NORMAL_MODE, new NormalModeMenuBar(state));
-		addMenuBar(ProgramMode.BUILDING_MODE, new BuildingModeMenuBar(state));
-		addMenuBar(ProgramMode.SIMULATION_MODE, new SimulationModeMenuBar(state));
+		addToCollection(ProgramMode.NORMAL_MODE, new NormalModeMenuBar(this, state));
+		addToCollection(ProgramMode.BUILDING_MODE, new BuildingModeMenuBar(this, state));
+		addToCollection(ProgramMode.SIMULATION_MODE, new SimulationModeMenuBar(this, state));
+		addToCollection(SETTINGS_MENU, new SettingsMenuBar(this, state));
 	}
 	
 	/**
@@ -70,6 +73,7 @@ public class MainGUI extends MenuStack {
 	 * 
 	 * @param x The x-coordinate.
 	 * @param y The y-coordinate.
+	 * @return Whether the event has been handled by the GUI.
 	 */
 	public boolean handleMouseClickEvent(int x, int y) {
 		return sendEvent(new MouseClickEvent(x, getHeight() - y));
@@ -80,6 +84,7 @@ public class MainGUI extends MenuStack {
 	 * 
 	 * @param x The x-coordinate.
 	 * @param y The y-coordinate.
+	 * @return Whether the event has been handled by the GUI.
 	 */
 	public boolean handleMouseDragEvent(int x, int y) {
 		return sendEvent(new MouseDragEvent(x, getHeight() - y));
@@ -90,6 +95,7 @@ public class MainGUI extends MenuStack {
 	 * 
 	 * @param x The x-coordinate.
 	 * @param y The y-coordinate.
+	 * @return Whether the event has been handled by the GUI.
 	 */
 	public boolean handleMouseMoveEvent(int x, int y) {
 		return sendEvent(new MouseMoveEvent(x, getHeight() - y));
@@ -99,6 +105,7 @@ public class MainGUI extends MenuStack {
 	 * Handles a mouse scroll event by giving it to the GUI.
 	 * 
 	 * @param dWheel The amount of scroll steps.
+	 * @return Whether the event has been handled by the GUI.
 	 */
 	public boolean handleMouseScrollEvent(int dWheel) {
 		return sendEvent(new MouseScrollEvent(dWheel));
