@@ -147,8 +147,10 @@ public class MenuStack extends Container {
 	public void layout() {
 		
 		// we iterate over all menus to position them one by one
+		int coord = 0;
+		
 		for (MenuBar m : visibleMenus) {
-			layoutMenuBar(m);
+			coord = layoutMenuBar(m, coord);
 		}
 	}
 	
@@ -160,8 +162,13 @@ public class MenuStack extends Container {
 	 * you may override {@link #layout()}.
 	 * 
 	 * @param m The menu bar to layout.
+	 * @param coord The bottom (or right) coordinate of the previous menu bar. This is
+	 * used to stack them.
+	 * @return The bottom (or right) coordinate of the newly layouted menu bar. Tip:
+	 * to stack menu bars, use this as the <code>coord</code> parameter for the next
+	 * invocation of this method :)
 	 */
-	protected void layoutMenuBar(MenuBar m) {
+	protected int layoutMenuBar(MenuBar m, int coord) {
 
 		// layout all visible menus first
 		m.layoutIfNeeded();
@@ -197,7 +204,7 @@ public class MenuStack extends Container {
 			}
 			
 			if (position == Position.TOP) {
-				m.setY(MARGIN);
+				m.setY(coord + MARGIN);
 			} else {
 				m.setY(getHeight() - MARGIN - m.getHeight());
 			}
