@@ -127,7 +127,7 @@ public class SliderMenuBarItem extends MenuBarItem {
 		// render bar if needed
 		if (this.showBar) {
 			// the height of the bar depends on that of the text
-			int textHeight = font.getLineHeight();
+			int textHeight = getFont().getLineHeight();
 			int barHeight = textHeight;
 			int textBarDiff = (textHeight - barHeight) / 2;
 			
