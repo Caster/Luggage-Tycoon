@@ -4,6 +4,7 @@ import org.newdawn.slick.Font;
 import org.newdawn.slick.opengl.Texture;
 
 import accg.gui.toolkit.MenuStack.Position;
+import accg.gui.toolkit.event.MouseClickEvent;
 
 /**
  * A ToggleMenuBarItem is a {@link MenuBarItem} that toggles between two states
@@ -45,6 +46,17 @@ public class ToggleMenuBarItem extends MenuBarItem {
 		super(text1, icon1, type);
 		this.text2 = (text2 == null ? text1 : text2);
 		this.icon2 = (icon2 == null ? icon1 : icon2);
+		
+		// add a listener for calling onClick() when appropriate
+		addListener(new Listener() {
+			
+			@Override
+			public void event(Event e) {
+				if (e instanceof MouseClickEvent) {
+					onClick();
+				}
+			}
+		});
 	}
 	
 	@Override
@@ -73,22 +85,13 @@ public class ToggleMenuBarItem extends MenuBarItem {
 		return Math.max(text1Width, text2Width);
 	}
 	
-	@Override
-	public void onClick(int x, int y) {
-		super.onClick(x, y);
-		
+	/**
+	 * Handles clicks on this item by swapping the texts and icons.
+	 */
+	protected void onClick() {
 		swapTexts();
 		swapIcons();
-		
-		// notify parent of (possible) resizing
-		this.parent.onChildResize();
 	}
-	
-	@Override
-	public void onDrag(int x, int y) { /* ignored */ }
-
-	@Override
-	public void onScroll(int dWheel) { /* ignored */ }
 
 	/**
 	 * Swap {@code this.icon} and {@code this.icon2}.
