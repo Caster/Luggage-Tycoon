@@ -65,23 +65,23 @@ public class ToggleMenuBarItem extends MenuBarItem {
 	}
 	
 	@Override
-	public int getPreferredWidth(Font renderFont, Position position,
-			Presentation presentation) {
+	public int getPreferredWidth() {
+		
+		// [ws] TODO the following comment was here:
+		//
 		// in case we have text next to the icon and position top or bottom,
 		// it actually looks nicer to just return the preferred width with
 		// the current text, I think [tca]
-		if ((position == Position.TOP || position == Position.BOTTOM) &&
-				presentation == Presentation.ICON_LEFT_TEXT) {
-			return super.getPreferredWidth(renderFont, position, presentation);
-		}
+		//
+		// I agree with that, but I don't see a neat way of doing that (i.e.,
+		// finding the position) with the new GUI toolkit. We should think
+		// about this :)
 		
-		// return the maximum width for both texts
-		int text1Width = super.getPreferredWidth(renderFont, position,
-				presentation);
+		int text1Width = super.getPreferredWidth();
 		swapTexts();
-		int text2Width = super.getPreferredWidth(renderFont, position,
-				presentation);
+		int text2Width = super.getPreferredWidth();
 		swapTexts();
+		
 		return Math.max(text1Width, text2Width);
 	}
 	
