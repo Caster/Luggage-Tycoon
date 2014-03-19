@@ -239,12 +239,12 @@ public class MenuStack extends Container {
 	
 	@Override
 	public String getComponentName() {
-		return "MenuCollection";
+		return "MenuStack";
 	}
 	
 	@Override
 	public void add(Component toAdd) {
-		throw new UnsupportedOperationException("Adding to a MenuCollection is not supported; see addMenuBar() instead");
+		throw new UnsupportedOperationException("Adding to a MenuStack is not supported; see addMenuBar() instead");
 	}
 
 	@Override
