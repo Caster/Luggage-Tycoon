@@ -408,6 +408,8 @@ public class MenuBar extends Container {
 		
 		items.add(item);
 		item.setParent(this);
+		
+		needsLayout();
 	}
 
 	@Override
@@ -421,6 +423,8 @@ public class MenuBar extends Container {
 	 */
 	public void setOrientation(Orientation orientation) {
 		this.orientation = orientation;
+		
+		needsLayout();
 	}
 	
 	/**
