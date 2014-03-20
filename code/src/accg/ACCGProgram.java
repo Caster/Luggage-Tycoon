@@ -45,9 +45,6 @@ public class ACCGProgram {
 	private static final java.awt.Color BACKGROUND_COLOR =
 			new java.awt.Color(0.8f, 0.8f, 0.77f, 1.0f);
 	
-	/** If the escape key has been pressed. */
-	private boolean escPressed = false;
-	
 	/** Possible {@link DisplayMode} which the program can use. */
 	private DisplayMode windowedMode, fullScreenMode;
 	
@@ -199,7 +196,7 @@ public class ACCGProgram {
 		});
 		shadowMatrix.flip();
 		
-		while (!Display.isCloseRequested() && !escPressed) {
+		while (!Display.isCloseRequested() && !s.escPressed) {
 			
 			// handle resize events
 			if (displayWidth != Display.getWidth() || displayHeight != Display.getHeight()) {
@@ -316,7 +313,7 @@ public class ACCGProgram {
 					}
 					break;
 				case Keyboard.KEY_ESCAPE:
-					escPressed = true;
+					s.escPressed = true;
 					break;
 				case Keyboard.KEY_R:
 					if (s.shadowBlock != null && s.shadowBlock.isVisible()) {

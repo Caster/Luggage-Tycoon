@@ -166,4 +166,9 @@ public class State {
 	 * Preferences object. Used to store user preferences persistently.
 	 */
 	public Preferences prefs;
+	
+	/**
+	 * If the escape key has been pressed.
+	 */
+	public boolean escPressed = false;
 }

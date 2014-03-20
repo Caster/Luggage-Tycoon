@@ -60,7 +60,7 @@ public class NormalModeMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					System.err.println("QUIT!");
+					s.escPressed = true;
 				}
 			}
 		});
