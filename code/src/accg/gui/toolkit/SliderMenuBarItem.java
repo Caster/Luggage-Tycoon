@@ -133,15 +133,15 @@ public class SliderMenuBarItem extends MenuBarItem {
 			
 			// outline
 			glColor4f(SLIDER_BAR_EDGE_COLOR);
-			drawBar(outline, getPresentation(), barHeight, textBarDiff, 0, 1f);
+			drawBar(barHeight, textBarDiff, 0, 1f);
 			
 			// background
 			glColor4f(SLIDER_BAR_BACKGROUND_COLOR);
-			drawBar(outline, getPresentation(), barHeight, textBarDiff, SLIDER_BAR_EDGE_WIDTH, 1f);
+			drawBar(barHeight, textBarDiff, SLIDER_BAR_EDGE_WIDTH, 1f);
 			
 			// actual bar
 			glColor4f(SLIDER_BAR_COLOR);
-			drawBar(outline, getPresentation(), barHeight, textBarDiff, SLIDER_BAR_EDGE_WIDTH,
+			drawBar(barHeight, textBarDiff, SLIDER_BAR_EDGE_WIDTH,
 					(val - min) / (max - min));
 		}
 	}
@@ -151,9 +151,15 @@ public class SliderMenuBarItem extends MenuBarItem {
 		return "SliderMenuBarItem";
 	}
 	
+	/**
+	 * Handles a click event.
+	 * 
+	 * @param x The mouse x-coordinate.
+	 * @param y The mouse y-coordinate.
+	 */
 	protected void onClick(int x, int y) {
 		// when clicking inside the bar, change the value
-		if (this.showBar && this.barOutline.contains(x, y)) {
+		if (this.showBar && this.cachedBarOutline.contains(x, y)) {
 			updateValueFromPoint(x, y);
 		} else {
 			// toggle between showing the bar and showing text
@@ -162,13 +168,25 @@ public class SliderMenuBarItem extends MenuBarItem {
 		}
 	}
 	
+	/**
+	 * Handles a drag event.
+	 * 
+	 * @param x The mouse x-coordinate.
+	 * @param y The mouse y-coordinate.
+	 */
 	protected void onDrag(int x, int y) {
 		// see if the drag is inside the bar
-		if (this.showBar && this.barOutline.contains(x, y)) {
+		if (this.showBar && this.cachedBarOutline.contains(x, y)) {
 			updateValueFromPoint(x, y);
 		}
 	}
+
 	
+	/**
+	 * Handles a scroll event.
+	 * 
+	 * @param dWheel The amount of scroll steps.
+	 */
 	protected void onScroll(int dWheel) {
 		// only respond if the bar is actually shown
 		if (this.showBar) {
@@ -181,18 +199,15 @@ public class SliderMenuBarItem extends MenuBarItem {
 	 * Draw a bar at the correct place with certain parameters. Uses OpenGL's
 	 * immediate drawing mode.
 	 * 
-	 * @param outline Outline of the entire menu item.
-	 * @param presentation The presentation that is requested.
 	 * @param barHeight Height of the bar (including edge).
 	 * @param textBarDiff Half the difference between the height of the bar and
 	 *                    the height of the text. Use to center the bar vertically.
 	 * @param margin Margin of the bar to be drawn.
 	 * @param width Width of the bar to be drawn, lies between 0 and 1.
 	 */
-	protected void drawBar(Rectangle outline, Presentation presentation,
-			int barHeight, int textBarDiff, int margin, float width) {
+	protected void drawBar(int barHeight, int textBarDiff, int margin, float width) {
 		// calculate outline
-		Rectangle barOutline = getBarOutline(outline, presentation, barHeight,
+		Rectangle barOutline = getBarOutline(barHeight,
 				textBarDiff, margin, width);
 		
 		// command OpenGL to draw the bar
@@ -210,10 +225,15 @@ public class SliderMenuBarItem extends MenuBarItem {
 	/**
 	 * Return an outline of the slider bar.
 	 * 
-	 * @see #drawBar(Rectangle, int, int, int, float)
+	 * @param barHeight Height of the bar (including edge).
+	 * @param textBarDiff Half the difference between the height of the bar and
+	 *                    the height of the text. Use to center the bar vertically.
+	 * @param margin Margin of the bar to be drawn.
+	 * @param width Width of the bar to be drawn, lies between 0 and 1.
+	 * @return The computed outline.
+	 * @see #drawBar(int, int, int, float)
 	 */
-	protected Rectangle getBarOutline(Rectangle outline, Presentation presentation,
-			int barHeight, int textBarDiff, int margin, float width) {
+	protected Rectangle getBarOutline(int barHeight, int textBarDiff, int margin, float width) {
 		// calculate the width of the bar in pixels
 		int barWidth;
 		switch (presentation) {
@@ -247,10 +267,10 @@ public class SliderMenuBarItem extends MenuBarItem {
 		
 		// possibly save the result if it is the actual outline
 		if (margin == 0 && width == 1.0f) {
-			if (this.barOutline == null) {
-				this.barOutline = barOutline;
+			if (this.cachedBarOutline == null) {
+				this.cachedBarOutline = barOutline;
 			} else {
-				barOutline.getBounds(this.barOutline);
+				barOutline.getBounds(this.cachedBarOutline);
 			}
 		}
 		
@@ -265,8 +285,8 @@ public class SliderMenuBarItem extends MenuBarItem {
 	 * @param y Y-coordinate of point in bar outline.
 	 */
 	protected void updateValueFromPoint(int x, int y) {
-		this.val = this.min + ((x - this.barOutline.getX()) /
-				((float) this.barOutline.getWidth() - 2 * SLIDER_BAR_EDGE_WIDTH)) *
+		this.val = this.min + ((x - this.cachedBarOutline.getX()) /
+				((float) this.cachedBarOutline.getWidth() - 2 * SLIDER_BAR_EDGE_WIDTH)) *
 				(this.max - this.min);
 		
 		sendEvent(new ValueChangeEvent());
@@ -283,5 +303,5 @@ public class SliderMenuBarItem extends MenuBarItem {
 	/** If the slider bar should be drawn, or the text. */
 	protected boolean showBar;
 	/** Cached outline of slider bar, for use in {@link #onDrag(int, int)}. */
-	protected Rectangle barOutline;
+	protected Rectangle cachedBarOutline;
 }

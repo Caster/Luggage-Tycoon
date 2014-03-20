@@ -49,7 +49,7 @@ public class MenuBarItem extends Component implements Listener {
 	/**
 	 * Presentation of items.
 	 */
-	private Presentation presentation = Presentation.ICON_ABOVE_TEXT;
+	protected Presentation presentation = Presentation.ICON_ABOVE_TEXT;
 	
 	/**
 	 * Possible presentations/layouts for items in a {@link MenuBar}. A
