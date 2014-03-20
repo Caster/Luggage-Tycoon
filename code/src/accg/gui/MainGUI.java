@@ -8,6 +8,7 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import accg.State;
 import accg.State.ProgramMode;
+import accg.gui.toolkit.MenuBarItem;
 import accg.gui.toolkit.MenuStack;
 import accg.gui.toolkit.event.*;
 
@@ -42,6 +43,15 @@ public class MainGUI extends MenuStack {
 		addToCollection(POSITION_MENU, new PositionMenuBar(this, state));
 		addToCollection(ALIGNMENT_MENU, new AlignmentMenuBar(this, state));
 		addToCollection(PRESENTATION_MENU, new PresentationMenuBar(this, state));
+		
+		int alignment = state.prefs.getInt("menu.alignment", State.DEF_MENU_ALIGNMENT);
+		setAlignment(MenuStack.Alignment.values()[alignment]);
+		
+		int position = state.prefs.getInt("menu.position", State.DEF_MENU_POSITION);
+		setPosition(MenuStack.Position.values()[position]);
+		
+		int presentation = state.prefs.getInt("menu.presentation", State.DEF_MENU_PRESENTATION);
+		setPresentation(MenuBarItem.Presentation.values()[presentation]);
 	}
 	
 	/**

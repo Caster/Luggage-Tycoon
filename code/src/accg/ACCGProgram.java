@@ -491,21 +491,14 @@ public class ACCGProgram {
 	/**
 	 * Try to load preferences of the user from last time.
 	 * 
-	 * @param s
+	 * @param s The state object to store the preferences in.
 	 */
-	private void loadPreferences(State s) {
+	private static void loadPreferences(State s) {
 		if (s.prefs == null) {
 			s.prefs = Preferences.userNodeForPackage(ACCGProgram.class);
 		}
 		
 		s.mouseSensitivityFactor = s.prefs.getFloat("mouse.sensitivity", 1.0f);
-		
-		int alignment = s.prefs.getInt("menu.alignment", State.DEF_MENU_ALIGNMENT);
-		//setMenuAlignments(MenuCollection.Alignment.values()[alignment]); TODO
-		int position = s.prefs.getInt("menu.position", State.DEF_MENU_POSITION);
-		//setMenuPositions(MenuCollection.Position.values()[position]);
-		int presentation = s.prefs.getInt("menu.presentation", State.DEF_MENU_PRESENTATION);
-		//setMenuPresentations(MenuCollection.Presentation.values()[presentation]);
 	}
 	
 	/**
