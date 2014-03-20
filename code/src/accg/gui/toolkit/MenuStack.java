@@ -200,8 +200,7 @@ public class MenuStack extends Container {
 				m.setX(getWidth() - MARGIN - m.getWidth());
 				break;
 			default: // CENTER or null
-				m.setX(MARGIN + (getWidth() - 2 * MARGIN -
-						m.getWidth()) / 2);
+				m.setX((getWidth() - m.getWidth()) / 2);
 				break;
 			}
 			
@@ -226,7 +225,7 @@ public class MenuStack extends Container {
 				m.setY(getHeight() - m.getHeight() - MARGIN);
 				break;
 			default: // CENTER or null
-				m.setY(MARGIN + (getHeight() - 2 * MARGIN - m.getHeight()) / 2);
+				m.setY((getHeight() - m.getHeight()) / 2);
 				break;
 			}
 			break;
