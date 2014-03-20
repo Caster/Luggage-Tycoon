@@ -52,7 +52,7 @@ public class MainGUI extends MenuStack {
 	 * this includes setting another mode.
 	 */
 	public void updateItems() {
-		setMenuBar(state.programMode);
+		addMenuOnPosition(0, state.programMode);
 	}
 	
 	/**

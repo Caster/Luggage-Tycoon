@@ -377,28 +377,6 @@ public class MenuStack extends Container {
 		
 		needsLayout();
 	}
-
-	/**
-	 * Sets the currently visible menu bar.
-	 * 
-	 * @param key The key of the menu bar to show, as defined when calling
-	 * {@link #addToCollection(Object, MenuBar)}.
-	 * @throws IllegalArgumentException If there is no menu with the given key.
-	 */
-	@Deprecated
-	public void setMenuBar(Object key) {
-		MenuBar newMenu = menuBars.get(key);
-		
-		if (newMenu == null) {
-			throw new IllegalArgumentException("Menu collection does not "
-					+ "contain a menu with key [" + key + "]");
-		}
-		
-		visibleMenus.clear();
-		visibleMenus.add(newMenu);
-		
-		updateVisibilities();
-	}
 	
 	/**
 	 * For every menu in the collection, update its visibility property based
@@ -419,19 +397,6 @@ public class MenuStack extends Container {
 		for (MenuBar m : visibleMenus) {
 			m.setVisible(true);
 		}
-	}
-	
-	/**
-	 * Hides the menu bar, so that no menu bar is visible anymore.
-	 * 
-	 * To show the menu bar again, use {@link #setMenuBar(Object)}.
-	 * 
-	 * @deprecated This method does not make any sense anymore; use
-	 * {@link #setVisible(boolean)} instead.
-	 */
-	@Deprecated
-	public void hideMenuBar() {
-		visibleMenus = null;
 	}
 	
 	/**
