@@ -27,7 +27,7 @@ public class AlignmentMenuBar extends MenuBar {
 	 * @param s State, used to look up icons in.
 	 * @return A newly created {@link MenuBarItem}.
 	 */
-	private MenuBarItem generateAlignmentItem(final int index, final MenuStack stack, State s) {
+	private MenuBarItem generateAlignmentItem(final int index, final MenuStack stack, final State s) {
 		final Alignment alignment = MenuStack.Alignment.values()[index];
 		// create the item
 		MenuBarItem mbi = new MenuBarItem(alignment.getName(),
@@ -38,6 +38,7 @@ public class AlignmentMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
+					s.prefs.putInt("menu.alignment", index);
 					stack.setAlignment(alignment);
 				}
 			}

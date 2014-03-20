@@ -26,7 +26,7 @@ public class PresentationMenuBar extends MenuBar {
 	 * @param s State, used to look up icons in.
 	 * @return A newly created {@link MenuBarItem}.
 	 */
-	private MenuBarItem generatePresentationItem(final int index, final MenuStack stack, State s) {
+	private MenuBarItem generatePresentationItem(final int index, final MenuStack stack, final State s) {
 		final Presentation pres = MenuBarItem.Presentation.values()[index];
 		// create the item
 		MenuBarItem mbi = new MenuBarItem(pres.getName(),
@@ -36,6 +36,7 @@ public class PresentationMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
+					s.prefs.putInt("menu.presentation", index);
 					stack.setPresentation(pres);
 				}
 			}
