@@ -126,6 +126,6 @@ public class MainGUI extends MenuStack {
 	 * @return Whether the event has been handled by the GUI.
 	 */
 	public boolean handleMouseScrollEvent(int x, int y, int dWheel) {
-		return sendEvent(new MouseScrollEvent(x, y, dWheel));
+		return sendEvent(new MouseScrollEvent(x, getHeight() - y, dWheel));
 	}
 }
