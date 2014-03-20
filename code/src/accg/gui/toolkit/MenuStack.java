@@ -3,6 +3,7 @@ package accg.gui.toolkit;
 import java.util.*;
 
 import accg.gui.toolkit.MenuBar.Orientation;
+import accg.gui.toolkit.MenuBarItem.Presentation;
 
 /**
  * This class manages a GUI with several possible menu bars.
@@ -115,6 +116,13 @@ public class MenuStack extends Container {
 	}
 	
 	/**
+	 * The presentation of all buttons in this menu stack.
+	 * 
+	 * The {@link MenuStack} will set this for all visible menus.
+	 */
+	protected Presentation presentation;
+	
+	/**
 	 * Creates a new menu collection, with no menu bars.
 	 */
 	public MenuStack() {
@@ -123,6 +131,7 @@ public class MenuStack extends Container {
 		
 		alignment = Alignment.CENTER;
 		position = Position.TOP;
+		presentation = Presentation.ICON_ABOVE_TEXT;
 	}
 	
 	@Override
@@ -426,15 +435,15 @@ public class MenuStack extends Container {
 	}
 	
 	/**
-	 * Changes the alignment of this menu collection.
-	 * @param alignment New alignment for this menu collection.
+	 * Changes the alignment of this menu stack.
+	 * @param alignment New alignment for this menu stack.
 	 */
 	public void setAlignment(Alignment alignment) {
 		this.alignment = alignment;
 	}
 	
 	/**
-	 * Returns the alignment of this menu collection.
+	 * Returns the alignment of this menu stack.
 	 * @return The alignment.
 	 */
 	public Alignment getAlignment() {
@@ -442,8 +451,8 @@ public class MenuStack extends Container {
 	}
 	
 	/**
-	 * Changes the position of this menu collection.
-	 * @param position New position for this menu collection.
+	 * Changes the position of this menu stack.
+	 * @param position New position for this menu stack.
 	 */
 	public void setPosition(Position position) {
 		this.position = position;
@@ -458,6 +467,16 @@ public class MenuStack extends Container {
 	public Position getPosition() {
 		return position;
 	}
+	
+	/**
+	 * Changes the presentation of all buttons in this menu stack.
+	 * @param presentation New presentation for this menu stack.
+	 */
+	public void setPresentation(Presentation presentation) {
+		this.presentation = presentation;
+		
+		updatePresentations();
+	}
 
 	/**
 	 * For every menu in the collection, update its orientation property based
@@ -471,6 +490,17 @@ public class MenuStack extends Container {
 		} else {
 			for (MenuBar m : menuBars.values()) {
 				m.setOrientation(Orientation.VERTICAL);
+			}
+		}
+	}
+	
+	/**
+	 * Sets all buttons in all menu bars to the set presentation.
+	 */
+	protected void updatePresentations() {
+		for (MenuBar m : menuBars.values()) {
+			for (MenuBarItem c : m.items) {
+				c.setPresentation(presentation);
 			}
 		}
 	}

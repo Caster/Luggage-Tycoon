@@ -36,7 +36,7 @@ public class PresentationMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					//stack.setPosition(pos);
+					stack.setPresentation(pres);
 				}
 			}
 		});
