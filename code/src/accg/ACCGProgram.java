@@ -659,38 +659,6 @@ public class ACCGProgram {
 	}*/
 	
 	/**
-	 * Generate a {@link MenuBarItem} that represents a menu alignment.
-	 * 
-	 * @param index Index of the alignment to generate an item for.
-	 * @param s State, used to look up icons in.
-	 * @return A newly created {@link MenuBarItem}.
-	 */
-	/*private MenuBarItem generateAlignmentItem(final int index, State s) {
-		final Alignment alignment = MenuBar.Alignment.values()[index];
-		// create the item
-		MenuBarItem mbi = new MenuBarItem(alignment.getName(),
-				getAlignmentIcon(index, s), Type.CHECKABLE_UNIQUE) {
-			@Override
-			public void onClick(int x, int y) {
-				super.onClick(x, y);
-				setMenuAlignments(alignment);
-			}
-			
-			@Override
-			public void onDrag(int x, int y) { /* ignored / }
-			
-			@Override
-			public void onScroll(int dWheel) { /* ignored / }
-		};
-		// check the item if needed
-		if (index == prefs.getInt("menu.alignment", DEF_MENU_ALIGNMENT)) {
-			mbi.setChecked(true);
-		}
-		// return the result
-		return mbi;
-	}*/
-	
-	/**
 	 * Generate a {@link MenuBarItem} that represents a menu presentation.
 	 * 
 	 * @param index Index of the presentation to generate an item for.
@@ -720,30 +688,6 @@ public class ACCGProgram {
 		}
 		// return the result
 		return mbi;
-	}*/
-	
-	/**
-	 * Return the icon that belongs to the {@link Alignment} with given ordinal index.
-	 * 
-	 * @param index Ordinal index of an {@link Alignment}.
-	 * @param s State, used to look up icons in.
-	 * @return An icon, or {@code null} if index is invalid.
-	 */
-	/*private Texture getAlignmentIcon(final int index, State s) {
-		if (index < 0 || index >= MenuBar.Alignment.values().length) {
-			return null;
-		}
-		
-		switch (index) {
-		case 0 :
-			return s.textures.iconJustifyLeft;
-		case 1 :
-			return s.textures.iconJustifyCenter;
-		case 2 :
-			return s.textures.iconJustifyRight;
-		default :
-			return null;
-		}
 	}*/
 	
 	/**
