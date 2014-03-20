@@ -16,6 +16,26 @@ import accg.simulation.Simulation;
 public class State {
 	
 	/**
+	 * Default menu alignment (index in enumeration).
+	 */
+	public static final int DEF_MENU_ALIGNMENT = 1;
+	
+	/**
+	 * Default menu position (index in enumeration).
+	 */
+	public static final int DEF_MENU_POSITION = 0;
+	
+	/**
+	 * Default menu presentation (index in enumeration).
+	 */
+	public static final int DEF_MENU_PRESENTATION = 1;
+	
+	/**
+	 * Default menu presentation (index in enumeration).
+	 */
+	public static final float DEF_MOUSE_SENSITIVITY = 0.5f;
+	
+	/**
 	 * Enumeration of the modes in which the program can be.
 	 */
 	public enum ProgramMode {

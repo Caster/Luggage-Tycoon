@@ -44,12 +44,6 @@ public class ACCGProgram {
 	/** Background color of the scene. */
 	private static final java.awt.Color BACKGROUND_COLOR =
 			new java.awt.Color(0.8f, 0.8f, 0.77f, 1.0f);
-	/** Default menu alignment (index in enumeration). */
-	private static final int DEF_MENU_ALIGNMENT = 1;
-	/** Default menu position (index in enumeration). */
-	private static final int DEF_MENU_POSITION = 0;
-	/** Default menu presentation (index in enumeration). */
-	private static final int DEF_MENU_PRESENTATION = 1;
 	
 	/** If the escape key has been pressed. */
 	private boolean escPressed = false;
@@ -178,8 +172,8 @@ public class ACCGProgram {
 		clickedPoint = null;
 		
 		// intialise GUI stuff
-		gui = new MainGUI(s);
 		loadPreferences(s);
+		gui = new MainGUI(s);
 		gui.updateItems();
 		gui.setWidth(displayWidth);
 		gui.setHeight(displayHeight);
@@ -697,38 +691,6 @@ public class ACCGProgram {
 	}*/
 	
 	/**
-	 * Generate a {@link MenuBarItem} that represents a menu position.
-	 * 
-	 * @param index Index of the position to generate an item for.
-	 * @param s State, used to look up icons in.
-	 * @return A newly created {@link MenuBarItem}.
-	 */
-	/*private MenuBarItem generatePositionItem(final int index, State s) {
-		final Position pos = MenuBar.Position.values()[index];
-		// create the item
-		MenuBarItem mbi = new MenuBarItem(pos.getName(),
-				getPositionIcon(index, s), Type.CHECKABLE_UNIQUE) {
-			@Override
-			public void onClick(int x, int y) {
-				super.onClick(x, y);
-				setMenuPositions(pos);
-			}
-			
-			@Override
-			public void onDrag(int x, int y) { /* ignored / }
-			
-			@Override
-			public void onScroll(int dWheel) { /* ignored / }
-		};
-		// check the item if needed
-		if (index == prefs.getInt("menu.position", DEF_MENU_POSITION)) {
-			mbi.setChecked(true);
-		}
-		// return the result
-		return mbi;
-	}*/
-	
-	/**
 	 * Generate a {@link MenuBarItem} that represents a menu presentation.
 	 * 
 	 * @param index Index of the presentation to generate an item for.
@@ -785,32 +747,6 @@ public class ACCGProgram {
 	}*/
 	
 	/**
-	 * Return the icon that belongs to the {@link Position} with given ordinal index.
-	 * 
-	 * @param index Ordinal index of a {@link Position}.
-	 * @param s State, used to look up icons in.
-	 * @return An icon, or {@code null} if index is invalid.
-	 */
-	/*private Texture getPositionIcon(final int index, State s) {
-		if (index < 0 || index >= MenuBar.Position.values().length) {
-			return null;
-		}
-		
-		switch (index) {
-		case 0 :
-			return s.textures.iconGoUp;
-		case 1 :
-			return s.textures.iconGoRight;
-		case 2 :
-			return s.textures.iconGoDown;
-		case 3 :
-			return s.textures.iconGoLeft;
-		default :
-			return null;
-		}
-	}*/
-	
-	/**
 	 * Return the icon that belongs to the {@link Presentation} with given ordinal index.
 	 * 
 	 * @param index Ordinal index of a {@link Presentation}.
@@ -844,11 +780,11 @@ public class ACCGProgram {
 		
 		s.mouseSensitivityFactor = s.prefs.getFloat("mouse.sensitivity", 1.0f);
 		
-		int alignment = s.prefs.getInt("menu.alignment", DEF_MENU_ALIGNMENT);
+		int alignment = s.prefs.getInt("menu.alignment", State.DEF_MENU_ALIGNMENT);
 		//setMenuAlignments(MenuCollection.Alignment.values()[alignment]); TODO
-		int position = s.prefs.getInt("menu.position", DEF_MENU_POSITION);
+		int position = s.prefs.getInt("menu.position", State.DEF_MENU_POSITION);
 		//setMenuPositions(MenuCollection.Position.values()[position]);
-		int presentation = s.prefs.getInt("menu.presentation", DEF_MENU_PRESENTATION);
+		int presentation = s.prefs.getInt("menu.presentation", State.DEF_MENU_PRESENTATION);
 		//setMenuPresentations(MenuCollection.Presentation.values()[presentation]);
 	}
 	

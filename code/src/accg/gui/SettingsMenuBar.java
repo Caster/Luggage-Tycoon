@@ -23,7 +23,7 @@ public class SettingsMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					// TODO ask the MenuCollection to open the PositionMenuBar
+					stack.addMenuBelowOrClose(SettingsMenuBar.this, MainGUI.POSITION_MENU);
 				}
 			}
 		});
@@ -64,6 +64,7 @@ public class SettingsMenuBar extends MenuBar {
 				}
 			}
 		});
+		sensitivityItem.setValue(s.prefs.getFloat("mouse.sensitivity", State.DEF_MOUSE_SENSITIVITY));
 		add(sensitivityItem);
 	}
 }

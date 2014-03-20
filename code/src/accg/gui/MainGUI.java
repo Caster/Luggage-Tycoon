@@ -17,6 +17,7 @@ import accg.gui.toolkit.event.*;
 public class MainGUI extends MenuStack {
 	
 	public static final String SETTINGS_MENU = "settings";
+	public static final String POSITION_MENU = "position";
 	
 	/**
 	 * The state of the program.
@@ -36,6 +37,7 @@ public class MainGUI extends MenuStack {
 		addToCollection(ProgramMode.BUILDING_MODE, new BuildingModeMenuBar(this, state));
 		addToCollection(ProgramMode.SIMULATION_MODE, new SimulationModeMenuBar(this, state));
 		addToCollection(SETTINGS_MENU, new SettingsMenuBar(this, state));
+		addToCollection(POSITION_MENU, new PositionMenuBar(this, state));
 	}
 	
 	/**
