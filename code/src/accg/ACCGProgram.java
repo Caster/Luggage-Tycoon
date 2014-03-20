@@ -385,7 +385,7 @@ public class ACCGProgram {
 		}
 		
 		// first see if the menu wants to handle this
-		boolean handledByMenu = gui.handleMouseScrollEvent(dWheel);
+		boolean handledByMenu = gui.handleMouseScrollEvent(Mouse.getX(), Mouse.getY(), dWheel);
 		
 		// otherwise, let the camera handle it
 		if (!handledByMenu) {

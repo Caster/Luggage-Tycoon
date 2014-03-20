@@ -104,10 +104,12 @@ public class MainGUI extends MenuStack {
 	/**
 	 * Handles a mouse scroll event by giving it to the GUI.
 	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
 	 * @param dWheel The amount of scroll steps.
 	 * @return Whether the event has been handled by the GUI.
 	 */
-	public boolean handleMouseScrollEvent(int dWheel) {
-		return sendEvent(new MouseScrollEvent(dWheel));
+	public boolean handleMouseScrollEvent(int x, int y, int dWheel) {
+		return sendEvent(new MouseScrollEvent(x, y, dWheel));
 	}
 }
