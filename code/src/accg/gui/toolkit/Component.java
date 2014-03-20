@@ -7,7 +7,6 @@ import org.lwjgl.util.Rectangle;
 import org.newdawn.slick.Font;
 
 import accg.gui.toolkit.event.MouseClickEvent;
-import accg.gui.toolkit.event.MouseExitEvent;
 import accg.gui.toolkit.event.MouseMoveEvent;
 
 /**
@@ -273,17 +272,48 @@ public abstract class Component {
 		return false;
 	}
 	
+	/**
+	 * Returns the name of the type of component. This should be just the class
+	 * name of the component.
+	 * 
+	 * This is used for debugging purposes.
+	 * 
+	 * If you extend an existing component, you could override this method if
+	 * it is a really new component.
+	 * 
+	 * @return The name of this component.
+	 */
 	public abstract String getComponentName();
 	
+	/**
+	 * Outputs debug information about this component to standard output.
+	 */
 	public void outputDebug() {
 		outputDebug(System.out);
 	}
-	
+
+	/**
+	 * Outputs debug information about this component to the given output
+	 * stream.
+	 * 
+	 * @param out The stream to print the information to. This will not be
+	 * closed afterwards.
+	 */
 	public void outputDebug(PrintStream out) {
 		outputDebug(out, 0);
 	}
-	
-	public void outputDebug(PrintStream out, int indent) {
+
+	/**
+	 * Outputs debug information about this component to the given output
+	 * stream, with a given indentation level.
+	 * 
+	 * This is useful for printing "trees" of components and their children.
+	 * 
+	 * @param out The stream to print the information to. This will not be
+	 * closed afterwards.
+	 * @param indent The number of spaces to start with.
+	 */
+	protected void outputDebug(PrintStream out, int indent) {
 		for (int i = 0; i < indent; i++) {
 			out.print(" ");
 		}
