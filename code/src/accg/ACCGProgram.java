@@ -506,7 +506,12 @@ public class ACCGProgram {
 				// handle general mouse move
 				if (!handledMouseMove) {
 					// see if a menubar is hovered
-					handledMouseMoveByMenu = gui.handleMouseMoveEvent(Mouse.getX(), Mouse.getY());
+					
+					if (Mouse.isButtonDown(0)) {
+						handledMouseMoveByMenu = gui.handleMouseDragEvent(Mouse.getX(), Mouse.getY());
+					} else {
+						handledMouseMoveByMenu = gui.handleMouseMoveEvent(Mouse.getX(), Mouse.getY());
+					}
 					
 					// in building mode, we might have to draw an object where the mouse
 					// hovers (that is, calculate intersection of a projected ray from the
