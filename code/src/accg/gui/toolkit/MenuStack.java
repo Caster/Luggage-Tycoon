@@ -2,6 +2,8 @@ package accg.gui.toolkit;
 
 import java.util.*;
 
+import accg.gui.toolkit.MenuBar.Orientation;
+
 /**
  * This class manages a GUI with several possible menu bars.
  * 
@@ -446,6 +448,8 @@ public class MenuStack extends Container {
 	 */
 	public void setPosition(Position position) {
 		this.position = position;
+		
+		updateOrientations();
 	}
 
 	/**
@@ -454,6 +458,22 @@ public class MenuStack extends Container {
 	 */
 	public Position getPosition() {
 		return position;
+	}
+
+	/**
+	 * For every menu in the collection, update its orientation property based
+	 * on the {@link Position} of this menu stack.
+	 */
+	protected void updateOrientations() {
+		if (position == Position.TOP || position == Position.BOTTOM) {
+			for (MenuBar m : menuBars.values()) {
+				m.setOrientation(Orientation.HORIZONTAL);
+			}
+		} else {
+			for (MenuBar m : menuBars.values()) {
+				m.setOrientation(Orientation.VERTICAL);
+			}
+		}
 	}
 
 	@Override
