@@ -44,14 +44,14 @@ public class MainGUI extends MenuStack {
 		addToCollection(ALIGNMENT_MENU, new AlignmentMenuBar(this, state));
 		addToCollection(PRESENTATION_MENU, new PresentationMenuBar(this, state));
 		
-		int alignment = state.prefs.getInt("menu.alignment", State.DEF_MENU_ALIGNMENT);
-		setAlignment(MenuStack.Alignment.values()[alignment]);
+		int alignmentId = state.prefs.getInt("menu.alignment", State.DEF_MENU_ALIGNMENT);
+		setAlignment(MenuStack.Alignment.values()[alignmentId]);
 		
-		int position = state.prefs.getInt("menu.position", State.DEF_MENU_POSITION);
-		setPosition(MenuStack.Position.values()[position]);
+		int positionId = state.prefs.getInt("menu.position", State.DEF_MENU_POSITION);
+		setPosition(MenuStack.Position.values()[positionId]);
 		
-		int presentation = state.prefs.getInt("menu.presentation", State.DEF_MENU_PRESENTATION);
-		setPresentation(MenuBarItem.Presentation.values()[presentation]);
+		int presentationId = state.prefs.getInt("menu.presentation", State.DEF_MENU_PRESENTATION);
+		setPresentation(MenuBarItem.Presentation.values()[presentationId]);
 	}
 	
 	/**

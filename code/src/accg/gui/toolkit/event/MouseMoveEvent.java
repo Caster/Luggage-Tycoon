@@ -1,15 +1,26 @@
 package accg.gui.toolkit.event;
 
-import accg.gui.toolkit.Event;
-
 /**
- * Event that indicates that a mouse-move has occurred in the component.
+ * Event that indicates that a mouse move has occurred in the component.
  */
 public class MouseMoveEvent extends MouseEvent {
 	
+	/**
+	 * The x-coordinate of this mouse move.
+	 */
 	protected int x;
+	
+	/**
+	 * The y-coordinate of this mouse move.
+	 */
 	protected int y;
 	
+	/**
+	 * Creates a new MouseMoveEvent.
+	 * 
+	 * @param x The x-coordinate of this mouse move.
+	 * @param y The y-coordinate of this mouse move.
+	 */
 	public MouseMoveEvent(int x, int y) {
 		this.x = x;
 		this.y = y;
