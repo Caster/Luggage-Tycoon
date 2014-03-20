@@ -118,7 +118,7 @@ public class MenuBar extends Container {
 					maxWidth = item.getPreferredWidth();
 				}
 			}
-			int extraHeight = (getWidth() - totalItemHeight) / items.size();
+			int extraHeight = (getHeight() - totalItemHeight) / items.size();
 			
 			// store the preferred size
 			preferredWidth = maxWidth;
