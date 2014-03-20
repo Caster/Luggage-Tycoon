@@ -1,4 +1,6 @@
 /**
- * This package contains classes for the GUI (a.k.a. Thom's LWJGL GUI Framework).
+ * This package contains the classes for the GUI.
+ * 
+ * It uses the GUI toolkit in the package {@link accg.gui.toolkit}.
  */
 package accg.gui;

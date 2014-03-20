@@ -1,4 +1,4 @@
-package accg.gui;
+package accg.gui.toolkit;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -7,7 +7,7 @@ import org.lwjgl.opengl.Display;
 /**
  * This class provides some useful static functions for GUI widgets.
  */
-public class GUI {
+public class GUIUtils {
 	
 	/**
 	 * This function switches from 3D rendering to 2D rendering.

@@ -1,11 +1,8 @@
-package accg.gui;
+package accg.gui.toolkit;
 
-import org.newdawn.slick.Font;
 import org.newdawn.slick.opengl.Texture;
 
-import accg.gui.MenuBar.Position;
-import accg.gui.MenuBar.Presentation;
-import accg.gui.MenuBarItem.Type;
+import accg.gui.toolkit.event.MouseClickEvent;
 
 /**
  * A ToggleMenuBarItem is a {@link MenuBarItem} that toggles between two states
@@ -40,52 +37,59 @@ public class ToggleMenuBarItem extends MenuBarItem {
 	 *              In case this is {@code null}, {@code text1} is used.
 	 * @param icon2 Icon that is displayed in alternate state.
 	 *              In case this is {@code null}, {@code icon1} is used.
-	 * @param type {@link Type} of the menu item.
+	 * @param type {@link MenuBarItem.Type} of the menu item.
 	 */
 	public ToggleMenuBarItem(String text1, Texture icon1, String text2,
 			Texture icon2, Type type) {
 		super(text1, icon1, type);
 		this.text2 = (text2 == null ? text1 : text2);
 		this.icon2 = (icon2 == null ? icon1 : icon2);
+		
+		// add a listener for calling onClick() when appropriate
+		addListener(new Listener() {
+			
+			@Override
+			public void event(Event e) {
+				if (e instanceof MouseClickEvent) {
+					onClick();
+				}
+			}
+		});
 	}
 	
 	@Override
-	public int getPreferredWidth(Font renderFont, Position position,
-			Presentation presentation) {
+	public String getComponentName() {
+		return "ToggleMenuBarItem";
+	}
+	
+	@Override
+	public int getPreferredWidth() {
+		
+		// [ws] TODO the following comment was here:
+		//
 		// in case we have text next to the icon and position top or bottom,
 		// it actually looks nicer to just return the preferred width with
 		// the current text, I think [tca]
-		if ((position == Position.TOP || position == Position.BOTTOM) &&
-				presentation == Presentation.ICON_LEFT_TEXT) {
-			return super.getPreferredWidth(renderFont, position, presentation);
-		}
+		//
+		// I agree with that, but I don't see a neat way of doing that (i.e.,
+		// finding the position) with the new GUI toolkit. We should think
+		// about this :)
 		
-		// return the maximum width for both texts
-		int text1Width = super.getPreferredWidth(renderFont, position,
-				presentation);
+		int text1Width = super.getPreferredWidth();
 		swapTexts();
-		int text2Width = super.getPreferredWidth(renderFont, position,
-				presentation);
+		int text2Width = super.getPreferredWidth();
 		swapTexts();
+		
 		return Math.max(text1Width, text2Width);
 	}
 	
-	@Override
-	public void onClick(int x, int y) {
-		super.onClick(x, y);
-		
+	/**
+	 * Handles clicks on this item by swapping the texts and icons.
+	 */
+	protected void onClick() {
 		swapTexts();
 		swapIcons();
-		
-		// notify parent of (possible) resizing
-		this.parent.onChildResize();
 	}
-	
-	@Override
-	public void onDrag(int x, int y) { /* ignored */ }
-
-	@Override
-	public void onScroll(int dWheel) { /* ignored */ }
 
 	/**
 	 * Swap {@code this.icon} and {@code this.icon2}.

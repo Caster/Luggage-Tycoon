@@ -1,7 +1,10 @@
 package accg;
 
+import java.util.prefs.Preferences;
+
 import org.newdawn.slick.Font;
 
+import accg.gui.MainGUI;
 import accg.objects.Floor;
 import accg.objects.ShadowBlock;
 import accg.objects.World;
@@ -13,12 +16,38 @@ import accg.simulation.Simulation;
 public class State {
 	
 	/**
+	 * Default menu alignment (index in enumeration).
+	 */
+	public static final int DEF_MENU_ALIGNMENT = 1;
+	
+	/**
+	 * Default menu position (index in enumeration).
+	 */
+	public static final int DEF_MENU_POSITION = 0;
+	
+	/**
+	 * Default menu presentation (index in enumeration).
+	 */
+	public static final int DEF_MENU_PRESENTATION = 1;
+	
+	/**
+	 * Default menu presentation (index in enumeration).
+	 */
+	public static final float DEF_MOUSE_SENSITIVITY = 0.5f;
+	
+	/**
 	 * Enumeration of the modes in which the program can be.
 	 */
 	public enum ProgramMode {
 		
 		/**
-		 * In this mode, the user can place and remove blocks.
+		 * In this mode, the user can change the camera position, and choose another
+		 * mode to work further.
+		 */
+		NORMAL_MODE,
+		
+		/**
+		 * In this mode, a GUI is shown for placing and removing blocks.
 		 */
 		BUILDING_MODE,
 		
@@ -34,7 +63,7 @@ public class State {
 	 * At the moment, this is either the building mode or the simulation
 	 * mode, also see {@link State.ProgramMode}.
 	 */
-	public ProgramMode programMode = ProgramMode.BUILDING_MODE;
+	public ProgramMode programMode = ProgramMode.NORMAL_MODE;
 	
 	/**
 	 * Length of the field, in number of grid squares.
@@ -127,4 +156,19 @@ public class State {
 	 * hovers the scene (using ray projection/intersection et cetera).
 	 */
 	public ShadowBlock shadowBlock;
+	
+	/**
+	 * The GUI object.
+	 */
+	public MainGUI gui;
+	
+	/**
+	 * Preferences object. Used to store user preferences persistently.
+	 */
+	public Preferences prefs;
+	
+	/**
+	 * If the escape key has been pressed.
+	 */
+	public boolean escPressed = false;
 }
