@@ -47,7 +47,7 @@ public class SettingsMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					// TODO ask the MenuCollection to open the PresenationMenuBar
+					stack.addMenuBelowOrClose(SettingsMenuBar.this, MainGUI.PRESENTATION_MENU);
 				}
 			}
 		});

@@ -655,59 +655,7 @@ public class ACCGProgram {
 		}
 	}*/
 	
-	/**
-	 * Generate a {@link MenuBarItem} that represents a menu presentation.
-	 * 
-	 * @param index Index of the presentation to generate an item for.
-	 * @param s State, used to look up icons in.
-	 * @return A newly created {@link MenuBarItem}.
-	 */
-	/*private MenuBarItem generatePresentationItem(final int index, State s) {
-		final Presentation pres = MenuBar.Presentation.values()[index];
-		// create the item
-		MenuBarItem mbi = new MenuBarItem(pres.getName(),
-				getPresentationIcon(index, s), Type.CHECKABLE_UNIQUE) {
-			@Override
-			public void onClick(int x, int y) {
-				super.onClick(x, y);
-				setMenuPresentations(pres);
-			}
-			
-			@Override
-			public void onDrag(int x, int y) { /* ignored / }
-			
-			@Override
-			public void onScroll(int dWheel) { /* ignored / }
-		};
-		// check the item if needed
-		if (index == prefs.getInt("menu.presentation", DEF_MENU_PRESENTATION)) {
-			mbi.setChecked(true);
-		}
-		// return the result
-		return mbi;
-	}*/
 	
-	/**
-	 * Return the icon that belongs to the {@link Presentation} with given ordinal index.
-	 * 
-	 * @param index Ordinal index of a {@link Presentation}.
-	 * @param s State, used to look up icons in.
-	 * @return An icon, or {@code null} if index is invalid.
-	 */
-	/*private Texture getPresentationIcon(final int index, State s) {
-		if (index < 0 || index >= MenuBar.Presentation.values().length) {
-			return null;
-		}
-		
-		switch (index) {
-		case 0 :
-			return s.textures.iconZoomOut;
-		case 1 :
-			return s.textures.iconZoomIn;
-		default :
-			return null;
-		}
-	}*/
 	
 	/**
 	 * Try to load preferences of the user from last time.

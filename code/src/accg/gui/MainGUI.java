@@ -19,6 +19,7 @@ public class MainGUI extends MenuStack {
 	public static final String SETTINGS_MENU = "settings";
 	public static final String POSITION_MENU = "position";
 	public static final String ALIGNMENT_MENU = "alignment";
+	public static final String PRESENTATION_MENU = "presentation";
 	
 	/**
 	 * The state of the program.
@@ -40,6 +41,7 @@ public class MainGUI extends MenuStack {
 		addToCollection(SETTINGS_MENU, new SettingsMenuBar(this, state));
 		addToCollection(POSITION_MENU, new PositionMenuBar(this, state));
 		addToCollection(ALIGNMENT_MENU, new AlignmentMenuBar(this, state));
+		addToCollection(PRESENTATION_MENU, new PresentationMenuBar(this, state));
 	}
 	
 	/**
