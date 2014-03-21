@@ -1,6 +1,5 @@
 \documentclass[12pt, aspectratio=169]{beamer} % aspectratio = 43 of 169
 \usepackage{color}
-\usepackage{graphicx}
 \usepackage{tikz}
 \usepackage{transparent}
 
@@ -14,7 +13,7 @@
 
 \setbeamercolor{alerted text}{fg=tueblue}
 
-\graphicspath{{./imgs}}
+% \graphicspath{{./imgs/}}
 
 % http://stackoverflow.com/a/5971923/962603
 \newenvironment{animationframe}
@@ -93,6 +92,20 @@
       \only<4>{\includegraphics[height=\textwidth]{imgs/screenshot-shadows.png}}%
       \only<5>{\includegraphics[height=\textwidth]{imgs/screenshot-gui.png}}%
   \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Bresenham's algorithm}
+  \begin{itemize}
+    \item When editing, detect which block is hovered.
+    \item Fast, since must potentially be done every frame.
+  \end{itemize}
+  \begin{center}
+    % generate animation frames using a for-each loop
+    \foreach \id in {1,...,11} {%
+      \only<\id>{\includegraphics[scale=1]{imgs/bresenham-\id}}%
+    }
+  \end{center}
 \end{frame}
 
 \begin{frame}
