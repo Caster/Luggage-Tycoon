@@ -4,7 +4,6 @@ import accg.State;
 import accg.gui.toolkit.*;
 import accg.gui.toolkit.event.MouseClickEvent;
 import accg.gui.toolkit.event.ValueChangeEvent;
-import accg.utils.GLUtils;
 
 /**
  * Menu bar containing the settings.

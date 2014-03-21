@@ -1,6 +1,6 @@
 package accg.utils;
 
-import static accg.utils.GLUtils.*;
+import static accg.gui.toolkit.GLUtils.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.io.File;

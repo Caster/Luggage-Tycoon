@@ -1,6 +1,6 @@
 package accg.camera;
 
-import static accg.utils.GLUtils.*;
+import static accg.gui.toolkit.GLUtils.*;
 import static org.lwjgl.util.glu.GLU.*;
 
 import javax.vecmath.Vector3f;

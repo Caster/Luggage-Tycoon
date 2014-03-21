@@ -1,6 +1,6 @@
 package accg.gui.toolkit;
 
-import static accg.utils.GLUtils.*;
+import static accg.gui.toolkit.GLUtils.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
@@ -9,7 +9,6 @@ import org.lwjgl.util.Rectangle;
 import org.newdawn.slick.opengl.Texture;
 
 import accg.gui.toolkit.event.*;
-import accg.utils.GLUtils;
 
 /**
  * A SliderMenuBarItem is a {@link MenuBarItem} that has a value which can

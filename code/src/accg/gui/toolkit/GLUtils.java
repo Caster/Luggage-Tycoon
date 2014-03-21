@@ -1,4 +1,4 @@
-package accg.utils;
+package accg.gui.toolkit;
 
 import static org.lwjgl.opengl.GL11.*;
 

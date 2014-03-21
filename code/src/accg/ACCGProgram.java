@@ -1,6 +1,6 @@
 package accg;
 
-import static accg.utils.GLUtils.*;
+import static accg.gui.toolkit.GLUtils.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.*;
 
@@ -24,6 +24,7 @@ import org.newdawn.slick.Color;
 import accg.State.ProgramMode;
 import accg.camera.Camera;
 import accg.gui.MainGUI;
+import accg.gui.toolkit.GLUtils;
 import accg.gui.toolkit.GUIUtils;
 import accg.objects.Block.Orientation;
 import accg.objects.*;
@@ -31,7 +32,6 @@ import accg.objects.blocks.ConveyorBlock;
 import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
 import accg.objects.blocks.StraightConveyorBlock;
 import accg.simulation.Simulation;
-import accg.utils.GLUtils;
 import accg.utils.Utils;
 
 /**
