@@ -4,6 +4,7 @@ import accg.State;
 import accg.gui.toolkit.*;
 import accg.gui.toolkit.event.MouseClickEvent;
 import accg.gui.toolkit.event.ValueChangeEvent;
+import accg.utils.GLUtils;
 
 /**
  * Menu bar containing the settings.
@@ -64,7 +65,7 @@ public class SettingsMenuBar extends MenuBar {
 				}
 			}
 		});
-		sensitivityItem.setValue(s.prefs.getFloat("mouse.sensitivity", State.DEF_MOUSE_SENSITIVITY));
+		sensitivityItem.setValue(s.mouseSensitivityFactor);
 		add(sensitivityItem);
 	}
 }

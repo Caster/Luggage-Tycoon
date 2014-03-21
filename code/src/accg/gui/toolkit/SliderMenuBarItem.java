@@ -9,6 +9,7 @@ import org.lwjgl.util.Rectangle;
 import org.newdawn.slick.opengl.Texture;
 
 import accg.gui.toolkit.event.*;
+import accg.utils.GLUtils;
 
 /**
  * A SliderMenuBarItem is a {@link MenuBarItem} that has a value which can
@@ -288,6 +289,8 @@ public class SliderMenuBarItem extends MenuBarItem {
 		this.val = this.min + ((x - this.cachedBarOutline.getX()) /
 				((float) this.cachedBarOutline.getWidth() - 2 * SLIDER_BAR_EDGE_WIDTH)) *
 				(this.max - this.min);
+		
+		this.val = GLUtils.clamp(this.val, 0.1f, 2.0f);
 		
 		sendEvent(new ValueChangeEvent());
 	}
