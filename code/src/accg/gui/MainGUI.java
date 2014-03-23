@@ -15,11 +15,6 @@ import accg.gui.toolkit.event.*;
  */
 public class MainGUI extends LayeredPane {
 	
-	/**
-	 * The state of the program.
-	 */
-	private State state;
-	
 	private MainStack stack;
 	
 	/**
@@ -27,7 +22,6 @@ public class MainGUI extends LayeredPane {
 	 * @param state The state of the program.
 	 */
 	public MainGUI(State state) {
-		this.state = state;
 		
 		stack = new MainStack(state);
 		add(stack);
