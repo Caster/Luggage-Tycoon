@@ -1,5 +1,7 @@
 package accg.simulation;
 
+import java.util.ArrayList;
+
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 
@@ -7,6 +9,7 @@ import accg.State;
 import accg.objects.*;
 import accg.objects.blocks.ConveyorBlock;
 import accg.objects.blocks.EnterBlock;
+import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
 import accg.utils.Utils;
 
 import com.bulletphysics.BulletGlobals;
@@ -17,6 +20,7 @@ import com.bulletphysics.collision.dispatch.CollisionDispatcher;
 import com.bulletphysics.collision.dispatch.CollisionFlags;
 import com.bulletphysics.collision.dispatch.DefaultCollisionConfiguration;
 import com.bulletphysics.collision.shapes.CollisionShape;
+import com.bulletphysics.collision.shapes.ConvexHullShape;
 import com.bulletphysics.collision.shapes.StaticPlaneShape;
 import com.bulletphysics.dynamics.DiscreteDynamicsWorld;
 import com.bulletphysics.dynamics.RigidBody;
@@ -24,6 +28,7 @@ import com.bulletphysics.dynamics.constraintsolver.ConstraintSolver;
 import com.bulletphysics.dynamics.constraintsolver.SequentialImpulseConstraintSolver;
 import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
+import com.bulletphysics.util.ObjectArrayList;
 
 /**
  * This class manages the simulation.
@@ -112,13 +117,14 @@ public class Simulation {
 	 * @param cb The block to be added.
 	 */
 	public void addConveyorBlock(State s, ConveyorBlock cb) {
-		final RigidBody r = new RigidBody(0, null,
+		final ArrayList<RigidBody> addedBodies = new ArrayList<>(); 
+		RigidBody r = new RigidBody(0, null,
 				ShapeFactory.getConveyorShape(s, cb));
 		Transform blockTransform = new Transform();
 		blockTransform.set(new Matrix4f(new float[] {
 				1, 0, 0, cb.getX(),
 				0, 1, 0, cb.getY(),
-				0, 0, 1, cb.getZ() / 4.0f,
+				0, 0, 1, cb.getZ() / 4f,
 				0, 0, 0, 1
 		}));
 		r.setWorldTransform(blockTransform);
@@ -127,12 +133,19 @@ public class Simulation {
 		r.setLinearVelocity(cb.getLinearVelocity());
 		r.setUserPointer(SimulationBodyType.CONVEYOR_BLOCK);
 		world.addRigidBody(r);
+		addedBodies.add(r);
+		
+		if (cb.getConveyorBlockType() == ConveyorBlockType.ENTER) {
+			addEnterBlockHull(cb, addedBodies);
+		}
 		
 		// make sure the body is cleaned up when the conveyorblock is removed
 		cb.addListener(new DrawableObjectListener() {
 			@Override
 			public void onDestroy() {
-				world.removeRigidBody(r);
+				for (RigidBody body : addedBodies) {
+					world.removeRigidBody(body);
+				}
 			}
 		});
 	}
@@ -187,6 +200,44 @@ public class Simulation {
 		world.stepSimulation(s.time - this.time,
 				(int) (Math.ceil((s.time - this.time) / dt) + 1), dt);
 		this.time = s.time;
+	}
+	
+	/**
+	 * Add rigid bodies to the world that represent the shape of the hull around
+	 * the conveyor belt in an EnterBlock. These newly created bodies are added
+	 * to the given list.
+	 * 
+	 * <p>Note: it is <b>not</b> checked if the given block is actually an
+	 * EnterBlock. Its position is used and that is it.
+	 * 
+	 * @param enterBlock The block for which bodies need to be added. Position
+	 *            of this block is used for positioning the bodies.
+	 * @param addedBodies A list of bodies, to which newly created bodies will
+	 *            be appended.
+	 */
+	private void addEnterBlockHull(ConveyorBlock enterBlock,
+			ArrayList<RigidBody> addedBodies) {		
+		Transform blockTransform = new Transform();
+		blockTransform.set(new Matrix4f(new float[] {
+				1, 0, 0, enterBlock.getX(),
+				0, 1, 0, enterBlock.getY(),
+				0, 0, 1, enterBlock.getZ() / 4f,
+				0, 0, 0, 1
+		}));
+		
+		for (int i = 0; i < EnterBlock.HULL_POINTS.length; i += 4) {
+			ObjectArrayList<Vector3f> points = new ObjectArrayList<>(4);
+			for (int j = i; j < i + 4; j++) {
+				points.add(EnterBlock.HULL_POINTS[j]);
+			}
+			Utils.rotatePoints(enterBlock.getOrientation(), points);
+			RigidBody body = new RigidBody(0, null, new ConvexHullShape(points));
+			// undo rotation...
+			Utils.rotatePoints(enterBlock.getOrientation().turnAround(), points);
+			body.setWorldTransform(blockTransform);
+			world.addRigidBody(body);
+			addedBodies.add(body);
+		}
 	}
 	
 	/**

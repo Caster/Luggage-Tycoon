@@ -107,6 +107,15 @@ public abstract class Block extends DrawableObject {
 		public Orientation rotateRight() {
 			return Orientation.values()[(ordinal() + 1) % values().length];
 		}
+		
+		/**
+		 * Return the orientation you would obtain when turing 180 degrees when in
+		 * the current orientation.
+		 * @return The rotated orientation.
+		 */
+		public Orientation turnAround() {
+			return Orientation.values()[(ordinal() + 2) % values().length];
+		}
 	}
 	
 	/**

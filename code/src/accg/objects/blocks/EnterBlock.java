@@ -23,11 +23,10 @@ public class EnterBlock extends StraightConveyorBlock {
 	 * Colour of the hull surrounding the straight conveyor block.
 	 */
 	public static final Color HULL_COLOR = new Color(186, 189, 182);
-	
 	/**
 	 * Series of points that define the hull around this block.
 	 */
-	private static Vector3f[] hullPoints = new Vector3f[] {
+	public static final Vector3f[] HULL_POINTS = new Vector3f[] {
 		new Vector3f(-0.5f, 0.375f, 1),
 		new Vector3f(0.5f, 0.375f, 1),
 		new Vector3f(0.5f, 0.375f, 0.875f),
@@ -114,7 +113,7 @@ public class EnterBlock extends StraightConveyorBlock {
 		glColor4f(HULL_COLOR);
 		glBegin(GL_QUADS);
 		{
-			drawQuadsAndNormals(hullPoints);
+			drawQuadsAndNormals(HULL_POINTS);
 		}
 		glEnd();
 		glColor4f(Color.WHITE);
