@@ -44,7 +44,7 @@ public class ACCGProgram {
 	
 	/** Background color of the scene. */
 	private static final java.awt.Color BACKGROUND_COLOR =
-			new java.awt.Color(0.8f, 0.8f, 0.77f, 1.0f);
+			new java.awt.Color(0f, 0f, 0f, 1.0f);
 	
 	/** Possible {@link DisplayMode} which the program can use. */
 	private DisplayMode windowedMode, fullScreenMode;

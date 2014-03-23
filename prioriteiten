@@ -3,11 +3,8 @@ Dingen die we nog moeten doen voor het ACCG-programma:
 |  PRIO   |  DING                                                                                          |
 +---------+------------------------------------------------------------------------------------------------+
      2    - Verslag
-     1    - Banden aan elkaar tekenen
      1    - Editor functionaliteit
-            * muispositie afvangen en op basis daarvan blokken neer kunnen zetten
             * GUI voor de editor (kies een blok en richting etc.)
-            * interface met sneltoetsen?
             * ...?
      2    - Ingang/uitgang voor loopbanden
      3    - Scanners
@@ -35,6 +32,9 @@ Dingen die we nog moeten doen voor het ACCG-programma:
             * laat het werken met JBullet
      1    - Editor functionaliteit
             * dingen transparant weergeven
+            * muispositie afvangen en op basis daarvan blokken neer kunnen zetten
+            * interface met sneltoetsen
+     1    - Banden aan elkaar tekenen
 +---------+------------------------------------------------------------------------------------------------+
 
 Koelkast: (brrrr....)
