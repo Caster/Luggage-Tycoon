@@ -113,6 +113,7 @@ public class EnterBlock extends StraightConveyorBlock {
 			drawQuadsAndNormals(hullPoints);
 		}
 		glEnd();
+		glColor4f(Color.WHITE);
 		
 		glPopMatrix();
 	}
