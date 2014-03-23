@@ -112,7 +112,7 @@ public class Simulation {
 	 * @param s State, used to find neighbors of the block to determine its shape.
 	 * @param cb The block to be added.
 	 */
-	public void addBlock(State s, ConveyorBlock cb) {
+	public void addConveyorBlock(State s, ConveyorBlock cb) {
 		final RigidBody r = new RigidBody(0, null,
 				ShapeFactory.getConveyorShape(s, cb));
 		Transform blockTransform = new Transform();
@@ -209,7 +209,7 @@ public class Simulation {
 	 * 
 	 * @param newLuggage Luggage to add.
 	 */
-	private void addLuggageToPhysicsEngine(Luggage newLuggage) {
+	public void addLuggageToPhysicsEngine(Luggage newLuggage) {
 		MotionState motion = new LuggageMotionState(newLuggage);
 		final RigidBody r = new RigidBody(Luggage.WEIGHT, motion, ShapeFactory.getLuggageShape(),
 				ShapeFactory.getLuggageShapeInertia());

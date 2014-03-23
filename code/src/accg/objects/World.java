@@ -53,6 +53,8 @@ public class World extends Container<DrawableObject> {
 	 * Put some blocks in the scene, to start with.
 	 */
 	public void initialiseSomeBlocks() {
+		addBlock(state, new EnterBlock(1, 1, 8, Orientation.RIGHT, 2.0));
+		
 		addBlock(state, new StraightConveyorBlock(2, 7, 16, Orientation.RIGHT));
 		addBlock(state, new StraightConveyorBlock(3, 7, 15, Orientation.DOWN));
 		addBlock(state, new StraightConveyorBlock(3, 6, 14, Orientation.DOWN));
@@ -100,24 +102,27 @@ public class World extends Container<DrawableObject> {
 	 * The block will be placed at the position it indicates.
 	 * 
 	 * @param s State, used to look-up neighbors.
-	 * @param cb {@link ConveyorBlock} to be added.
+	 * @param toAdd {@link ConveyorBlock} to be added.
 	 * @throws NullPointerException If <code>cb == null</code>.
 	 */
-	public void addBlock(State s, ConveyorBlock cb) {
+	public void addBlock(State s, Block toAdd) {
 		Block b;
-		if ((b = bc.getBlock(cb.x, cb.y, cb.z)) != null) {
+		if ((b = bc.getBlock(toAdd.x, toAdd.y, toAdd.z)) != null) {
 			b.onDestroy();
 		}
-		bc.setBlock(cb);
-		state.simulation.addBlock(s, cb);
+		bc.setBlock(toAdd);
 		
-		// update neighbors
-		ConveyorBlock[] neighbors = s.world.getNeighbors(cb);
-		for (ConveyorBlock cbn : neighbors) {
-			if (cbn == null)  continue;
+		if (toAdd instanceof ConveyorBlock) {
+			state.simulation.addConveyorBlock(s, (ConveyorBlock) toAdd);
 			
-			cbn.onDestroy();
-			state.simulation.addBlock(s, cbn);
+			// update neighbors
+			ConveyorBlock[] neighbors = s.world.getNeighbors((ConveyorBlock) toAdd);
+			for (ConveyorBlock cbn : neighbors) {
+				if (cbn == null)  continue;
+				
+				cbn.onDestroy();
+				state.simulation.addConveyorBlock(s, cbn);
+			}
 		}
 	}
 
