@@ -210,20 +210,22 @@ public class World extends Container<DrawableObject> {
 			pos.z += 1;
 		}
 		pos = blockOrientationRot.moveFrom(pos, 1);
-		Block b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z);
-		if (b instanceof ConveyorBlock) {
-			ConveyorBlock cbn = (ConveyorBlock) b;
-			if (haveMatchingOrientations(cb, cbn)) {
-				result[1] = cbn;
-			}
-		}
-		if (result[1] == null &&
-				bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z - 1)) {
-			b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z - 1);
-			if (b != null && b instanceof DescendingConveyorBlock) {
+		if (bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z)) {
+			Block b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z);
+			if (b instanceof ConveyorBlock) {
 				ConveyorBlock cbn = (ConveyorBlock) b;
 				if (haveMatchingOrientations(cb, cbn)) {
 					result[1] = cbn;
+				}
+			}
+			if (result[1] == null &&
+					bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z - 1)) {
+				b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z - 1);
+				if (b != null && b instanceof DescendingConveyorBlock) {
+					ConveyorBlock cbn = (ConveyorBlock) b;
+					if (haveMatchingOrientations(cb, cbn)) {
+						result[1] = cbn;
+					}
 				}
 			}
 		}
@@ -237,21 +239,23 @@ public class World extends Container<DrawableObject> {
 			pos.z += 1;
 		}
 		pos = blockOrientation.moveFrom(blockOrientationRot.moveFrom(pos, -1), -1);
-		b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z);
-		if (b instanceof ConveyorBlock) {
-			ConveyorBlock cbn = (ConveyorBlock) b;
-			if (haveMatchingOrientations(cbn, cb)) {
-				result[0] = cbn;
-			}
-		}
-		if (result[0] == null &&
-				bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z - 1)) {
-			b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z - 1);
-			if (b != null && (b instanceof AscendingConveyorBlock ||
-					b instanceof DescendingConveyorBlock)) {
+		if (bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z)) {
+			Block b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z);
+			if (b instanceof ConveyorBlock) {
 				ConveyorBlock cbn = (ConveyorBlock) b;
 				if (haveMatchingOrientations(cbn, cb)) {
 					result[0] = cbn;
+				}
+			}
+			if (result[0] == null &&
+					bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z - 1)) {
+				b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z - 1);
+				if (b != null && (b instanceof AscendingConveyorBlock ||
+						b instanceof DescendingConveyorBlock)) {
+					ConveyorBlock cbn = (ConveyorBlock) b;
+					if (haveMatchingOrientations(cbn, cb)) {
+						result[0] = cbn;
+					}
 				}
 			}
 		}
