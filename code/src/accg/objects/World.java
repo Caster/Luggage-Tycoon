@@ -53,7 +53,8 @@ public class World extends Container<DrawableObject> {
 	 * Put some blocks in the scene, to start with.
 	 */
 	public void initialiseSomeBlocks() {
-		addBlock(state, new EnterBlock(1, 1, 8, Orientation.RIGHT, 2.0));
+		addBlock(state, new EnterBlock(1, 1, 8, Orientation.RIGHT,
+				EnterBlock.DEFAULT_TIME_BETWEEN_LUGGAGE));
 		
 		addBlock(state, new StraightConveyorBlock(2, 7, 16, Orientation.RIGHT));
 		addBlock(state, new StraightConveyorBlock(3, 7, 15, Orientation.DOWN));
