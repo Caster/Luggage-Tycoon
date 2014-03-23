@@ -37,17 +37,19 @@ public class Dialog extends Container {
 	 */
 	public Dialog(String caption, Component body) {
 		this.caption = caption;
+		
+		body.setParent(this);
 		this.body = body;
 	}
 	
 	@Override
 	public int getPreferredWidth() {
-		return Math.max(font.getWidth(caption), body.getPreferredWidth()) + 2 * PADDING;
+		return Math.max(getFont().getWidth(caption), body.getPreferredWidth()) + 2 * PADDING;
 	}
 
 	@Override
 	public int getPreferredHeight() {
-		return font.getLineHeight() + 3 * PADDING;
+		return getFont().getLineHeight() + 3 * PADDING;
 	}
 
 	@Override

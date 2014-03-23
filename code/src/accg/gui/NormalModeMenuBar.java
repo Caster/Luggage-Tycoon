@@ -60,7 +60,7 @@ public class NormalModeMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					s.gui.add(new Dialog("Hoi!", new Label("Hoi, dit is een label")));
+					s.gui.add(new Panel(new Dialog("Hoi!", new Label("Hoi, dit is een label"))));
 				}
 			}
 		});
