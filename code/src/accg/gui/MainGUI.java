@@ -7,62 +7,32 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.util.ResourceLoader;
 
 import accg.State;
-import accg.State.ProgramMode;
-import accg.gui.toolkit.MenuBarItem;
-import accg.gui.toolkit.MenuStack;
+import accg.gui.toolkit.LayeredPane;
 import accg.gui.toolkit.event.*;
 
 /**
  * This class manages the GUI of the program.
  */
-public class MainGUI extends LayerPane {
-	
-	public static final String SETTINGS_MENU = "settings";
-	public static final String POSITION_MENU = "position";
-	public static final String ALIGNMENT_MENU = "alignment";
-	public static final String PRESENTATION_MENU = "presentation";
+public class MainGUI extends LayeredPane {
 	
 	/**
 	 * The state of the program.
 	 */
 	private State state;
 	
+	private MainStack stack;
+	
 	/**
-	 * Creates a new MainStack.
+	 * Creates a new MainGUI.
 	 * @param state The state of the program.
 	 */
 	public MainGUI(State state) {
 		this.state = state;
 		
+		stack = new MainStack(state);
+		add(stack);
+		
 		setFont(loadFont());
-		
-		addToCollection(ProgramMode.NORMAL_MODE, new NormalModeMenuBar(this, state));
-		addToCollection(ProgramMode.BUILDING_MODE, new BuildingModeMenuBar(this, state));
-		addToCollection(ProgramMode.SIMULATION_MODE, new SimulationModeMenuBar(this, state));
-		addToCollection(SETTINGS_MENU, new SettingsMenuBar(this, state));
-		addToCollection(POSITION_MENU, new PositionMenuBar(this, state));
-		addToCollection(ALIGNMENT_MENU, new AlignmentMenuBar(this, state));
-		addToCollection(PRESENTATION_MENU, new PresentationMenuBar(this, state));
-		
-		int alignmentId = state.prefs.getInt("menu.alignment", State.DEF_MENU_ALIGNMENT);
-		setAlignment(MenuStack.Alignment.values()[alignmentId]);
-		
-		int positionId = state.prefs.getInt("menu.position", State.DEF_MENU_POSITION);
-		setPosition(MenuStack.Position.values()[positionId]);
-		
-		int presentationId = state.prefs.getInt("menu.presentation", State.DEF_MENU_PRESENTATION);
-		setPresentation(MenuBarItem.Presentation.values()[presentationId]);
-	}
-	
-	/**
-	 * Updates the GUI to the current state.
-	 * 
-	 * This method should be called whenever something changes in the
-	 * {@link State} that causes the GUI to need updating. For example,
-	 * this includes setting another mode.
-	 */
-	public void updateItems() {
-		addMenuOnPosition(0, state.programMode);
 	}
 	
 	/**
@@ -127,5 +97,16 @@ public class MainGUI extends LayerPane {
 	 */
 	public boolean handleMouseScrollEvent(int x, int y, int dWheel) {
 		return sendEvent(new MouseScrollEvent(x, getHeight() - y, dWheel));
+	}
+	
+	/**
+	 * Updates the GUI to the current state.
+	 * 
+	 * This method should be called whenever something changes in the
+	 * {@link State} that causes the GUI to need updating. For example,
+	 * this includes setting another mode.
+	 */
+	public void updateItems() {
+		stack.updateItems();
 	}
 }

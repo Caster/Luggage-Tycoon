@@ -27,6 +27,17 @@ public class Dialog extends Container {
 	 */
 	public static final int PADDING = 10;
 	
+	/**
+	 * Creates a new dialog with the given caption and body.
+	 * 
+	 * @param caption The caption of this dialog.
+	 * @param body The body.
+	 */
+	public Dialog(String caption, Component body) {
+		this.caption = caption;
+		this.body = body;
+	}
+	
 	@Override
 	public int getPreferredWidth() {
 		return Math.max(font.getWidth(caption), body.getPreferredWidth()) + 2 * PADDING;
@@ -46,7 +57,7 @@ public class Dialog extends Container {
 		}
 		glEnd();
 		
-		font.drawString(getWidth() - font.getWidth(caption) / 2, PADDING, caption);
+		getFont().drawString(getWidth() - getFont().getWidth(caption) / 2, PADDING, caption);
 	}
 	
 	/**
@@ -105,9 +116,9 @@ public class Dialog extends Container {
 	@Override
 	public void layout() {
 		body.setX(PADDING);
-		body.setY(2 * PADDING + font.getLineHeight());
+		body.setY(2 * PADDING + getFont().getLineHeight());
 		body.setWidth(getWidth() - 2 * PADDING);
-		body.setHeight(getHeight() - 3 * PADDING - font.getLineHeight());
+		body.setHeight(getHeight() - 3 * PADDING - getFont().getLineHeight());
 	}
 
 	@Override

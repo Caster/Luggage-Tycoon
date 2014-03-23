@@ -14,6 +14,13 @@ public class LayeredPane extends Container {
 	 */
 	private ArrayList<Component> components;
 	
+	/**
+	 * Creates a new LayeredPane without components.
+	 */
+	public LayeredPane() {
+		this.components = new ArrayList<>();
+	}
+	
 	@Override
 	public int getPreferredWidth() {
 		
@@ -53,6 +60,7 @@ public class LayeredPane extends Container {
 
 	@Override
 	public void add(Component toAdd) {
+		toAdd.parent = this;
 		components.add(toAdd);
 	}
 

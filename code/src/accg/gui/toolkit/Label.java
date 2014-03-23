@@ -10,19 +10,27 @@ public class Label extends Component {
 	 */
 	private String text;
 	
+	/**
+	 * Creates a new label showing the given text.
+	 * @param text The text to show.
+	 */
+	public Label(String text) {
+		this.text = text;
+	}
+
 	@Override
 	public int getPreferredWidth() {
-		return font.getWidth(text);
+		return getFont().getWidth(text);
 	}
 
 	@Override
 	public int getPreferredHeight() {
-		return font.getLineHeight();
+		return getFont().getLineHeight();
 	}
 
 	@Override
 	public void draw() {
-		font.drawString(0, 0, text);
+		getFont().drawString(0, 0, text);
 	}
 
 	@Override

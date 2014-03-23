@@ -54,6 +54,18 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(settingsItem);
 		
+		MenuBarItem testItem = new MenuBarItem("Open dialog!", s.textures.iconConfigure);
+		testItem.addListener(new Listener() {
+			
+			@Override
+			public void event(Event e) {
+				if (e instanceof MouseClickEvent) {
+					s.gui.add(new Dialog("Hoi!", new Label("Hoi, dit is een label")));
+				}
+			}
+		});
+		add(testItem);
+		
 		MenuBarItem quitItem = new MenuBarItem("Quit", s.textures.iconExit);
 		quitItem.addListener(new Listener() {
 			

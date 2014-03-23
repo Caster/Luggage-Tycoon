@@ -23,6 +23,7 @@ import org.newdawn.slick.Color;
 
 import accg.State.ProgramMode;
 import accg.camera.Camera;
+import accg.gui.MainGUI;
 import accg.gui.MainStack;
 import accg.gui.toolkit.GLUtils;
 import accg.gui.toolkit.GUIUtils;
@@ -55,7 +56,7 @@ public class ACCGProgram {
 	/**
 	 * The GUI used in the program.
 	 */
-	private MainStack gui;
+	private MainGUI gui;
 	
 	/**
 	 * Point where mouse was pressed. Is compared to point where mouse
@@ -146,7 +147,7 @@ public class ACCGProgram {
 		
 		// pre-initialize stuff
 		State s = new State();
-		s.fontMenu = MainStack.loadFont();
+		s.fontMenu = MainGUI.loadFont();
 		
 		// show a loading message, loading textures takes some time
 		glClearColor(0.8f, 0.8f, 0.77f, 1.0f);
@@ -179,8 +180,7 @@ public class ACCGProgram {
 		
 		// intialise GUI stuff
 		loadPreferences(s);
-		gui = new MainStack(s);
-		gui.updateItems();
+		gui = new MainGUI(s);
 		gui.setWidth(displayWidth);
 		gui.setHeight(displayHeight);
 		s.gui = gui;

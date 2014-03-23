@@ -4,7 +4,7 @@ import java.util.prefs.Preferences;
 
 import org.newdawn.slick.Font;
 
-import accg.gui.MainStack;
+import accg.gui.MainGUI;
 import accg.objects.Floor;
 import accg.objects.ShadowBlock;
 import accg.objects.World;
@@ -160,7 +160,7 @@ public class State {
 	/**
 	 * The GUI object.
 	 */
-	public MainStack gui;
+	public MainGUI gui;
 	
 	/**
 	 * Preferences object. Used to store user preferences persistently.
