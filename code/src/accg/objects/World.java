@@ -212,49 +212,54 @@ public class World extends Container<DrawableObject> {
 		pos = blockOrientationRot.moveFrom(pos, 1);
 		if (bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z)) {
 			Block b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z);
-			if (b instanceof ConveyorBlock) {
-				ConveyorBlock cbn = (ConveyorBlock) b;
-				if (haveMatchingOrientations(cb, cbn)) {
-					result[1] = cbn;
-				}
-			}
-			if (result[1] == null &&
-					bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z - 1)) {
-				b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z - 1);
-				if (b != null && b instanceof DescendingConveyorBlock) {
+			// do not draw something to the back of an EnterBlock
+			if (!(b instanceof EnterBlock)) {
+				if (b instanceof ConveyorBlock) {
 					ConveyorBlock cbn = (ConveyorBlock) b;
 					if (haveMatchingOrientations(cb, cbn)) {
 						result[1] = cbn;
 					}
 				}
+				if (result[1] == null &&
+						bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z - 1)) {
+					b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z - 1);
+					if (b != null && b instanceof DescendingConveyorBlock) {
+						ConveyorBlock cbn = (ConveyorBlock) b;
+						if (haveMatchingOrientations(cb, cbn)) {
+							result[1] = cbn;
+						}
+					}
+				}
 			}
 		}
 		
-		// check second neighbor
-		if (cb.getConveyorBlockType() == ConveyorBlockType.ASCENDING) {
-			// undo transformation above
-			pos.z -= 1;
-		} else if (cb.getConveyorBlockType() == ConveyorBlockType.DESCENDING) {
-			// block before is higher
-			pos.z += 1;
-		}
-		pos = blockOrientation.moveFrom(blockOrientationRot.moveFrom(pos, -1), -1);
-		if (bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z)) {
-			Block b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z);
-			if (b instanceof ConveyorBlock) {
-				ConveyorBlock cbn = (ConveyorBlock) b;
-				if (haveMatchingOrientations(cbn, cb)) {
-					result[0] = cbn;
-				}
+		// check second neighbor: an EnterBlock can never have this one
+		if (cb.getConveyorBlockType() != ConveyorBlockType.ENTER) {
+			if (cb.getConveyorBlockType() == ConveyorBlockType.ASCENDING) {
+				// undo transformation above
+				pos.z -= 1;
+			} else if (cb.getConveyorBlockType() == ConveyorBlockType.DESCENDING) {
+				// block before is higher
+				pos.z += 1;
 			}
-			if (result[0] == null &&
-					bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z - 1)) {
-				b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z - 1);
-				if (b != null && (b instanceof AscendingConveyorBlock ||
-						b instanceof DescendingConveyorBlock)) {
+			pos = blockOrientation.moveFrom(blockOrientationRot.moveFrom(pos, -1), -1);
+			if (bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z)) {
+				Block b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z);
+				if (b instanceof ConveyorBlock) {
 					ConveyorBlock cbn = (ConveyorBlock) b;
 					if (haveMatchingOrientations(cbn, cb)) {
 						result[0] = cbn;
+					}
+				}
+				if (result[0] == null &&
+						bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z - 1)) {
+					b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z - 1);
+					if (b != null && (b instanceof AscendingConveyorBlock ||
+							b instanceof DescendingConveyorBlock)) {
+						ConveyorBlock cbn = (ConveyorBlock) b;
+						if (haveMatchingOrientations(cbn, cb)) {
+							result[0] = cbn;
+						}
 					}
 				}
 			}

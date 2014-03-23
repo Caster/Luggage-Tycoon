@@ -29,7 +29,7 @@ public abstract class ConveyorBlock extends Block {
 	 * Type of this conveyor block.
 	 */
 	public enum ConveyorBlockType {
-		ASCENDING, BEND_LEFT, BEND_RIGHT, DESCENDING, STRAIGHT
+		ASCENDING, BEND_LEFT, BEND_RIGHT, DESCENDING, STRAIGHT, ENTER
 	}
 	
 	/**

@@ -122,4 +122,9 @@ public class EnterBlock extends StraightConveyorBlock {
 	public Block clone() {
 		return new EnterBlock(this);
 	}
+	
+	@Override
+	public ConveyorBlockType getConveyorBlockType() {
+		return ConveyorBlockType.ENTER;
+	}
 }
