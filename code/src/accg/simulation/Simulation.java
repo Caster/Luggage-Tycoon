@@ -149,7 +149,7 @@ public class Simulation {
 		for (Block b : s.world.bc) {
 			if (b instanceof EnterBlock) {
 				EnterBlock eb = (EnterBlock) b;
-
+				
 				if (Utils.hasTimePassed(s, eb.timeBetweenLuggage, 0)) {
 					Luggage newLuggage = new Luggage(eb.getX(), eb.getY(), eb.getZ() / 4f);
 					s.world.luggage.addObject(newLuggage);

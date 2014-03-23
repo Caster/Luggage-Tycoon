@@ -241,6 +241,10 @@ public class BlockCollection extends DrawableObject implements Iterable<Block> {
 			 */
 			int z = 0;
 			
+			{
+				findNext();
+			}
+			
 			@Override
 			public boolean hasNext() {
 				return next != null;
@@ -249,11 +253,11 @@ public class BlockCollection extends DrawableObject implements Iterable<Block> {
 			@Override
 			public Block next() {
 				Block toReturn = next;
-				findNext();
 				
 				if (toReturn == null) {
 					throw new NoSuchElementException("No more elements in this BlockCollection");
 				}
+				findNext();
 				
 				return toReturn;
 			}
@@ -263,18 +267,20 @@ public class BlockCollection extends DrawableObject implements Iterable<Block> {
 			 * is no next block, it puts <code>null</code> there.
 			 */
 			private void findNext() {
-				
 				for (; x < sizeX; x++) {
 					for (; y < sizeY; y++) {
 						for (; z < sizeZ; z++) {
 							Block b = blocks[x][y][z];
-							if (b != null) {
+							if (b != null && b != next) {
 								next = b;
 								return;
 							}
 						}
+						z = 0;
 					}
+					y = 0;
 				}
+				x = 0;
 				
 				next = null;
 			}
