@@ -215,7 +215,7 @@ public class World extends Container<DrawableObject> {
 			Block b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z);
 			// do not draw something to the back of an EnterBlock
 			if (!(b instanceof EnterBlock)) {
-				if (b instanceof ConveyorBlock) {
+				if (b instanceof ConveyorBlock && !(b instanceof DescendingConveyorBlock)) {
 					ConveyorBlock cbn = (ConveyorBlock) b;
 					if (haveMatchingOrientations(cb, cbn)) {
 						result[1] = cbn;
@@ -255,8 +255,7 @@ public class World extends Container<DrawableObject> {
 				if (result[0] == null &&
 						bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z - 1)) {
 					b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z - 1);
-					if (b != null && (b instanceof AscendingConveyorBlock ||
-							b instanceof DescendingConveyorBlock)) {
+					if (b != null && b instanceof AscendingConveyorBlock) {
 						ConveyorBlock cbn = (ConveyorBlock) b;
 						if (haveMatchingOrientations(cbn, cb)) {
 							result[0] = cbn;
