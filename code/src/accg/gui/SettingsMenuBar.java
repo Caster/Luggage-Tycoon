@@ -10,14 +10,14 @@ import accg.gui.toolkit.event.ValueChangeEvent;
  */
 public class SettingsMenuBar extends MenuBar {
 	
-	MenuBarItem positionItem;
-	MenuBarItem alignmentItem;
-	MenuBarItem presentationItem;
+	Button positionItem;
+	Button alignmentItem;
+	Button presentationItem;
 	SliderMenuBarItem sensitivityItem;
 	
 	public SettingsMenuBar(final MenuStack stack, final State s) {
 
-		positionItem = new MenuBarItem("Menu position", s.textures.iconConfigure);
+		positionItem = new Button("Menu position", s.textures.iconConfigure);
 		positionItem.addListener(new Listener() {
 			
 			@Override
@@ -29,7 +29,7 @@ public class SettingsMenuBar extends MenuBar {
 		});
 		add(positionItem);
 
-		alignmentItem = new MenuBarItem("Menu alignment", s.textures.iconConfigure);
+		alignmentItem = new Button("Menu alignment", s.textures.iconConfigure);
 		alignmentItem.addListener(new Listener() {
 			
 			@Override
@@ -41,7 +41,7 @@ public class SettingsMenuBar extends MenuBar {
 		});
 		add(alignmentItem);
 
-		presentationItem = new MenuBarItem("Menu presentation", s.textures.iconConfigure);
+		presentationItem = new Button("Menu presentation", s.textures.iconConfigure);
 		presentationItem.addListener(new Listener() {
 			
 			@Override

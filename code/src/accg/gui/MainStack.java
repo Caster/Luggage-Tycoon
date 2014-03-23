@@ -2,7 +2,7 @@ package accg.gui;
 
 import accg.State;
 import accg.State.ProgramMode;
-import accg.gui.toolkit.MenuBarItem;
+import accg.gui.toolkit.Button;
 import accg.gui.toolkit.MenuStack;
 
 /**
@@ -42,7 +42,7 @@ public class MainStack extends MenuStack {
 		setPosition(MenuStack.Position.values()[positionId]);
 		
 		int presentationId = state.prefs.getInt("menu.presentation", State.DEF_MENU_PRESENTATION);
-		setPresentation(MenuBarItem.Presentation.values()[presentationId]);
+		setPresentation(Button.Presentation.values()[presentationId]);
 		
 		updateItems();
 	}

@@ -5,11 +5,11 @@ import org.newdawn.slick.opengl.Texture;
 import accg.gui.toolkit.event.MouseClickEvent;
 
 /**
- * A ToggleMenuBarItem is a {@link MenuBarItem} that toggles between two states
+ * A ToggleMenuBarItem is a {@link Button} that toggles between two states
  * every time the user clicks the item. It has two possibly different icons and
  * texts that will toggle after every click to indicate the state.
  */
-public class ToggleMenuBarItem extends MenuBarItem {
+public class ToggleMenuBarItem extends Button {
 
 	/**
 	 * Construct a new {@link ToggleMenuBarItem} with given texts and icons.
@@ -37,7 +37,7 @@ public class ToggleMenuBarItem extends MenuBarItem {
 	 *              In case this is {@code null}, {@code text1} is used.
 	 * @param icon2 Icon that is displayed in alternate state.
 	 *              In case this is {@code null}, {@code icon1} is used.
-	 * @param type {@link MenuBarItem.Type} of the menu item.
+	 * @param type {@link Button.Type} of the menu item.
 	 */
 	public ToggleMenuBarItem(String text1, Texture icon1, String text2,
 			Texture icon2, Type type) {

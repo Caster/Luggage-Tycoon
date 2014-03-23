@@ -4,7 +4,7 @@ import org.newdawn.slick.opengl.Texture;
 
 import accg.State;
 import accg.gui.toolkit.*;
-import accg.gui.toolkit.MenuBarItem.Type;
+import accg.gui.toolkit.Button.Type;
 import accg.gui.toolkit.MenuStack.Position;
 import accg.gui.toolkit.event.MouseClickEvent;
 
@@ -20,16 +20,16 @@ public class PositionMenuBar extends MenuBar {
 	}
 	
 	/**
-	 * Generate a {@link MenuBarItem} that represents a menu position.
+	 * Generate a {@link Button} that represents a menu position.
 	 * 
 	 * @param index Index of the position to generate an item for.
 	 * @param s State, used to look up icons in.
-	 * @return A newly created {@link MenuBarItem}.
+	 * @return A newly created {@link Button}.
 	 */
-	private MenuBarItem generatePositionItem(final int index, final MenuStack stack, final State s) {
+	private Button generatePositionItem(final int index, final MenuStack stack, final State s) {
 		final Position pos = MenuStack.Position.values()[index];
 		// create the item
-		MenuBarItem mbi = new MenuBarItem(pos.getName(),
+		Button mbi = new Button(pos.getName(),
 				getPositionIcon(index, s), Type.CHECKABLE_UNIQUE);
 		mbi.addListener(new Listener() {
 			

@@ -3,7 +3,7 @@ package accg.gui.toolkit;
 import java.util.*;
 
 import accg.gui.toolkit.MenuBar.Orientation;
-import accg.gui.toolkit.MenuBarItem.Presentation;
+import accg.gui.toolkit.Button.Presentation;
 
 /**
  * This class manages a GUI with several possible menu bars.
@@ -14,7 +14,7 @@ import accg.gui.toolkit.MenuBarItem.Presentation;
  * is shown first and from there other menu bars can be opened (so those are sub
  * menu bars).
  * 
- * In the {@link Listener} of a {@link MenuBarItem}, one can for example use the
+ * In the {@link Listener} of a {@link Button}, one can for example use the
  * following code to open a new sub menu:
  * <pre>
  *     addMenuBelowOrClose(menuThisButtonIsIn, menuToAdd);
@@ -483,7 +483,7 @@ public class MenuStack extends Container {
 	 */
 	protected void updatePresentations() {
 		for (MenuBar m : menuBars.values()) {
-			for (MenuBarItem c : m.items) {
+			for (Button c : m.items) {
 				c.setPresentation(presentation);
 			}
 		}

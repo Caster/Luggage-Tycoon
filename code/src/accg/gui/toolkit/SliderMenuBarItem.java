@@ -11,13 +11,13 @@ import org.newdawn.slick.opengl.Texture;
 import accg.gui.toolkit.event.*;
 
 /**
- * A SliderMenuBarItem is a {@link MenuBarItem} that has a value which can
+ * A SliderMenuBarItem is a {@link Button} that has a value which can
  * be queried. This value can be adjusted by the user by clicking the item
  * and then scrolling with the mouse wheel.
  * 
  * The value is then indicated by a bar at the place where the text would be.
  */
-public class SliderMenuBarItem extends MenuBarItem {
+public class SliderMenuBarItem extends Button {
 
 	/** The color in which the slider bar is rendered. */
 	public static final Color SLIDER_BAR_COLOR = new Color(0.5f, 0.5f, 0.5f);

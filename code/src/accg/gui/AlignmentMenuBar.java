@@ -6,8 +6,8 @@ import accg.State;
 import accg.gui.toolkit.Event;
 import accg.gui.toolkit.Listener;
 import accg.gui.toolkit.MenuBar;
-import accg.gui.toolkit.MenuBarItem;
-import accg.gui.toolkit.MenuBarItem.Type;
+import accg.gui.toolkit.Button;
+import accg.gui.toolkit.Button.Type;
 import accg.gui.toolkit.MenuStack;
 import accg.gui.toolkit.MenuStack.Alignment;
 import accg.gui.toolkit.event.MouseClickEvent;
@@ -24,16 +24,16 @@ public class AlignmentMenuBar extends MenuBar {
 	}
 	
 	/**
-	 * Generate a {@link MenuBarItem} that represents a menu alignment.
+	 * Generate a {@link Button} that represents a menu alignment.
 	 * 
 	 * @param index Index of the alignment to generate an item for.
 	 * @param s State, used to look up icons in.
-	 * @return A newly created {@link MenuBarItem}.
+	 * @return A newly created {@link Button}.
 	 */
-	private MenuBarItem generateAlignmentItem(final int index, final MenuStack stack, final State s) {
+	private Button generateAlignmentItem(final int index, final MenuStack stack, final State s) {
 		final Alignment alignment = MenuStack.Alignment.values()[index];
 		// create the item
-		MenuBarItem mbi = new MenuBarItem(alignment.getName(),
+		Button mbi = new Button(alignment.getName(),
 				getAlignmentIcon(index, s), Type.CHECKABLE_UNIQUE);
 
 		mbi.addListener(new Listener() {

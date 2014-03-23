@@ -12,7 +12,7 @@ public class SimulationModeMenuBar extends MenuBar {
 	
 	public SimulationModeMenuBar(final MenuStack stack, final State s) {
 
-		MenuBarItem simulateItem = new MenuBarItem("Stop", s.textures.iconStop);
+		Button simulateItem = new Button("Stop", s.textures.iconStop);
 		simulateItem.addListener(new Listener() {
 			
 			@Override

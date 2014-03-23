@@ -12,7 +12,7 @@ public class BuildingModeMenuBar extends MenuBar {
 	
 	public BuildingModeMenuBar(final MenuStack stack, final State s) {
 		
-		MenuBarItem backItem = new MenuBarItem("Back", s.textures.iconExit);
+		Button backItem = new Button("Back", s.textures.iconExit);
 		backItem.addListener(new Listener() {
 			
 			@Override
@@ -25,11 +25,11 @@ public class BuildingModeMenuBar extends MenuBar {
 		});
 		add(backItem);
 		
-		add(new MenuBarItem("Rotate", s.textures.iconMouse));
-		add(new MenuBarItem("Straight", s.textures.iconExit));
-		add(new MenuBarItem("Up", s.textures.iconGoUp));
-		add(new MenuBarItem("Down", s.textures.iconGoDown));
-		add(new MenuBarItem("Left", s.textures.iconGoLeft));
-		add(new MenuBarItem("Right", s.textures.iconGoRight));
+		add(new Button("Rotate", s.textures.iconMouse));
+		add(new Button("Straight", s.textures.iconExit));
+		add(new Button("Up", s.textures.iconGoUp));
+		add(new Button("Down", s.textures.iconGoDown));
+		add(new Button("Left", s.textures.iconGoLeft));
+		add(new Button("Right", s.textures.iconGoRight));
 	}
 }

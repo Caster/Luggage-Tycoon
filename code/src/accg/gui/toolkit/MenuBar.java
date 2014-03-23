@@ -5,7 +5,7 @@ import static org.lwjgl.opengl.GL11.*;
 import java.util.ArrayList;
 
 /**
- * A MenuBar is a menu with zero or more {@link MenuBarItem}s in it.
+ * A MenuBar is a menu with zero or more {@link Button}s in it.
  * 
  * It is drawn on top of the scene, in 2D. It is capable of handling
  * mouse events to make for a nice experience.
@@ -17,7 +17,7 @@ public class MenuBar extends Container {
 	/**
 	 * Items in this menu bar.
 	 */
-	protected ArrayList<MenuBarItem> items;
+	protected ArrayList<Button> items;
 	
 	/**
 	 * The orientation of this menu bar: horizontal or vertical.
@@ -86,7 +86,7 @@ public class MenuBar extends Container {
 			// the extraWidth is the additional space divided over all items
 			int totalItemWidth = 0;
 			int maxHeight = 0;
-			for (MenuBarItem item : items) {
+			for (Button item : items) {
 				totalItemWidth += item.getPreferredWidth();
 				if (item.getPreferredHeight() > maxHeight) {
 					maxHeight = item.getPreferredHeight();
@@ -100,7 +100,7 @@ public class MenuBar extends Container {
 			
 			// now actually layout the items
 			int x = 0;
-			for (MenuBarItem item : items) {
+			for (Button item : items) {
 				item.setX(x);
 				item.setY(0);
 				item.setWidth(item.getPreferredWidth() + extraWidth);
@@ -112,7 +112,7 @@ public class MenuBar extends Container {
 			// the extraHeight is the additional space divided over all items
 			int totalItemHeight = 0;
 			int maxWidth = 0;
-			for (MenuBarItem item : items) {
+			for (Button item : items) {
 				totalItemHeight += item.getPreferredHeight();
 				if (item.getPreferredWidth() > maxWidth) {
 					maxWidth = item.getPreferredWidth();
@@ -126,7 +126,7 @@ public class MenuBar extends Container {
 			
 			// now actually layout the items
 			int y = 0;
-			for (MenuBarItem item : items) {
+			for (Button item : items) {
 				item.setX(0);
 				item.setY(y);
 				item.setWidth(getWidth());
@@ -379,8 +379,8 @@ public class MenuBar extends Container {
 	 * @param exceptFor The item of which the <code>isChecked</code> property
 	 * should not be changed.
 	 */
-	public void uncheckOtherItems(MenuBarItem exceptFor) {
-		for (MenuBarItem item : items) {
+	public void uncheckOtherItems(Button exceptFor) {
+		for (Button item : items) {
 			if (item != exceptFor) {
 				item.setChecked(false);
 			}
@@ -400,11 +400,11 @@ public class MenuBar extends Container {
 
 	@Override
 	public void add(Component toAdd) {
-		if (!(toAdd instanceof MenuBarItem)) {
+		if (!(toAdd instanceof Button)) {
 			throw new IllegalArgumentException("Can only add MenuBarItems to a MenuBar");
 		}
 		
-		MenuBarItem item = (MenuBarItem) toAdd;
+		Button item = (Button) toAdd;
 		
 		items.add(item);
 		item.setParent(this);

@@ -12,7 +12,7 @@ public class NormalModeMenuBar extends MenuBar {
 	
 	public NormalModeMenuBar(final MenuStack stack, final State s) {
 
-		MenuBarItem simulateItem = new MenuBarItem("Simulate", s.textures.iconStart);
+		Button simulateItem = new Button("Simulate", s.textures.iconStart);
 		simulateItem.addListener(new Listener() {
 			
 			@Override
@@ -26,7 +26,7 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(simulateItem);
 		
-		MenuBarItem buildItem = new MenuBarItem("Build", s.textures.iconZoomIn);
+		Button buildItem = new Button("Build", s.textures.iconZoomIn);
 		buildItem.addListener(new Listener() {
 			
 			@Override
@@ -39,23 +39,25 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(buildItem);
 		
-		MenuBarItem openItem = new MenuBarItem("Open", s.textures.iconOpen);
+		Button openItem = new Button("Open", s.textures.iconOpen);
 		openItem.addListener(new Listener() {
 			
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					Dialog dialog = new Dialog("Open", new Label("Choose a model to open..."),
-							new MenuBarItem("OK", s.textures.iconGoUp),
-							new MenuBarItem("Cancel", s.textures.iconExit));
+					TextField tf = new TextField(40);
+					tf.setText("Choose a model to open...");
+					Dialog dialog = new Dialog("Open", tf,
+							new Button("OK", s.textures.iconGoUp),
+							new Button("Cancel", s.textures.iconExit));
 					s.gui.add(new Panel(dialog));
 				}
 			}
 		});
 		add(openItem);
-		add(new MenuBarItem("Save", s.textures.iconSave));
+		add(new Button("Save", s.textures.iconSave));
 
-		MenuBarItem settingsItem = new MenuBarItem("Settings", s.textures.iconConfigure);
+		Button settingsItem = new Button("Settings", s.textures.iconConfigure);
 		settingsItem.addListener(new Listener() {
 			
 			@Override
@@ -67,7 +69,7 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(settingsItem);
 		
-		MenuBarItem quitItem = new MenuBarItem("Quit", s.textures.iconExit);
+		Button quitItem = new Button("Quit", s.textures.iconExit);
 		quitItem.addListener(new Listener() {
 			
 			@Override

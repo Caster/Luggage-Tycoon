@@ -6,9 +6,9 @@ import accg.State;
 import accg.gui.toolkit.Event;
 import accg.gui.toolkit.Listener;
 import accg.gui.toolkit.MenuBar;
-import accg.gui.toolkit.MenuBarItem;
-import accg.gui.toolkit.MenuBarItem.Presentation;
-import accg.gui.toolkit.MenuBarItem.Type;
+import accg.gui.toolkit.Button;
+import accg.gui.toolkit.Button.Presentation;
+import accg.gui.toolkit.Button.Type;
 import accg.gui.toolkit.MenuStack;
 import accg.gui.toolkit.event.MouseClickEvent;
 
@@ -18,21 +18,21 @@ import accg.gui.toolkit.event.MouseClickEvent;
 public class PresentationMenuBar extends MenuBar {
 	
 	public PresentationMenuBar(final MenuStack stack, final State s) {
-		for (int i = 0; i < MenuBarItem.Presentation.values().length; i++) {
+		for (int i = 0; i < Button.Presentation.values().length; i++) {
 			add(generatePresentationItem(i, stack, s));
 		}
 	}
 	/**
-	 * Generate a {@link MenuBarItem} that represents a menu presentation.
+	 * Generate a {@link Button} that represents a menu presentation.
 	 * 
 	 * @param index Index of the presentation to generate an item for.
 	 * @param s State, used to look up icons in.
-	 * @return A newly created {@link MenuBarItem}.
+	 * @return A newly created {@link Button}.
 	 */
-	private MenuBarItem generatePresentationItem(final int index, final MenuStack stack, final State s) {
-		final Presentation pres = MenuBarItem.Presentation.values()[index];
+	private Button generatePresentationItem(final int index, final MenuStack stack, final State s) {
+		final Presentation pres = Button.Presentation.values()[index];
 		// create the item
-		MenuBarItem mbi = new MenuBarItem(pres.getName(),
+		Button mbi = new Button(pres.getName(),
 				getPresentationIcon(index, s), Type.CHECKABLE_UNIQUE);
 		mbi.addListener(new Listener() {
 			
@@ -60,7 +60,7 @@ public class PresentationMenuBar extends MenuBar {
 	 * @return An icon, or {@code null} if index is invalid.
 	 */
 	private Texture getPresentationIcon(final int index, State s) {
-		if (index < 0 || index >= MenuBarItem.Presentation.values().length) {
+		if (index < 0 || index >= Button.Presentation.values().length) {
 			return null;
 		}
 		

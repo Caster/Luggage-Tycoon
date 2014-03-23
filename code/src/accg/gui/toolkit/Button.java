@@ -10,10 +10,12 @@ import accg.gui.toolkit.event.MouseEnterEvent;
 import accg.gui.toolkit.event.MouseExitEvent;
 
 /**
- * A MenuBarItem can be placed inside a {@link MenuBar} and has text and an
- * icon. It can be clicked and will fire an action in that case.
+ * A button is a clickable object containing a text and an icon.
+ * 
+ * \todo Javadoc: There are still quite some references to "menu item".
+ * (Earlier, this class was only for menu items.) 
  */
-public class MenuBarItem extends Component implements Listener {
+public class Button extends Component implements Listener {
 
 	/**
 	 * Distance between edge of this item and the text/icon inside it.
@@ -21,7 +23,7 @@ public class MenuBarItem extends Component implements Listener {
 	public static final int PADDING = 10;
 	
 	/**
-	 * The Type of a {@link MenuBarItem} indicates what properties it
+	 * The Type of a {@link Button} indicates what properties it
 	 * has. Refer to the documentation of the enum members for details.
 	 */
 	public enum Type {
@@ -84,7 +86,7 @@ public class MenuBarItem extends Component implements Listener {
 	}
 	
 	/**
-	 * Construct a new {@link MenuBarItem} with given text and icon.
+	 * Construct a new {@link Button} with given text and icon.
 	 * The text and icon should not be {@code null}.
 	 * 
 	 * @param text Text that is displayed next to the icon.
@@ -92,12 +94,12 @@ public class MenuBarItem extends Component implements Listener {
 	 * @throws IllegalArgumentException when either {@code text} or
 	 *         {@code icon} is {@code null}.
 	 */
-	public MenuBarItem(String text, Texture icon) {
+	public Button(String text, Texture icon) {
 		this(text, icon, Type.NORMAL);
 	}
 	
 	/**
-	 * Construct a new {@link MenuBarItem} with given text and icon.
+	 * Construct a new {@link Button} with given text and icon.
 	 * The text and icon should not be {@code null}.
 	 * 
 	 * @param text Text that is displayed next to the icon.
@@ -106,7 +108,7 @@ public class MenuBarItem extends Component implements Listener {
 	 * @throws IllegalArgumentException when either {@code text} or
 	 *         {@code icon} is {@code null}.
 	 */
-	public MenuBarItem(String text, Texture icon, Type type) {
+	public Button(String text, Texture icon, Type type) {
 		if (text == null || icon == null) {
 			throw new IllegalArgumentException("Neither text nor icon "
 					+ "can be null for a MenuBarItem.");
