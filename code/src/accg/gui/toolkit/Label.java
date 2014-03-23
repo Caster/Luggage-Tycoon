@@ -1,5 +1,9 @@
 package accg.gui.toolkit;
 
+import static org.lwjgl.opengl.GL11.*;
+
+import org.newdawn.slick.Color;
+
 /**
  * A component that displays one line of static text.
  */
@@ -30,7 +34,7 @@ public class Label extends Component {
 
 	@Override
 	public void draw() {
-		getFont().drawString(0, 0, text);
+		getFont().drawString(0, 0, text, Color.black);
 	}
 
 	@Override

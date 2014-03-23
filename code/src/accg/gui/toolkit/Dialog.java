@@ -5,6 +5,8 @@ import static org.lwjgl.opengl.GL11.*;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.newdawn.slick.Color;
+
 /**
  * A dialog is a component that shows a caption on top, and some other component
  * in its body.
@@ -51,13 +53,17 @@ public class Dialog extends Container {
 	@Override
 	public void draw() {
 		
+		layoutIfNeeded();
+		
+		glColor4d(1, 1, 1, 0.5);
 		glBegin(GL_QUADS);
 		{
 			drawBackground();
 		}
 		glEnd();
-		
-		getFont().drawString(getWidth() - getFont().getWidth(caption) / 2, PADDING, caption);
+
+		getFont().drawString((getWidth() - getFont().getWidth(caption)) / 2, PADDING,
+				caption, Color.black);
 	}
 	
 	/**
