@@ -60,10 +60,10 @@ public class EnterBlock extends Block {
 		
 		glBegin(GL_QUADS);
 		{
-			glVertex3f(x - 0.5f, y - 0.5f, z / 4f);
-			glVertex3f(x - 0.5f, y + 0.5f, z / 4f);
-			glVertex3f(x + 0.5f, y + 0.5f, z / 4f);
-			glVertex3f(x + 0.5f, y - 0.5f, z / 4f);
+			glVertex3f(-0.5f, -0.5f, 0);
+			glVertex3f(-0.5f, 0.5f, 0);
+			glVertex3f(0.5f, 0.5f, 0);
+			glVertex3f(0.5f, -0.5f, 0);
 		}
 		glEnd();
 		
