@@ -39,7 +39,20 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(buildItem);
 		
-		add(new MenuBarItem("Open", s.textures.iconOpen));
+		MenuBarItem openItem = new MenuBarItem("Open", s.textures.iconOpen);
+		openItem.addListener(new Listener() {
+			
+			@Override
+			public void event(Event e) {
+				if (e instanceof MouseClickEvent) {
+					Dialog dialog = new Dialog("Open", new Label("Choose a model to open..."),
+							new MenuBarItem("OK", s.textures.iconGoUp),
+							new MenuBarItem("Cancel", s.textures.iconExit));
+					s.gui.add(new Panel(dialog));
+				}
+			}
+		});
+		add(openItem);
 		add(new MenuBarItem("Save", s.textures.iconSave));
 
 		MenuBarItem settingsItem = new MenuBarItem("Settings", s.textures.iconConfigure);
@@ -53,18 +66,6 @@ public class NormalModeMenuBar extends MenuBar {
 			}
 		});
 		add(settingsItem);
-		
-		MenuBarItem testItem = new MenuBarItem("Open dialog!", s.textures.iconConfigure);
-		testItem.addListener(new Listener() {
-			
-			@Override
-			public void event(Event e) {
-				if (e instanceof MouseClickEvent) {
-					s.gui.add(new Panel(new Dialog("Dialog", new Label("Hoi, dit is een Label"))));
-				}
-			}
-		});
-		add(testItem);
 		
 		MenuBarItem quitItem = new MenuBarItem("Quit", s.textures.iconExit);
 		quitItem.addListener(new Listener() {

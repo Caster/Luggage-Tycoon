@@ -2,14 +2,15 @@ package accg.gui.toolkit;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 import org.newdawn.slick.Color;
 
 /**
  * A dialog is a component that shows a caption on top, and some other component
- * in its body.
+ * in its body. Furthermore a dialog can show buttons (or other components) below
+ * the body.
  */
 public class Dialog extends Container {
 	
@@ -22,6 +23,11 @@ public class Dialog extends Container {
 	 * The component shown as the body of this dialog.
 	 */
 	private Component body;
+	
+	/**
+	 * The footer that contains the buttons.
+	 */
+	private DialogFooter footer;
 
 	/**
 	 * Distance between the border of the dialog and the contents. Also, the
@@ -34,22 +40,32 @@ public class Dialog extends Container {
 	 * 
 	 * @param caption The caption of this dialog.
 	 * @param body The body.
+	 * @param buttons Optional components (mostly used for buttons) to show
+	 * below the body.
 	 */
-	public Dialog(String caption, Component body) {
+	public Dialog(String caption, Component body, Component... buttons) {
 		this.caption = caption;
 		
 		body.setParent(this);
 		this.body = body;
+
+		this.footer = new DialogFooter();
+		footer.setParent(this);
+		for (Component c : buttons) {
+			footer.add(c);
+		}
 	}
 	
 	@Override
 	public int getPreferredWidth() {
-		return Math.max(getFont().getWidth(caption), body.getPreferredWidth()) + 2 * PADDING;
+		return Math.max(Math.max(getFont().getWidth(caption),
+				body.getPreferredWidth()), footer.getPreferredWidth()) + 2 * PADDING;
 	}
 
 	@Override
 	public int getPreferredHeight() {
-		return getFont().getLineHeight() + body.getPreferredHeight() + 3 * PADDING;
+		return getFont().getLineHeight() + body.getPreferredHeight() +
+				footer.getPreferredHeight() + 4 * PADDING;
 	}
 
 	@Override
@@ -125,15 +141,25 @@ public class Dialog extends Container {
 
 	@Override
 	public void layout() {
+		footer.setX(PADDING);
+		footer.setY(getHeight() - PADDING - footer.getPreferredHeight());
+		footer.setWidth(getWidth() - 2 * PADDING);
+		footer.setHeight(footer.getPreferredHeight());
+		
 		body.setX(PADDING);
 		body.setY(2 * PADDING + getFont().getLineHeight());
 		body.setWidth(getWidth() - 2 * PADDING);
-		body.setHeight(getHeight() - 3 * PADDING - getFont().getLineHeight());
+		body.setHeight(getHeight() - 4 * PADDING - getFont().getLineHeight() - footer.getPreferredHeight());
 	}
 
 	@Override
 	public Collection<? extends Component> getChildren() {
-		return Collections.singleton(body);
+		ArrayList<Component> children = new ArrayList<>();
+		
+		children.add(body);
+		children.add(footer);
+		
+		return children;
 	}
 
 	@Override
@@ -141,3 +167,4 @@ public class Dialog extends Container {
 		return false;
 	}
 }
+
