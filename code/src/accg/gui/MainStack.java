@@ -13,9 +13,9 @@ import accg.gui.toolkit.MenuStack;
 import accg.gui.toolkit.event.*;
 
 /**
- * This class manages the GUI of the program.
+ * This class manages the menu stack in the GUI.
  */
-public class MainGUI extends LayerPane {
+public class MainStack extends MenuStack {
 	
 	public static final String SETTINGS_MENU = "settings";
 	public static final String POSITION_MENU = "position";
@@ -31,7 +31,7 @@ public class MainGUI extends LayerPane {
 	 * Creates a new MainStack.
 	 * @param state The state of the program.
 	 */
-	public MainGUI(State state) {
+	public MainStack(State state) {
 		this.state = state;
 		
 		setFont(loadFont());

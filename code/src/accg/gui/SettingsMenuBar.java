@@ -23,7 +23,7 @@ public class SettingsMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					stack.addMenuBelowOrClose(SettingsMenuBar.this, MainGUI.POSITION_MENU);
+					stack.addMenuBelowOrClose(SettingsMenuBar.this, MainStack.POSITION_MENU);
 				}
 			}
 		});
@@ -35,7 +35,7 @@ public class SettingsMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					stack.addMenuBelowOrClose(SettingsMenuBar.this, MainGUI.ALIGNMENT_MENU);
+					stack.addMenuBelowOrClose(SettingsMenuBar.this, MainStack.ALIGNMENT_MENU);
 				}
 			}
 		});
@@ -47,7 +47,7 @@ public class SettingsMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					stack.addMenuBelowOrClose(SettingsMenuBar.this, MainGUI.PRESENTATION_MENU);
+					stack.addMenuBelowOrClose(SettingsMenuBar.this, MainStack.PRESENTATION_MENU);
 				}
 			}
 		});
