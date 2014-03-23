@@ -1,5 +1,7 @@
 package accg.gui.toolkit;
 
+import static org.lwjgl.opengl.GL11.*;
+
 import org.newdawn.slick.Color;
 
 /**
@@ -32,7 +34,9 @@ public class Label extends Component {
 
 	@Override
 	public void draw() {
+		glEnable(GL_TEXTURE_2D);
 		getFont().drawString(0, 0, text, Color.black);
+		glDisable(GL_TEXTURE_2D);
 	}
 
 	@Override

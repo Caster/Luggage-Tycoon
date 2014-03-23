@@ -12,7 +12,7 @@ public class TextField extends Component {
 	/**
 	 * The text shown in this text field.
 	 */
-	private String text;
+	private String text = "";
 	
 	/**
 	 * The approximate amount of characters that this TextField should be
@@ -43,27 +43,16 @@ public class TextField extends Component {
 
 	@Override
 	public int getPreferredWidth() {
-		return characters * getFont().getWidth("n");
+		return characters * getFont().getWidth("n") + 2 * PADDING;
 	}
 
 	@Override
 	public int getPreferredHeight() {
-		return getFont().getLineHeight();
+		return getFont().getLineHeight() + 2 * PADDING;
 	}
 
 	@Override
 	public void draw() {
-		
-		// background
-		glColor4f(1, 1, 1, 0.5f);
-		glBegin(GL_QUADS);
-		{
-			glVertex2d(0, outline.getHeight());
-			glVertex2d(outline.getWidth(), outline.getHeight());
-			glVertex2d(outline.getWidth(), 0);
-			glVertex2d(0, 0);
-		}
-		glEnd();
 		
 		// border
 		glColor4f(0, 0, 0, 1);
@@ -76,12 +65,25 @@ public class TextField extends Component {
 		}
 		glEnd();
 		
+		// background
+		glColor4f(1, 1, 1, 1);
+		glBegin(GL_QUADS);
+		{
+			glVertex2d(2, outline.getHeight() - 2);
+			glVertex2d(outline.getWidth() - 2, outline.getHeight() - 2);
+			glVertex2d(outline.getWidth() - 2, 2);
+			glVertex2d(2, 2);
+		}
+		glEnd();
+
+		glEnable(GL_TEXTURE_2D);
 		getFont().drawString(PADDING, PADDING, text, Color.black);
+		glDisable(GL_TEXTURE_2D);
 	}
 
 	@Override
 	public String getComponentName() {
-		return "Label";
+		return "TextField";
 	}
 	
 	/**

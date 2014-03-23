@@ -80,8 +80,10 @@ public class Dialog extends Container {
 		}
 		glEnd();
 
+		glEnable(GL_TEXTURE_2D);
 		getFont().drawString((getWidth() - getFont().getWidth(caption)) / 2, PADDING,
 				caption, Color.black);
+		glDisable(GL_TEXTURE_2D);
 		
 		super.draw();
 	}

@@ -175,6 +175,8 @@ public class Button extends Component implements Listener {
 		}
 		
 		// render text
+		glEnable(GL_TEXTURE_2D);
+		
 		int textWidth = getFont().getWidth(text);
 		int textHeight = getFont().getLineHeight();
 		if (this.drawText) {
@@ -212,7 +214,6 @@ public class Button extends Component implements Listener {
 			}
 			
 			glColor3d(1, 1, 1);
-			glEnable(GL_TEXTURE_2D);
 			icon.bind();
 			glBegin(GL_QUADS);
 			{
@@ -226,13 +227,14 @@ public class Button extends Component implements Listener {
 				glVertex2d(iconX, iconY + iconSize);
 			}
 			glEnd();
-			glDisable(GL_TEXTURE_2D);
 		}
+		
+		glDisable(GL_TEXTURE_2D);
 	}
 	
 	@Override
 	public String getComponentName() {
-		return "MenuBarItem";
+		return "Button";
 	}
 	
 	/**
