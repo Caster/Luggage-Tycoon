@@ -1,18 +1,8 @@
 package accg.objects.blocks;
 
-import static accg.gui.toolkit.GLUtils.*;
 import static org.lwjgl.opengl.GL11.*;
-
-import java.util.ArrayList;
-
-import javax.vecmath.Vector3f;
-
-import org.lwjgl.util.glu.Cylinder;
-
 import accg.State;
 import accg.objects.Block;
-import accg.objects.Luggage;
-import accg.utils.Utils;
 
 /**
  * A block in which the luggage enters the scene.
@@ -56,6 +46,7 @@ public class EnterBlock extends StraightConveyorBlock {
 		glTranslated(x, y, z / 4.0);
 		glRotated(-orientation.angle, 0, 0, 1);
 		
+		// part of front, bottom, back, top
 		glBegin(GL_QUAD_STRIP);
 		{
 			glVertex3f(-0.5f, 0.375f, 0.875f);
@@ -70,6 +61,30 @@ public class EnterBlock extends StraightConveyorBlock {
 			glVertex3f(0.5f, 0.375f, 0);
 			glVertex3f(-0.5f, 0.375f, 0.125f);
 			glVertex3f(0.5f, 0.375f, 0.125f);
+		}
+		glEnd();
+		
+		// one side
+		glBegin(GL_QUAD_STRIP);
+		{
+			glVertex3f(-0.5f, -0.5f, 0);
+			glVertex3f(-0.5f, -0.5f, 1);
+			glVertex3f(-0.5f, 0.375f, 0);
+			glVertex3f(-0.5f, 0.375f, 1);
+			glVertex3f(-0.375f, 0.375f, 0);
+			glVertex3f(-0.375f, 0.375f, 1);
+		}
+		glEnd();
+		
+		// other side
+		glBegin(GL_QUAD_STRIP);
+		{
+			glVertex3f(0.5f, -0.5f, 0);
+			glVertex3f(0.5f, -0.5f, 1);
+			glVertex3f(0.5f, 0.375f, 0);
+			glVertex3f(0.5f, 0.375f, 1);
+			glVertex3f(0.375f, 0.375f, 0);
+			glVertex3f(0.375f, 0.375f, 1);
 		}
 		glEnd();
 		
