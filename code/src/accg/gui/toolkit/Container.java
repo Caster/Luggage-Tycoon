@@ -7,8 +7,10 @@ import java.util.Collection;
 import accg.gui.toolkit.event.*;
 
 /**
- * A GUI container. This is a component that can contain other components,
- * and is responsible for layouting them.
+ * A GUI container. This is a component that can contain other components
+ * (called its <i>children</i>), and is responsible for layouting them.
+ * 
+ * A container may not have overlapping children, else behaviour is undefined.
  */
 public abstract class Container extends Component {
 	
@@ -137,6 +139,9 @@ public abstract class Container extends Component {
 			}
 			if (shouldRelay) {
 				handled = c.sendEvent(e) || handled;
+				if (handled) {
+					break;
+				}
 			}
 			if (e instanceof MouseEvent) {
 				((MouseEvent) e).translate(c.getX(), c.getY());
