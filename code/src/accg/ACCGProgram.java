@@ -16,7 +16,10 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.PixelFormat;
+import org.lwjgl.opengl.Util;
 import org.lwjgl.util.Point;
 import org.lwjgl.util.glu.GLU;
 import org.newdawn.slick.Color;
@@ -24,11 +27,12 @@ import org.newdawn.slick.Color;
 import accg.State.ProgramMode;
 import accg.camera.Camera;
 import accg.gui.MainGUI;
-import accg.gui.MainStack;
 import accg.gui.toolkit.GLUtils;
 import accg.gui.toolkit.GUIUtils;
 import accg.objects.Block.Orientation;
-import accg.objects.*;
+import accg.objects.Floor;
+import accg.objects.ShadowBlock;
+import accg.objects.World;
 import accg.objects.blocks.ConveyorBlock;
 import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
 import accg.objects.blocks.StraightConveyorBlock;
@@ -358,10 +362,10 @@ public class ACCGProgram {
 					break;
 				// switch to *D*escending conveyor block in building mode
 				case Keyboard.KEY_D:
-				if (changingBlock) {
-					s.shadowBlock.setConveyorBlockType(ConveyorBlockType.DESCENDING);
-				}
-				break;
+					if (changingBlock) {
+						s.shadowBlock.setConveyorBlockType(ConveyorBlockType.DESCENDING);
+					}
+					break;
 				// switch to bend *L*eft conveyor block in building mode
 				case Keyboard.KEY_B:
 				if (changingBlock) {

@@ -22,16 +22,16 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
 		if (neighbor1 == null) {
-			addBendYZ(lefts, Math.PI, Math.PI / 2 + Math.atan2(1, 3), -0.375f,
-					-0.375f, 0.25f, 0.125);
+			addBendYZ(lefts, Math.PI, Math.PI / 2 - Math.atan2(1, 3), -0.375f,
+					-0.375f, 0.5f, 0.125);
 		} else {
 			lefts.add(new Vector3f(-0.375f, -0.5f, 0.625f));
 			addBendYZ(lefts, Math.PI / 2, Math.PI / 2 - Math.atan2(1, 3),
 					-0.375f, -0.375f, 0.5f, 0.125);
 		}
 		if (neighbor2 == null) {
-			addBendYZ(lefts, Math.PI / 2 + Math.atan2(1, 3), 0, -0.375f, 0.375f,
-					0.5f, 0.125);
+			addBendYZ(lefts, Math.PI / 2 - Math.atan2(1, 3), 0, -0.375f, 0.375f,
+					0.25f, 0.125);
 		} else {
 			addBendYZ(lefts, -Math.PI / 2 - Math.atan2(1, 3), -Math.PI / 2,
 					-0.375f, 0.375f, 0.5f, 0.125);
@@ -45,16 +45,16 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> rights = new ArrayList<>();
 		if (neighbor1 == null) {
-			addBendYZ(rights, Math.PI, Math.PI / 2 + Math.atan2(1, 3), 0.375f,
-					-0.375f, 0.25f, 0.125);
+			addBendYZ(rights, Math.PI, Math.PI / 2 - Math.atan2(1, 3), 0.375f,
+					-0.375f, 0.5f, 0.125);
 		} else {
 			rights.add(new Vector3f(0.375f, -0.5f, 0.625f));
 			addBendYZ(rights, Math.PI / 2, Math.PI / 2 - Math.atan2(1, 3),
 					0.375f, -0.375f, 0.5f, 0.125);
 		}
 		if (neighbor2 == null) {
-			addBendYZ(rights, Math.PI / 2 + Math.atan2(1, 3), 0, 0.375f, 0.375f,
-					0.5f, 0.125);
+			addBendYZ(rights, Math.PI / 2 - Math.atan2(1, 3), 0, 0.375f, 0.375f,
+					0.25f, 0.125);
 		} else {
 			addBendYZ(rights, -Math.PI / 2 - Math.atan2(1, 3), -Math.PI / 2,
 					0.375f, 0.375f, 0.5f, 0.125);
@@ -70,7 +70,7 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 		double texCoord;
 		if (neighbor1 == null) {
 			texCoord = addBendTextureCoordinates(texs, Math.PI,
-					Math.PI / 2 + Math.atan2(1, 3), 0.125, 0.0);
+					Math.PI / 2 - Math.atan2(1, 3), 0.125, 0.0);
 		} else {
 			texs.add(0.0);
 			texCoord = 1;
@@ -78,7 +78,7 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 					Math.PI / 2, Math.PI / 2 - Math.atan2(1, 3), 0.125, texCoord);
 		}
 		if (neighbor2 == null) {
-			addBendTextureCoordinates(texs, Math.PI / 2 + Math.atan2(1, 3), 0,
+			addBendTextureCoordinates(texs, Math.PI / 2 - Math.atan2(1, 3), 0,
 					0.125, texCoord + 6.0);
 		} else {
 			addBendTextureCoordinates(texs, -Math.PI / 2 - Math.atan2(1, 3),
@@ -93,16 +93,16 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
 		if (neighbor2 == null) {
-			addBendYZ(lefts, 0, -Math.PI / 2 + Math.atan2(1, 3), -0.375f, 0.375f,
-					0.5f, 0.125);
+			addBendYZ(lefts, 0, -Math.PI / 2 - Math.atan2(1, 3), -0.375f, 0.375f,
+					0.25f, 0.125);
 		} else {
 			lefts.add(new Vector3f(-0.375f, 0.5f, 0.125f));
 			addBendYZ(lefts, -Math.PI / 2, -Math.PI / 2 - Math.atan2(1, 3), -0.375f, 0.375f,
 					0.25f, 0.125);
 		}
 		if (neighbor1 == null) {
-			addBendYZ(lefts, Math.PI * 3 / 2 + Math.atan2(1, 3), Math.PI, -0.375f,
-					-0.375f, 0.25f, 0.125);
+			addBendYZ(lefts, Math.PI * 3 / 2 - Math.atan2(1, 3), Math.PI, -0.375f,
+					-0.375f, 0.5f, 0.125);
 		} else {
 			addBendYZ(lefts, -Math.PI * 3 / 2 - Math.atan2(1, 3), -Math.PI * 3 / 2, -0.375f,
 					-0.375f, 0.25f, 0.125);
@@ -116,16 +116,16 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> rights = new ArrayList<>();
 		if (neighbor2 == null) {
-			addBendYZ(rights, 0, -Math.PI / 2 + Math.atan2(1, 3), 0.375f, 0.375f,
-					0.5f, 0.125);
+			addBendYZ(rights, 0, -Math.PI / 2 - Math.atan2(1, 3), 0.375f, 0.375f,
+					0.25f, 0.125);
 		} else {
 			rights.add(new Vector3f(0.375f, 0.5f, 0.125f));
 			addBendYZ(rights, -Math.PI / 2, -Math.PI / 2 - Math.atan2(1, 3), 0.375f, 0.375f,
 					0.25f, 0.125);
 		}
 		if (neighbor1 == null) {
-			addBendYZ(rights, Math.PI * 3 / 2 + Math.atan2(1, 3), Math.PI, 0.375f,
-					-0.375f, 0.25f, 0.125);
+			addBendYZ(rights, Math.PI * 3 / 2 - Math.atan2(1, 3), Math.PI, 0.375f,
+					-0.375f, 0.5f, 0.125);
 		} else {
 			addBendYZ(rights, -Math.PI * 3 / 2 - Math.atan2(1, 3), -Math.PI * 3 / 2, 0.375f,
 					-0.375f, 0.25f, 0.125);
@@ -141,7 +141,7 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 		double texCoord;
 		if (neighbor2 == null) {
 			texCoord = addBendTextureCoordinates(texs,
-					0, -Math.PI / 2 + Math.atan2(1, 3), 0.125, 0.0);
+					0, -Math.PI / 2 - Math.atan2(1, 3), 0.125, 0.0);
 		} else {
 			texs.add(0.0);
 			texCoord = 1;
@@ -149,7 +149,7 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 					-Math.PI / 2, -Math.PI / 2 - Math.atan2(1, 3), 0.125, 0.0);
 		}
 		if (neighbor1 == null) {
-			addBendTextureCoordinates(texs, Math.PI * 3 / 2 + Math.atan2(1, 3),
+			addBendTextureCoordinates(texs, Math.PI * 3 / 2 - Math.atan2(1, 3),
 					Math.PI, 0.125, texCoord + 6.0);
 		} else {
 			addBendTextureCoordinates(texs, -Math.PI * 3 / 2 - Math.atan2(1, 3),
