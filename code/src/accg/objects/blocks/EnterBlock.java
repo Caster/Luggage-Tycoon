@@ -16,6 +16,10 @@ import accg.objects.Block;
 public class EnterBlock extends StraightConveyorBlock {
 
 	/**
+	 * Default time in seconds between releasing pieces of luggage.
+	 */
+	public static final double DEFAULT_TIME_BETWEEN_LUGGAGE = 4;
+	/**
 	 * Colour of the hull surrounding the straight conveyor block.
 	 */
 	public static final Color HULL_COLOR = new Color(186, 189, 182);
