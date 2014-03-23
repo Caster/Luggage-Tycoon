@@ -3,10 +3,13 @@ package accg.gui;
 import org.newdawn.slick.opengl.Texture;
 
 import accg.State;
-import accg.gui.toolkit.*;
+import accg.gui.toolkit.Event;
+import accg.gui.toolkit.Listener;
+import accg.gui.toolkit.MenuBar;
+import accg.gui.toolkit.MenuBarItem;
 import accg.gui.toolkit.MenuBarItem.Type;
+import accg.gui.toolkit.MenuStack;
 import accg.gui.toolkit.MenuStack.Alignment;
-import accg.gui.toolkit.MenuStack.Position;
 import accg.gui.toolkit.event.MouseClickEvent;
 
 /**
