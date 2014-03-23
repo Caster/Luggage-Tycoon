@@ -151,7 +151,7 @@ public class Simulation {
 				EnterBlock eb = (EnterBlock) b;
 				
 				if (Utils.hasTimePassed(s, eb.timeBetweenLuggage, 0)) {
-					Luggage newLuggage = new Luggage(eb.getX(), eb.getY(), eb.getZ() / 4f);
+					Luggage newLuggage = new Luggage(eb.getX(), eb.getY(), eb.getZ() / 4f + 0.5f);
 					s.world.luggage.addObject(newLuggage);
 					addLuggageToPhysicsEngine(newLuggage);
 				}
