@@ -1,7 +1,5 @@
 package accg.gui.toolkit;
 
-import static org.lwjgl.opengl.GL11.*;
-
 import java.awt.Color;
 
 import javax.vecmath.Vector3f;
@@ -10,6 +8,27 @@ import javax.vecmath.Vector3f;
  * This class contains several static utility methods for working with OpenGL.
  */
 public class GLUtils {
+	
+	/**
+	 * A vector that may be used in methods in this class. Spares object
+	 * allocations for frequent calls.
+	 */
+	private static Vector3f d1 = new Vector3f();
+	/**
+	 * A vector that may be used in methods in this class. Spares object
+	 * allocations for frequent calls.
+	 */
+	private static Vector3f d2 = new Vector3f();
+	/**
+	 * A vector that may be used in methods in this class. Spares object
+	 * allocations for frequent calls.
+	 */
+	private static Vector3f normal = new Vector3f();
+	/**
+	 * An array of vectors that may be used in methods in this class. Spares
+	 * object allocations for frequent calls.
+	 */
+	private static Vector3f[] quadArray = new Vector3f[4];
 	
 	/**
 	 * Clamp a given value between 0.1 and PI - 0.1.
@@ -54,10 +73,63 @@ public class GLUtils {
 	 */
 	public static void drawQuad(double xMin, double xMax, double yMin,
 			double yMax) {
-		glVertex3d(xMin, yMin, 0);
-		glVertex3d(xMin, yMax, 0);
-		glVertex3d(xMax, yMax, 0);
-		glVertex3d(xMax, yMin, 0);
+		org.lwjgl.opengl.GL11.glVertex3d(xMin, yMin, 0);
+		org.lwjgl.opengl.GL11.glVertex3d(xMin, yMax, 0);
+		org.lwjgl.opengl.GL11.glVertex3d(xMax, yMax, 0);
+		org.lwjgl.opengl.GL11.glVertex3d(xMax, yMin, 0);
+	}
+	
+	/**
+	 * Given a quad as a series of points in counter-clockwise order, put
+	 * glVertex3f commands that form that quad and also include glNormal3f
+	 * commands automatically.
+	 * 
+	 * <p>The normal is being calculated as follows: consider the points as
+	 * follows: <code>v1, v2, v3, v4</code>. We now first calculate
+	 * <code>d1 = v2 - v1</code> and <code>d2 = v4 - v1</code>. The normal is
+	 * now calculated as follows: <code>n = d1 x d2</code>.
+	 * 
+	 * @param quad The quad to put, given as a series of 4 points in counter-
+	 *             clockwise order.
+	 * @throws IllegalArgumentException In case {@code quad == null} or when
+	 *             {@code quad.length != 4}.
+	 */
+	public static void drawQuadAndNormals(Vector3f[] quad) {
+		if (quad == null || quad.length != 4) {
+			throw new IllegalArgumentException("Cannot draw a quad that does "
+					+ "not have exactly 4 points.");
+		}
+		
+		d1.sub(quad[1], quad[0]);
+		d2.sub(quad[3], quad[0]);
+		normal.cross(d1, d2);
+		normal.normalize();
+		
+		glNormal3f(normal);
+		for (int i = 0; i < 4; i++) {
+			glVertex3f(quad[i]);
+		}
+	}
+	
+	/**
+	 * Given a series of quads, draw them using
+	 * {@link #drawQuadAndNormals(Vector3f[])}.
+	 * 
+	 * @param quads An array of points spanning quads.
+	 * @throws IllegalArgumentException In case {@code quads == null} or when
+	 *             {@code quads.length == 0} or when
+	 *             {@code quads.length % 4 != 0}.
+	 */
+	public static void drawQuadsAndNormals(Vector3f[] quads) {
+		if (quads == null || quads.length == 0 || quads.length % 4 != 0) {
+			throw new IllegalArgumentException("Parameter `quads` should hold "
+					+ "a non-zero, multiple of 4 number of points.");
+		}
+		
+		for (int i = 0; i < quads.length; i += 4) {
+			System.arraycopy(quads, i, quadArray, 0, 4);
+			drawQuadAndNormals(quadArray);
+		}
 	}
 	
 	/**

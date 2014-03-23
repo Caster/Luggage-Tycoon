@@ -1,6 +1,12 @@
 package accg.objects.blocks;
 
+import static accg.gui.toolkit.GLUtils.*;
 import static org.lwjgl.opengl.GL11.*;
+
+import java.awt.Color;
+
+import javax.vecmath.Vector3f;
+
 import accg.State;
 import accg.objects.Block;
 
@@ -8,6 +14,61 @@ import accg.objects.Block;
  * A block in which the luggage enters the scene.
  */
 public class EnterBlock extends StraightConveyorBlock {
+
+	/**
+	 * Colour of the hull surrounding the straight conveyor block.
+	 */
+	public static final Color HULL_COLOR = new Color(186, 189, 182);
+	
+	/**
+	 * Series of points that define the hull around this block.
+	 */
+	private static Vector3f[] hullPoints = new Vector3f[] {
+		new Vector3f(-0.5f, 0.375f, 1),
+		new Vector3f(0.5f, 0.375f, 1),
+		new Vector3f(0.5f, 0.375f, 0.875f),
+		new Vector3f(-0.5f, 0.375f, 0.875f),
+		
+		new Vector3f(0.5f, 0.375f, 1),
+		new Vector3f(-0.5f, 0.375f, 1),
+		new Vector3f(-0.5f, -0.5f, 1),
+		new Vector3f(0.5f, -0.5f, 1),
+		
+		new Vector3f(0.5f, -0.5f, 1),
+		new Vector3f(-0.5f, -0.5f, 1),
+		new Vector3f(-0.5f, -0.5f, 0),
+		new Vector3f(0.5f, -0.5f, 0),
+		
+		new Vector3f(-0.5f, -0.5f, 0),
+		new Vector3f(0.5f, -0.5f, 0),
+		new Vector3f(0.5f, 0.375f, 0),
+		new Vector3f(-0.5f, 0.375f, 0),
+		
+		new Vector3f(0.5f, 0.375f, 0),
+		new Vector3f(-0.5f, 0.375f, 0),
+		new Vector3f(-0.5f, 0.375f, 0.125f),
+		new Vector3f(0.5f, 0.375f, 0.125f),
+		
+		new Vector3f(-0.5f, -0.5f, 0),
+		new Vector3f(-0.5f, -0.5f, 1),
+		new Vector3f(-0.5f, 0.375f, 1),
+		new Vector3f(-0.5f, 0.375f, 0),
+		
+		new Vector3f(-0.5f, 0.375f, 0.125f),
+		new Vector3f(-0.5f, 0.375f, 0.875f),
+		new Vector3f(-0.375f, 0.375f, 0.875f),
+		new Vector3f(-0.375f, 0.375f, 0.125f),
+		
+		new Vector3f(0.5f, -0.5f, 1),
+		new Vector3f(0.5f, -0.5f, 0),
+		new Vector3f(0.5f, 0.375f, 0),
+		new Vector3f(0.5f, 0.375f, 1),
+		
+		new Vector3f(0.5f, 0.375f, 0.875f),
+		new Vector3f(0.5f, 0.375f, 0.125f),
+		new Vector3f(0.375f, 0.375f, 0.125f),
+		new Vector3f(0.375f, 0.375f, 0.875f)
+	};
 	
 	/**
 	 * The time between two luggage items.
@@ -46,45 +107,10 @@ public class EnterBlock extends StraightConveyorBlock {
 		glTranslated(x, y, z / 4.0);
 		glRotated(-orientation.angle, 0, 0, 1);
 		
-		// part of front, bottom, back, top
-		glBegin(GL_QUAD_STRIP);
+		glColor4f(HULL_COLOR);
+		glBegin(GL_QUADS);
 		{
-			glVertex3f(-0.5f, 0.375f, 0.875f);
-			glVertex3f(0.5f, 0.375f, 0.875f);
-			glVertex3f(-0.5f, 0.375f, 1);
-			glVertex3f(0.5f, 0.375f, 1);
-			glVertex3f(-0.5f, -0.5f, 1);
-			glVertex3f(0.5f, -0.5f, 1);
-			glVertex3f(-0.5f, -0.5f, 0);
-			glVertex3f(0.5f, -0.5f, 0);
-			glVertex3f(-0.5f, 0.375f, 0);
-			glVertex3f(0.5f, 0.375f, 0);
-			glVertex3f(-0.5f, 0.375f, 0.125f);
-			glVertex3f(0.5f, 0.375f, 0.125f);
-		}
-		glEnd();
-		
-		// one side
-		glBegin(GL_QUAD_STRIP);
-		{
-			glVertex3f(-0.5f, -0.5f, 0);
-			glVertex3f(-0.5f, -0.5f, 1);
-			glVertex3f(-0.5f, 0.375f, 0);
-			glVertex3f(-0.5f, 0.375f, 1);
-			glVertex3f(-0.375f, 0.375f, 0);
-			glVertex3f(-0.375f, 0.375f, 1);
-		}
-		glEnd();
-		
-		// other side
-		glBegin(GL_QUAD_STRIP);
-		{
-			glVertex3f(0.5f, -0.5f, 0);
-			glVertex3f(0.5f, -0.5f, 1);
-			glVertex3f(0.5f, 0.375f, 0);
-			glVertex3f(0.5f, 0.375f, 1);
-			glVertex3f(0.375f, 0.375f, 0);
-			glVertex3f(0.375f, 0.375f, 1);
+			drawQuadsAndNormals(hullPoints);
 		}
 		glEnd();
 		
