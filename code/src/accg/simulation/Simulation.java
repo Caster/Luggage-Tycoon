@@ -4,10 +4,9 @@ import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 
 import accg.State;
-import accg.objects.DrawableObjectListener;
-import accg.objects.Luggage;
-import accg.objects.World;
+import accg.objects.*;
 import accg.objects.blocks.ConveyorBlock;
+import accg.objects.blocks.EnterBlock;
 import accg.utils.Utils;
 
 import com.bulletphysics.BulletGlobals;
@@ -146,29 +145,17 @@ public class Simulation {
 	 * @param s State to add objects to and read passed time from.
 	 */
 	public void addObjects(State s) {
-		if (Utils.hasTimePassed(s, 1.0, 0)) {
-			Luggage newLuggage = new Luggage((float) (1.75 + 0.5 * Math.random()),
-					(float) (6.75 + 0.5 * Math.random()), 6);
-			s.world.luggage.addObject(newLuggage);
-			addLuggageToPhysicsEngine(newLuggage);
-		}
-		if (Utils.hasTimePassed(s, 5, 1)) {
-			Luggage newLuggage = new Luggage((float) (5.75 + 0.5 * Math.random()),
-					(float) (8.75 + 0.5 * Math.random()), 2f);
-			s.world.luggage.addObject(newLuggage);
-			addLuggageToPhysicsEngine(newLuggage);
-		}
-		if (Utils.hasTimePassed(s, 5, 3)) {
-			Luggage newLuggage = new Luggage((float) (10.75 + 0.5 * Math.random()),
-					(float) (9.75 + 0.5 * Math.random()), 2f);
-			s.world.luggage.addObject(newLuggage);
-			addLuggageToPhysicsEngine(newLuggage);
-		}
-		if (Utils.hasTimePassed(s, 5, 4)) {
-			Luggage newLuggage = new Luggage((float) (10.75 + 0.5 * Math.random()),
-					(float) (4.75 + 0.5 * Math.random()), 2f);
-			s.world.luggage.addObject(newLuggage);
-			addLuggageToPhysicsEngine(newLuggage);
+		
+		for (Block b : s.world.bc) {
+			if (b instanceof EnterBlock) {
+				EnterBlock eb = (EnterBlock) b;
+
+				if (Utils.hasTimePassed(s, eb.timeBetweenLuggage, 0)) {
+					Luggage newLuggage = new Luggage(eb.getX(), eb.getY(), eb.getZ() / 4f);
+					s.world.luggage.addObject(newLuggage);
+					addLuggageToPhysicsEngine(newLuggage);
+				}
+			}
 		}
 	}
 	
@@ -209,7 +196,7 @@ public class Simulation {
 	 * 
 	 * @param newLuggage Luggage to add.
 	 */
-	public void addLuggageToPhysicsEngine(Luggage newLuggage) {
+	private void addLuggageToPhysicsEngine(Luggage newLuggage) {
 		MotionState motion = new LuggageMotionState(newLuggage);
 		final RigidBody r = new RigidBody(Luggage.WEIGHT, motion, ShapeFactory.getLuggageShape(),
 				ShapeFactory.getLuggageShapeInertia());

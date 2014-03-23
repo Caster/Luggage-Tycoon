@@ -1,5 +1,8 @@
 package accg.objects;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import accg.State;
 
 /**
@@ -12,7 +15,7 @@ import accg.State;
  * It would be nice to split this into two classes, where this class only
  * becomes responsible for drawing the contents of the model class.
  */
-public class BlockCollection extends DrawableObject {
+public class BlockCollection extends DrawableObject implements Iterable<Block> {
 	
 	/**
 	 * Array of blocks. <code>blocks[x][y][z]</code> contains the block
@@ -212,5 +215,74 @@ public class BlockCollection extends DrawableObject {
 				}
 			}
 		}
+	}
+
+	@Override
+	public Iterator<Block> iterator() {
+		return new Iterator<Block>() {
+			
+			/**
+			 * The next block.
+			 */
+			Block next;
+			
+			/**
+			 * Current x-coordinate we are at.
+			 */
+			int x = 0;
+			
+			/**
+			 * Current y-coordinate we are at.
+			 */
+			int y = 0;
+			
+			/**
+			 * Current z-coordinate we are at.
+			 */
+			int z = 0;
+			
+			@Override
+			public boolean hasNext() {
+				return next != null;
+			}
+
+			@Override
+			public Block next() {
+				Block toReturn = next;
+				findNext();
+				
+				if (toReturn == null) {
+					throw new NoSuchElementException("No more elements in this BlockCollection");
+				}
+				
+				return toReturn;
+			}
+			
+			/**
+			 * Finds the next block and puts it in <code>next</code>. If there
+			 * is no next block, it puts <code>null</code> there.
+			 */
+			private void findNext() {
+				
+				for (; x < sizeX; x++) {
+					for (; y < sizeY; y++) {
+						for (; z < sizeZ; z++) {
+							Block b = blocks[x][y][z];
+							if (b != null) {
+								next = b;
+								return;
+							}
+						}
+					}
+				}
+				
+				next = null;
+			}
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException("Removing blocks is not allowed for a BlockCollection");
+			}
+		};
 	}
 }

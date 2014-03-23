@@ -58,12 +58,6 @@ public class EnterBlock extends Block {
 		glTranslated(x, y, z / 4.0);
 		glRotated(-orientation.angle, 0, 0, 1);
 		
-		if (Utils.hasTimePassed(s, 1.0, 0)) {
-			Luggage newLuggage = new Luggage(x, y, z / 4f + 2f);
-			s.world.luggage.addObject(newLuggage);
-			s.simulation.addLuggageToPhysicsEngine(newLuggage);
-		}
-		
 		glBegin(GL_QUADS);
 		{
 			glVertex3f(x - 0.5f, y - 0.5f, z / 4f);
