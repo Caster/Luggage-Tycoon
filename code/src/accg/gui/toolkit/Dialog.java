@@ -49,7 +49,7 @@ public class Dialog extends Container {
 
 	@Override
 	public int getPreferredHeight() {
-		return getFont().getLineHeight() + 3 * PADDING;
+		return getFont().getLineHeight() + body.getPreferredHeight() + 3 * PADDING;
 	}
 
 	@Override
@@ -66,6 +66,8 @@ public class Dialog extends Container {
 
 		getFont().drawString((getWidth() - getFont().getWidth(caption)) / 2, PADDING,
 				caption, Color.black);
+		
+		super.draw();
 	}
 	
 	/**
