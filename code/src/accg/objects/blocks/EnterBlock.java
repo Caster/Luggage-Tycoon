@@ -17,7 +17,7 @@ import accg.utils.Utils;
 /**
  * A block in which the luggage enters the scene.
  */
-public class EnterBlock extends Block {
+public class EnterBlock extends StraightConveyorBlock {
 	
 	/**
 	 * The time between two luggage items.
@@ -50,29 +50,30 @@ public class EnterBlock extends Block {
 	@Override
 	public void draw(State s) {
 		
-		// TODO draw scaffolding here, but it is ugly to duplicate this code from
-		// ConveyorBlock
-		// so make some API for that and use it in both cases
+		super.draw(s);
 
 		glPushMatrix();
 		glTranslated(x, y, z / 4.0);
 		glRotated(-orientation.angle, 0, 0, 1);
 		
-		glBegin(GL_QUADS);
+		glBegin(GL_QUAD_STRIP);
 		{
+			glVertex3f(-0.5f, 0.375f, 0.875f);
+			glVertex3f(0.5f, 0.375f, 0.875f);
+			glVertex3f(-0.5f, 0.375f, 1);
+			glVertex3f(0.5f, 0.375f, 1);
+			glVertex3f(-0.5f, -0.5f, 1);
+			glVertex3f(0.5f, -0.5f, 1);
 			glVertex3f(-0.5f, -0.5f, 0);
-			glVertex3f(-0.5f, 0.5f, 0);
-			glVertex3f(0.5f, 0.5f, 0);
 			glVertex3f(0.5f, -0.5f, 0);
+			glVertex3f(-0.5f, 0.375f, 0);
+			glVertex3f(0.5f, 0.375f, 0);
+			glVertex3f(-0.5f, 0.375f, 0.125f);
+			glVertex3f(0.5f, 0.375f, 0.125f);
 		}
 		glEnd();
 		
 		glPopMatrix();
-	}
-	
-	@Override
-	public int getHeight() {
-		return 2;
 	}
 
 	@Override
