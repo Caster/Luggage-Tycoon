@@ -10,9 +10,20 @@ import static org.lwjgl.opengl.GL11.*;
 public class TextField extends Component {
 	
 	/**
+	 * The frame number.
+	 */
+	private int frame = 0;
+	
+	/**
 	 * The text shown in this text field.
 	 */
 	private String text = "";
+	
+	/**
+	 * The location of the cursor. This value is always between 0 and
+	 * <code>text.length()</code>.
+	 */
+	private int cursorLocation = 0;
 	
 	/**
 	 * The approximate amount of characters that this TextField should be
@@ -54,6 +65,8 @@ public class TextField extends Component {
 	@Override
 	public void draw() {
 		
+		frame++;
+		
 		// border
 		glColor4f(0, 0, 0, 1);
 		glBegin(GL_QUADS);
@@ -75,10 +88,25 @@ public class TextField extends Component {
 			glVertex2d(2, 2);
 		}
 		glEnd();
-
+		
+		// draw the actual text
 		glEnable(GL_TEXTURE_2D);
 		getFont().drawString(PADDING, PADDING, text, Color.black);
 		glDisable(GL_TEXTURE_2D);
+		
+		// draw the cursor
+		if (frame % 80 < 40) {
+			int cursorX = PADDING + getFont().getWidth(text.substring(0, cursorLocation));
+			glColor4f(0, 0, 0, 1);
+			glBegin(GL_QUADS);
+			{
+				glVertex2d(cursorX, outline.getHeight() - PADDING);
+				glVertex2d(cursorX + 2, outline.getHeight() - PADDING);
+				glVertex2d(cursorX + 2, PADDING);
+				glVertex2d(cursorX, PADDING);
+			}
+			glEnd();
+		}
 	}
 
 	@Override
@@ -92,6 +120,9 @@ public class TextField extends Component {
 	 */
 	public void setText(String text) {
 		this.text = text;
+		
+		// move the cursor location to the end of the text
+		cursorLocation = text.length();
 	}
 	
 	/**
