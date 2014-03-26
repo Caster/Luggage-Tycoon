@@ -61,12 +61,9 @@ public class MainGUI extends LayeredPane {
 		Component focused = Component.getKeyFocusElement();
 		
 		if (focused == null) {
-			System.err.println("no focussed component :(");
 			return false;
 		}
-
-		System.err.println("yes! :) sent key event to:");
-		focused.outputDebug(System.err);
+		
 		focused.sendEvent(new KeyEvent(c));
 		return true;
 	}
