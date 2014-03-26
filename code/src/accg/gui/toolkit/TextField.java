@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import org.newdawn.slick.Color;
 
+import accg.gui.toolkit.event.KeyEvent;
 import accg.gui.toolkit.event.MouseClickEvent;
 import accg.gui.toolkit.event.MouseEvent;
 
@@ -69,11 +70,16 @@ public class TextField extends Component {
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
 					updateCursor((MouseEvent) e);
+					requestFocus();
+				}
+				
+				if (e instanceof KeyEvent) {
+					addCharacterAtCursor(((KeyEvent) e).getKey());
 				}
 			}
 		});
 	}
-	
+
 	/**
 	 * Updates the position of the cursor, based on the given event.
 	 * @param e The mouse event that caused the update.
@@ -115,6 +121,17 @@ public class TextField extends Component {
 		
 		// show the cursor immediately
 		cursorShowCounter = 0;
+	}
+	
+	/**
+	 * Inserts the given character in the text, at the position of the
+	 * cursor. Furthermore, moves the cursor behind this character.
+	 * 
+	 * @param key The key to add.
+	 */
+	protected void addCharacterAtCursor(char key) {
+		text = text.substring(0, cursorLocation) + key + text.substring(cursorLocation);
+		cursorLocation++;
 	}
 
 	@Override

@@ -2,11 +2,13 @@ package accg.gui;
 
 import java.io.InputStream;
 
+import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.util.ResourceLoader;
 
 import accg.State;
+import accg.gui.toolkit.Component;
 import accg.gui.toolkit.LayeredPane;
 import accg.gui.toolkit.event.*;
 
@@ -46,6 +48,27 @@ public class MainGUI extends LayeredPane {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * Handles a key event by giving it to the GUI.
+	 * 
+	 * @param c The character typed.
+	 * (TODO This is quite ugly; investigate other ways to do this.)
+	 * @return Whether the event has been handled by the GUI.
+	 */
+	public boolean handleKeyEvent(char c) {
+		Component focused = Component.getKeyFocusElement();
+		
+		if (focused == null) {
+			System.err.println("no focussed component :(");
+			return false;
+		}
+
+		System.err.println("yes! :) sent key event to:");
+		focused.outputDebug(System.err);
+		focused.sendEvent(new KeyEvent(c));
+		return true;
 	}
 	
 	/**

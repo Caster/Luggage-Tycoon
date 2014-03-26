@@ -303,7 +303,13 @@ public class ACCGProgram {
 	 */
 	public void handleKeyEvents(State s) {		
 		while (Keyboard.next()) {
+			
 			if (Keyboard.getEventKeyState()) {
+				// perhaps the GUI wants to handle this?
+				if (gui.handleKeyEvent(Keyboard.getEventCharacter())) {
+					continue;
+				}
+				
 				switch (Keyboard.getEventKey()) {
 				case Keyboard.KEY_RETURN:
 					// only respond to Alt+Enter, not just Enter

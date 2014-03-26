@@ -49,6 +49,11 @@ public abstract class Component {
 	 * The list of listeners.
 	 */
 	protected ArrayList<Listener> listeners = new ArrayList<>();
+	
+	/**
+	 * The element that currently has the keyboard focus.
+	 */
+	protected static Component focusElement = null;
 
 	/**
 	 * Returns the bounds of this component.
@@ -335,5 +340,22 @@ public abstract class Component {
 				c.outputDebug(out, indent + 2);
 			}
 		}
+	}
+	
+	/**
+	 * Returns the component that has currently the focus.
+	 * 
+	 * @return The focused element, or <code>null</code> if no element is
+	 * currently focused.
+	 */
+	public static Component getKeyFocusElement() {
+		return focusElement;
+	}
+	
+	/**
+	 * Requests the keyboard focus.
+	 */
+	public void requestFocus() {
+		focusElement = this;
 	}
 }
