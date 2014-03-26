@@ -13,9 +13,11 @@ import accg.gui.toolkit.event.MouseEvent;
 public class TextField extends Component {
 	
 	/**
-	 * The frame number.
+	 * Amount of frames that the cursor visible/invisible loop takes.
+	 * Half of this period, the cursor will be visible and the other half
+	 * it will be invisible.
 	 */
-	private int frame = 0;
+	public static final int CURSOR_PERIOD = 80;
 	
 	/**
 	 * The text shown in this text field.
@@ -27,6 +29,13 @@ public class TextField extends Component {
 	 * <code>text.length()</code>.
 	 */
 	private int cursorLocation = 0;
+	
+	/**
+	 * Counter that determines whether the cursor should be shown or not.
+	 * If this counter is smaller than CURSOR_PERIOD / 2, it will be shown.
+	 * If it is larger than CURSOR_PERIOD, it will wrap-around to 0 again.
+	 */
+	private int cursorShowCounter = 0;
 	
 	/**
 	 * The approximate amount of characters that this TextField should be
@@ -103,6 +112,9 @@ public class TextField extends Component {
 		} else {
 			cursorLocation = upper;
 		}
+		
+		// show the cursor immediately
+		cursorShowCounter = 0;
 	}
 
 	@Override
@@ -118,7 +130,10 @@ public class TextField extends Component {
 	@Override
 	public void draw() {
 		
-		frame++;
+		cursorShowCounter++;
+		if (cursorShowCounter > CURSOR_PERIOD) {
+			cursorShowCounter -= CURSOR_PERIOD;
+		}
 		
 		// border
 		glColor4f(0, 0, 0, 1);
@@ -148,7 +163,7 @@ public class TextField extends Component {
 		glDisable(GL_TEXTURE_2D);
 		
 		// draw the cursor
-		if (frame % 80 < 40) {
+		if (cursorShowCounter % CURSOR_PERIOD < CURSOR_PERIOD / 2) {
 			int cursorX = PADDING + getFont().getWidth(text.substring(0, cursorLocation));
 			glColor4f(0, 0, 0, 1);
 			glBegin(GL_QUADS);
