@@ -46,7 +46,7 @@ public class NormalModeMenuBar extends MenuBar {
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
 					TextField tf = new TextField(40);
-					tf.setText("Choose a model to open...");
+					tf.requestFocus();
 					Dialog dialog = new Dialog("Open", tf,
 							new Button("OK", s.textures.iconGoUp),
 							new Button("Cancel", s.textures.iconExit));
