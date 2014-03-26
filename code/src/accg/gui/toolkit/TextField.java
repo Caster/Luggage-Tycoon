@@ -180,7 +180,7 @@ public class TextField extends Component {
 		glDisable(GL_TEXTURE_2D);
 		
 		// draw the cursor
-		if (cursorShowCounter % CURSOR_PERIOD < CURSOR_PERIOD / 2) {
+		if (hasFocus() && cursorShowCounter % CURSOR_PERIOD < CURSOR_PERIOD / 2) {
 			int cursorX = PADDING + getFont().getWidth(text.substring(0, cursorLocation));
 			glColor4f(0, 0, 0, 1);
 			glBegin(GL_QUADS);

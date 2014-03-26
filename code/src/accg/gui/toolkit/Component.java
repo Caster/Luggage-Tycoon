@@ -358,4 +358,13 @@ public abstract class Component {
 	public void requestFocus() {
 		focusElement = this;
 	}
+	
+	/**
+	 * Returns whether this component has the keyboard focus.
+	 * @return <code>true</code> if this has the keyboard focus;
+	 * <code>false</code> otherwise.
+	 */
+	public boolean hasFocus() {
+		return focusElement == this;
+	}
 }
