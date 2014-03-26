@@ -1,8 +1,11 @@
 package accg.gui.toolkit;
 
+import static org.lwjgl.opengl.GL11.*;
+
 import org.newdawn.slick.Color;
 
-import static org.lwjgl.opengl.GL11.*;
+import accg.gui.toolkit.event.MouseClickEvent;
+import accg.gui.toolkit.event.MouseEvent;
 
 /**
  * A component in which the user can type text.
@@ -50,6 +53,56 @@ public class TextField extends Component {
 	 */
 	public TextField(int characters) {
 		this.characters = characters;
+		
+		addListener(new Listener() {
+			
+			@Override
+			public void event(Event e) {
+				if (e instanceof MouseClickEvent) {
+					updateCursor((MouseEvent) e);
+				}
+			}
+		});
+	}
+	
+	/**
+	 * Updates the position of the cursor, based on the given event.
+	 * @param e The mouse event that caused the update.
+	 */
+	protected void updateCursor(MouseEvent e) {
+		
+		// don't react to clicks on the border
+		if (e.getX() < BORDER_WIDTH || e.getX() > getWidth() + BORDER_WIDTH ||
+				e.getY() < BORDER_WIDTH || e.getY() > getHeight() + BORDER_WIDTH) {
+			return;
+		}
+		
+		int xInText = e.getX() - PADDING;
+		
+		// do a binary search to find where this position is located in the text
+		int lower = 0;
+		int upper = text.length();
+		
+		while (upper - lower > 1) {
+			int middle = (lower + upper) / 2;
+			int cursorX = getFont().getWidth(text.substring(0, middle));
+			
+			if (cursorX < xInText) {
+				lower = middle;
+			} else {
+				upper = middle;
+			}
+		}
+		
+		// is upper or lower closer to the actual x-coordinate?
+		int xLower = getFont().getWidth(text.substring(0, lower));
+		int xUpper = getFont().getWidth(text.substring(0, upper));
+		
+		if (xInText - xLower < xUpper - xInText) {
+			cursorLocation = lower;
+		} else {
+			cursorLocation = upper;
+		}
 	}
 
 	@Override
