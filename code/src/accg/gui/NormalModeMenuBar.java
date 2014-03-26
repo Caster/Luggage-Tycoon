@@ -55,7 +55,23 @@ public class NormalModeMenuBar extends MenuBar {
 			}
 		});
 		add(openItem);
-		add(new Button("Save", s.textures.iconSave));
+		
+		Button saveItem = new Button("Save", s.textures.iconSave);
+		saveItem.addListener(new Listener() {
+			
+			@Override
+			public void event(Event e) {
+				if (e instanceof MouseClickEvent) {
+					TextField tf = new TextField(40);
+					tf.requestFocus();
+					Dialog dialog = new Dialog("Save", tf,
+							new Button("OK", s.textures.iconGoUp),
+							new Button("Cancel", s.textures.iconExit));
+					s.gui.add(new Panel(dialog));
+				}
+			}
+		});
+		add(saveItem);
 
 		Button settingsItem = new Button("Settings", s.textures.iconConfigure);
 		settingsItem.addListener(new Listener() {
