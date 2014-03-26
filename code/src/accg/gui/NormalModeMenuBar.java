@@ -11,7 +11,7 @@ import accg.gui.toolkit.event.MouseClickEvent;
 public class NormalModeMenuBar extends MenuBar {
 	
 	public NormalModeMenuBar(final MenuStack stack, final State s) {
-
+		
 		Button simulateItem = new Button("Simulate", s.textures.iconStart);
 		simulateItem.addListener(new Listener() {
 			
@@ -72,7 +72,7 @@ public class NormalModeMenuBar extends MenuBar {
 			}
 		});
 		add(saveItem);
-
+		
 		Button settingsItem = new Button("Settings", s.textures.iconConfigure);
 		settingsItem.addListener(new Listener() {
 			

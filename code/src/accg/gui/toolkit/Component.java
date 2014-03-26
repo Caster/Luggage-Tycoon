@@ -34,10 +34,8 @@ public abstract class Component {
 	
 	/**
 	 * The parent of this component, or <code>null</code> if it has no parent.
-	 * 
-	 * TODO This should be {@link Container}, when that is implemented.
 	 */
-	protected Component parent;
+	protected Container parent;
 	
 	/**
 	 * Whether this component is visible (<code>true</code>) or not
@@ -170,7 +168,7 @@ public abstract class Component {
 	 * 
 	 * @param parent The parent of this component.
 	 */
-	public void setParent(Component parent) {
+	public void setParent(Container parent) {
 		this.parent = parent;
 	}
 	
@@ -178,7 +176,7 @@ public abstract class Component {
 	 * Returns the parent of this component.
 	 * @return The parent of this component.
 	 */
-	public Component getParent() {
+	public Container getParent() {
 		return parent;
 	}
 	

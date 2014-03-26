@@ -95,10 +95,17 @@ public abstract class Container extends Component {
 	protected abstract boolean isTransparent();
 	
 	/**
-	 * Flags that the outline needs to be recalculated.
+	 * Flags that the container needs to be layouted again. This method should
+	 * be called after every operation that may change the size of this component.
+	 * This method will automatically also flag the parent of this container for
+	 * layouting.
 	 */
 	public void needsLayout() {
 		needsLayout = true;
+		
+		if (parent != null) {
+			parent.needsLayout();
+		}
 	}
 	
 	/**
