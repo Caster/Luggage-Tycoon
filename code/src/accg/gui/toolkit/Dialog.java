@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
 
+import accg.gui.toolkit.event.MouseClickEvent;
+import accg.gui.toolkit.event.MouseEvent;
+
 /**
  * A dialog is a component that shows a caption on top, and some other component
  * in its body. Furthermore a dialog can show buttons (or other components) below
@@ -78,6 +81,23 @@ public class Dialog extends Container {
 		for (Component c : buttons) {
 			footer.add(c);
 		}
+		
+		// if the user clicks on the backdrop, close the dialog
+		addListener(new Listener() {
+			
+			@Override
+			public void event(Event e) {
+				if (e instanceof MouseClickEvent && mode == DialogMode.BACKDROP) {
+					MouseEvent me = (MouseEvent) e;
+					if (me.getX() < (getWidth() - getPreferredWidth()) / 2
+							|| me.getX() > (getWidth() + getPreferredWidth()) / 2
+							|| me.getY() < (getHeight() - getPreferredHeight()) / 2
+							|| me.getY() > (getHeight() + getPreferredHeight()) / 2) {
+						setVisible(false);
+					}
+				}
+			}
+		});
 	}
 	
 	@Override
