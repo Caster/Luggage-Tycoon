@@ -49,10 +49,20 @@ public class NormalModeMenuBar extends MenuBar {
 					for (int i = 1; i <= 20; i++) {
 						l.addElement("File " + i);
 					}
-					Dialog dialog = new Dialog("Open", l,
-							new Button("OK", s.textures.iconOk),
+					Button okButton = new Button("OK", s.textures.iconOk);
+					final Dialog dialog = new Dialog("Open", l,
+							okButton,
 							new Button("Cancel", s.textures.iconExit));
-					s.gui.add(new Panel(dialog));
+					okButton.addListener(new Listener() {
+						
+						@Override
+						public void event(Event e) {
+							if (e instanceof MouseClickEvent) {
+								dialog.setVisible(false);
+							}
+						}
+					});
+					s.gui.add(new DialogPanel(dialog));
 				}
 			}
 		});
@@ -69,7 +79,7 @@ public class NormalModeMenuBar extends MenuBar {
 					Dialog dialog = new Dialog("Save", tf,
 							new Button("OK", s.textures.iconOk),
 							new Button("Cancel", s.textures.iconExit));
-					s.gui.add(new Panel(dialog));
+					s.gui.add(new DialogPanel(dialog));
 				}
 			}
 		});

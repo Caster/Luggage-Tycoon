@@ -62,6 +62,6 @@ public class Panel extends Container {
 
 	@Override
 	protected boolean isTransparent() {
-		return true;
+		return false;
 	}
 }
