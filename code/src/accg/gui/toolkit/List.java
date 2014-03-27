@@ -76,7 +76,12 @@ public class List extends Component {
 					requestFocus();
 				}
 				if (e instanceof MouseScrollEvent) {
-					
+					if (((MouseScrollEvent) e).getdWheel() > 0) {
+						firstVisibleIndex -= 3;
+					} else {
+						firstVisibleIndex += 3;
+					}
+					clampVisibleIndex();
 				}
 			}
 		});
@@ -96,6 +101,7 @@ public class List extends Component {
 		
 		int yInList = e.getY() - PADDING;
 		selectedIndex = yInList / getFont().getLineHeight();
+		selectedIndex += firstVisibleIndex;
 		
 		if (selectedIndex >= elements.size()) {
 			selectedIndex = elements.size() - 1;
@@ -141,22 +147,28 @@ public class List extends Component {
 		glEnd();
 		
 		// background of selected item
-		glColor4f(0.5f, 0.5f, 0.5f, 1);
-		glBegin(GL_QUADS);
-		{
-			glVertex2d(2, PADDING + (selectedIndex + 1) * getFont().getLineHeight());
-			glVertex2d(outline.getWidth() - 2, PADDING + (selectedIndex + 1) * getFont().getLineHeight());
-			glVertex2d(outline.getWidth() - 2, PADDING + selectedIndex * getFont().getLineHeight());
-			glVertex2d(2, PADDING + selectedIndex * getFont().getLineHeight());
+		if (isElementVisible(selectedIndex)) {
+			
+			int selectedY = PADDING + (selectedIndex - firstVisibleIndex) * getFont().getLineHeight();
+			
+			glColor4f(0.5f, 0.5f, 0.5f, 1);
+			glBegin(GL_QUADS);
+			{
+				glVertex2d(2, selectedY + getFont().getLineHeight());
+				glVertex2d(outline.getWidth() - 2, selectedY + getFont().getLineHeight());
+				glVertex2d(outline.getWidth() - 2, selectedY);
+				glVertex2d(2, selectedY);
+			}
+			glEnd();
 		}
-		glEnd();
 		
 		// draw the actual elements
 		glEnable(GL_TEXTURE_2D);
 		for (int i = firstVisibleIndex;
 				isElementVisible(i) && i < elements.size();
 				i++) {
-			getFont().drawString(PADDING, PADDING + i * getFont().getLineHeight(),
+			getFont().drawString(PADDING,
+					PADDING + (i - firstVisibleIndex) * getFont().getLineHeight(),
 					elements.get(i), Color.black);
 		}
 		glDisable(GL_TEXTURE_2D);
@@ -184,5 +196,23 @@ public class List extends Component {
 	 */
 	protected boolean isElementVisible(int index) {
 		return index >= firstVisibleIndex && index < firstVisibleIndex + lines;
+	}
+	
+	/**
+	 * Clamps the first visible index within its bounds.
+	 */
+	protected void clampVisibleIndex() {
+		
+		// first check if there is empty space on the bottom
+		if (firstVisibleIndex > elements.size() - lines) {
+			firstVisibleIndex = elements.size() - lines;
+		}
+		
+		// now remove empty space on the top
+		// (this may introduce empty space on the bottom again; this
+		// is of course unavoidable)
+		if (firstVisibleIndex < 0) {
+			firstVisibleIndex = 0;
+		}
 	}
 }

@@ -46,11 +46,9 @@ public class NormalModeMenuBar extends MenuBar {
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
 					List l = new List(40, 6);
-					l.addElement("A file");
-					l.addElement("Another file");
-					l.addElement("Still another file");
-					l.addElement("Even more files?");
-					l.addElement("Wow, a lot of files!");
+					for (int i = 1; i <= 20; i++) {
+						l.addElement("File " + i);
+					}
 					Dialog dialog = new Dialog("Open", l,
 							new Button("OK", s.textures.iconOk),
 							new Button("Cancel", s.textures.iconExit));
