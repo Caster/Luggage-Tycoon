@@ -106,6 +106,11 @@ public class State {
 	public float beltPosition;
 	
 	/**
+	 * Speed of the conveyor belts, as fraction of their full speed.
+	 */
+	public float beltSpeed;
+	
+	/**
 	 * The time at which the simulation started.
 	 */
 	public float startTime;

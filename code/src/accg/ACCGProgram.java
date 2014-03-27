@@ -248,14 +248,22 @@ public class ACCGProgram {
 			s.prevTime = s.time;
 			s.time = (float) ((double) Sys.getTime() / Sys.getTimerResolution() - s.startTime);
 			
-			// update simulation, if applicable
+			// update simulation and belt speed, if applicable
 			if (s.programMode == ProgramMode.SIMULATION_MODE) {
 				s.simulation.update(s);
 				s.simulation.addObjects(s);
 				
-				// advance the conveyor belts
-				s.beltPosition += s.time - s.prevTime;
+				if (s.beltSpeed < 1) {
+					s.beltSpeed = Math.min(s.beltSpeed + 0.025f, 1);
+				}
+			} else {
+				if (s.beltSpeed > 0) {
+					s.beltSpeed = Math.max(s.beltSpeed - 0.025f, 0);
+				}
 			}
+			
+			// advance the conveyor belts
+			s.beltPosition += s.beltSpeed * (s.time - s.prevTime);
 			
 			// start rendering stuff
 			glClearColor(BACKGROUND_COLOR);
