@@ -27,6 +27,7 @@ import org.newdawn.slick.Color;
 import accg.State.ProgramMode;
 import accg.camera.Camera;
 import accg.gui.MainGUI;
+import accg.gui.toolkit.Component;
 import accg.gui.toolkit.GLUtils;
 import accg.gui.toolkit.GUIUtils;
 import accg.objects.Block.Orientation;
@@ -398,6 +399,12 @@ public class ACCGProgram {
 	 * Handles keys that are pressed.
 	 */
 	public void handlePressedKeys() {
+		
+		// if the user is typing text in the GUI, we don't want to handle
+		// pressed keys ourselves
+		if (Component.getKeyFocusElement() != null) {
+			return;
+		}
 		
 		if (changingBlock) {
 			return;
