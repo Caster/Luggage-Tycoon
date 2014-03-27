@@ -1,7 +1,6 @@
 package accg.gui.toolkit;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * A list of buttons (or components in general), shown next to each other.
@@ -85,7 +84,7 @@ public class DialogFooter extends Container {
 	}
 
 	@Override
-	public Collection<? extends Component> getChildren() {
+	public java.util.List<? extends Component> getChildren() {
 		return buttons;
 	}
 

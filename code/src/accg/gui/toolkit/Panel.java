@@ -1,6 +1,5 @@
 package accg.gui.toolkit;
 
-import java.util.Collection;
 import java.util.Collections;
 
 /**
@@ -56,8 +55,8 @@ public class Panel extends Container {
 	}
 
 	@Override
-	public Collection<? extends Component> getChildren() {
-		return Collections.singleton(child);
+	public java.util.List<? extends Component> getChildren() {
+		return Collections.singletonList(child);
 	}
 
 	@Override

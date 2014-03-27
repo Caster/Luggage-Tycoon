@@ -3,7 +3,6 @@ package accg.gui.toolkit;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import org.newdawn.slick.Color;
 
@@ -233,7 +232,7 @@ public class Dialog extends Container {
 	}
 
 	@Override
-	public Collection<? extends Component> getChildren() {
+	public java.util.List<? extends Component> getChildren() {
 		ArrayList<Component> children = new ArrayList<>();
 		
 		children.add(body);
@@ -247,4 +246,3 @@ public class Dialog extends Container {
 		return false;
 	}
 }
-

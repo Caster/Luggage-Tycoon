@@ -2,9 +2,10 @@ package accg.gui.toolkit;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import java.util.Collection;
+import java.util.List;
 
-import accg.gui.toolkit.event.*;
+import accg.gui.toolkit.event.MouseEvent;
+import accg.gui.toolkit.event.MouseMoveEvent;
 
 /**
  * A GUI container. This is a component that can contain other components
@@ -66,7 +67,7 @@ public abstract class Container extends Component {
 	 * 
 	 * @return A list of the children of this container.
 	 */
-	public abstract Collection<? extends Component> getChildren();
+	public abstract java.util.List<? extends Component> getChildren();
 	
 	/**
 	 * Whether this container is <i>transparent</i>.
@@ -122,7 +123,12 @@ public abstract class Container extends Component {
 		
 		boolean handled = false;
 		
-		for (Component c : getChildren()) {
+		List<? extends Component> children = getChildren();
+		
+		// iterate backwards, since we want the component on top first if there
+		// are overlapping components
+		for (int i = children.size() - 1; i >= 0; i--) {
+			Component c = children.get(i);
 			
 			// do not relay events to non-visible children
 			if (!c.isVisible()) {

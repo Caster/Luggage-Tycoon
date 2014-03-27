@@ -1,9 +1,11 @@
 package accg.gui.toolkit;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-import accg.gui.toolkit.MenuBar.Orientation;
 import accg.gui.toolkit.Button.Presentation;
+import accg.gui.toolkit.MenuBar.Orientation;
 
 /**
  * This class manages a GUI with several possible menu bars.
@@ -490,7 +492,7 @@ public class MenuStack extends Container {
 	}
 
 	@Override
-	public Collection<? extends Component> getChildren() {
-		return menuBars.values();
+	public java.util.List<? extends Component> getChildren() {
+		return new ArrayList<>(menuBars.values());
 	}
 }
