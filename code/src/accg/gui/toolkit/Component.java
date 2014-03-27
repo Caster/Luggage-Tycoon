@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.util.Rectangle;
 import org.newdawn.slick.Font;
 
@@ -425,9 +426,6 @@ public abstract class Component {
 	 * otherwise.
 	 */
 	public boolean isHovered() {
-		// TODO The getHighestAncestor().getHeight() part is a hack, but it
-		// is unavoidable until we have some proper API for interacting with
-		// LWJGL.
-		return absoluteContains(Mouse.getX(), getHighestAncestor().getHeight() - Mouse.getY());
+		return absoluteContains(Mouse.getX(), Display.getHeight() - Mouse.getY());
 	}
 }
