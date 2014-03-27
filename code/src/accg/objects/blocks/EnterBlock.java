@@ -4,12 +4,14 @@ import static accg.gui.toolkit.GLUtils.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import javax.vecmath.Vector3f;
 
 import accg.State;
 import accg.State.ProgramMode;
 import accg.objects.Block;
+import accg.objects.Luggage.LuggageColor;
 import accg.objects.Orientation;
 
 /**
@@ -95,6 +97,20 @@ public class EnterBlock extends FlatConveyorBlock {
 	public float timeBetweenLuggage;
 	
 	/**
+	 * A list of luggage colors from which can be chosen when generating luggage.
+	 * In case this is {@code null}, all colors can be used.
+	 */
+	protected ArrayList<LuggageColor> luggageColors;
+	/**
+	 * Number of pieces of luggage that should enter the scene in total.
+	 */
+	protected int luggageNum;
+	/**
+	 * Number of pieces of luggage that were generated in total.
+	 */
+	protected int generatedLuggage;
+	
+	/**
 	 * Creates a new EnterBlock on the specified position.
 	 * 
 	 * @param x The x-coordinate.
@@ -106,9 +122,7 @@ public class EnterBlock extends FlatConveyorBlock {
 	public EnterBlock(int x, int y, int z, Orientation orientation,
 			float timeBetweenLuggage) {
 		super(x, y, z, orientation);
-		
-		this.type = ConveyorBlockType.ENTER;
-		this.timeBetweenLuggage = timeBetweenLuggage;
+		init(timeBetweenLuggage);
 	}
 	
 	/**
@@ -124,9 +138,8 @@ public class EnterBlock extends FlatConveyorBlock {
 	public EnterBlock(int x, int y, int z, Orientation orientation,
 			float timeBetweenLuggage, boolean deletable) {
 		super(x, y, z, orientation, deletable);
+		init(timeBetweenLuggage);
 		
-		this.type = ConveyorBlockType.ENTER;
-		this.timeBetweenLuggage = timeBetweenLuggage;
 	}
 	
 	/**
@@ -138,6 +151,17 @@ public class EnterBlock extends FlatConveyorBlock {
 				block.timeBetweenLuggage);
 	}
 
+	/**
+	 * Initialisation method that is called from all constructors.
+	 */
+	private void init(float timeBetweenLuggage) {
+		this.type = ConveyorBlockType.ENTER;
+		this.timeBetweenLuggage = timeBetweenLuggage;
+		this.generatedLuggage = 0;
+		this.luggageColors = null;
+		this.luggageNum = 3;
+	}
+	
 	@Override
 	public void draw(State s) {
 		
@@ -188,6 +212,63 @@ public class EnterBlock extends FlatConveyorBlock {
 	}
 	
 	/**
+	 * Returns the number of pieces of luggage that has been generated so far.
+	 * @return The number of pieces of luggage that has been generated so far.
+	 */
+	public int getGeneratedLuggageNum() {
+		return generatedLuggage;
+	}
+	
+	/**
+	 * Returns the list of colors from which can be chosen when generating
+	 * luggage at this block.
+	 * @return The list of colors, or {@code null} if any color is okay.
+	 */
+	public ArrayList<LuggageColor> getLuggageColors() {
+		return luggageColors;
+	}
+	
+	/**
+	 * Returns the maximum number of pieces of luggage that can be generated at
+	 * this block.
+	 * @return The number of pieces of luggage that can be generated.
+	 */
+	public int getLuggageNum() {
+		return luggageNum;
+	}
+	
+	/**
+	 * Increment the generated luggage count.
+	 */
+	public void incrementGeneratedLuggageNum() {
+		this.generatedLuggage++;
+	}
+	
+	/**
+	 * Reset the count of generated luggage to zero. Can be used at the start of
+	 * a simulation for example.
+	 */
+	public void resetGeneratedLuggageNum() {
+		this.generatedLuggage = 0;
+	}
+	
+	/**
+	 * Changes the colors of luggage that can be generated at this block.
+	 * @param luggageColors Colors to choose from.
+	 */
+	public void setLuggageColors(ArrayList<LuggageColor> luggageColors) {
+		this.luggageColors = luggageColors;
+	}
+	
+	/**
+	 * Changes the number of items that can be generated at this block.
+	 * @param luggageNum Number of items that can be generated.
+	 */
+	public void setLuggageNum(int luggageNum) {
+		this.luggageNum = luggageNum;
+	}
+	
+	/**
 	 * Given a State to retrieve the current time from, return how far open
 	 * the shutter should be at this time, given the {@link #timeBetweenLuggage}.
 	 * 
@@ -195,7 +276,8 @@ public class EnterBlock extends FlatConveyorBlock {
 	 *         1 means completely closed.
 	 */
 	private float getShutterOpenFactor(State s) {
-		if (s.programMode != ProgramMode.SIMULATION_MODE) {
+		if (s.programMode != ProgramMode.SIMULATION_MODE ||
+				generatedLuggage > luggageNum) {
 			return 1;
 		}
 		
@@ -208,7 +290,12 @@ public class EnterBlock extends FlatConveyorBlock {
 		
 		if (timeMod <= timeBetweenLuggage / 2 + SHUTTER_STAY_OPEN_TIME) {
 			timeMod -= SHUTTER_STAY_OPEN_TIME;
-			return 1 - Math.max((SHUTTER_OPEN_TIME - timeMod) / SHUTTER_OPEN_TIME, 0);
+			float result = 1 - Math.max((SHUTTER_OPEN_TIME - timeMod) / SHUTTER_OPEN_TIME, 0);
+			if (result > 0.97f && generatedLuggage == luggageNum) {
+				// shutter does not need to open anymore
+				generatedLuggage++;
+			}
+			return result;
 		}
 		
 		timeMod = timeBetweenLuggage - timeMod;

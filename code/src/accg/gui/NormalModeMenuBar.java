@@ -14,6 +14,8 @@ import accg.gui.toolkit.MenuStack;
 import accg.gui.toolkit.TextField;
 import accg.gui.toolkit.event.MouseClickEvent;
 import accg.io.SavedGameManager;
+import accg.objects.Block;
+import accg.objects.blocks.EnterBlock;
 
 /**
  * Menu bar for the normal mode.
@@ -29,6 +31,11 @@ public class NormalModeMenuBar extends MenuBar {
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
 					s.simulation.skipToTime(s.time);
+					for (Block b : s.world.bc) {
+						if (b instanceof EnterBlock) {
+							((EnterBlock) b).resetGeneratedLuggageNum();
+						}
+					}
 					s.programMode = ProgramMode.SIMULATION_MODE;
 					s.gui.updateItems();
 				}

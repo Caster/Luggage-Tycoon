@@ -1,5 +1,9 @@
 package accg.io;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -7,9 +11,11 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import accg.State;
 import accg.objects.Block;
 import accg.objects.Luggage.LuggageColor;
 import accg.objects.Orientation;
+import accg.objects.World;
 import accg.objects.blocks.EnterBlock;
 
 /**
@@ -56,17 +62,6 @@ public class Level {
 	 * The height of this Level.
 	 */
 	protected int fieldHeight;
-	/**
-	 * A list of luggage that will enter the scene. In case this is {@code null}
-	 * luggage may be created randomly.
-	 */
-	protected ArrayList<LuggageColor> levelLuggage;
-	/**
-	 * Number of pieces of luggage that should enter the scene in total. In case
-	 * {@link #levelLuggage} is not {@code null}, then it must hold that this
-	 * number is equal to the number of objects in that list.
-	 */
-	protected int levelLuggageNum;
 	/**
 	 * Maximum number of blocks that a user can build in this level. If this
 	 * value is {@code -1}, there is no limit.
@@ -122,6 +117,7 @@ public class Level {
 				throw new InputMismatchException("Expected 'blocks' identifier at line 4.");
 			}
 			this.blocks = new ArrayList<>();
+			ArrayList<EnterBlock> enterBlocks = new ArrayList<EnterBlock>();
 			String line;
 			int lineNum = 5;
 			Pattern blockPattern = Pattern.compile("([A-Za-z]{2}) (\\d+) (\\d+) (\\d+) ([lurd]) (nd)?");
@@ -149,6 +145,10 @@ public class Level {
 						throw new InputMismatchException("Block at line " + lineNum + ": Z-coordinate is not in bounds.");
 					}
 					this.blocks.add(b);
+					
+					if (b instanceof EnterBlock) {
+						enterBlocks.add((EnterBlock) b);
+					}
 				} else {
 					throw new InputMismatchException("Line \"" + line + "\" does not properly describe a "
 							+ "block. Expected format is \"[blockid] [x] [y] [z] [orientation] [nd]?\".");
@@ -156,31 +156,29 @@ public class Level {
 			}
 			
 			// read luggage number
-			Pattern luggagePattern = Pattern.compile("luggage(?:\\s+(\\d+))?");
-			Matcher luggageMatcher = luggagePattern.matcher(line);
-			if (luggageMatcher.matches()) {
-				this.levelLuggageNum = Integer.parseInt(luggageMatcher.group(1));
-			} else {
-				this.levelLuggageNum = -1;
-			}
-			// read luggage pieces
-			this.levelLuggage = new ArrayList<>();
-			while (!(line = levelScanner.nextLine()).startsWith("blocklimit")) {
-				lineNum++;
-				LuggageColor lugCol = LuggageColor.parseLuggageColor(line);
-				if (lugCol == null) {
-					throw new InputMismatchException("Could not parse luggage \"" + line + "\" at line " + lineNum + ".");
+			for (int i = 0; i < enterBlocks.size(); i++) {
+				Pattern luggagePattern = Pattern.compile("luggage(?:\\s+(\\d+))?");
+				Matcher luggageMatcher = luggagePattern.matcher(line);
+				if (luggageMatcher.matches()) {
+					enterBlocks.get(i).setLuggageNum(Integer.parseInt(luggageMatcher.group(1)));
+				} else {
+					enterBlocks.get(i).setLuggageNum(-1);
 				}
-				this.levelLuggage.add(lugCol);
-			}
-			if (this.levelLuggageNum < 0) {
-				this.levelLuggageNum = this.levelLuggage.size();
-			}
-			if (this.levelLuggage.size() == 0) {
-				this.levelLuggage = null;
-			}
-			if (this.levelLuggage != null && this.levelLuggage.size() != this.levelLuggageNum) {
-				throw new InputMismatchException("Number of luggage color items does not match with actual given number.");
+				// read luggage pieces
+				ArrayList<LuggageColor> luggageColors = new ArrayList<>();
+				while (!(line = levelScanner.nextLine()).startsWith("blocklimit") &&
+						!line.startsWith("luggage")) {
+					lineNum++;
+					LuggageColor lugCol = LuggageColor.parseLuggageColor(line);
+					if (lugCol == null) {
+						throw new InputMismatchException("Could not parse luggage \"" + line + "\" at line " + lineNum + ".");
+					}
+					luggageColors.add(lugCol);
+				}
+				if (luggageColors.size() == 0) {
+					luggageColors = null;
+				}
+				enterBlocks.get(i).setLuggageColors(luggageColors);
 			}
 			
 			// read block limit (if any)
@@ -194,6 +192,40 @@ public class Level {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new InputMismatchException("Unexpected level file format.");
+		}
+	}
+	
+	/**
+	 * Load a level from the specified file.
+	 * 
+	 * @param file File to read the level from.
+	 * @throws FileNotFoundException If the given file does not exist, is a
+	 *             directory or can not be opened for reading.
+	 * @throws InputMismatchException If the format of the file contains
+	 *             something unexpected.
+	 */
+	public Level(File file) throws FileNotFoundException {
+		this(new BufferedInputStream(new FileInputStream(file)));
+	}
+	
+	/**
+	 * Construct a level from the current state of the program. This basically
+	 * means that all blocks that are currently placed in the scene are stored
+	 * in this level, most other values are set to some default value.
+	 * 
+	 * @param s State of the program. Used to access {@link World}.
+	 */
+	public Level(State s) {
+		this.levelNumber = -1;
+		this.levelName = null;
+		this.blocks = new ArrayList<>();
+		this.fieldLength = s.fieldLength;
+		this.fieldWidth = s.fieldWidth;
+		this.fieldHeight = s.fieldHeight;
+		this.blockLimit = -1;
+		
+		for (Block b : s.world.bc) {
+			this.blocks.add(b);
 		}
 	}
 	
@@ -219,5 +251,30 @@ public class Level {
 	 */
 	public int getLevelNumber() {
 		return levelNumber;
+	}
+	
+	/**
+	 * Change the limit on the number of blocks for this level.
+	 * @param blockLimit The new block limit.
+	 */
+	public void setBlockLimit(int blockLimit) {
+		this.blockLimit = blockLimit;
+	}
+	
+	/**
+	 * Change the name of this level.
+	 * @param levelName The new name for this level.
+	 */
+	public void setLevelName(String levelName) {
+		this.levelName = levelName;
+	}
+	
+	/**
+	 * Change the number of this level. Set to -1 to indicate that this level
+	 * does not have a number.
+	 * @param levelNumber New level number for this level.
+	 */
+	public void setLevelNumber(int levelNumber) {
+		this.levelNumber = levelNumber;
 	}
 }

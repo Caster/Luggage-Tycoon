@@ -112,13 +112,27 @@ public class Luggage extends DrawableObject {
 	}
 	
 	/**
-	 * Creates a new luggage item on the given position.
+	 * Creates a new luggage item on the given position, with a randomly chosen
+	 * color (all possible colors can be chosen).
 	 * 
 	 * @param x The x-coordinate of this luggage item.
 	 * @param y The y-coordinate of this luggage item.
 	 * @param z The z-coordinate of this luggage item.
 	 */
 	public Luggage(float x, float y, float z) {
+		this(x, y, z, LuggageColor.values()[(int) (Math.random() *
+				LuggageColor.values().length)]);
+	}
+	
+	/**
+	 * Creates a new luggage item on the given position, with the given color.
+	 * 
+	 * @param x The x-coordinate of this luggage item.
+	 * @param y The y-coordinate of this luggage item.
+	 * @param z The z-coordinate of this luggage item.
+	 * @param color Color for the luggage.
+	 */
+	public Luggage(float x, float y, float z, LuggageColor color) {
 		
 		// initialize the transform
 		transform = new Matrix4f(new float[] {
@@ -128,7 +142,7 @@ public class Luggage extends DrawableObject {
 				0, 0, 0, 1
 		});
 		
-		this.color = LuggageColor.values()[(int) (Math.random() * LuggageColor.values().length)];
+		this.color = color;
 		
 		if (caseModelColor == null) {
 			caseModelColor = new OBJModel(new File("res/suitcase-color.obj"));
