@@ -5,9 +5,14 @@ import java.util.ArrayList;
 import javax.vecmath.Vector3f;
 
 import accg.State;
-import accg.objects.Block.Orientation;
-import accg.objects.blocks.*;
+import accg.objects.blocks.AscendingConveyorBlock;
+import accg.objects.blocks.BendLeftConveyorBlock;
+import accg.objects.blocks.BendRightConveyorBlock;
+import accg.objects.blocks.ConveyorBlock;
 import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
+import accg.objects.blocks.DescendingConveyorBlock;
+import accg.objects.blocks.EnterBlock;
+import accg.objects.blocks.FlatConveyorBlock;
 import accg.simulation.Simulation;
 
 /**
@@ -56,46 +61,46 @@ public class World extends Container<DrawableObject> {
 		addBlock(state, new EnterBlock(1, 1, 8, Orientation.RIGHT,
 				EnterBlock.DEFAULT_TIME_BETWEEN_LUGGAGE));
 		
-		addBlock(state, new StraightConveyorBlock(2, 7, 16, Orientation.RIGHT));
-		addBlock(state, new StraightConveyorBlock(3, 7, 15, Orientation.DOWN));
-		addBlock(state, new StraightConveyorBlock(3, 6, 14, Orientation.DOWN));
-		addBlock(state, new StraightConveyorBlock(3, 5, 13, Orientation.DOWN));
-		addBlock(state, new StraightConveyorBlock(3, 4, 4, Orientation.LEFT));
-		addBlock(state, new StraightConveyorBlock(2, 4, 2, Orientation.UP));
-		addBlock(state, new StraightConveyorBlock(2, 5, 0, Orientation.RIGHT));
-		addBlock(state, new StraightConveyorBlock(3, 5, 0, Orientation.RIGHT));
+		addBlock(state, new FlatConveyorBlock(2, 7, 16, Orientation.RIGHT));
+		addBlock(state, new FlatConveyorBlock(3, 7, 15, Orientation.DOWN));
+		addBlock(state, new FlatConveyorBlock(3, 6, 14, Orientation.DOWN));
+		addBlock(state, new FlatConveyorBlock(3, 5, 13, Orientation.DOWN));
+		addBlock(state, new FlatConveyorBlock(3, 4, 4, Orientation.LEFT));
+		addBlock(state, new FlatConveyorBlock(2, 4, 2, Orientation.UP));
+		addBlock(state, new FlatConveyorBlock(2, 5, 0, Orientation.RIGHT));
+		addBlock(state, new FlatConveyorBlock(3, 5, 0, Orientation.RIGHT));
 		addBlock(state, new AscendingConveyorBlock(4, 5, 0, Orientation.RIGHT));
 		addBlock(state, new AscendingConveyorBlock(5, 5, 1, Orientation.RIGHT));
 		addBlock(state, new DescendingConveyorBlock(6, 5, 1, Orientation.RIGHT));
 		addBlock(state, new DescendingConveyorBlock(7, 5, 0, Orientation.RIGHT));
-		addBlock(state, new StraightConveyorBlock(8, 5, 0, Orientation.RIGHT));
+		addBlock(state, new FlatConveyorBlock(8, 5, 0, Orientation.RIGHT));
 		
-		addBlock(state, new StraightConveyorBlock(6, 9, 3, Orientation.UP));
+		addBlock(state, new FlatConveyorBlock(6, 9, 3, Orientation.UP));
 		addBlock(state, new AscendingConveyorBlock(6, 10, 3, Orientation.UP));
-		addBlock(state, new StraightConveyorBlock(6, 11, 3, Orientation.RIGHT));
+		addBlock(state, new FlatConveyorBlock(6, 11, 3, Orientation.RIGHT));
 		addBlock(state, new AscendingConveyorBlock(7, 11, 3, Orientation.RIGHT));
-		addBlock(state, new StraightConveyorBlock(8, 11, 3, Orientation.DOWN));
+		addBlock(state, new FlatConveyorBlock(8, 11, 3, Orientation.DOWN));
 		addBlock(state, new AscendingConveyorBlock(8, 10, 3, Orientation.DOWN));
-		addBlock(state, new StraightConveyorBlock(8, 9, 3, Orientation.LEFT));
+		addBlock(state, new FlatConveyorBlock(8, 9, 3, Orientation.LEFT));
 		addBlock(state, new AscendingConveyorBlock(7, 9, 3, Orientation.LEFT));
 		
 		addBlock(state, new BendRightConveyorBlock(11, 9, 3, Orientation.LEFT));
-		addBlock(state, new StraightConveyorBlock(11, 10, 3, Orientation.UP));
+		addBlock(state, new FlatConveyorBlock(11, 10, 3, Orientation.UP));
 		addBlock(state, new BendRightConveyorBlock(11, 11, 3, Orientation.UP));
-		addBlock(state, new StraightConveyorBlock(12, 11, 3, Orientation.RIGHT));
+		addBlock(state, new FlatConveyorBlock(12, 11, 3, Orientation.RIGHT));
 		addBlock(state, new BendRightConveyorBlock(13, 11, 3, Orientation.RIGHT));
-		addBlock(state, new StraightConveyorBlock(13, 10, 3, Orientation.DOWN));
+		addBlock(state, new FlatConveyorBlock(13, 10, 3, Orientation.DOWN));
 		addBlock(state, new BendRightConveyorBlock(13, 9, 3, Orientation.DOWN));
-		addBlock(state, new StraightConveyorBlock(12, 9, 3, Orientation.LEFT));
+		addBlock(state, new FlatConveyorBlock(12, 9, 3, Orientation.LEFT));
 		
 		addBlock(state, new BendLeftConveyorBlock(11, 4, 3, Orientation.DOWN));
-		addBlock(state, new StraightConveyorBlock(11, 5, 3, Orientation.DOWN));
+		addBlock(state, new FlatConveyorBlock(11, 5, 3, Orientation.DOWN));
 		addBlock(state, new BendLeftConveyorBlock(11, 6, 3, Orientation.LEFT));
-		addBlock(state, new StraightConveyorBlock(12, 6, 3, Orientation.LEFT));
+		addBlock(state, new FlatConveyorBlock(12, 6, 3, Orientation.LEFT));
 		addBlock(state, new BendLeftConveyorBlock(13, 6, 3, Orientation.UP));
-		addBlock(state, new StraightConveyorBlock(13, 5, 3, Orientation.UP));
+		addBlock(state, new FlatConveyorBlock(13, 5, 3, Orientation.UP));
 		addBlock(state, new BendLeftConveyorBlock(13, 4, 3, Orientation.RIGHT));
-		addBlock(state, new StraightConveyorBlock(12, 4, 3, Orientation.RIGHT));
+		addBlock(state, new FlatConveyorBlock(12, 4, 3, Orientation.RIGHT));
 	}
 	
 	/**

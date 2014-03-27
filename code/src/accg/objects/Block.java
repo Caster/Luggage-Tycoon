@@ -1,8 +1,11 @@
 package accg.objects;
 
-import javax.vecmath.Vector3f;
-
-
+import accg.objects.blocks.AscendingConveyorBlock;
+import accg.objects.blocks.BendLeftConveyorBlock;
+import accg.objects.blocks.BendRightConveyorBlock;
+import accg.objects.blocks.DescendingConveyorBlock;
+import accg.objects.blocks.EnterBlock;
+import accg.objects.blocks.FlatConveyorBlock;
 
 /**
  * Abstract super class of all blocks.
@@ -33,93 +36,20 @@ public abstract class Block extends DrawableObject {
 	protected Orientation orientation;
 	
 	/**
+	 * If this block can be deleted by the user or not. Can be used to add
+	 * blocks to a scene that cannot be modified by a user, e.g. a block where
+	 * luggage enters or leaves the scene for example.
+	 */
+	protected boolean deletable;
+	
+	/**
 	 * Factor that may be used when drawing the block.
 	 */
 	protected float scaleFactor;
 	
 	/**
-	 * Possible orientations for a block.
-	 */
-	public static enum Orientation {
-		
-		/**
-		 * This block is oriented towards the left (that is, towards the
-		 * decreasing x-axis).
-		 */
-		LEFT(-90),
-		
-		/**
-		 * This block is oriented upwards (that is, towards the
-		 * increasing y-axis).
-		 */
-		UP(0),
-		
-		/**
-		 * This block is oriented towards the right (that is, towards the
-		 * increasing x-axis).
-		 */
-		RIGHT(90),
-		
-		/**
-		 * This block is oriented downwards (that is, towards the
-		 * decreasing y-axis).
-		 */
-		DOWN(180);
-		
-		/**
-		 * The rotation angle that this {@link Orientation} represents.
-		 */
-		public double angle;
-		
-		Orientation(double angle) {
-			this.angle = angle;
-		}
-
-		/**
-		 * Given a position in 3D, return a position next to this position on the
-		 * same height that one would be in if doing one step in the direction
-		 * represented by this Orientation.
-		 * @param startPos Position to move from.
-		 * @param distance Distance to move in given direction.
-		 * @return Position where one would end up.
-		 */
-		public Vector3f moveFrom(Vector3f startPos, float distance) {
-			float dx = (this == RIGHT ? distance : 0) + (this == LEFT ? -distance : 0);
-			float dy = (this == UP ? distance : 0) + (this == DOWN ? -distance : 0);
-			return new Vector3f(startPos.x + dx, startPos.y + dy, startPos.z);
-		}
-		
-		/**
-		 * Return the orientation you would obtain when turning left 90 degrees
-		 * when in the current orientation.
-		 * @return The rotated orientation.
-		 */
-		public Orientation rotateLeft() {
-			return Orientation.values()[(ordinal() - 1 + values().length) %
-			                            values().length];
-		}
-		
-		/**
-		 * Return the orientation you would obtain when turning right 90 degrees
-		 * when in the current orientation.
-		 * @return The rotated orientation.
-		 */
-		public Orientation rotateRight() {
-			return Orientation.values()[(ordinal() + 1) % values().length];
-		}
-		
-		/**
-		 * Return the orientation you would obtain when turing 180 degrees when in
-		 * the current orientation.
-		 * @return The rotated orientation.
-		 */
-		public Orientation turnAround() {
-			return Orientation.values()[(ordinal() + 2) % values().length];
-		}
-	}
-	
-	/**
-	 * Creates a new block on the specified position.
+	 * Creates a new block on the specified position with the given orientation,
+	 * which is deletable (it can may removed by the user).
 	 * 
 	 * @param x The x-coordinate.
 	 * @param y The y-coordinate.
@@ -131,6 +61,27 @@ public abstract class Block extends DrawableObject {
 		this.y = y;
 		this.z = z;
 		this.orientation = orientation;
+		this.deletable = true;
+		this.scaleFactor = 1;
+	}
+	
+	/**
+	 * Creates a new block on the specified position with the given orientation,
+	 * which is deletable if specified.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @param z The z-coordinate.
+	 * @param orientation The orientation of this block.
+	 * @param deletable If this block may be deleted by a user or not.
+	 */
+	public Block(int x, int y, int z, Orientation orientation,
+			boolean deletable) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.orientation = orientation;
+		this.deletable = deletable;
 		this.scaleFactor = 1;
 	}
 	
@@ -187,6 +138,14 @@ public abstract class Block extends DrawableObject {
 	}
 	
 	/**
+	 * Returns if this block may be deleted by the user or not.
+	 * @return If this block may be deleted by the user or not.
+	 */
+	public boolean isDeletable() {
+		return deletable;
+	}
+	
+	/**
 	 * Change the x-coordinate of this block.
 	 * @param x The new x-coordinate.
 	 */
@@ -224,5 +183,39 @@ public abstract class Block extends DrawableObject {
 	 */
 	public void setScaleFactor(float scaleFactor) {
 		this.scaleFactor = scaleFactor;
+	}
+
+	/**
+	 * Construct an appropriate block and return that. May return {@code null}
+	 * if the given {@code blockID} is unknown.
+	 * 
+	 * @param blockID ID of a block. For example, "eb" maps to "EnterBlock".
+	 * @param x X-coordinate of block to construct.
+	 * @param y Y-coordinate of block to construct.
+	 * @param z Z-coordinate of block to construct.
+	 * @param orientation Orientation of block to construct.
+	 * @param deletable If the block to construct is deletable or not.
+	 * @return An appropriate block, or {@code null}.
+	 */
+	public static Block getBlock(String blockID, int x, int y,
+			int z, Orientation orientation, boolean deletable) {
+		switch (blockID) {
+		case "eb":
+			return new EnterBlock(x, y, z, orientation,
+					EnterBlock.DEFAULT_TIME_BETWEEN_LUGGAGE, deletable);
+		case "lb":
+			// TODO: Implement LeaveBlock.
+		case "cf":
+			return new FlatConveyorBlock(x, y, z, orientation, deletable);
+		case "ca":
+			return new AscendingConveyorBlock(x, y, z, orientation, deletable);
+		case "cd":
+			return new DescendingConveyorBlock(x, y, z, orientation, deletable);
+		case "cbl":
+			return new BendLeftConveyorBlock(x, y, z, orientation, deletable);
+		case "cbr":
+			return new BendRightConveyorBlock(x, y, z, orientation, deletable);
+		}
+		return null;
 	}
 }

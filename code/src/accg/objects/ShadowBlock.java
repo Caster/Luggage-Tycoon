@@ -12,7 +12,7 @@ import accg.objects.blocks.ConveyorBlock;
 import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
 import accg.objects.blocks.DescendingConveyorBlock;
 import accg.objects.blocks.EnterBlock;
-import accg.objects.blocks.StraightConveyorBlock;
+import accg.objects.blocks.FlatConveyorBlock;
 
 /**
  * Draws an object as a "shadow" object.
@@ -153,7 +153,7 @@ public class ShadowBlock extends Block {
 				getZ(), getOrientation()); break;
 		case DESCENDING: this.block = new DescendingConveyorBlock(getX(), getY(),
 				getZ(), getOrientation()); break;
-		case STRAIGHT: this.block = new StraightConveyorBlock(getX(), getY(),
+		case FLAT: this.block = new FlatConveyorBlock(getX(), getY(),
 				getZ(), getOrientation()); break;
 		case ENTER: this.block = new EnterBlock(getX(), getY(), getZ(),
 				getOrientation(), EnterBlock.DEFAULT_TIME_BETWEEN_LUGGAGE);

@@ -7,7 +7,7 @@ import java.util.List;
 import javax.vecmath.Vector3f;
 
 import accg.State;
-import accg.objects.Block.Orientation;
+import accg.objects.Orientation;
 
 /**
  * This class contains several static utility methods for general purposes.

@@ -5,16 +5,21 @@ import java.util.ArrayList;
 import javax.vecmath.Vector3f;
 
 import accg.objects.Block;
+import accg.objects.Orientation;
 
-public class StraightConveyorBlock extends ConveyorBlock {
+public class FlatConveyorBlock extends ConveyorBlock {
 
-	public StraightConveyorBlock(int x, int y, int z, Orientation orientation) {
-		super(x, y, z, orientation, ConveyorBlockType.STRAIGHT);
+	public FlatConveyorBlock(int x, int y, int z, Orientation orientation) {
+		super(x, y, z, orientation, ConveyorBlockType.FLAT);
+	}
+	
+	public FlatConveyorBlock(int x, int y, int z, Orientation orientation, boolean deletable) {
+		super(x, y, z, orientation, deletable, ConveyorBlockType.FLAT);
 	}
 	
 	@Override
 	public Block clone() {
-		return new StraightConveyorBlock(x, y, z, orientation);
+		return new FlatConveyorBlock(x, y, z, orientation);
 	}
 	
 	@Override

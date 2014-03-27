@@ -93,6 +93,22 @@ public class Luggage extends DrawableObject {
 		LuggageColor(int red, int green, int blue) {
 			this.color = new Color(red, green, blue);
 		}
+		
+		/**
+		 * Parse a LuggageColor from a string.
+		 * 
+		 * @param s String to parse.
+		 * @return Parse LuggageColor, or {@code null} if no match was found for
+		 *         the given string.
+		 */
+		public static LuggageColor parseLuggageColor(String s) {
+			for (LuggageColor col : values()) {
+				if (col.name().equals(s.toUpperCase())) {
+					return col;
+				}
+			}
+			return null;
+		}
 	}
 	
 	/**

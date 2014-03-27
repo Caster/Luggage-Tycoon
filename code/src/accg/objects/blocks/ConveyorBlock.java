@@ -11,6 +11,7 @@ import org.lwjgl.util.glu.Cylinder;
 
 import accg.State;
 import accg.objects.Block;
+import accg.objects.Orientation;
 import accg.utils.Utils;
 
 /**
@@ -29,7 +30,7 @@ public abstract class ConveyorBlock extends Block {
 	 * Type of this conveyor block.
 	 */
 	public enum ConveyorBlockType {
-		ASCENDING, BEND_LEFT, BEND_RIGHT, DESCENDING, STRAIGHT, ENTER
+		ASCENDING, BEND_LEFT, BEND_RIGHT, DESCENDING, FLAT, ENTER, LEAVE
 	}
 	
 	/**
@@ -46,6 +47,23 @@ public abstract class ConveyorBlock extends Block {
 		super(x, y, z, orientation);
 		this.type = type;
 	}
+	
+	/**
+	 * Creates a new ConveyorBlock on the specified position.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @param z The z-coordinate.
+	 * @param orientation The orientation of this block.
+	 * @param deletable If this block may be deleted by a user or not.
+	 * @param type The type of the block.
+	 */
+	public ConveyorBlock(int x, int y, int z, Orientation orientation,
+			boolean deletable, ConveyorBlockType type) {
+		super(x, y, z, orientation, deletable);
+		this.type = type;
+	}
+	
 	
 	/**
 	 * Return the type of conveyor block. This is useful when determining its

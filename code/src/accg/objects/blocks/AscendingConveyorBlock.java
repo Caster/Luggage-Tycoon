@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.vecmath.Vector3f;
 
 import accg.objects.Block;
+import accg.objects.Orientation;
 
 /**
  * An {@code AscendingConveyorBlock} is a conveyor block that tilts luggage up.
@@ -18,6 +19,10 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 
 	public AscendingConveyorBlock(int x, int y, int z, Orientation orientation) {
 		super(x, y, z, orientation, ConveyorBlockType.ASCENDING);
+	}
+	
+	public AscendingConveyorBlock(int x, int y, int z, Orientation orientation, boolean deletable) {
+		super(x, y, z, orientation, deletable, ConveyorBlockType.ASCENDING);
 	}
 	
 	@Override

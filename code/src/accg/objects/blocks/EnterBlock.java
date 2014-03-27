@@ -10,11 +10,12 @@ import javax.vecmath.Vector3f;
 import accg.State;
 import accg.State.ProgramMode;
 import accg.objects.Block;
+import accg.objects.Orientation;
 
 /**
  * A block in which the luggage enters the scene.
  */
-public class EnterBlock extends StraightConveyorBlock {
+public class EnterBlock extends FlatConveyorBlock {
 
 	/**
 	 * Default time in seconds between releasing pieces of luggage.
@@ -106,6 +107,25 @@ public class EnterBlock extends StraightConveyorBlock {
 			float timeBetweenLuggage) {
 		super(x, y, z, orientation);
 		
+		this.type = ConveyorBlockType.ENTER;
+		this.timeBetweenLuggage = timeBetweenLuggage;
+	}
+	
+	/**
+	 * Creates a new EnterBlock on the specified position.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @param z The z-coordinate.
+	 * @param orientation The orientation of this block.
+	 * @param timeBetweenLuggage The time between two luggage items.
+	 * @param deletable If this block may be deleted by a user or not.
+	 */
+	public EnterBlock(int x, int y, int z, Orientation orientation,
+			float timeBetweenLuggage, boolean deletable) {
+		super(x, y, z, orientation, deletable);
+		
+		this.type = ConveyorBlockType.ENTER;
 		this.timeBetweenLuggage = timeBetweenLuggage;
 	}
 	

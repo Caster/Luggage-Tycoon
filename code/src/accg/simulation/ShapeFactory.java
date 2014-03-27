@@ -5,8 +5,8 @@ import java.util.HashMap;
 import javax.vecmath.Vector3f;
 
 import accg.State;
-import accg.objects.Block.Orientation;
 import accg.objects.Luggage;
+import accg.objects.Orientation;
 import accg.objects.blocks.ConveyorBlock;
 import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
 import accg.utils.Utils;

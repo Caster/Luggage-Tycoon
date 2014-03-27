@@ -30,13 +30,13 @@ import accg.gui.MainGUI;
 import accg.gui.toolkit.Component;
 import accg.gui.toolkit.GLUtils;
 import accg.gui.toolkit.GUIUtils;
-import accg.objects.Block.Orientation;
 import accg.objects.Floor;
+import accg.objects.Orientation;
 import accg.objects.ShadowBlock;
 import accg.objects.World;
 import accg.objects.blocks.ConveyorBlock;
 import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
-import accg.objects.blocks.StraightConveyorBlock;
+import accg.objects.blocks.FlatConveyorBlock;
 import accg.simulation.Simulation;
 import accg.utils.Utils;
 
@@ -178,7 +178,7 @@ public class ACCGProgram {
 		s.textures = new Textures();
 		// TODO: This is only temporary, for testing. This should be controlled through some
 		//       kind of menu where blocks or 'nothing' can be selected.
-		s.shadowBlock = new ShadowBlock(new StraightConveyorBlock(0, 0, 0, Orientation.LEFT));
+		s.shadowBlock = new ShadowBlock(new FlatConveyorBlock(0, 0, 0, Orientation.LEFT));
 		s.startTime = (float) Sys.getTime() / Sys.getTimerResolution();
 		camera = new Camera(s);
 		clickedPoint = null;
@@ -358,7 +358,7 @@ public class ACCGProgram {
 				// switch to *F*lat conveyor block in building mode 
 				case Keyboard.KEY_F:
 					if (changingBlock) {
-						s.shadowBlock.setConveyorBlockType(ConveyorBlockType.STRAIGHT);
+						s.shadowBlock.setConveyorBlockType(ConveyorBlockType.FLAT);
 					}
 					break;
 				// switch to *A*scending conveyor block in building mode

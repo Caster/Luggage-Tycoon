@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.vecmath.Vector3f;
 
 import accg.objects.Block;
+import accg.objects.Orientation;
 import accg.utils.Utils;
 
 public class BendLeftConveyorBlock extends ConveyorBlock {
@@ -13,6 +14,10 @@ public class BendLeftConveyorBlock extends ConveyorBlock {
 		super(x, y, z, orientation, ConveyorBlockType.BEND_LEFT);
 	}
 
+	public BendLeftConveyorBlock(int x, int y, int z, Orientation orientation, boolean deletable) {
+		super(x, y, z, orientation, deletable, ConveyorBlockType.BEND_LEFT);
+	}
+	
 	@Override
 	public Block clone() {
 		return new BendLeftConveyorBlock(x, y, z, orientation);
