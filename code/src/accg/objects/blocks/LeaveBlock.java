@@ -191,7 +191,6 @@ public class LeaveBlock extends FlatConveyorBlock {
 	}
 	
 	/**
-<<<<<<< HEAD
 	 * Change the list of colors that is accepted by this block.
 	 * @param acceptColors The new list of accepted colors, or {@code null} if
 	 *            any block may be accepted.
@@ -201,11 +200,7 @@ public class LeaveBlock extends FlatConveyorBlock {
 	}
 	
 	/**
-	 * Given a State to retrieve the current time from, return how far open
-	 * the shutter should be at this time, given the {@link #timeBetweenLuggage}.
-=======
 	 * Returns whether there is luggage near the shutter.
->>>>>>> af1ef7fa8c3ccd592cc454ba1fbbd691e27349a9
 	 * 
 	 * @param s The state (used to read the luggage from).
 	 * @return <code>true</code> if there is luggage near the shutter,
