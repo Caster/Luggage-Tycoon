@@ -255,6 +255,11 @@ public abstract class Component {
 	 * @param visible Whether the component should be visible.
 	 */
 	public void setVisible(boolean visible) {
+		
+		if (visible == false) {
+			dropFocus();
+		}
+		
 		this.visible = visible;
 	}
 	
@@ -408,6 +413,13 @@ public abstract class Component {
 	 */
 	public void requestFocus() {
 		focusElement = this;
+	}
+	
+	/**
+	 * Drops the keyboard focus.
+	 */
+	public void dropFocus() {
+		focusElement = null;
 	}
 	
 	/**
