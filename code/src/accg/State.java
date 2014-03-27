@@ -149,15 +149,6 @@ public class State {
 	 * used to make the program more or less sensitive to mouse interaction.
 	 */
 	public float mouseSensitivityFactor = 1.0f;
-	
-	/**
-	 * This boolean indicates whether we are in the first or second rendering
-	 * pass. The first rendering pass, transparent objects are not rendered
-	 * (then this is <code>false</code>). In the second rendering pass, they
-	 * are rendered (then this is <code>true</code>). Then, they are combined
-	 * to make the objects really transparent.
-	 */
-	public boolean drawTransparentObjects;
 
 	/**
 	 * This boolean indicates whether we are drawing shadows or not.

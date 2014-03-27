@@ -4,6 +4,7 @@ import static accg.gui.toolkit.GLUtils.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import javax.vecmath.Vector3f;
 
@@ -11,6 +12,7 @@ import accg.State;
 import accg.State.ProgramMode;
 import accg.objects.Block;
 import accg.objects.Orientation;
+import accg.objects.Luggage.LuggageColor;
 
 /**
  * A block in which the luggage enters the scene.
@@ -95,6 +97,20 @@ public class EnterBlock extends FlatConveyorBlock {
 	public float timeBetweenLuggage;
 	
 	/**
+	 * A list of luggage colors from which can be chosen when generating luggage.
+	 * In case this is {@code null}, all colors can be used.
+	 */
+	protected ArrayList<LuggageColor> luggageColors;
+	/**
+	 * Number of pieces of luggage that should enter the scene in total.
+	 */
+	protected int luggageNum;
+	/**
+	 * Number of pieces of luggage that were generated in total.
+	 */
+	protected int generatedLuggage;
+	
+	/**
 	 * Creates a new EnterBlock on the specified position.
 	 * 
 	 * @param x The x-coordinate.
@@ -106,9 +122,7 @@ public class EnterBlock extends FlatConveyorBlock {
 	public EnterBlock(int x, int y, int z, Orientation orientation,
 			float timeBetweenLuggage) {
 		super(x, y, z, orientation);
-		
-		this.type = ConveyorBlockType.ENTER;
-		this.timeBetweenLuggage = timeBetweenLuggage;
+		init(timeBetweenLuggage);
 	}
 	
 	/**
@@ -124,9 +138,8 @@ public class EnterBlock extends FlatConveyorBlock {
 	public EnterBlock(int x, int y, int z, Orientation orientation,
 			float timeBetweenLuggage, boolean deletable) {
 		super(x, y, z, orientation, deletable);
+		init(timeBetweenLuggage);
 		
-		this.type = ConveyorBlockType.ENTER;
-		this.timeBetweenLuggage = timeBetweenLuggage;
 	}
 	
 	/**
@@ -138,6 +151,17 @@ public class EnterBlock extends FlatConveyorBlock {
 				block.timeBetweenLuggage);
 	}
 
+	/**
+	 * Initialisation method that is called from all constructors.
+	 */
+	private void init(float timeBetweenLuggage) {
+		this.type = ConveyorBlockType.ENTER;
+		this.timeBetweenLuggage = timeBetweenLuggage;
+		this.generatedLuggage = 0;
+		this.luggageColors = null;
+		this.luggageNum = 0;
+	}
+	
 	@Override
 	public void draw(State s) {
 		
@@ -185,6 +209,40 @@ public class EnterBlock extends FlatConveyorBlock {
 	@Override
 	public ConveyorBlockType getConveyorBlockType() {
 		return ConveyorBlockType.ENTER;
+	}
+	
+	/**
+	 * Returns the list of colors from which can be chosen when generating
+	 * luggage at this block.
+	 * @return The list of colors, or {@code null} if any color is okay.
+	 */
+	public ArrayList<LuggageColor> getLuggageColors() {
+		return luggageColors;
+	}
+	
+	/**
+	 * Returns the maximum number of pieces of luggage that can be generated at
+	 * this block.
+	 * @return The number of pieces of luggage that can be generated.
+	 */
+	public int getLuggageNum() {
+		return luggageNum;
+	}
+	
+	/**
+	 * Changes the colors of luggage that can be generated at this block.
+	 * @param luggageColors Colors to choose from.
+	 */
+	public void setLuggageColors(ArrayList<LuggageColor> luggageColors) {
+		this.luggageColors = luggageColors;
+	}
+	
+	/**
+	 * Changes the number of items that can be generated at this block.
+	 * @param luggageNum Number of items that can be generated.
+	 */
+	public void setLuggageNum(int luggageNum) {
+		this.luggageNum = luggageNum;
 	}
 	
 	/**

@@ -1,0 +1,15 @@
+Luggage Tycoon level file.
+"Level 2: crossing" 2
+9x9x4
+blocks
+eb 0 4 0 r nd
+eb 4 0 0 u nd
+lb 8 4 0 r nd
+lb 4 8 0 u nd
+luggage 9
+red
+green
+luggage 11
+blue
+orange
+blocklimit 14
