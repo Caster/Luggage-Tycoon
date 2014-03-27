@@ -8,7 +8,6 @@ import java.awt.Color;
 import javax.vecmath.Vector3f;
 
 import accg.State;
-import accg.State.ProgramMode;
 import accg.objects.Block;
 import accg.objects.Orientation;
 

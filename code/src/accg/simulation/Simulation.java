@@ -134,10 +134,10 @@ public class Simulation {
 		
 		// hard-coded situations
 		if (cb.getConveyorBlockType() == ConveyorBlockType.ENTER) {
-			addEnterBlockHull(cb, addedBodies);
+			addBlockHull(cb, addedBodies, EnterBlock.HULL_POINTS);
 		}
 		if (cb.getConveyorBlockType() == ConveyorBlockType.LEAVE) {
-			addLeaveBlockHull(cb, addedBodies);
+			addBlockHull(cb, addedBodies, LeaveBlock.HULL_POINTS);
 		}
 		
 		// make sure the body is cleaned up when the conveyorblock is removed
@@ -217,74 +217,34 @@ public class Simulation {
 	
 	/**
 	 * Add rigid bodies to the world that represent the shape of the hull around
-	 * the conveyor belt in an EnterBlock. These newly created bodies are added
+	 * the conveyor belt in a block. These newly created bodies are added
 	 * to the given list.
 	 * 
-	 * <p>Note: it is <b>not</b> checked if the given block is actually an
-	 * EnterBlock. Its position is used and that is it.
-	 * 
-	 * @param enterBlock The block for which bodies need to be added. Position
+	 * @param block The block for which bodies need to be added. Position
 	 *            of this block is used for positioning the bodies.
 	 * @param addedBodies A list of bodies, to which newly created bodies will
 	 *            be appended.
+	 * @param hullPoints Points that form the hull. Should be a set of quads.
 	 */
-	private void addEnterBlockHull(ConveyorBlock enterBlock,
-			ArrayList<RigidBody> addedBodies) {		
+	private void addBlockHull(ConveyorBlock block,
+			ArrayList<RigidBody> addedBodies, Vector3f[] hullPoints) {		
 		Transform blockTransform = new Transform();
 		blockTransform.set(new Matrix4f(new float[] {
-				1, 0, 0, enterBlock.getX(),
-				0, 1, 0, enterBlock.getY(),
-				0, 0, 1, enterBlock.getZ() / 4f,
+				1, 0, 0, block.getX(),
+				0, 1, 0, block.getY(),
+				0, 0, 1, block.getZ() / 4f,
 				0, 0, 0, 1
 		}));
 		
-		for (int i = 0; i < EnterBlock.HULL_POINTS.length; i += 4) {
+		for (int i = 0; i < hullPoints.length; i += 4) {
 			ObjectArrayList<Vector3f> points = new ObjectArrayList<>(4);
 			for (int j = i; j < i + 4; j++) {
-				points.add(EnterBlock.HULL_POINTS[j]);
+				points.add(hullPoints[j]);
 			}
-			Utils.rotatePoints(enterBlock.getOrientation(), points);
+			Utils.rotatePoints(block.getOrientation(), points);
 			RigidBody body = new RigidBody(0, null, new ConvexHullShape(points));
 			// undo rotation...
-			Utils.rotatePoints(enterBlock.getOrientation().turnAround(), points);
-			body.setWorldTransform(blockTransform);
-			world.addRigidBody(body);
-			addedBodies.add(body);
-		}
-	}
-	
-	/**
-	 * Add rigid bodies to the world that represent the shape of the hull around
-	 * the conveyor belt in a LeaveBlock. These newly created bodies are added
-	 * to the given list.
-	 * 
-	 * <p>Note: it is <b>not</b> checked if the given block is actually an
-	 * LeaveBlock. Its position is used and that is it.
-	 * 
-	 * @param leaveBlock The block for which bodies need to be added. Position
-	 *            of this block is used for positioning the bodies.
-	 * @param addedBodies A list of bodies, to which newly created bodies will
-	 *            be appended.
-	 */
-	private void addLeaveBlockHull(ConveyorBlock leaveBlock,
-			ArrayList<RigidBody> addedBodies) {		
-		Transform blockTransform = new Transform();
-		blockTransform.set(new Matrix4f(new float[] {
-				1, 0, 0, leaveBlock.getX(),
-				0, 1, 0, leaveBlock.getY(),
-				0, 0, 1, leaveBlock.getZ() / 4f,
-				0, 0, 0, 1
-		}));
-		
-		for (int i = 0; i < LeaveBlock.HULL_POINTS.length; i += 4) {
-			ObjectArrayList<Vector3f> points = new ObjectArrayList<>(4);
-			for (int j = i; j < i + 4; j++) {
-				points.add(LeaveBlock.HULL_POINTS[j]);
-			}
-			Utils.rotatePoints(leaveBlock.getOrientation(), points);
-			RigidBody body = new RigidBody(0, null, new ConvexHullShape(points));
-			// undo rotation...
-			Utils.rotatePoints(leaveBlock.getOrientation().turnAround(), points);
+			Utils.rotatePoints(block.getOrientation().turnAround(), points);
 			body.setWorldTransform(blockTransform);
 			world.addRigidBody(body);
 			addedBodies.add(body);
