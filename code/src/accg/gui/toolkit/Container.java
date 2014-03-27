@@ -169,4 +169,19 @@ public abstract class Container extends Component {
 		}
 		return true;
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * Containers also ensure that all children drop their focus.
+	 */
+	@Override
+	public void dropFocus() {
+		
+		for (Component c : getChildren()) {
+			c.dropFocus();
+		}
+		
+		super.dropFocus();
+	}
 }
