@@ -11,8 +11,8 @@ import javax.vecmath.Vector3f;
 import accg.State;
 import accg.State.ProgramMode;
 import accg.objects.Block;
-import accg.objects.Orientation;
 import accg.objects.Luggage.LuggageColor;
+import accg.objects.Orientation;
 
 /**
  * A block in which the luggage enters the scene.
@@ -159,7 +159,7 @@ public class EnterBlock extends FlatConveyorBlock {
 		this.timeBetweenLuggage = timeBetweenLuggage;
 		this.generatedLuggage = 0;
 		this.luggageColors = null;
-		this.luggageNum = 0;
+		this.luggageNum = 3;
 	}
 	
 	@Override
@@ -212,6 +212,14 @@ public class EnterBlock extends FlatConveyorBlock {
 	}
 	
 	/**
+	 * Returns the number of pieces of luggage that has been generated so far.
+	 * @return The number of pieces of luggage that has been generated so far.
+	 */
+	public int getGeneratedLuggageNum() {
+		return generatedLuggage;
+	}
+	
+	/**
 	 * Returns the list of colors from which can be chosen when generating
 	 * luggage at this block.
 	 * @return The list of colors, or {@code null} if any color is okay.
@@ -227,6 +235,21 @@ public class EnterBlock extends FlatConveyorBlock {
 	 */
 	public int getLuggageNum() {
 		return luggageNum;
+	}
+	
+	/**
+	 * Increment the generated luggage count.
+	 */
+	public void incrementGeneratedLuggageNum() {
+		this.generatedLuggage++;
+	}
+	
+	/**
+	 * Reset the count of generated luggage to zero. Can be used at the start of
+	 * a simulation for example.
+	 */
+	public void resetGeneratedLuggageNum() {
+		this.generatedLuggage = 0;
 	}
 	
 	/**
@@ -253,7 +276,8 @@ public class EnterBlock extends FlatConveyorBlock {
 	 *         1 means completely closed.
 	 */
 	private float getShutterOpenFactor(State s) {
-		if (s.programMode != ProgramMode.SIMULATION_MODE) {
+		if (s.programMode != ProgramMode.SIMULATION_MODE ||
+				generatedLuggage > luggageNum) {
 			return 1;
 		}
 		
@@ -266,7 +290,12 @@ public class EnterBlock extends FlatConveyorBlock {
 		
 		if (timeMod <= timeBetweenLuggage / 2 + SHUTTER_STAY_OPEN_TIME) {
 			timeMod -= SHUTTER_STAY_OPEN_TIME;
-			return 1 - Math.max((SHUTTER_OPEN_TIME - timeMod) / SHUTTER_OPEN_TIME, 0);
+			float result = 1 - Math.max((SHUTTER_OPEN_TIME - timeMod) / SHUTTER_OPEN_TIME, 0);
+			if (result > 0.97f && generatedLuggage == luggageNum) {
+				// shutter does not need to open anymore
+				generatedLuggage++;
+			}
+			return result;
 		}
 		
 		timeMod = timeBetweenLuggage - timeMod;

@@ -7,6 +7,7 @@ import javax.vecmath.Vector3f;
 
 import accg.State;
 import accg.objects.*;
+import accg.objects.Luggage.LuggageColor;
 import accg.objects.blocks.ConveyorBlock;
 import accg.objects.blocks.EnterBlock;
 import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
@@ -163,10 +164,22 @@ public class Simulation {
 			if (b instanceof EnterBlock) {
 				EnterBlock eb = (EnterBlock) b;
 				
-				if (Utils.hasTimePassed(s, eb.timeBetweenLuggage, 0)) {
-					Luggage newLuggage = new Luggage(eb.getX(), eb.getY(), eb.getZ() / 4f + 0.5f);
+				if (Utils.hasTimePassed(s, eb.timeBetweenLuggage, 0) &&
+						eb.getGeneratedLuggageNum() < eb.getLuggageNum()) {
+					ArrayList<LuggageColor> lugCols = eb.getLuggageColors();
+					Luggage newLuggage;
+					if (lugCols == null) {
+						newLuggage = new Luggage(eb.getX(), eb.getY(),
+								eb.getZ() / 4f + 0.5f);
+					} else {
+						LuggageColor col = lugCols.get(
+								(int) Math.floor(Math.random() * lugCols.size()));
+						newLuggage = new Luggage(eb.getX(), eb.getY(),
+								eb.getZ() / 4f + 0.5f, col);
+					}
 					s.world.luggage.addObject(newLuggage);
 					addLuggageToPhysicsEngine(newLuggage);
+					eb.incrementGeneratedLuggageNum();
 				}
 			}
 		}
