@@ -56,6 +56,7 @@ public class TexturesTest {
 		assertNotNull("iconStop texture is not loaded", t.iconStop);
 		assertNotNull("iconZoomIn texture is not loaded", t.iconZoomIn);
 		assertNotNull("iconZoomOut texture is not loaded", t.iconZoomOut);
+		assertNotNull("iconOk texture is not loaded", t.iconOk);
 		assertNotNull("conveyor texture is not loaded", t.conveyor);
 		assertNotNull("floorBuildMode texture is not loaded", t.floorBuildMode);
 		assertNotNull("floorSimulationMode texture is not loaded", t.floorSimulationMode);

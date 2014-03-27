@@ -29,6 +29,7 @@ public class Textures {
 	public Texture iconStop;
 	public Texture iconZoomIn;
 	public Texture iconZoomOut;
+	public Texture iconOk;
 	
 	// scene textures
 	public Texture conveyor;
@@ -77,6 +78,8 @@ public class Textures {
 					ResourceLoader.getResourceAsStream("res/icons/zoom-in.png"));
 			iconZoomOut = TextureLoader.getTexture("PNG",
 					ResourceLoader.getResourceAsStream("res/icons/zoom-out.png"));
+			iconOk = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/dialog-ok.png"));
 			
 			// scene textures
 			conveyor = TextureLoader.getTexture("PNG",

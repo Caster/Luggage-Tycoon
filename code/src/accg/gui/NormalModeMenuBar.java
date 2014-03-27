@@ -45,10 +45,9 @@ public class NormalModeMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					TextField tf = new TextField(40);
-					tf.requestFocus();
-					Dialog dialog = new Dialog("Open", tf,
-							new Button("OK", s.textures.iconGoUp),
+					Label l = new Label("To do: put a list of saved games to open here");
+					Dialog dialog = new Dialog("Open", l,
+							new Button("OK", s.textures.iconOk),
 							new Button("Cancel", s.textures.iconExit));
 					s.gui.add(new Panel(dialog));
 				}
@@ -65,7 +64,7 @@ public class NormalModeMenuBar extends MenuBar {
 					TextField tf = new TextField(40);
 					tf.requestFocus();
 					Dialog dialog = new Dialog("Save", tf,
-							new Button("OK", s.textures.iconGoUp),
+							new Button("OK", s.textures.iconOk),
 							new Button("Cancel", s.textures.iconExit));
 					s.gui.add(new Panel(dialog));
 				}
