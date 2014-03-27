@@ -20,13 +20,6 @@ public abstract class Container extends Component {
 	protected boolean needsLayout = true;
 	
 	/**
-	 * Creates a new container.
-	 */
-	public Container() {
-		addListener(new MouseEnterEventListener());
-	}
-	
-	/**
 	 * Adds a new child to this container.
 	 * 
 	 * @param toAdd The component to add as a new child.
@@ -169,57 +162,5 @@ public abstract class Container extends Component {
 			return handled;
 		}
 		return true;
-	}
-	
-	/**
-	 * A listener that generates {@link MouseEnterEvent}s and
-	 * {@link MouseExitEvent}s for the children of this container.
-	 */
-	protected class MouseEnterEventListener implements Listener {
-		
-		/**
-		 * The previous x-coordinate of the mouse.
-		 */
-		protected int previousX = -1;
-		
-		/**
-		 * The previous y-coordinate of the mouse.
-		 */
-		protected int previousY = -1;
-		
-		@Override
-		public void event(Event event) {
-			
-			if (event instanceof MouseMoveEvent) {
-				MouseMoveEvent e = (MouseMoveEvent) event;
-				handleMouseMove(e);
-			}
-		}
-		
-		/**
-		 * Handle a mouse move event by sending {@link MouseEnterEvent}s and
-		 * {@link MouseExitEvent}s to the appropriate children.
-		 * 
-		 * @param e The event.
-		 */
-		private void handleMouseMove(MouseMoveEvent e) {
-			
-			for (Component c : getChildren()) {
-				
-				// should we fire a MouseEnterEvent?
-				if (!c.contains(previousX, previousY) && c.contains(e.getX(), e.getY())) {
-					c.sendEvent(new MouseEnterEvent(e.getX() - c.getX(), e.getY() - c.getY()));
-				}
-				
-				// should we fire a MouseExitEvent?
-				if (c.contains(previousX, previousY) && !c.contains(e.getX(), e.getY())) {
-					c.sendEvent(new MouseExitEvent(previousX - c.getX(), previousY - c.getY()));
-				}
-			}
-			
-			// update previousX and previousY
-			previousX = e.getX();
-			previousY = e.getY();
-		}
 	}
 }

@@ -6,8 +6,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 
 import accg.gui.toolkit.event.MouseClickEvent;
-import accg.gui.toolkit.event.MouseEnterEvent;
-import accg.gui.toolkit.event.MouseExitEvent;
 
 /**
  * A button is a clickable object containing a text and an icon.
@@ -117,7 +115,6 @@ public class Button extends Component implements Listener {
 		this.text = text;
 		this.icon = icon;
 		this.type = type;
-		this.hovered = false;
 		this.checked = false;
 		
 		addListener(this);
@@ -149,10 +146,10 @@ public class Button extends Component implements Listener {
 	@Override
 	public void draw() {
 		
-		if (hovered && hoverAmount < 10) {
+		if (isHovered() && hoverAmount < 10) {
 			hoverAmount++;
 		}
-		if (!hovered && hoverAmount > 0) {
+		if (!isHovered() && hoverAmount > 0) {
 			hoverAmount--;
 		}
 		
@@ -248,15 +245,6 @@ public class Button extends Component implements Listener {
 	public boolean isChecked() {
 		return checked;
 	}
-	
-	/**
-	 * Return if this menu item is currently being hovered by the mouse.
-	 * 
-	 * @return the value of the parameter of the last call to {@link #setHovered(boolean)}.
-	 */
-	public boolean isHovered() {
-		return hovered;
-	}
 
 	@Override
 	public void event(Event event) {
@@ -268,12 +256,6 @@ public class Button extends Component implements Listener {
 					((MenuBar) parent).uncheckOtherItems(this);
 				}
 			}
-		}
-		if (event instanceof MouseEnterEvent) {
-			this.hovered = true;
-		}
-		if (event instanceof MouseExitEvent) {
-			this.hovered = false;
 		}
 	}
 	
@@ -288,15 +270,6 @@ public class Button extends Component implements Listener {
 		if (this.type == Type.CHECKABLE || this.type == Type.CHECKABLE_UNIQUE) {
 			this.checked = checked;
 		}
-	}
-	
-	/**
-	 * Change if this menu item is being hovered or not.
-	 * 
-	 * @param hovered If this item is being hovered by the mouse.
-	 */
-	public void setHovered(boolean hovered) {
-		this.hovered = hovered;
 	}
 	
 	/**
@@ -321,8 +294,6 @@ public class Button extends Component implements Listener {
 	protected Texture icon;
 	/** Type of this menu item. */
 	protected Type type;
-	/** Indicates if this menu item is being hovered by the mouse. */
-	protected boolean hovered;
 	/** In [0, 10); used for the hover animation. */
 	protected int hoverAmount;
 	/** Indicates if this menu item is checked. */

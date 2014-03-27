@@ -3,6 +3,7 @@ package accg.gui.toolkit;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.util.Rectangle;
 import org.newdawn.slick.Font;
 
@@ -54,12 +55,56 @@ public abstract class Component {
 	protected static Component focusElement = null;
 
 	/**
-	 * Returns the bounds of this component.
+	 * Returns the bounds of this component, in the coordinate system of its
+	 * parent.
 	 * 
 	 * @return The bounds of this component.
 	 */
 	public Rectangle getOutline() {
 		return outline;
+	}
+
+	/**
+	 * Returns the bounds of this component, in the coordinate system of the
+	 * highest ancestor (usually the window).
+	 * 
+	 * @return The bounds of this component, in window coordinates.
+	 */
+	public Rectangle getAbsoluteOutline() {
+		
+		Rectangle result = new Rectangle(outline);
+		
+		Component p = this;
+		while ((p = p.getParent()) != null) {
+			result.translate(p.getX(), p.getY());
+		}
+		return result;
+	}
+	
+	/**
+	 * Returns whether the given point lies inside or outside the component,
+	 * in the coordinate system of its parent.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @return <code>true</code> if the point is contained by the component,
+	 * <code>false</code> otherwise.
+	 */
+	public boolean contains(int x, int y) {
+		return getOutline().contains(x, y);
+	}
+	
+	/**
+	 * Returns whether the given point lies inside or outside the component,
+	 * in the coordinate system of the highest ancestor (usually the window).
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @return <code>true</code> if the point is contained by the component,
+	 * <code>false</code> otherwise.
+	 */
+	public boolean absoluteContains(int x, int y) {
+		return getAbsoluteOutline().contains(x, y);
 	}
 
 	/**
@@ -135,18 +180,6 @@ public abstract class Component {
 	}
 	
 	/**
-	 * Returns whether the given point lies inside or outside the component.
-	 * 
-	 * @param x The x-coordinate.
-	 * @param y The y-coordinate.
-	 * @return <code>true</code> if the point is contained by the component,
-	 * <code>false</code> otherwise.
-	 */
-	public boolean contains(int x, int y) {
-		return outline.contains(x, y);
-	}
-	
-	/**
 	 * Returns the preferred width of this component.
 	 * 
 	 * @return The preferred width in pixels of this component.
@@ -178,6 +211,25 @@ public abstract class Component {
 	 */
 	public Container getParent() {
 		return parent;
+	}
+	
+	/**
+	 * Returns the highest ancestor of this component; that is,
+	 * <pre>
+	 *     p.getParent().getParent(). ... . getParent();
+	 * </pre>
+	 * where <code>getParent()</code> is repeated until it is null.
+	 * 
+	 * @return The highest ancestor.
+	 */
+	public Component getHighestAncestor() {
+		
+		Component p = this;
+		while (p.getParent() != null) {
+			p = p.getParent();
+		}
+		
+		return p;
 	}
 	
 	/**
@@ -364,5 +416,18 @@ public abstract class Component {
 	 */
 	public boolean hasFocus() {
 		return focusElement == this;
+	}
+	
+	/**
+	 * Returns whether this component is hovered.
+	 * 
+	 * @return <code>true</code> if the component is hovered; <code>false</code>
+	 * otherwise.
+	 */
+	public boolean isHovered() {
+		// TODO The getHighestAncestor().getHeight() part is a hack, but it
+		// is unavoidable until we have some proper API for interacting with
+		// LWJGL.
+		return absoluteContains(Mouse.getX(), getHighestAncestor().getHeight() - Mouse.getY());
 	}
 }
