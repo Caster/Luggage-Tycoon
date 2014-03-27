@@ -17,6 +17,10 @@ public enum SimulationBodyType {
 	 */
 	CONVEYOR_BLOCK,
 	/**
+	 * A block that "eats up" luggage.
+	 */
+	LEAVE_BLOCK,
+	/**
 	 * Some piece of luggage.
 	 */
 	LUGGAGE;

@@ -175,4 +175,12 @@ public class Luggage extends DrawableObject {
 		
 		glPopMatrix();
 	}
+	
+	/**
+	 * Returns the color of this piece of luggage.
+	 * @return The color of this piece of luggage.
+	 */
+	public LuggageColor getColor() {
+		return color;
+	}
 }

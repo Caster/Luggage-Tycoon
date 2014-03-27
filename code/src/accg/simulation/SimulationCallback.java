@@ -2,6 +2,7 @@ package accg.simulation;
 
 import accg.State;
 import accg.objects.Luggage;
+import accg.objects.blocks.LeaveBlock;
 
 import com.bulletphysics.ContactProcessedCallback;
 import com.bulletphysics.collision.narrowphase.ManifoldPoint;
@@ -42,6 +43,22 @@ public class SimulationCallback extends ContactProcessedCallback {
 					} else if (rb0info.getBodyType() == SimulationBodyType.LUGGAGE &&
 							rb1info.getBodyType() == SimulationBodyType.FLOOR) {
 						state.world.luggage.remove((Luggage) rb0info.getUserPointer());
+					} else if (rb0info.getBodyType() == SimulationBodyType.LEAVE_BLOCK &&
+							rb1info.getBodyType() == SimulationBodyType.LUGGAGE) {
+						LeaveBlock lb = (LeaveBlock) rb0info.getUserPointer();
+						Luggage lug = (Luggage) rb1info.getUserPointer();
+						if (lb.getAcceptColors() == null ||
+								lb.getAcceptColors().contains(lug.getColor())) {
+							state.world.luggage.remove((Luggage) rb1info.getUserPointer());
+						}
+					} else if (rb0info.getBodyType() == SimulationBodyType.LUGGAGE &&
+							rb1info.getBodyType() == SimulationBodyType.LEAVE_BLOCK) {
+						LeaveBlock lb = (LeaveBlock) rb1info.getUserPointer();
+						Luggage lug = (Luggage) rb0info.getUserPointer();
+						if (lb.getAcceptColors() == null ||
+								lb.getAcceptColors().contains(lug.getColor())) {
+							state.world.luggage.remove((Luggage) rb1info.getUserPointer());
+						}
 					}
 				}
 			}

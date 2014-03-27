@@ -96,7 +96,7 @@ public class LeaveBlock extends FlatConveyorBlock {
 	public LeaveBlock(int x, int y, int z, Orientation orientation) {
 		super(x, y, z, orientation);
 		
-		this.type = ConveyorBlockType.ENTER;
+		this.type = ConveyorBlockType.LEAVE;
 		this.acceptColors = null;
 	}
 	
@@ -113,7 +113,8 @@ public class LeaveBlock extends FlatConveyorBlock {
 			boolean deletable) {
 		super(x, y, z, orientation, deletable);
 		
-		this.type = ConveyorBlockType.ENTER;
+		this.type = ConveyorBlockType.LEAVE;
+		this.acceptColors = null;
 	}
 	
 	/**

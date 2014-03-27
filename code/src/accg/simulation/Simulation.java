@@ -243,6 +243,12 @@ public class Simulation {
 			}
 			Utils.rotatePoints(block.getOrientation(), points);
 			RigidBody body = new RigidBody(0, null, new ConvexHullShape(points));
+			// enable callback to delete luggage in the LeaveBlocks
+			if (block.getConveyorBlockType() == ConveyorBlockType.LEAVE &&
+					i == 8) {
+				body.setUserPointer(new SimulationBodyInfo(block, SimulationBodyType.LEAVE_BLOCK));
+			}
+			
 			// undo rotation...
 			Utils.rotatePoints(block.getOrientation().turnAround(), points);
 			body.setWorldTransform(blockTransform);
