@@ -10,6 +10,7 @@ import javax.vecmath.Vector3f;
 
 import accg.State;
 import accg.objects.Block;
+import accg.objects.Luggage;
 import accg.objects.Luggage.LuggageColor;
 import accg.objects.Orientation;
 
@@ -74,21 +75,10 @@ public class LeaveBlock extends FlatConveyorBlock {
 	};
 	
 	/**
-	 * Time it takes, in seconds, to open the shutter completely.
+	 * The shutter open factor. 0 means completely open, 1 means completely
+	 * closed.
 	 */
-	public static final float SHUTTER_OPEN_TIME = 0.6f;
-	
-	/**
-	 * Time the opening/closing of the shutter is shifted relative to adding
-	 * a new piece of luggage. This means that the shutter will not be (fully)
-	 * open when a new piece of luggage is added, but this amount of time later. 
-	 */
-	public static final float SHUTTER_OPEN_TIME_SHIFT = 0.4f;
-	
-	/**
-	 * Time the shutter should stay open after reaching the open state.
-	 */
-	public static final float SHUTTER_STAY_OPEN_TIME = 0.1f;
+	public float sof = 1;
 	
 	/**
 	 * Colors of luggage that are accepted by this block.
@@ -138,7 +128,16 @@ public class LeaveBlock extends FlatConveyorBlock {
 	public void draw(State s) {
 		
 		super.draw(s);
-
+		
+		// update the shutter
+		boolean shouldOpen = isLuggageNear(s);
+		if (shouldOpen) {
+			sof = Math.max(0, sof - 0.025f);
+		} else {
+			sof = Math.min(1, sof + 0.025f);
+		}
+		
+		// draw the hull and shutter
 		glPushMatrix();
 		glTranslated(x, y, z / 4.0);
 		glRotated(-orientation.angle, 0, 0, 1);
@@ -150,7 +149,6 @@ public class LeaveBlock extends FlatConveyorBlock {
 		}
 		glEnd();
 		
-		float sof = getShutterOpenFactor(s);
 		glColor4f(Color.WHITE);
 		glEnable(GL_TEXTURE_2D);
 		s.textures.shutterExit.bind();
@@ -193,6 +191,7 @@ public class LeaveBlock extends FlatConveyorBlock {
 	}
 	
 	/**
+<<<<<<< HEAD
 	 * Change the list of colors that is accepted by this block.
 	 * @param acceptColors The new list of accepted colors, or {@code null} if
 	 *            any block may be accepted.
@@ -204,30 +203,32 @@ public class LeaveBlock extends FlatConveyorBlock {
 	/**
 	 * Given a State to retrieve the current time from, return how far open
 	 * the shutter should be at this time, given the {@link #timeBetweenLuggage}.
+=======
+	 * Returns whether there is luggage near the shutter.
+>>>>>>> af1ef7fa8c3ccd592cc454ba1fbbd691e27349a9
 	 * 
-	 * @return How far open the shutter should be. 0 means completely open,
-	 *         1 means completely closed.
+	 * @param s The state (used to read the luggage from).
+	 * @return <code>true</code> if there is luggage near the shutter,
+	 * <code>false</code> otherwise.
 	 */
-	private float getShutterOpenFactor(State s) {
-		/*if (s.programMode != ProgramMode.SIMULATION_MODE) {
-			return 1;
+	private boolean isLuggageNear(State s) {
+		
+		Vector3f shutterPosition = new Vector3f();
+		shutterPosition.x = x;
+		shutterPosition.y = y;
+		shutterPosition.z = z / 4.0f;
+		shutterPosition = orientation.moveFrom(shutterPosition, -0.6f);
+		
+		for (Luggage l : s.world.luggage) {
+			Vector3f position = new Vector3f();
+			l.transform.get(position);
+			Vector3f difference = new Vector3f();
+			difference.sub(position, shutterPosition);
+			if (difference.lengthSquared() < 0.5f) {
+				return true;
+			}
 		}
 		
-		float timeMod = ((s.time % timeBetweenLuggage) + 2 * timeBetweenLuggage -
-				SHUTTER_OPEN_TIME_SHIFT) % timeBetweenLuggage;
-		
-		if (timeMod <= SHUTTER_STAY_OPEN_TIME) {
-			return 0;
-		}
-		
-		if (timeMod <= timeBetweenLuggage / 2 + SHUTTER_STAY_OPEN_TIME) {
-			timeMod -= SHUTTER_STAY_OPEN_TIME;
-			return 1 - Math.max((SHUTTER_OPEN_TIME - timeMod) / SHUTTER_OPEN_TIME, 0);
-		}
-		
-		timeMod = timeBetweenLuggage - timeMod;
-		return 1 - Math.max((SHUTTER_OPEN_TIME - timeMod) / SHUTTER_OPEN_TIME, 0);*/
-		
-		return 1;
+		return false;
 	}
 }
