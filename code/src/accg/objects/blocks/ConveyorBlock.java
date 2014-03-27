@@ -231,6 +231,42 @@ public abstract class ConveyorBlock extends Block {
 		
 		glPopMatrix();
 	}
+	
+	/**
+	 * Draws an arrow indicating the direction of this conveyor block.
+	 * An arrow is only drawn if needed (see {@link State#beltSpeed}).
+	 * 
+	 * @param s The state object.
+	 */
+	public void drawArrow(State s) {
+
+		glPushMatrix();
+		glTranslated(x, y, z / 4.0 - 0.375);
+		glRotated(-orientation.angle, 0, 0, 1);
+		
+		glColor4f(1, 1, 0, 1 - s.beltSpeed);
+		
+		glEnable(GL_BLEND);
+		glBegin(GL_QUADS);
+		{
+			glNormal3f(0, 0, 1);
+			glVertex3f(-0.12f, -0.3f, 1);
+			glVertex3f(-0.12f, 0.1f, 1);
+			glVertex3f(0.12f, 0.1f, 1);
+			glVertex3f(0.12f, -0.3f, 1);
+			
+			glVertex3f(0, 0.1f, 1);
+			glVertex3f(0.25f, 0.1f, 1);
+			glVertex3f(0, 0.3f, 1);
+			glVertex3f(-0.25f, 0.1f, 1);
+		}
+		glEnd();
+		glDisable(GL_BLEND);
+		
+		glColor4f(1, 1, 1, 1);
+		
+		glPopMatrix();
+	}
 
 	/**
 	 * Add coordinates to the given list that form a bend in the XY plane.

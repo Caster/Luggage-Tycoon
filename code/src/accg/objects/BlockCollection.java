@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import accg.State;
+import accg.objects.blocks.ConveyorBlock;
 
 /**
  * The collection of blocks to draw.
@@ -211,6 +212,19 @@ public class BlockCollection extends DrawableObject implements Iterable<Block> {
 				for (Block block : blockXY) {
 					if (block != null) {
 						block.draw(s);
+					}
+				}
+			}
+		}
+		
+		// finally, ConveyorBlocks get a special treatment:
+		// their arrow must be drawn and due to OpenGL blending limitations,
+		// that can only be done after all other blocks are drawn
+		for (Block[][] blockX : blocks) {
+			for (Block[] blockXY : blockX) {
+				for (Block block : blockXY) {
+					if (block != null && block instanceof ConveyorBlock) {
+						((ConveyorBlock) block).drawArrow(s);
 					}
 				}
 			}

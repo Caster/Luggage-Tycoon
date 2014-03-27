@@ -106,7 +106,9 @@ public class State {
 	public float beltPosition;
 	
 	/**
-	 * Speed of the conveyor belts, as fraction of their full speed.
+	 * Speed of the conveyor belts, as fraction of their full speed. This is
+	 * the same as one minus the opacity of the arrows that are shown when the
+	 * belts are not rotating.
 	 */
 	public float beltSpeed;
 	
