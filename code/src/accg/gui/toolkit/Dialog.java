@@ -63,6 +63,27 @@ public class Dialog extends Container {
 	}
 	
 	/**
+	 * Whether we are currently animating the dialog.
+	 */
+	public boolean animating = false;
+	
+	/**
+	 * The frame number of the animation.
+	 */
+	public int animationFrame;
+	
+	/**
+	 * The value that is added to the y-coordinate of the dialog, when animating.
+	 */
+	public float animatedY = 0;
+	
+	/**
+	 * The opacity of the backdrop; this is multiplied by <code>0.7f / 25</code>.
+	 * This is changed when animating.
+	 */
+	public int backdropOpacity = 25;
+	
+	/**
 	 * Creates a new dialog with the given caption and body.
 	 * 
 	 * @param caption The caption of this dialog.
@@ -98,6 +119,8 @@ public class Dialog extends Container {
 				}
 			}
 		});
+		
+		startEnterAnimation();
 	}
 	
 	@Override
@@ -116,9 +139,13 @@ public class Dialog extends Container {
 	public void draw() {
 		
 		layoutIfNeeded();
+
+		if (animating) {
+			handleAnimation();
+		}
 		
 		if (mode == DialogMode.BACKDROP) {
-			glColor4f(0, 0, 0, 0.5f);
+			glColor4f(0, 0, 0, 0.7f * backdropOpacity / 25);
 			glBegin(GL_QUADS);
 			{
 				drawBackdrop();
@@ -126,6 +153,8 @@ public class Dialog extends Container {
 			glEnd();
 		}
 		
+		glPushMatrix();
+		glTranslatef(0, -animatedY, 0);
 		glColor4f(1, 1, 1, 0.5f);
 		glBegin(GL_QUADS);
 		{
@@ -145,8 +174,23 @@ public class Dialog extends Container {
 		glDisable(GL_TEXTURE_2D);
 		
 		super.draw();
+		glPopMatrix();
 	}
 	
+	/**
+	 * Handles a new frame of the animation.
+	 */
+	protected void handleAnimation() {
+		animationFrame++;
+		
+		backdropOpacity = animationFrame;
+		animatedY = (animationFrame - 25) * (animationFrame - 25);
+		
+		if (animationFrame >= 25) {
+			animating = false;
+		}
+	}
+
 	/**
 	 * Assumes that it is called inside GL_QUADS. Will render a backdrop
 	 * on the correct spot.
@@ -264,5 +308,14 @@ public class Dialog extends Container {
 	@Override
 	protected boolean isTransparent() {
 		return false;
+	}
+	
+	/**
+	 * Starts the animation of the dialog while it enters the GUI.
+	 * Note that animating is only working in BACKDROP mode.
+	 */
+	public void startEnterAnimation() {
+		animating = true;
+		animationFrame = 0;
 	}
 }
