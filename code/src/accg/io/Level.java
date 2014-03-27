@@ -17,6 +17,7 @@ import accg.objects.Luggage.LuggageColor;
 import accg.objects.Orientation;
 import accg.objects.World;
 import accg.objects.blocks.EnterBlock;
+import accg.objects.blocks.LeaveBlock;
 
 /**
  * A Level is a collection of blocks, dimensions of a field, an actual level
@@ -117,11 +118,11 @@ public class Level {
 				throw new InputMismatchException("Expected 'blocks' identifier at line 4.");
 			}
 			this.blocks = new ArrayList<>();
-			ArrayList<EnterBlock> enterBlocks = new ArrayList<EnterBlock>();
-			String line;
+			String line = "";
 			int lineNum = 5;
-			Pattern blockPattern = Pattern.compile("([A-Za-z]{2}) (\\d+) (\\d+) (\\d+) ([lurd]) (nd)?");
-			while (!(line = levelScanner.nextLine()).startsWith("luggage")) {
+			Pattern blockPattern = Pattern.compile("([A-Za-z]{2}) (\\d+) (\\d+) (\\d+) ([lurd]) (nd)?"
+					+ "(?:\\s+\\[(?:(\\d+)\\s+)?(\\w+[\\s+\\w+]*)?\\])?");
+			while (levelScanner.hasNextLine() && !(line = levelScanner.nextLine()).startsWith("blocklimit")) {
 				lineNum++;
 				
 				Matcher blockMatcher = blockPattern.matcher(line);
@@ -147,38 +148,39 @@ public class Level {
 					this.blocks.add(b);
 					
 					if (b instanceof EnterBlock) {
-						enterBlocks.add((EnterBlock) b);
+						EnterBlock eb = (EnterBlock) b;
+						if (blockMatcher.groupCount() > 6 && blockMatcher.group(7) != null) {
+							eb.setLuggageNum(Integer.parseInt(blockMatcher.group(7)));
+						}
+						if (blockMatcher.groupCount() > 7 && blockMatcher.group(8) != null) {
+							String[] colors = blockMatcher.group(8).split("\\s+");
+							ArrayList<LuggageColor> lugCols = new ArrayList<>();
+							for (String color : colors) {
+								LuggageColor lugCol = LuggageColor.parseLuggageColor(color);
+								if (lugCol != null) {
+									lugCols.add(lugCol);
+								}
+							}
+							eb.setLuggageColors(lugCols);
+						}
+					}
+					if (b instanceof LeaveBlock && blockMatcher.groupCount() > 7 &&
+							blockMatcher.group(8) != null) {
+						String[] colors = blockMatcher.group(8).split("\\s+");
+						ArrayList<LuggageColor> acceptCols = new ArrayList<>();
+						for (String color : colors) {
+							LuggageColor lugCol = LuggageColor.parseLuggageColor(color);
+							if (lugCol != null) {
+								acceptCols.add(lugCol);
+							}
+						}
+						((LeaveBlock) b).setAcceptColors(acceptCols);
 					}
 				} else {
 					throw new InputMismatchException("Line \"" + line + "\" does not properly describe a "
-							+ "block. Expected format is \"[blockid] [x] [y] [z] [orientation] [nd]?\".");
+							+ "block. Expected format is \"[blockid] [x] [y] [z] [orientation] [nd]? "
+							+ "[[[luggageNum]? [color] [color] ...]]?\".");
 				}
-			}
-			
-			// read luggage number
-			for (int i = 0; i < enterBlocks.size(); i++) {
-				Pattern luggagePattern = Pattern.compile("luggage(?:\\s+(\\d+))?");
-				Matcher luggageMatcher = luggagePattern.matcher(line);
-				if (luggageMatcher.matches()) {
-					enterBlocks.get(i).setLuggageNum(Integer.parseInt(luggageMatcher.group(1)));
-				} else {
-					enterBlocks.get(i).setLuggageNum(-1);
-				}
-				// read luggage pieces
-				ArrayList<LuggageColor> luggageColors = new ArrayList<>();
-				while (!(line = levelScanner.nextLine()).startsWith("blocklimit") &&
-						!line.startsWith("luggage")) {
-					lineNum++;
-					LuggageColor lugCol = LuggageColor.parseLuggageColor(line);
-					if (lugCol == null) {
-						throw new InputMismatchException("Could not parse luggage \"" + line + "\" at line " + lineNum + ".");
-					}
-					luggageColors.add(lugCol);
-				}
-				if (luggageColors.size() == 0) {
-					luggageColors = null;
-				}
-				enterBlocks.get(i).setLuggageColors(luggageColors);
 			}
 			
 			// read block limit (if any)

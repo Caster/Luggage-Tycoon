@@ -4,11 +4,13 @@ import static accg.gui.toolkit.GLUtils.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import javax.vecmath.Vector3f;
 
 import accg.State;
 import accg.objects.Block;
+import accg.objects.Luggage.LuggageColor;
 import accg.objects.Orientation;
 
 /**
@@ -89,6 +91,11 @@ public class LeaveBlock extends FlatConveyorBlock {
 	public static final float SHUTTER_STAY_OPEN_TIME = 0.1f;
 	
 	/**
+	 * Colors of luggage that are accepted by this block.
+	 */
+	private ArrayList<LuggageColor> acceptColors;
+	
+	/**
 	 * Creates a new LeaveBlock on the specified position.
 	 * 
 	 * @param x The x-coordinate.
@@ -100,6 +107,7 @@ public class LeaveBlock extends FlatConveyorBlock {
 		super(x, y, z, orientation);
 		
 		this.type = ConveyorBlockType.ENTER;
+		this.acceptColors = null;
 	}
 	
 	/**
@@ -170,9 +178,27 @@ public class LeaveBlock extends FlatConveyorBlock {
 		return new LeaveBlock(this);
 	}
 	
+	/**
+	 * Returns a list of colors that are accepted by this block.
+	 * @return A list of colors that are accepted by this block.
+	 *         If any color is accepted, {@code null} is returned.
+	 */
+	public ArrayList<LuggageColor> getAcceptColors() {
+		return acceptColors;
+	}
+	
 	@Override
 	public ConveyorBlockType getConveyorBlockType() {
 		return ConveyorBlockType.LEAVE;
+	}
+	
+	/**
+	 * Change the list of colors that is accepted by this block.
+	 * @param acceptColors The new list of accepted colors, or {@code null} if
+	 *            any block may be accepted.
+	 */
+	public void setAcceptColors(ArrayList<LuggageColor> acceptColors) {
+		this.acceptColors = acceptColors;
 	}
 	
 	/**
