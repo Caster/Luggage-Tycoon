@@ -6,9 +6,7 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
 
-import accg.gui.toolkit.event.MouseClickEvent;
-import accg.gui.toolkit.event.MouseDragEvent;
-import accg.gui.toolkit.event.MouseEvent;
+import accg.gui.toolkit.event.*;
 
 /**
  * A component in which the user can select one of several (textual)
@@ -25,6 +23,11 @@ public class List extends Component {
 	 * The index of the selected element.
 	 */
 	private int selectedIndex = 0;
+	
+	/**
+	 * The element that is the topmost visible one in the list.
+	 */
+	private int firstVisibleIndex = 0;
 	
 	/**
 	 * The approximate amount of characters that this List should be
@@ -72,6 +75,9 @@ public class List extends Component {
 					updateSelection((MouseEvent) e);
 					requestFocus();
 				}
+				if (e instanceof MouseScrollEvent) {
+					
+				}
 			}
 		});
 	}
@@ -90,6 +96,10 @@ public class List extends Component {
 		
 		int yInList = e.getY() - PADDING;
 		selectedIndex = yInList / getFont().getLineHeight();
+		
+		if (selectedIndex >= elements.size()) {
+			selectedIndex = elements.size() - 1;
+		}
 	}
 
 	@Override
@@ -143,7 +153,9 @@ public class List extends Component {
 		
 		// draw the actual elements
 		glEnable(GL_TEXTURE_2D);
-		for (int i = 0; i < elements.size(); i++) {
+		for (int i = firstVisibleIndex;
+				isElementVisible(i) && i < elements.size();
+				i++) {
 			getFont().drawString(PADDING, PADDING + i * getFont().getLineHeight(),
 					elements.get(i), Color.black);
 		}
@@ -161,5 +173,16 @@ public class List extends Component {
 	 */
 	public void addElement(String element) {
 		elements.add(element);
+	}
+	
+	/**
+	 * Returns whether the element on the given index is visible.
+	 * 
+	 * @param index The index of the element to check.
+	 * @return <code>true</code> if the element is visible; <code>false</code>
+	 * otherwise.
+	 */
+	protected boolean isElementVisible(int index) {
+		return index >= firstVisibleIndex && index < firstVisibleIndex + lines;
 	}
 }
