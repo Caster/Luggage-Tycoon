@@ -45,7 +45,12 @@ public class NormalModeMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					Label l = new Label("To do: put a list of saved games to open here");
+					List l = new List(40, 6);
+					l.addElement("A file");
+					l.addElement("Another file");
+					l.addElement("Still another file");
+					l.addElement("Even more files?");
+					l.addElement("Wow, a lot of files!");
 					Dialog dialog = new Dialog("Open", l,
 							new Button("OK", s.textures.iconOk),
 							new Button("Cancel", s.textures.iconExit));
