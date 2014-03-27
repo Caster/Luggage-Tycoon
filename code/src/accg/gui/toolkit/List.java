@@ -3,6 +3,7 @@ package accg.gui.toolkit;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.newdawn.slick.Color;
 
@@ -185,6 +186,14 @@ public class List extends Component {
 	 */
 	public void addElement(String element) {
 		elements.add(element);
+	}
+	
+	/**
+	 * Adds all elements in the given array to this list.
+	 * @param elements The elements to add.
+	 */
+	public void addElements(String[] elements) {
+		this.elements.addAll(Arrays.asList(elements));
 	}
 	
 	/**

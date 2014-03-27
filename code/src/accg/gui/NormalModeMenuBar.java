@@ -2,8 +2,18 @@ package accg.gui;
 
 import accg.State;
 import accg.State.ProgramMode;
-import accg.gui.toolkit.*;
+import accg.gui.toolkit.Button;
+import accg.gui.toolkit.Component;
+import accg.gui.toolkit.Dialog;
+import accg.gui.toolkit.Event;
+import accg.gui.toolkit.Label;
+import accg.gui.toolkit.List;
+import accg.gui.toolkit.Listener;
+import accg.gui.toolkit.MenuBar;
+import accg.gui.toolkit.MenuStack;
+import accg.gui.toolkit.TextField;
 import accg.gui.toolkit.event.MouseClickEvent;
+import accg.io.SavedGameManager;
 
 /**
  * Menu bar for the normal mode.
@@ -45,16 +55,30 @@ public class NormalModeMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					List l = new List(40, 6);
-					for (int i = 1; i <= 20; i++) {
-						l.addElement("File " + i);
+					Component body;
+					String[] savedGames = SavedGameManager.getSavedGames();
+					if (savedGames.length > 0) {
+						List l = new List(40, 6);
+						l.addElements(savedGames);
+						body = l;
+					} else {
+						body = new Label("You did not save any games yet.");
 					}
 					Button okButton = new Button("OK", s.textures.iconOk);
-					final Dialog dialog = new Dialog("Open", l,
-							okButton,
-							new Button("Cancel", s.textures.iconExit));
+					Button cancelButton = new Button("Cancel",
+							s.textures.iconExit);
+					final Dialog dialog = new Dialog("Open", body, okButton,
+							cancelButton);
 					okButton.addListener(new Listener() {
-						
+						@Override
+						public void event(Event e) {
+							if (e instanceof MouseClickEvent) {
+								dialog.setVisible(false);
+								// TODO: Actually load selected game.
+							}
+						}
+					});
+					cancelButton.addListener(new Listener() {
 						@Override
 						public void event(Event e) {
 							if (e instanceof MouseClickEvent) {

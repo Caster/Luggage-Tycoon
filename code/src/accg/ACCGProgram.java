@@ -48,6 +48,13 @@ import accg.utils.Utils;
  */
 public class ACCGProgram {
 	
+	/**
+	 * If the "--saved-games-dir [dir]" parameter is given when starting the
+	 * program, the argument is saved in this field. Otherwise, the value will
+	 * be {@code null}.
+	 */
+	private static String argSavedGamesDir = null;
+	
 	/** Background color of the scene. */
 	private static final java.awt.Color BACKGROUND_COLOR =
 			new java.awt.Color(0f, 0f, 0f, 1.0f);
@@ -117,11 +124,28 @@ public class ACCGProgram {
 	
 	/**
 	 * The main method of the application.
-	 * @param args The command-line arguments (ignored).
+	 * @param args The command-line arguments.
 	 */
 	public static void main(String[] args) {
+		if (args.length > 0) {
+			for (int i = 0; i < args.length; i++) {
+				if ("--saved-games-dir".equals(args[i]) && i < args.length - 1) {
+					argSavedGamesDir = args[i + 1];
+				}
+			}
+		}
+		
 		ACCGProgram p = new ACCGProgram();
 		p.start();
+	}
+	
+	/**
+	 * Returns the value of the "--saved-games-dir [dir]" parameter, if given.
+	 * If not given, this will return {@code null}.
+	 * @return The value of the "--saved-games-dir [dir]" parameter.
+	 */
+	public static String getArgSavedGamesDir() {
+		return argSavedGamesDir;
 	}
 	
 	/**
