@@ -206,28 +206,30 @@ public class World extends Container<DrawableObject> {
 		default:         blockOrientationRot = blockOrientation;
 		}
 		
-		// check first neighbor
+		// check first neighbor: a LeaveBlock can never have this one
 		if (cb.getConveyorBlockType() == ConveyorBlockType.ASCENDING) {
 			pos.z += 1;
 		}
 		pos = blockOrientationRot.moveFrom(pos, 1);
-		if (bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z)) {
-			Block b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z);
-			// do not draw something to the back of an EnterBlock
-			if (!(b instanceof EnterBlock)) {
-				if (b instanceof ConveyorBlock && !(b instanceof DescendingConveyorBlock)) {
-					ConveyorBlock cbn = (ConveyorBlock) b;
-					if (haveMatchingOrientations(cb, cbn)) {
-						result[1] = cbn;
-					}
-				}
-				if (result[1] == null &&
-						bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z - 1)) {
-					b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z - 1);
-					if (b != null && b instanceof DescendingConveyorBlock) {
+		if (cb.getConveyorBlockType() != ConveyorBlockType.LEAVE) {
+			if (bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z)) {
+				Block b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z);
+				// do not draw something to the back of an EnterBlock
+				if (!(b instanceof EnterBlock)) {
+					if (b instanceof ConveyorBlock && !(b instanceof DescendingConveyorBlock)) {
 						ConveyorBlock cbn = (ConveyorBlock) b;
 						if (haveMatchingOrientations(cb, cbn)) {
 							result[1] = cbn;
+						}
+					}
+					if (result[1] == null &&
+							bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z - 1)) {
+						b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z - 1);
+						if (b != null && b instanceof DescendingConveyorBlock) {
+							ConveyorBlock cbn = (ConveyorBlock) b;
+							if (haveMatchingOrientations(cb, cbn)) {
+								result[1] = cbn;
+							}
 						}
 					}
 				}
@@ -246,19 +248,22 @@ public class World extends Container<DrawableObject> {
 			pos = blockOrientation.moveFrom(blockOrientationRot.moveFrom(pos, -1), -1);
 			if (bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z)) {
 				Block b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z);
-				if (b instanceof ConveyorBlock) {
-					ConveyorBlock cbn = (ConveyorBlock) b;
-					if (haveMatchingOrientations(cbn, cb)) {
-						result[0] = cbn;
-					}
-				}
-				if (result[0] == null &&
-						bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z - 1)) {
-					b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z - 1);
-					if (b != null && b instanceof AscendingConveyorBlock) {
+				// do not draw something to the back of a LeaveBlock
+				if (!(b instanceof LeaveBlock)) {
+					if (b instanceof ConveyorBlock) {
 						ConveyorBlock cbn = (ConveyorBlock) b;
 						if (haveMatchingOrientations(cbn, cb)) {
 							result[0] = cbn;
+						}
+					}
+					if (result[0] == null &&
+							bc.inBounds((int) pos.x, (int) pos.y, (int) pos.z - 1)) {
+						b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z - 1);
+						if (b != null && b instanceof AscendingConveyorBlock) {
+							ConveyorBlock cbn = (ConveyorBlock) b;
+							if (haveMatchingOrientations(cbn, cb)) {
+								result[0] = cbn;
+							}
 						}
 					}
 				}
