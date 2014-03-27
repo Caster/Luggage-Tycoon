@@ -2,7 +2,6 @@ package accg.gui;
 
 import java.io.InputStream;
 
-import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.util.ResourceLoader;
@@ -10,7 +9,11 @@ import org.newdawn.slick.util.ResourceLoader;
 import accg.State;
 import accg.gui.toolkit.Component;
 import accg.gui.toolkit.LayeredPane;
-import accg.gui.toolkit.event.*;
+import accg.gui.toolkit.event.KeyEvent;
+import accg.gui.toolkit.event.MouseClickEvent;
+import accg.gui.toolkit.event.MouseDragEvent;
+import accg.gui.toolkit.event.MouseMoveEvent;
+import accg.gui.toolkit.event.MouseScrollEvent;
 
 /**
  * This class manages the GUI of the program.
