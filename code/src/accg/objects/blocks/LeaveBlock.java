@@ -141,7 +141,6 @@ public class LeaveBlock extends FlatConveyorBlock {
 		}
 		glEnd();
 		
-		float sof = getShutterOpenFactor(s);
 		glColor4f(Color.WHITE);
 		glEnable(GL_TEXTURE_2D);
 		s.textures.shutterExit.bind();
@@ -172,36 +171,6 @@ public class LeaveBlock extends FlatConveyorBlock {
 	@Override
 	public ConveyorBlockType getConveyorBlockType() {
 		return ConveyorBlockType.LEAVE;
-	}
-	
-	/**
-	 * Given a State to retrieve the current time from, return how far open
-	 * the shutter should be at this time, given the {@link #timeBetweenLuggage}.
-	 * 
-	 * @return How far open the shutter should be. 0 means completely open,
-	 *         1 means completely closed.
-	 */
-	private float getShutterOpenFactor(State s) {
-		/*if (s.programMode != ProgramMode.SIMULATION_MODE) {
-			return 1;
-		}
-		
-		float timeMod = ((s.time % timeBetweenLuggage) + 2 * timeBetweenLuggage -
-				SHUTTER_OPEN_TIME_SHIFT) % timeBetweenLuggage;
-		
-		if (timeMod <= SHUTTER_STAY_OPEN_TIME) {
-			return 0;
-		}
-		
-		if (timeMod <= timeBetweenLuggage / 2 + SHUTTER_STAY_OPEN_TIME) {
-			timeMod -= SHUTTER_STAY_OPEN_TIME;
-			return 1 - Math.max((SHUTTER_OPEN_TIME - timeMod) / SHUTTER_OPEN_TIME, 0);
-		}
-		
-		timeMod = timeBetweenLuggage - timeMod;
-		return 1 - Math.max((SHUTTER_OPEN_TIME - timeMod) / SHUTTER_OPEN_TIME, 0);*/
-		
-		return sof;
 	}
 	
 	/**
