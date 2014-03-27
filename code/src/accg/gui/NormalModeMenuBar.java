@@ -62,7 +62,7 @@ public class NormalModeMenuBar extends MenuBar {
 							}
 						}
 					});
-					s.gui.add(new DialogPanel(dialog));
+					s.gui.add(dialog);
 				}
 			}
 		});
@@ -79,7 +79,7 @@ public class NormalModeMenuBar extends MenuBar {
 					Dialog dialog = new Dialog("Save", tf,
 							new Button("OK", s.textures.iconOk),
 							new Button("Cancel", s.textures.iconExit));
-					s.gui.add(new DialogPanel(dialog));
+					s.gui.add(dialog);
 				}
 			}
 		});

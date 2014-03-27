@@ -13,7 +13,7 @@ import org.newdawn.slick.Color;
  * the body.
  */
 public class Dialog extends Container {
-	
+
 	/**
 	 * The caption of this dialog.
 	 */
@@ -34,6 +34,31 @@ public class Dialog extends Container {
 	 * distance between the caption and the body of the dialog.
 	 */
 	public static final int PADDING = 10;
+	
+	/**
+	 * The mode of this dialog.
+	 */
+	public DialogMode mode = DialogMode.BACKDROP;
+	
+	/**
+	 * Possible modes for dialogs.
+	 */
+	public enum DialogMode {
+		
+		/**
+		 * If the dialog is larger than its preferred size, keep the dialog
+		 * itself the same size. Furthermore a black "backdrop" will be shown
+		 * below the dialog, using all of the available space. (This is the
+		 * default mode.)
+		 */
+		BACKDROP,
+		
+		/**
+		 * If the dialog is larger than its preferred size, just relayout it
+		 * to fill all available space. (This is what most other components do.)
+		 */
+		STRETCH
+	}
 	
 	/**
 	 * Creates a new dialog with the given caption and body.
@@ -73,7 +98,16 @@ public class Dialog extends Container {
 		
 		layoutIfNeeded();
 		
-		glColor4d(1, 1, 1, 0.5);
+		if (mode == DialogMode.BACKDROP) {
+			glColor4f(0, 0, 0, 0.5f);
+			glBegin(GL_QUADS);
+			{
+				drawBackdrop();
+			}
+			glEnd();
+		}
+		
+		glColor4f(1, 1, 1, 0.5f);
 		glBegin(GL_QUADS);
 		{
 			drawBackground();
@@ -81,11 +115,28 @@ public class Dialog extends Container {
 		glEnd();
 
 		glEnable(GL_TEXTURE_2D);
-		getFont().drawString((getWidth() - getFont().getWidth(caption)) / 2, PADDING,
-				caption, Color.black);
+		if (mode == DialogMode.STRETCH) {
+			getFont().drawString((getWidth() - getFont().getWidth(caption)) / 2, PADDING,
+					caption, Color.black);
+		} else {
+			getFont().drawString((getWidth() - getFont().getWidth(caption)) / 2,
+					(getHeight() - getPreferredHeight()) / 2 + PADDING,
+					caption, Color.black);
+		}
 		glDisable(GL_TEXTURE_2D);
 		
 		super.draw();
+	}
+	
+	/**
+	 * Assumes that it is called inside GL_QUADS. Will render a backdrop
+	 * on the correct spot.
+	 */
+	private void drawBackdrop() {
+		glVertex2d(0, outline.getHeight());
+		glVertex2d(outline.getWidth(), outline.getHeight());
+		glVertex2d(outline.getWidth(), 0);
+		glVertex2d(0, 0);
 	}
 	
 	/**
@@ -93,10 +144,22 @@ public class Dialog extends Container {
 	 * on the correct spot.
 	 */
 	private void drawBackground() {
-		glVertex2d(0, outline.getHeight());
-		glVertex2d(outline.getWidth(), outline.getHeight());
-		glVertex2d(outline.getWidth(), 0);
-		glVertex2d(0, 0);
+		if (mode == DialogMode.STRETCH) {
+			glVertex2d(0, outline.getHeight());
+			glVertex2d(outline.getWidth(), outline.getHeight());
+			glVertex2d(outline.getWidth(), 0);
+			glVertex2d(0, 0);
+		} else {
+			// only draw in the middle part
+			glVertex2d((getWidth() - getPreferredWidth()) / 2,
+					(getHeight() + getPreferredHeight()) / 2);
+			glVertex2d((getWidth() + getPreferredWidth()) / 2,
+					(getHeight() + getPreferredHeight()) / 2);
+			glVertex2d((getWidth() + getPreferredWidth()) / 2,
+					(getHeight() - getPreferredHeight()) / 2);
+			glVertex2d((getWidth() - getPreferredWidth()) / 2,
+					(getHeight() - getPreferredHeight()) / 2);
+		}
 	}
 
 	@Override
@@ -143,15 +206,30 @@ public class Dialog extends Container {
 
 	@Override
 	public void layout() {
-		footer.setX(PADDING);
-		footer.setY(getHeight() - PADDING - footer.getPreferredHeight());
-		footer.setWidth(getWidth() - 2 * PADDING);
+		
+		int x, width, y, height;
+		
+		if (mode == DialogMode.STRETCH) {
+			x = 0;
+			width = getWidth();
+			y = 0;
+			height = getHeight();
+		} else {
+			x = (getWidth() - getPreferredWidth()) / 2;
+			width = getPreferredWidth();
+			y = (getHeight() - getPreferredHeight()) / 2;
+			height = getPreferredHeight();
+		}
+		
+		footer.setX(x + PADDING);
+		footer.setY(y + height - PADDING - footer.getPreferredHeight());
+		footer.setWidth(width - 2 * PADDING);
 		footer.setHeight(footer.getPreferredHeight());
 		
-		body.setX(PADDING);
-		body.setY(2 * PADDING + getFont().getLineHeight());
-		body.setWidth(getWidth() - 2 * PADDING);
-		body.setHeight(getHeight() - 4 * PADDING - getFont().getLineHeight() - footer.getPreferredHeight());
+		body.setX(x + PADDING);
+		body.setY(y + 2 * PADDING + getFont().getLineHeight());
+		body.setWidth(width - 2 * PADDING);
+		body.setHeight(height - 4 * PADDING - getFont().getLineHeight() - footer.getPreferredHeight());
 	}
 
 	@Override
