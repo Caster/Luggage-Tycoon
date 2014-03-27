@@ -35,7 +35,8 @@ public class Textures {
 	public Texture conveyor;
 	public Texture floorBuildMode;
 	public Texture floorSimulationMode;
-	public Texture shutter;
+	public Texture shutterEnter;
+	public Texture shutterExit;
 	public Texture wall;
 	
 	/**
@@ -88,8 +89,10 @@ public class Textures {
 					ResourceLoader.getResourceAsStream("res/floorBuildMode.png"));
 			floorSimulationMode = TextureLoader.getTexture("PNG",
 					ResourceLoader.getResourceAsStream("res/floorSimulationMode.png"));
-			shutter = TextureLoader.getTexture("PNG",
-					ResourceLoader.getResourceAsStream("res/shutter.png"));
+			shutterEnter = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/shutterEnter.png"));
+			shutterExit = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/shutterExit.png"));
 			wall = TextureLoader.getTexture("PNG",
 					ResourceLoader.getResourceAsStream("res/wall.png"));
 		} catch (IOException e) {

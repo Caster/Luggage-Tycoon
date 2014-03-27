@@ -5,14 +5,8 @@ import java.util.ArrayList;
 import javax.vecmath.Vector3f;
 
 import accg.State;
-import accg.objects.blocks.AscendingConveyorBlock;
-import accg.objects.blocks.BendLeftConveyorBlock;
-import accg.objects.blocks.BendRightConveyorBlock;
-import accg.objects.blocks.ConveyorBlock;
+import accg.objects.blocks.*;
 import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
-import accg.objects.blocks.DescendingConveyorBlock;
-import accg.objects.blocks.EnterBlock;
-import accg.objects.blocks.FlatConveyorBlock;
 import accg.simulation.Simulation;
 
 /**
@@ -60,6 +54,7 @@ public class World extends Container<DrawableObject> {
 	public void initialiseSomeBlocks() {
 		addBlock(state, new EnterBlock(1, 1, 8, Orientation.RIGHT,
 				EnterBlock.DEFAULT_TIME_BETWEEN_LUGGAGE));
+		addBlock(state, new LeaveBlock(8, 1, 8, Orientation.RIGHT));
 		
 		addBlock(state, new FlatConveyorBlock(2, 7, 16, Orientation.RIGHT));
 		addBlock(state, new FlatConveyorBlock(3, 7, 15, Orientation.DOWN));

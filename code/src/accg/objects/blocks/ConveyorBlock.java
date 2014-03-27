@@ -239,7 +239,12 @@ public abstract class ConveyorBlock extends Block {
 	 * @param s The state object.
 	 */
 	public void drawArrow(State s) {
-
+		
+		// do not draw arrows if they would not be visible at all
+		if (s.beltSpeed == 1) {
+			return;
+		}
+		
 		glPushMatrix();
 		glTranslated(x, y, z / 4.0 - 0.375);
 		glRotated(-orientation.angle, 0, 0, 1);

@@ -24,5 +24,6 @@ docs/presentation/tuestyle2008.sty
 *.kilepr
 *.backup
 *.xcf
+*.kra
 *.blend*
 *~

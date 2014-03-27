@@ -7,18 +7,14 @@ import javax.vecmath.Vector3f;
 
 import accg.State;
 import accg.objects.*;
-import accg.objects.blocks.ConveyorBlock;
-import accg.objects.blocks.EnterBlock;
+import accg.objects.blocks.*;
 import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
 import accg.utils.Utils;
 
 import com.bulletphysics.BulletGlobals;
 import com.bulletphysics.collision.broadphase.BroadphaseInterface;
 import com.bulletphysics.collision.broadphase.DbvtBroadphase;
-import com.bulletphysics.collision.dispatch.CollisionConfiguration;
-import com.bulletphysics.collision.dispatch.CollisionDispatcher;
-import com.bulletphysics.collision.dispatch.CollisionFlags;
-import com.bulletphysics.collision.dispatch.DefaultCollisionConfiguration;
+import com.bulletphysics.collision.dispatch.*;
 import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.collision.shapes.ConvexHullShape;
 import com.bulletphysics.collision.shapes.StaticPlaneShape;
@@ -135,8 +131,12 @@ public class Simulation {
 		world.addRigidBody(r);
 		addedBodies.add(r);
 		
+		// hard-coded situations
 		if (cb.getConveyorBlockType() == ConveyorBlockType.ENTER) {
 			addEnterBlockHull(cb, addedBodies);
+		}
+		if (cb.getConveyorBlockType() == ConveyorBlockType.LEAVE) {
+			addLeaveBlockHull(cb, addedBodies);
 		}
 		
 		// make sure the body is cleaned up when the conveyorblock is removed
@@ -234,6 +234,44 @@ public class Simulation {
 			RigidBody body = new RigidBody(0, null, new ConvexHullShape(points));
 			// undo rotation...
 			Utils.rotatePoints(enterBlock.getOrientation().turnAround(), points);
+			body.setWorldTransform(blockTransform);
+			world.addRigidBody(body);
+			addedBodies.add(body);
+		}
+	}
+	
+	/**
+	 * Add rigid bodies to the world that represent the shape of the hull around
+	 * the conveyor belt in a LeaveBlock. These newly created bodies are added
+	 * to the given list.
+	 * 
+	 * <p>Note: it is <b>not</b> checked if the given block is actually an
+	 * LeaveBlock. Its position is used and that is it.
+	 * 
+	 * @param leaveBlock The block for which bodies need to be added. Position
+	 *            of this block is used for positioning the bodies.
+	 * @param addedBodies A list of bodies, to which newly created bodies will
+	 *            be appended.
+	 */
+	private void addLeaveBlockHull(ConveyorBlock leaveBlock,
+			ArrayList<RigidBody> addedBodies) {		
+		Transform blockTransform = new Transform();
+		blockTransform.set(new Matrix4f(new float[] {
+				1, 0, 0, leaveBlock.getX(),
+				0, 1, 0, leaveBlock.getY(),
+				0, 0, 1, leaveBlock.getZ() / 4f,
+				0, 0, 0, 1
+		}));
+		
+		for (int i = 0; i < LeaveBlock.HULL_POINTS.length; i += 4) {
+			ObjectArrayList<Vector3f> points = new ObjectArrayList<>(4);
+			for (int j = i; j < i + 4; j++) {
+				points.add(LeaveBlock.HULL_POINTS[j]);
+			}
+			Utils.rotatePoints(leaveBlock.getOrientation(), points);
+			RigidBody body = new RigidBody(0, null, new ConvexHullShape(points));
+			// undo rotation...
+			Utils.rotatePoints(leaveBlock.getOrientation().turnAround(), points);
 			body.setWorldTransform(blockTransform);
 			world.addRigidBody(body);
 			addedBodies.add(body);
