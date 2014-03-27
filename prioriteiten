@@ -19,7 +19,6 @@ Dingen die we nog moeten doen voor het ACCG-programma:
             * betere textures, met name voor koffers (texture packs?)
     1e9   - Overbodige esthetiek :P
   ( :( )    * texture packs
-            * animaties voor GUI (highlight met fade en zo)
             * achtergrondmuziek
             * geluidseffecten
 +----------------------------------------------------------------------------------------------------------+
@@ -35,6 +34,9 @@ Dingen die we nog moeten doen voor het ACCG-programma:
             * muispositie afvangen en op basis daarvan blokken neer kunnen zetten
             * interface met sneltoetsen
      1    - Banden aan elkaar tekenen
+     2    - Openen / opslaan
+    1e9   - Overbodige esthetiek :P
+            * animaties voor GUI (highlight met fade en zo)
 +---------+------------------------------------------------------------------------------------------------+
 
 Koelkast: (brrrr....)

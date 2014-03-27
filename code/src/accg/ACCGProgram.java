@@ -252,6 +252,9 @@ public class ACCGProgram {
 			if (s.programMode == ProgramMode.SIMULATION_MODE) {
 				s.simulation.update(s);
 				s.simulation.addObjects(s);
+				
+				// advance the conveyor belts
+				s.beltPosition += s.time - s.prevTime;
 			}
 			
 			// start rendering stuff

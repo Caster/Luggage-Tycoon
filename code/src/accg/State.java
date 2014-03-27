@@ -100,6 +100,12 @@ public class State {
 	public float time;
 	
 	/**
+	 * Position of the conveyor belts. This is separated from {@link #time},
+	 * since the belts should not move when not in the simulation mode.
+	 */
+	public float beltPosition;
+	
+	/**
 	 * The time at which the simulation started.
 	 */
 	public float startTime;

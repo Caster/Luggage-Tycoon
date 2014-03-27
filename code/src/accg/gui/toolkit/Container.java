@@ -4,6 +4,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import accg.gui.toolkit.event.MouseEvent;
 import accg.gui.toolkit.event.MouseMoveEvent;
 

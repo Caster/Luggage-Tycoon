@@ -373,10 +373,10 @@ public abstract class ConveyorBlock extends Block {
 			average.normalize();
 			glNormal3f(average);
 			
-			glTexCoord2d(texs.get(i) - 8 * s.time, 0);
+			glTexCoord2d(texs.get(i) - 8 * s.beltPosition, 0);
 			glVertex3f(lefts.get(i));
 			
-			glTexCoord2d(texs.get(i) - 8 * s.time, 1);
+			glTexCoord2d(texs.get(i) - 8 * s.beltPosition, 1);
 			glVertex3f(rights.get(i));
 		}
 	}
