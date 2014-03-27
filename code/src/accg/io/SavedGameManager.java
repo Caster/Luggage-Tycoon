@@ -87,6 +87,11 @@ public class SavedGameManager {
 	 * @return A list of (unique) names of saved games.
 	 */
 	public static String[] getSavedGames() {
-		return savedGamesDir.list(ltFilter);
+		String[] games = savedGamesDir.list(ltFilter);
+		// filter away the '.lt' extension
+		for (int i = 0; i < games.length; i++) {
+			games[i] = games[i].substring(0, games[i].length() - 3);
+		}
+		return games;
 	}
 }
