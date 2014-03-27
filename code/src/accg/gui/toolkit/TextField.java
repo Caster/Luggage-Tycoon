@@ -4,9 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import org.newdawn.slick.Color;
 
-import accg.gui.toolkit.event.KeyEvent;
-import accg.gui.toolkit.event.MouseClickEvent;
-import accg.gui.toolkit.event.MouseEvent;
+import accg.gui.toolkit.event.*;
 
 /**
  * A component in which the user can type text.
@@ -68,7 +66,7 @@ public class TextField extends Component {
 			
 			@Override
 			public void event(Event e) {
-				if (e instanceof MouseClickEvent) {
+				if (e instanceof MouseClickEvent || e instanceof MouseDragEvent) {
 					updateCursor((MouseEvent) e);
 					requestFocus();
 				}
