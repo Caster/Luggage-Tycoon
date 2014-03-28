@@ -197,8 +197,6 @@ public class ACCGProgram {
 		
 		// initialize stuff here
 		s.simulation = new Simulation(s);
-		//s.world = new World(s);
-		//s.world.initialiseSomeBlocks();
 		s.floor = new Floor();
 		s.floor.setBackgroundColor(BACKGROUND_COLOR);
 		s.textures = new Textures();
