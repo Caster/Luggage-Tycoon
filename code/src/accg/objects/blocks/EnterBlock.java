@@ -301,4 +301,9 @@ public class EnterBlock extends FlatConveyorBlock {
 		timeMod = timeBetweenLuggage - timeMod;
 		return 1 - Math.max((SHUTTER_OPEN_TIME - timeMod) / SHUTTER_OPEN_TIME, 0);
 	}
+	
+	@Override
+	public void drawArrow(State s) {
+		// do not draw an arrow for EnterBlocks
+	}
 }

@@ -227,4 +227,9 @@ public class LeaveBlock extends FlatConveyorBlock {
 		
 		return false;
 	}
+	
+	@Override
+	public void drawArrow(State s) {
+		// do not draw an arrow for LeaveBlocks
+	}
 }
