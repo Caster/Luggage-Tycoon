@@ -31,6 +31,7 @@ public class DialogFooter extends Container {
 	public void add(Component toAdd) {
 		toAdd.setParent(this);
 		buttons.add(toAdd);
+		needsLayout();
 	}
 
 	@Override

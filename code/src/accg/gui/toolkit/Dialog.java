@@ -251,7 +251,13 @@ public class Dialog extends Container {
 	 * @param body The new body.
 	 */
 	public void setBody(Component body) {
+		
+		if (this.body != null) {
+			this.body.setParent(null);
+		}
+		
 		this.body = body;
+		this.body.setParent(this);
 	}
 
 	/**
@@ -260,6 +266,16 @@ public class Dialog extends Container {
 	 */
 	public Component getBody() {
 		return body;
+	}
+	
+	/**
+	 * Adds a button to the button bar below the body.
+	 * 
+	 * @param b The button to add. (This can actually be any component, it
+	 * does not need to be a Button.)
+	 */
+	public void addButton(Component b) {
+		footer.add(b);
 	}
 
 	@Override

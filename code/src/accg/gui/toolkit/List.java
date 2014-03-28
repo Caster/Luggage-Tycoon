@@ -190,10 +190,10 @@ public class List extends Component {
 	
 	/**
 	 * Adds all elements in the given array to this list.
-	 * @param elements The elements to add.
+	 * @param newElements The elements to add.
 	 */
-	public void addElements(String[] elements) {
-		this.elements.addAll(Arrays.asList(elements));
+	public void addElements(String[] newElements) {
+		this.elements.addAll(Arrays.asList(newElements));
 	}
 	
 	/**

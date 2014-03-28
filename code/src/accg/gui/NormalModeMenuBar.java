@@ -63,61 +63,7 @@ public class NormalModeMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					final Component body;
-					String[] savedGames = SavedGameManager.getSavedGames();
-					if (savedGames.length > 0) {
-						List l = new List(40, 6);
-						l.addElements(savedGames);
-						body = l;
-					} else {
-						body = new Label("You did not save any games yet.");
-					}
-					Button okButton = new Button("OK", s.textures.iconOk);
-					Button cancelButton = new Button("Cancel",
-							s.textures.iconExit);
-					final Dialog dialog = new Dialog("Open", body, okButton,
-							cancelButton);
-					okButton.addListener(new Listener() {
-						@Override
-						public void event(Event e) {
-							if (e instanceof MouseClickEvent) {
-								dialog.setVisible(false);
-								
-								List l = (List) body;
-								try {
-									Level level = SavedGameManager.loadSavedGame(
-											l.getSelectedElement());
-									level.loadInState(s);
-								} catch (Exception levelException) {
-									levelException.printStackTrace();
-									Button closeButton = new Button("Close", s.textures.iconExit);
-									final Dialog errorDialog = new Dialog("Error", new Label("Well, "
-											+ "this is embarrassing. We could not open "
-											+ "the file. The following error is all we "
-											+ "have: " + levelException.getMessage() + "."),
-											closeButton);
-									closeButton.addListener(new Listener() {
-										@Override
-										public void event(Event e) {
-											if (e instanceof MouseClickEvent) {
-												errorDialog.setVisible(false);
-											}
-										}
-									});
-									s.gui.add(errorDialog);
-								}
-							}
-						}
-					});
-					cancelButton.addListener(new Listener() {
-						@Override
-						public void event(Event e) {
-							if (e instanceof MouseClickEvent) {
-								dialog.setVisible(false);
-							}
-						}
-					});
-					s.gui.add(dialog);
+					s.gui.add(new OpenDialog(s));
 				}
 			}
 		});
