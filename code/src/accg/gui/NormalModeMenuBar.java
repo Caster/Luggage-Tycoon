@@ -98,8 +98,10 @@ public class NormalModeMenuBar extends MenuBar {
 											closeButton);
 									closeButton.addListener(new Listener() {
 										@Override
-										public void event(Event event) {
-											errorDialog.setVisible(false);
+										public void event(Event e) {
+											if (e instanceof MouseClickEvent) {
+												errorDialog.setVisible(false);
+											}
 										}
 									});
 									s.gui.add(errorDialog);
