@@ -49,15 +49,17 @@ import accg.utils.Utils;
 public class ACCGProgram {
 	
 	/**
+	 * Background color of the scene.
+	 */
+	public static final java.awt.Color BACKGROUND_COLOR =
+			new java.awt.Color(0f, 0f, 0f, 1.0f);
+	
+	/**
 	 * If the "--saved-games-dir [dir]" parameter is given when starting the
 	 * program, the argument is saved in this field. Otherwise, the value will
 	 * be {@code null}.
 	 */
 	private static String argSavedGamesDir = null;
-	
-	/** Background color of the scene. */
-	private static final java.awt.Color BACKGROUND_COLOR =
-			new java.awt.Color(0f, 0f, 0f, 1.0f);
 	
 	/** Possible {@link DisplayMode} which the program can use. */
 	private DisplayMode windowedMode, fullScreenMode;

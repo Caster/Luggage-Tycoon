@@ -11,13 +11,17 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import accg.ACCGProgram;
 import accg.State;
+import accg.State.ProgramMode;
 import accg.objects.Block;
 import accg.objects.Luggage.LuggageColor;
+import accg.objects.Floor;
 import accg.objects.Orientation;
 import accg.objects.World;
 import accg.objects.blocks.EnterBlock;
 import accg.objects.blocks.LeaveBlock;
+import accg.simulation.Simulation;
 
 /**
  * A Level is a collection of blocks, dimensions of a field, an actual level
@@ -153,15 +157,19 @@ public class Level {
 							eb.setLuggageNum(Integer.parseInt(blockMatcher.group(7)));
 						}
 						if (blockMatcher.groupCount() > 7 && blockMatcher.group(8) != null) {
-							String[] colors = blockMatcher.group(8).split("\\s+");
-							ArrayList<LuggageColor> lugCols = new ArrayList<>();
-							for (String color : colors) {
-								LuggageColor lugCol = LuggageColor.parseLuggageColor(color);
-								if (lugCol != null) {
-									lugCols.add(lugCol);
+							if (blockMatcher.group(7) == null) {
+								eb.setLuggageNum(Integer.parseInt(blockMatcher.group(8)));
+							} else {
+								String[] colors = blockMatcher.group(8).split("\\s+");
+								ArrayList<LuggageColor> lugCols = new ArrayList<>();
+								for (String color : colors) {
+									LuggageColor lugCol = LuggageColor.parseLuggageColor(color);
+									if (lugCol != null) {
+										lugCols.add(lugCol);
+									}
 								}
+								eb.setLuggageColors(lugCols.size() == 0 ? null : lugCols);
 							}
-							eb.setLuggageColors(lugCols);
 						}
 					}
 					if (b instanceof LeaveBlock && blockMatcher.groupCount() > 7 &&
@@ -174,7 +182,7 @@ public class Level {
 								acceptCols.add(lugCol);
 							}
 						}
-						((LeaveBlock) b).setAcceptColors(acceptCols);
+						((LeaveBlock) b).setAcceptColors(acceptCols.size() == 0 ? null : acceptCols);
 					}
 				} else {
 					throw new InputMismatchException("Line \"" + line + "\" does not properly describe a "
@@ -253,6 +261,36 @@ public class Level {
 	 */
 	public int getLevelNumber() {
 		return levelNumber;
+	}
+	
+	/**
+	 * Load the Level in the given state. This means that the {@link World} and
+	 * {@link Simulation} in the state are being modified.
+	 * @param s State to load Level in.
+	 * @throws IllegalStateException If the given State does not have a program
+	 *             mode of {@link ProgramMode#NORMAL_MODE}.
+	 */
+	public void loadInState(State s) {
+		if (s.programMode != ProgramMode.NORMAL_MODE) {
+			throw new IllegalStateException("A level can only be loaded when "
+					+ "the program is in the \"normal mode\".");
+		}
+		
+		s.fieldLength = fieldLength;
+		s.fieldWidth = fieldWidth;
+		s.fieldHeight = fieldHeight;
+		
+		s.levelName = getLevelName();
+		
+		s.simulation = new Simulation(s);
+		s.world = new World(s);
+		
+		for (Block b : blocks) {
+			s.world.addBlock(s, b);
+		}
+		
+		s.floor = new Floor();
+		s.floor.setBackgroundColor(ACCGProgram.BACKGROUND_COLOR);
 	}
 	
 	/**

@@ -13,6 +13,7 @@ import accg.gui.toolkit.MenuBar;
 import accg.gui.toolkit.MenuStack;
 import accg.gui.toolkit.TextField;
 import accg.gui.toolkit.event.MouseClickEvent;
+import accg.io.Level;
 import accg.io.SavedGameManager;
 import accg.objects.Block;
 import accg.objects.blocks.EnterBlock;
@@ -62,7 +63,7 @@ public class NormalModeMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					Component body;
+					final Component body;
 					String[] savedGames = SavedGameManager.getSavedGames();
 					if (savedGames.length > 0) {
 						List l = new List(40, 6);
@@ -81,7 +82,28 @@ public class NormalModeMenuBar extends MenuBar {
 						public void event(Event e) {
 							if (e instanceof MouseClickEvent) {
 								dialog.setVisible(false);
-								// TODO: Actually load selected game.
+								
+								List l = (List) body;
+								try {
+									Level level = SavedGameManager.loadSavedGame(
+											l.getSelectedElement());
+									level.loadInState(s);
+								} catch (Exception levelException) {
+									levelException.printStackTrace();
+									Button closeButton = new Button("Close", s.textures.iconExit);
+									final Dialog errorDialog = new Dialog("Error", new Label("Well, "
+											+ "this is embarrassing. We could not open "
+											+ "the file. The following error is all we "
+											+ "have: " + levelException.getMessage() + "."),
+											closeButton);
+									closeButton.addListener(new Listener() {
+										@Override
+										public void event(Event event) {
+											errorDialog.setVisible(false);
+										}
+									});
+									s.gui.add(errorDialog);
+								}
 							}
 						}
 					});

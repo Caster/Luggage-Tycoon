@@ -6,6 +6,7 @@ import accg.objects.blocks.BendRightConveyorBlock;
 import accg.objects.blocks.DescendingConveyorBlock;
 import accg.objects.blocks.EnterBlock;
 import accg.objects.blocks.FlatConveyorBlock;
+import accg.objects.blocks.LeaveBlock;
 
 /**
  * Abstract super class of all blocks.
@@ -204,7 +205,7 @@ public abstract class Block extends DrawableObject {
 			return new EnterBlock(x, y, z, orientation,
 					EnterBlock.DEFAULT_TIME_BETWEEN_LUGGAGE, deletable);
 		case "lb":
-			// TODO: Implement LeaveBlock.
+			return new LeaveBlock(x, y, z, orientation, deletable);
 		case "cf":
 			return new FlatConveyorBlock(x, y, z, orientation, deletable);
 		case "ca":

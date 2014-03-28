@@ -197,6 +197,22 @@ public class List extends Component {
 	}
 	
 	/**
+	 * Returns the value of the selected element.
+	 * @return The value of the selected element.
+	 */
+	public String getSelectedElement() {
+		return elements.get(selectedIndex);
+	}
+	
+	/**
+	 * Returns the index of the selected element.
+	 * @return The index of the selected element.
+	 */
+	public int getSelectedIndex() {
+		return selectedIndex;
+	}
+	
+	/**
 	 * Returns whether the element on the given index is visible.
 	 * 
 	 * @param index The index of the element to check.

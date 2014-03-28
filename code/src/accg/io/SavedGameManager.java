@@ -1,7 +1,9 @@
 package accg.io;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
+import java.util.InputMismatchException;
 
 import accg.ACCGProgram;
 
@@ -93,5 +95,19 @@ public class SavedGameManager {
 			games[i] = games[i].substring(0, games[i].length() - 3);
 		}
 		return games;
+	}
+
+	/**
+	 * Load a saved game and return it.
+	 * 
+	 * @param gameName Name of the game to load. This can be one of the names
+	 *            returned by {@link #getSavedGames()}.
+	 * @return The Level loaded from the given game.
+	 * @throws FileNotFoundException If the given saved game was not found.
+	 * @throws InputMismatchException If the Level throws that exception.
+	 * 
+	 */
+	public static Level loadSavedGame(String gameName) throws FileNotFoundException {
+		return new Level(new File(savedGamesDir, gameName + ".lt"));
 	}
 }

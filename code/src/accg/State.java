@@ -87,6 +87,11 @@ public class State {
 	public int fieldHeight = 20;
 	
 	/**
+	 * Name of the currently loaded level. May be {@code null}.
+	 */
+	public String levelName;
+	
+	/**
 	 * The simulation time in seconds when the last frame was rendered.
 	 * 
 	 * May of course not be initialized, during the rendering of the first
