@@ -159,7 +159,7 @@ public class EnterBlock extends FlatConveyorBlock {
 		this.timeBetweenLuggage = timeBetweenLuggage;
 		this.generatedLuggage = 0;
 		this.luggageColors = null;
-		this.luggageNum = 3;
+		this.luggageNum = -1;
 	}
 	
 	@Override
@@ -277,7 +277,7 @@ public class EnterBlock extends FlatConveyorBlock {
 	 */
 	private float getShutterOpenFactor(State s) {
 		if (s.programMode != ProgramMode.SIMULATION_MODE ||
-				generatedLuggage > luggageNum) {
+				(generatedLuggage > luggageNum && luggageNum >= 0)) {
 			return 1;
 		}
 		

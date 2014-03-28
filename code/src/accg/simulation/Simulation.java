@@ -165,7 +165,8 @@ public class Simulation {
 				EnterBlock eb = (EnterBlock) b;
 				
 				if (Utils.hasTimePassed(s, eb.timeBetweenLuggage, 0) &&
-						eb.getGeneratedLuggageNum() < eb.getLuggageNum()) {
+						(eb.getGeneratedLuggageNum() < eb.getLuggageNum() ||
+								eb.getLuggageNum() < 0)) {
 					ArrayList<LuggageColor> lugCols = eb.getLuggageColors();
 					Luggage newLuggage;
 					if (lugCols == null) {
