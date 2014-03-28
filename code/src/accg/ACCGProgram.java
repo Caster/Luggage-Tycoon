@@ -197,8 +197,8 @@ public class ACCGProgram {
 		
 		// initialize stuff here
 		s.simulation = new Simulation(s);
-		s.world = new World(s);
-		s.world.initialiseSomeBlocks();
+		//s.world = new World(s);
+		//s.world.initialiseSomeBlocks();
 		s.floor = new Floor();
 		s.floor.setBackgroundColor(BACKGROUND_COLOR);
 		s.textures = new Textures();
@@ -287,32 +287,34 @@ public class ACCGProgram {
 
 			// draw the scene
 			
-			// step 1: draw floor
-			s.drawingShadows = false;
-			s.floor.draw(s);
-			
-			// step 2: draw shadows
-			glDisable(GL_COLOR_MATERIAL);
-			glMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, shadowColor);
-			glPushMatrix();
-			glMultMatrix(shadowMatrix);
-			s.world.draw(s);
-			if (s.programMode == ProgramMode.BUILDING_MODE &&
-					s.shadowBlock != null) {
-				s.shadowBlock.draw(s);
-			}
-			glPopMatrix();
-			glEnable(GL_COLOR_MATERIAL);
-			
-			// step 3: draw floor
-			s.drawingShadows = true;
-			s.floor.draw(s);
-			
-			// step 4: draw objects
-			s.world.draw(s);
-			if (s.programMode == ProgramMode.BUILDING_MODE &&
-					s.shadowBlock != null) {
-				s.shadowBlock.draw(s);
+			if (s.world != null) {
+				// step 1: draw floor
+				s.drawingShadows = false;
+				s.floor.draw(s);
+				
+				// step 2: draw shadows
+				glDisable(GL_COLOR_MATERIAL);
+				glMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, shadowColor);
+				glPushMatrix();
+				glMultMatrix(shadowMatrix);
+				s.world.draw(s);
+				if (s.programMode == ProgramMode.BUILDING_MODE &&
+						s.shadowBlock != null) {
+					s.shadowBlock.draw(s);
+				}
+				glPopMatrix();
+				glEnable(GL_COLOR_MATERIAL);
+				
+				// step 3: draw floor
+				s.drawingShadows = true;
+				s.floor.draw(s);
+				
+				// step 4: draw objects
+				s.world.draw(s);
+				if (s.programMode == ProgramMode.BUILDING_MODE &&
+						s.shadowBlock != null) {
+					s.shadowBlock.draw(s);
+				}
 			}
 			
 			// draw the menu bars
