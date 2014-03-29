@@ -247,6 +247,43 @@ public class Utils {
 	}
 	
 	/**
+	 * Assuming points centered around the origin in a 1x1 tile and in the given
+	 * orientation, rotate them to match the UP orientation. For example,
+	 * when LEFT is given, all points are rotated 90 degrees clockwise around
+	 * the origin.
+	 * 
+	 * @param orientation Wanted orientation.
+	 * @param points List of points to adapt.
+	 */
+	public static void rotatePointsBack(Orientation orientation,
+			AbstractList<Vector3f> points) {
+		switch (orientation) {
+		default :
+			return;
+		case LEFT :
+			for (Vector3f p : points) {
+				float px = p.x;
+				p.x = p.y;
+				p.y = -px;
+			}
+			break;
+		case RIGHT :
+			for (Vector3f p : points) {
+				float px = p.x;
+				p.x = -p.y;
+				p.y = px;
+			}
+			break;
+		case DOWN :
+			for (Vector3f p : points) {
+				p.x = -p.x;
+				p.y = -p.y;
+			}
+			break;
+		}
+	}
+	
+	/**
 	 * Scale all vectors in the given list with the given factor.
 	 * 
 	 * @param vecList List of vectors to scale.

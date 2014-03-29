@@ -250,8 +250,7 @@ public class Simulation {
 				body.setUserPointer(new SimulationBodyInfo(block, SimulationBodyType.LEAVE_BLOCK));
 			}
 			
-			// undo rotation...
-			Utils.rotatePoints(block.getOrientation().turnAround(), points);
+			Utils.rotatePointsBack(block.getOrientation(), points);
 			body.setWorldTransform(blockTransform);
 			world.addRigidBody(body);
 			addedBodies.add(body);
