@@ -4,6 +4,7 @@ import accg.State;
 import accg.gui.toolkit.*;
 import accg.gui.toolkit.event.MouseClickEvent;
 import accg.gui.toolkit.event.ValueChangeEvent;
+import accg.i18n.Messages;
 
 /**
  * Menu bar containing the settings.
@@ -17,7 +18,7 @@ public class SettingsMenuBar extends MenuBar {
 	
 	public SettingsMenuBar(final MenuStack stack, final State s) {
 
-		positionItem = new Button("Menu position", s.textures.iconConfigure);
+		positionItem = new Button(Messages.get("SettingsMenuBar.position"), s.textures.iconConfigure); //$NON-NLS-1$
 		positionItem.addListener(new Listener() {
 			
 			@Override
@@ -29,7 +30,7 @@ public class SettingsMenuBar extends MenuBar {
 		});
 		add(positionItem);
 
-		alignmentItem = new Button("Menu alignment", s.textures.iconConfigure);
+		alignmentItem = new Button(Messages.get("SettingsMenuBar.alignment"), s.textures.iconConfigure); //$NON-NLS-1$
 		alignmentItem.addListener(new Listener() {
 			
 			@Override
@@ -41,7 +42,7 @@ public class SettingsMenuBar extends MenuBar {
 		});
 		add(alignmentItem);
 
-		presentationItem = new Button("Menu presentation", s.textures.iconConfigure);
+		presentationItem = new Button(Messages.get("SettingsMenuBar.presentation"), s.textures.iconConfigure); //$NON-NLS-1$
 		presentationItem.addListener(new Listener() {
 			
 			@Override
@@ -53,14 +54,14 @@ public class SettingsMenuBar extends MenuBar {
 		});
 		add(presentationItem);
 
-		sensitivityItem = new SliderMenuBarItem("Mouse sensitivity", s.textures.iconMouse, 0.1f, 2.0f, s.mouseSensitivityFactor);
+		sensitivityItem = new SliderMenuBarItem(Messages.get("SettingsMenuBar.sensitivity"), s.textures.iconMouse, 0.1f, 2.0f, s.mouseSensitivityFactor); //$NON-NLS-1$
 		sensitivityItem.addListener(new Listener() {
 			
 			@Override
 			public void event(Event e) {
 				if (e instanceof ValueChangeEvent) {
 					s.mouseSensitivityFactor = sensitivityItem.getValue();
-					s.prefs.putFloat("mouse.sensitivity", sensitivityItem.getValue());
+					s.prefs.putFloat("mouse.sensitivity", sensitivityItem.getValue()); //$NON-NLS-1$
 				}
 			}
 		});

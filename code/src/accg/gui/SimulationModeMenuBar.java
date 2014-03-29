@@ -4,6 +4,7 @@ import accg.State;
 import accg.State.ProgramMode;
 import accg.gui.toolkit.*;
 import accg.gui.toolkit.event.MouseClickEvent;
+import accg.i18n.Messages;
 
 /**
  * Menu bar for the simulation mode.
@@ -12,7 +13,7 @@ public class SimulationModeMenuBar extends MenuBar {
 	
 	public SimulationModeMenuBar(final MenuStack stack, final State s) {
 
-		Button simulateItem = new Button("Stop", s.textures.iconStop);
+		Button simulateItem = new Button(Messages.get("SimulationModeMenuBar.stop"), s.textures.iconStop); //$NON-NLS-1$
 		simulateItem.addListener(new Listener() {
 			
 			@Override

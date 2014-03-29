@@ -3,6 +3,7 @@ package accg.gui;
 import accg.State;
 import accg.gui.toolkit.*;
 import accg.gui.toolkit.event.MouseClickEvent;
+import accg.i18n.Messages;
 import accg.io.Level;
 import accg.io.SavedGameManager;
 
@@ -10,7 +11,7 @@ public class OpenDialog extends Dialog {
 	
 	public OpenDialog(final State s) {
 		
-		super("Open", new EmptyComponent());
+		super(Messages.get("OpenDialog.open"), new EmptyComponent()); //$NON-NLS-1$
 		
 		// the body
 		final Component body;
@@ -20,12 +21,12 @@ public class OpenDialog extends Dialog {
 			l.addElements(savedGames);
 			body = l;
 		} else {
-			body = new Label("You did not save any games yet.");
+			body = new Label(Messages.get("OpenDialog.noSavedGames")); //$NON-NLS-1$
 		}
 		setBody(body);
 		
 		// OK button
-		Button okButton = new Button("OK", s.textures.iconOk);
+		Button okButton = new Button(Messages.get("OpenDialog.ok"), s.textures.iconOk); //$NON-NLS-1$
 		okButton.addListener(new Listener() {
 			@Override
 			public void event(Event e) {
@@ -40,11 +41,10 @@ public class OpenDialog extends Dialog {
 							level.loadInState(s);
 						} catch (Exception levelException) {
 							levelException.printStackTrace();
-							Button closeButton = new Button("Close", s.textures.iconExit);
-							final Dialog errorDialog = new Dialog("Error", new Label("Well, "
-									+ "this is embarrassing. We could not open "
-									+ "the file. The following error is all we "
-									+ "have: " + levelException.getMessage() + "."),
+							Button closeButton = new Button(Messages.get("OpenDialog.close"), s.textures.iconExit); //$NON-NLS-1$
+							final Dialog errorDialog = new Dialog(Messages.get("OpenDialog.error"),
+									new Label(Messages.get("OpenDialog.couldNotOpenFile") //$NON-NLS-1$ //$NON-NLS-2$
+									 + levelException.getMessage()), //$NON-NLS-1$
 									closeButton);
 							closeButton.addListener(new Listener() {
 								@Override
@@ -63,7 +63,7 @@ public class OpenDialog extends Dialog {
 		addButton(okButton);
 		
 		// cancel button
-		Button cancelButton = new Button("Cancel",
+		Button cancelButton = new Button(Messages.get("OpenDialog.cancel"), //$NON-NLS-1$
 				s.textures.iconExit);
 		addButton(cancelButton);
 		cancelButton.addListener(new Listener() {

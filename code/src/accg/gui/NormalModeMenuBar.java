@@ -10,6 +10,7 @@ import accg.gui.toolkit.MenuBar;
 import accg.gui.toolkit.MenuStack;
 import accg.gui.toolkit.TextField;
 import accg.gui.toolkit.event.MouseClickEvent;
+import accg.i18n.Messages;
 import accg.objects.Block;
 import accg.objects.blocks.EnterBlock;
 
@@ -20,7 +21,7 @@ public class NormalModeMenuBar extends MenuBar {
 	
 	public NormalModeMenuBar(final MenuStack stack, final State s) {
 		
-		Button simulateItem = new Button("Simulate", s.textures.iconStart);
+		Button simulateItem = new Button(Messages.get("NormalModeMenuBar.simulate"), s.textures.iconStart); //$NON-NLS-1$
 		simulateItem.addListener(new Listener() {
 			
 			@Override
@@ -39,7 +40,7 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(simulateItem);
 		
-		Button buildItem = new Button("Build", s.textures.iconZoomIn);
+		Button buildItem = new Button(Messages.get("NormalModeMenuBar.build"), s.textures.iconZoomIn); //$NON-NLS-1$
 		buildItem.addListener(new Listener() {
 			
 			@Override
@@ -52,7 +53,7 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(buildItem);
 		
-		Button openItem = new Button("Open", s.textures.iconOpen);
+		Button openItem = new Button(Messages.get("NormalModeMenuBar.open"), s.textures.iconOpen); //$NON-NLS-1$
 		openItem.addListener(new Listener() {
 			
 			@Override
@@ -64,7 +65,7 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(openItem);
 		
-		Button saveItem = new Button("Save", s.textures.iconSave);
+		Button saveItem = new Button(Messages.get("NormalModeMenuBar.save"), s.textures.iconSave); //$NON-NLS-1$
 		saveItem.addListener(new Listener() {
 			
 			@Override
@@ -72,16 +73,16 @@ public class NormalModeMenuBar extends MenuBar {
 				if (e instanceof MouseClickEvent) {
 					TextField tf = new TextField(40);
 					tf.requestFocus();
-					Dialog dialog = new Dialog("Save", tf,
-							new Button("OK", s.textures.iconOk),
-							new Button("Cancel", s.textures.iconExit));
+					Dialog dialog = new Dialog(Messages.get("NormalModeMenuBar.saveDialogHeader"), tf, //$NON-NLS-1$
+							new Button(Messages.get("NormalModeMenuBar.ok"), s.textures.iconOk), //$NON-NLS-1$
+							new Button(Messages.get("NormalModeMenuBar.cancel"), s.textures.iconExit)); //$NON-NLS-1$
 					s.gui.add(dialog);
 				}
 			}
 		});
 		add(saveItem);
 		
-		Button settingsItem = new Button("Settings", s.textures.iconConfigure);
+		Button settingsItem = new Button(Messages.get("NormalModeMenuBar.settings"), s.textures.iconConfigure); //$NON-NLS-1$
 		settingsItem.addListener(new Listener() {
 			
 			@Override
@@ -93,7 +94,7 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(settingsItem);
 		
-		Button quitItem = new Button("Quit", s.textures.iconExit);
+		Button quitItem = new Button(Messages.get("NormalModeMenuBar.quit"), s.textures.iconExit); //$NON-NLS-1$
 		quitItem.addListener(new Listener() {
 			
 			@Override

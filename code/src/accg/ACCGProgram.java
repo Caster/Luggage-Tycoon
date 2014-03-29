@@ -30,6 +30,7 @@ import accg.gui.MainGUI;
 import accg.gui.toolkit.Component;
 import accg.gui.toolkit.GLUtils;
 import accg.gui.toolkit.GUIUtils;
+import accg.i18n.Messages;
 import accg.objects.Floor;
 import accg.objects.Orientation;
 import accg.objects.ShadowBlock;
@@ -130,7 +131,7 @@ public class ACCGProgram {
 	public static void main(String[] args) {
 		if (args.length > 0) {
 			for (int i = 0; i < args.length; i++) {
-				if ("--saved-games-dir".equals(args[i]) && i < args.length - 1) {
+				if ("--saved-games-dir".equals(args[i]) && i < args.length - 1) { //$NON-NLS-1$
 					argSavedGamesDir = args[i + 1];
 				}
 			}
@@ -163,7 +164,7 @@ public class ACCGProgram {
 			Display.setDisplayMode(windowedMode);
 			Display.setFullscreen(false);
 			Display.setResizable(true);
-			Display.setTitle("Luggage Tycoon");
+			Display.setTitle("Luggage Tycoon"); //$NON-NLS-1$
 			Display.setVSyncEnabled(true);
 			Display.create(new PixelFormat().withSamples(8));
 		} catch (LWJGLException e) {
@@ -184,7 +185,7 @@ public class ACCGProgram {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glViewport(0, 0, Display.getWidth(), Display.getHeight());
 		GUIUtils.make2D();
-		String loadingText = "Loading...";
+		String loadingText = Messages.get("ACCGProgram.loading"); //$NON-NLS-1$
 		int loadingTextWidth = s.fontMenu.getWidth(loadingText);
 		int loadingTextHeight = s.fontMenu.getHeight(loadingText);
 		glEnable(GL_BLEND);
@@ -612,7 +613,7 @@ public class ACCGProgram {
 			s.prefs = Preferences.userNodeForPackage(ACCGProgram.class);
 		}
 		
-		s.mouseSensitivityFactor = s.prefs.getFloat("mouse.sensitivity", 1.0f);
+		s.mouseSensitivityFactor = s.prefs.getFloat("mouse.sensitivity", 1.0f); //$NON-NLS-1$
 	}
 	
 	/**
