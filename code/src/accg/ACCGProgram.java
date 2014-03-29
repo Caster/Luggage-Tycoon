@@ -31,13 +31,11 @@ import accg.gui.toolkit.Component;
 import accg.gui.toolkit.GLUtils;
 import accg.gui.toolkit.GUIUtils;
 import accg.i18n.Messages;
-import accg.objects.Floor;
 import accg.objects.Orientation;
 import accg.objects.ShadowBlock;
 import accg.objects.blocks.ConveyorBlock;
 import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
 import accg.objects.blocks.FlatConveyorBlock;
-import accg.simulation.Simulation;
 import accg.utils.Utils;
 
 /**
@@ -196,9 +194,6 @@ public class ACCGProgram {
 		Display.update();
 		
 		// initialize stuff here
-		s.simulation = new Simulation(s);
-		s.floor = new Floor();
-		s.floor.setBackgroundColor(BACKGROUND_COLOR);
 		s.textures = new Textures();
 		// TODO: This is only temporary, for testing. This should be controlled through some
 		//       kind of menu where blocks or 'nothing' can be selected.
