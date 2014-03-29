@@ -1,5 +1,6 @@
 package accg.gui;
 
+import accg.ACCGProgram;
 import accg.State;
 import accg.State.ProgramMode;
 import accg.gui.toolkit.*;
@@ -45,6 +46,7 @@ public class OpenDialog extends Dialog {
 							Level level = SavedGameManager.loadSavedGame(
 									l.getSelectedElement());
 							level.loadInState(s);
+							ACCGProgram.setLoadedLevel(l.getSelectedElement() + ".lt");
 						} catch (Exception levelException) {
 							
 							// something went wrong; go back to the old mode

@@ -1,5 +1,6 @@
 package accg.gui;
 
+import accg.ACCGProgram;
 import accg.State;
 import accg.State.ProgramMode;
 import accg.gui.toolkit.Button;
@@ -91,6 +92,7 @@ public class NormalModeMenuBar extends MenuBar {
 				if (e instanceof MouseClickEvent) {
 					s.programMode = ProgramMode.START_MODE;
 					s.gui.updateItems();
+					ACCGProgram.setLoadedLevel(null);
 				}
 			}
 		});

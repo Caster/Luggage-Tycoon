@@ -47,6 +47,10 @@ import accg.utils.Utils;
 public class ACCGProgram {
 	
 	/**
+	 * Name of the application.
+	 */
+	public static final String APP_NAME = "Luggage Tycoon";
+	/**
 	 * Background color of the scene.
 	 */
 	public static final java.awt.Color BACKGROUND_COLOR =
@@ -149,6 +153,20 @@ public class ACCGProgram {
 	}
 	
 	/**
+	 * Change the title of the display to reflect the given loaded file/level.
+	 * 
+	 * @param levelName Name of the level that was loaded, or {@code null} to
+	 *            indicate that no level is currently loaded anymore.
+	 */
+	public static void setLoadedLevel(String levelName) {
+		if (levelName == null) {
+			Display.setTitle(APP_NAME);
+		} else {
+			Display.setTitle(APP_NAME + " - " + levelName);
+		}
+	}
+	
+	/**
 	 * Starts and initializes the program.
 	 * 
 	 * This method contains the main rendering loop.
@@ -162,7 +180,7 @@ public class ACCGProgram {
 			Display.setDisplayMode(windowedMode);
 			Display.setFullscreen(false);
 			Display.setResizable(true);
-			Display.setTitle("Luggage Tycoon"); //$NON-NLS-1$
+			Display.setTitle(APP_NAME); //$NON-NLS-1$
 			Display.setVSyncEnabled(true);
 			Display.create(new PixelFormat().withSamples(8));
 		} catch (LWJGLException e) {

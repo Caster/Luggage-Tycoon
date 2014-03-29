@@ -1,8 +1,16 @@
 package accg.gui;
 
+import accg.ACCGProgram;
 import accg.State;
 import accg.State.ProgramMode;
-import accg.gui.toolkit.*;
+import accg.gui.toolkit.Button;
+import accg.gui.toolkit.Component;
+import accg.gui.toolkit.Dialog;
+import accg.gui.toolkit.EmptyComponent;
+import accg.gui.toolkit.Event;
+import accg.gui.toolkit.Label;
+import accg.gui.toolkit.List;
+import accg.gui.toolkit.Listener;
 import accg.gui.toolkit.event.MouseClickEvent;
 import accg.i18n.Messages;
 import accg.io.Level;
@@ -45,6 +53,7 @@ public class ChooseLevelDialog extends Dialog {
 							Level level = SavedGameManager.loadLevelByName(
 									l.getSelectedElement());
 							level.loadInState(s);
+							ACCGProgram.setLoadedLevel(level.getLevelName());
 						} catch (Exception levelException) {
 							
 							// something went wrong; go back to the old mode
