@@ -202,7 +202,7 @@ public class Button extends Component implements Listener {
 				iconSize = Math.min(outline.getWidth() - 2 * PADDING,
 						outline.getHeight() - 3 * PADDING - textHeight);
 				iconX = (outline.getWidth() - iconSize) / 2;
-				iconY = (outline.getHeight() - 3 * PADDING - textHeight - iconSize) / 2;
+				iconY = (outline.getHeight() - 2 * PADDING - textHeight - iconSize) / 2;
 				break;
 			case ICON_LEFT_TEXT:
 				iconSize = textHeight;
