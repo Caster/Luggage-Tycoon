@@ -32,28 +32,30 @@ public class OpenDialog extends Dialog {
 				if (e instanceof MouseClickEvent) {
 					OpenDialog.this.setVisible(false);
 					
-					List l = (List) body;
-					try {
-						Level level = SavedGameManager.loadSavedGame(
-								l.getSelectedElement());
-						level.loadInState(s);
-					} catch (Exception levelException) {
-						levelException.printStackTrace();
-						Button closeButton = new Button("Close", s.textures.iconExit);
-						final Dialog errorDialog = new Dialog("Error", new Label("Well, "
-								+ "this is embarrassing. We could not open "
-								+ "the file. The following error is all we "
-								+ "have: " + levelException.getMessage() + "."),
-								closeButton);
-						closeButton.addListener(new Listener() {
-							@Override
-							public void event(Event e2) {
-								if (e2 instanceof MouseClickEvent) {
-									errorDialog.setVisible(false);
+					if (body instanceof List) {
+						List l = (List) body;
+						try {
+							Level level = SavedGameManager.loadSavedGame(
+									l.getSelectedElement());
+							level.loadInState(s);
+						} catch (Exception levelException) {
+							levelException.printStackTrace();
+							Button closeButton = new Button("Close", s.textures.iconExit);
+							final Dialog errorDialog = new Dialog("Error", new Label("Well, "
+									+ "this is embarrassing. We could not open "
+									+ "the file. The following error is all we "
+									+ "have: " + levelException.getMessage() + "."),
+									closeButton);
+							closeButton.addListener(new Listener() {
+								@Override
+								public void event(Event e2) {
+									if (e2 instanceof MouseClickEvent) {
+										errorDialog.setVisible(false);
+									}
 								}
-							}
-						});
-						s.gui.add(errorDialog);
+							});
+							s.gui.add(errorDialog);
+						}
 					}
 				}
 			}

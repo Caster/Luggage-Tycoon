@@ -3,18 +3,13 @@ package accg.gui;
 import accg.State;
 import accg.State.ProgramMode;
 import accg.gui.toolkit.Button;
-import accg.gui.toolkit.Component;
 import accg.gui.toolkit.Dialog;
 import accg.gui.toolkit.Event;
-import accg.gui.toolkit.Label;
-import accg.gui.toolkit.List;
 import accg.gui.toolkit.Listener;
 import accg.gui.toolkit.MenuBar;
 import accg.gui.toolkit.MenuStack;
 import accg.gui.toolkit.TextField;
 import accg.gui.toolkit.event.MouseClickEvent;
-import accg.io.Level;
-import accg.io.SavedGameManager;
 import accg.objects.Block;
 import accg.objects.blocks.EnterBlock;
 

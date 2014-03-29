@@ -33,7 +33,6 @@ import accg.gui.toolkit.GUIUtils;
 import accg.objects.Floor;
 import accg.objects.Orientation;
 import accg.objects.ShadowBlock;
-import accg.objects.World;
 import accg.objects.blocks.ConveyorBlock;
 import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
 import accg.objects.blocks.FlatConveyorBlock;
