@@ -16,10 +16,10 @@ public class ChooseLevelDialog extends Dialog {
 		
 		// the body
 		final Component body;
-		String[] savedGames = SavedGameManager.getSavedGames();
-		if (savedGames.length > 0) {
+		String[] unlockedLevels = SavedGameManager.getUnlockedLevels(s);
+		if (unlockedLevels.length > 0) {
 			List l = new List(40, 6);
-			l.addElements(savedGames);
+			l.addElements(unlockedLevels);
 			body = l;
 		} else {
 			body = new Label(Messages.get("ChooseLevelDialog.noSavedGames")); //$NON-NLS-1$
@@ -42,7 +42,7 @@ public class ChooseLevelDialog extends Dialog {
 					if (body instanceof List) {
 						List l = (List) body;
 						try {
-							Level level = SavedGameManager.loadSavedGame(
+							Level level = SavedGameManager.loadLevelByName(
 									l.getSelectedElement());
 							level.loadInState(s);
 						} catch (Exception levelException) {
@@ -53,9 +53,9 @@ public class ChooseLevelDialog extends Dialog {
 							
 							// show the error message
 							levelException.printStackTrace();
-							Button closeButton = new Button(Messages.get("OpenDialog.close"), s.textures.iconExit); //$NON-NLS-1$
-							final Dialog errorDialog = new Dialog(Messages.get("OpenDialog.error"),
-									new Label(Messages.get("OpenDialog.couldNotOpenFile") //$NON-NLS-1$ //$NON-NLS-2$
+							Button closeButton = new Button(Messages.get("ChooseLevelDialog.close"), s.textures.iconExit); //$NON-NLS-1$
+							final Dialog errorDialog = new Dialog(Messages.get("ChooseLevelDialog.error"),
+									new Label(Messages.get("ChooseLevelDialog.couldNotOpenFile") //$NON-NLS-1$ //$NON-NLS-2$
 									 + levelException.getMessage()), //$NON-NLS-1$
 									closeButton);
 							closeButton.addListener(new Listener() {

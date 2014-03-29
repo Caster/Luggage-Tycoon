@@ -3,9 +3,15 @@ package accg.io;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.Properties;
+
+import org.newdawn.slick.util.ResourceLoader;
 
 import accg.ACCGProgram;
+import accg.State;
 
 /**
  * The SavedGameManager provides a static interface to the local filesystem for
@@ -18,31 +24,46 @@ import accg.ACCGProgram;
 public class SavedGameManager {
 
 	/**
+	 * A properties object that holds information about how many levels there
+	 * are, in which file they are stored, et cetera.
+	 */
+	private static final Properties PROPERTIES;
+	static {
+		PROPERTIES = new Properties();
+		try {
+			PROPERTIES.load(ResourceLoader.getResourceAsStream(
+						"res/levels/levels.properties"));
+		} catch (IOException e) {
+			throw new RuntimeException("Could not load internal level "
+					+ "description file.");
+		}
+	}
+	/**
 	 * Directory where saved games are stored. This is platform dependent.
 	 */
-	private static final File savedGamesDir;
+	private static final File SAVED_GAMES_DIR;
 	static {
 		String argDir = ACCGProgram.getArgSavedGamesDir();
 		if (argDir == null) {
 			String os = System.getProperty("os.name").toLowerCase();
 			String home = System.getProperty("user.home");
 			if (os.contains("linux")) {
-				savedGamesDir = new File(home + "/.local/share/luggage-tycoon/"
+				SAVED_GAMES_DIR = new File(home + "/.local/share/luggage-tycoon/"
 						+ "saved-games/");
 			} else if (os.contains("windows")) {
-				savedGamesDir = new File(System.getenv("APPDATA") +
+				SAVED_GAMES_DIR = new File(System.getenv("APPDATA") +
 						"\\luggage-tycoon\\saved-games\\");
 			} else if (os.contains("mac")) {
-				savedGamesDir = new File(home + "/Library/Application Support/"
+				SAVED_GAMES_DIR = new File(home + "/Library/Application Support/"
 						+ "luggage-tycoon/saved-games/");
 			} else {
-				savedGamesDir = new File(home + "/.luggage-tycoon/saved-games/");
+				SAVED_GAMES_DIR = new File(home + "/.luggage-tycoon/saved-games/");
 			}
 			
 			// ensure that the directory actually exists
-			if (!(savedGamesDir.exists() || savedGamesDir.mkdirs())) {
+			if (!(SAVED_GAMES_DIR.exists() || SAVED_GAMES_DIR.mkdirs())) {
 				throw new RuntimeException("Could not create directory for storing "
-						+ "saved games \"" + savedGamesDir.getAbsolutePath() + "\"."
+						+ "saved games \"" + SAVED_GAMES_DIR.getAbsolutePath() + "\"."
 						+ " Please ensure that the program can write to this "
 						+ "location or start the program with the \"--saved-games-"
 						+ "dir [dir]\" parameter.");
@@ -52,18 +73,18 @@ public class SavedGameManager {
 				argDir = System.getProperty("user.home") + argDir.substring(1);
 			}
 			
-			savedGamesDir = new File(argDir);
-			if (!savedGamesDir.exists()) {
+			SAVED_GAMES_DIR = new File(argDir);
+			if (!SAVED_GAMES_DIR.exists()) {
 				throw new RuntimeException("The specified directory for saving "
-						+ "games, \"" + savedGamesDir.getAbsolutePath() + "\", "
+						+ "games, \"" + SAVED_GAMES_DIR.getAbsolutePath() + "\", "
 						+ "does not exist.");
 			}
 			try {
-				File tmp = File.createTempFile(".empty-", ".lt", savedGamesDir);
+				File tmp = File.createTempFile(".empty-", ".lt", SAVED_GAMES_DIR);
 				tmp.delete();
 			} catch (Exception e) {
 				throw new RuntimeException("The specified directory for saving "
-						+ "games, \"" + savedGamesDir.getAbsolutePath() + "\", "
+						+ "games, \"" + SAVED_GAMES_DIR.getAbsolutePath() + "\", "
 						+ "appears to not be writeable (no files can be created"
 						+ " in that directory). Please check permissions.");
 			}
@@ -89,14 +110,61 @@ public class SavedGameManager {
 	 * @return A list of (unique) names of saved games.
 	 */
 	public static String[] getSavedGames() {
-		String[] games = savedGamesDir.list(ltFilter);
+		String[] games = SAVED_GAMES_DIR.list(ltFilter);
 		// filter away the '.lt' extension
 		for (int i = 0; i < games.length; i++) {
 			games[i] = games[i].substring(0, games[i].length() - 3);
 		}
+		Arrays.sort(games);
 		return games;
 	}
 
+	/**
+	 * Return an ordered list of all levels that are unlocked to play.
+	 * 
+	 * @param s The state of the program, used to access the shared persistent
+	 *          preferences object.
+	 * @return A list of (unique) names of levels that the user unlocked.
+	 */
+	public static String[] getUnlockedLevels(State s) {
+		int maxUnlocked = s.prefs.getInt("level.unlocked", 0);
+		int numLevels = Integer.parseInt(PROPERTIES.getProperty("levels.num"));
+		int numUnlockedLevels = Math.min(numLevels, maxUnlocked + 1);
+		String[] levels = new String[numUnlockedLevels];
+		for (int i = 0; i < numUnlockedLevels; i++) {
+			levels[i] = PROPERTIES.getProperty("level." + (i + 1) + ".name");
+		}
+		return levels;
+	}
+	
+	/**
+	 * Load a level and return it.
+	 * 
+	 * @param levelName Name of the level to load. This can be one of the names
+	 *            returned by {@link #getUnlockedLevels(State)}.
+	 * @return The Level loaded from the given name.
+	 * @throws FileNotFoundException If the given saved game was not found.
+	 * @throws InputMismatchException If the Level throws that exception.
+	 */
+	public static Level loadLevelByName(String levelName)
+			throws FileNotFoundException {
+		int numLevels = Integer.parseInt(PROPERTIES.getProperty("levels.num"));
+		String loadLevel = null;
+		for (int i = 0; i < numLevels; i++) {
+			if (PROPERTIES.getProperty("level." + (i + 1) + ".name").
+					equals(levelName)) {
+				loadLevel = PROPERTIES.getProperty("level." + (i + 1) + ".file");
+				break;
+			}
+		}
+		if (loadLevel == null) {
+			throw new FileNotFoundException("Level \"" + levelName + "\" could "
+					+ "not be found.");
+		}
+		return new Level(ResourceLoader.getResourceAsStream("/res/levels/" +
+				loadLevel));
+	}
+	
 	/**
 	 * Load a saved game and return it.
 	 * 
@@ -107,7 +175,8 @@ public class SavedGameManager {
 	 * @throws InputMismatchException If the Level throws that exception.
 	 * 
 	 */
-	public static Level loadSavedGame(String gameName) throws FileNotFoundException {
-		return new Level(new File(savedGamesDir, gameName + ".lt"));
+	public static Level loadSavedGame(String gameName)
+			throws FileNotFoundException {
+		return new Level(new File(SAVED_GAMES_DIR, gameName + ".lt"));
 	}
 }
