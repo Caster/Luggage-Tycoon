@@ -26,7 +26,8 @@ public class MainStack extends MenuStack {
 	 */
 	public MainStack(State state) {
 		this.state = state;
-		
+
+		addToCollection(ProgramMode.START_MODE, new StartModeMenuBar(this, state));
 		addToCollection(ProgramMode.NORMAL_MODE, new NormalModeMenuBar(this, state));
 		addToCollection(ProgramMode.BUILDING_MODE, new BuildingModeMenuBar(this, state));
 		addToCollection(ProgramMode.SIMULATION_MODE, new SimulationModeMenuBar(this, state));

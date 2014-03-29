@@ -39,6 +39,12 @@ public class State {
 	 * Enumeration of the modes in which the program can be.
 	 */
 	public enum ProgramMode {
+
+		/**
+		 * In this mode, no world is shown yet, and the user can choose one
+		 * (that is, a level, a sand box or a saved file) to load.
+		 */
+		START_MODE,
 		
 		/**
 		 * In this mode, the user can change the camera position, and choose another
@@ -63,7 +69,7 @@ public class State {
 	 * At the moment, this is either the building mode or the simulation
 	 * mode, also see {@link State.ProgramMode}.
 	 */
-	public ProgramMode programMode = ProgramMode.NORMAL_MODE;
+	public ProgramMode programMode = ProgramMode.START_MODE;
 	
 	/**
 	 * Length of the field, in number of grid squares.

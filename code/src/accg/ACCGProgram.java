@@ -283,9 +283,8 @@ public class ACCGProgram {
 			handleScrollEvents();
 			handleMouseEvents(s);
 
-			// draw the scene
-			
-			if (s.world != null) {
+			// draw the scene (not if we are in the start screen)
+			if (s.programMode != ProgramMode.START_MODE) {
 				// step 1: draw floor
 				s.drawingShadows = false;
 				s.floor.draw(s);

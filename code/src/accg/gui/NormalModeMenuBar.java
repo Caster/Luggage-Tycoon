@@ -53,18 +53,6 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(buildItem);
 		
-		Button openItem = new Button(Messages.get("NormalModeMenuBar.open"), s.textures.iconOpen); //$NON-NLS-1$
-		openItem.addListener(new Listener() {
-			
-			@Override
-			public void event(Event e) {
-				if (e instanceof MouseClickEvent) {
-					s.gui.add(new OpenDialog(s));
-				}
-			}
-		});
-		add(openItem);
-		
 		Button saveItem = new Button(Messages.get("NormalModeMenuBar.save"), s.textures.iconSave); //$NON-NLS-1$
 		saveItem.addListener(new Listener() {
 			
@@ -82,6 +70,7 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(saveItem);
 		
+		// TODO [ws] decide whether we want settings during normal mode
 		Button settingsItem = new Button(Messages.get("NormalModeMenuBar.settings"), s.textures.iconConfigure); //$NON-NLS-1$
 		settingsItem.addListener(new Listener() {
 			
@@ -94,16 +83,17 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(settingsItem);
 		
-		Button quitItem = new Button(Messages.get("NormalModeMenuBar.quit"), s.textures.iconExit); //$NON-NLS-1$
-		quitItem.addListener(new Listener() {
+		Button backItem = new Button(Messages.get("NormalModeMenuBar.back"), s.textures.iconExit); //$NON-NLS-1$
+		backItem.addListener(new Listener() {
 			
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					s.escPressed = true;
+					s.programMode = ProgramMode.START_MODE;
+					s.gui.updateItems();
 				}
 			}
 		});
-		add(quitItem);
+		add(backItem);
 	}
 }

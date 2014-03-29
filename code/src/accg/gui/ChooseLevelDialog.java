@@ -8,11 +8,11 @@ import accg.i18n.Messages;
 import accg.io.Level;
 import accg.io.SavedGameManager;
 
-public class OpenDialog extends Dialog {
+public class ChooseLevelDialog extends Dialog {
 	
-	public OpenDialog(final State s) {
+	public ChooseLevelDialog(final State s) {
 		
-		super(Messages.get("OpenDialog.open"), new EmptyComponent()); //$NON-NLS-1$
+		super(Messages.get("ChooseLevelDialog.chooseLevel"), new EmptyComponent()); //$NON-NLS-1$
 		
 		// the body
 		final Component body;
@@ -22,17 +22,17 @@ public class OpenDialog extends Dialog {
 			l.addElements(savedGames);
 			body = l;
 		} else {
-			body = new Label(Messages.get("OpenDialog.noSavedGames")); //$NON-NLS-1$
+			body = new Label(Messages.get("ChooseLevelDialog.noSavedGames")); //$NON-NLS-1$
 		}
 		setBody(body);
 		
 		// OK button
-		Button okButton = new Button(Messages.get("OpenDialog.ok"), s.textures.iconOk); //$NON-NLS-1$
+		Button okButton = new Button(Messages.get("ChooseLevelDialog.ok"), s.textures.iconOk); //$NON-NLS-1$
 		okButton.addListener(new Listener() {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					OpenDialog.this.setVisible(false);
+					ChooseLevelDialog.this.setVisible(false);
 					
 					// switch to normal mode
 					ProgramMode oldMode = s.programMode;
@@ -75,14 +75,14 @@ public class OpenDialog extends Dialog {
 		addButton(okButton);
 		
 		// cancel button
-		Button cancelButton = new Button(Messages.get("OpenDialog.cancel"), //$NON-NLS-1$
+		Button cancelButton = new Button(Messages.get("ChooseLevelDialog.cancel"), //$NON-NLS-1$
 				s.textures.iconExit);
 		addButton(cancelButton);
 		cancelButton.addListener(new Listener() {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					OpenDialog.this.setVisible(false);
+					ChooseLevelDialog.this.setVisible(false);
 				}
 			}
 		});
