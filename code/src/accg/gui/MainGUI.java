@@ -28,6 +28,7 @@ public class MainGUI extends LayeredPane {
 	
 	private MainStack stack;
 	private MainStatusBar statusBar;
+	private double statusBarShownPortion;
 	
 	/**
 	 * Returns a shared instance of the MainGUI.
@@ -55,6 +56,7 @@ public class MainGUI extends LayeredPane {
 		statusBar = new MainStatusBar(state);
 		statusBar.setParent(this);
 		statusBar.setVisible(false);
+		statusBarShownPortion = 0;
 		
 		setFont(loadFont());
 	}
@@ -62,9 +64,23 @@ public class MainGUI extends LayeredPane {
 	@Override
 	public void draw() {
 		if (statusBar.isVisible()) {
+			statusBarShownPortion = Math.min(1, statusBarShownPortion + 0.05);
+		} else {
+			statusBarShownPortion = Math.max(0, statusBarShownPortion - 0.05);
+		}
+		
+		if (statusBarShownPortion > 0) {
+			Position statusBarPos = statusBar.getPosition();
+			float dx = (float) (statusBarPos.isVertical() ? (statusBarPos ==
+					Position.LEFT ? -1 : 1) * (1 - statusBarShownPortion) *
+					statusBar.getPreferredWidth() : 0);
+			float dy = (float) (statusBarPos.isHorizontal() ? (statusBarPos ==
+					Position.BOTTOM ? 1 : -1) * (1 - statusBarShownPortion) *
+					statusBar.getPreferredHeight() : 0);
+			
 			glPushMatrix();
-			glTranslatef(statusBar.getOutline().getX(),
-					statusBar.getOutline().getY(), 0);
+			glTranslatef(statusBar.getOutline().getX() + dx,
+					statusBar.getOutline().getY() + dy, 0);
 			statusBar.draw();
 			glPopMatrix();
 		}
