@@ -217,7 +217,7 @@ public class ACCGProgram {
 		
 		// intialise GUI stuff
 		loadPreferences(s);
-		s.gui = new MainGUI(s);
+		s.gui = MainGUI.getInstance(s);
 		s.gui.setWidth(displayWidth);
 		s.gui.setHeight(displayHeight);
 		
@@ -550,6 +550,7 @@ public class ACCGProgram {
 									!s.shadowBlock.isTransparent()) {
 								s.world.addBlock(s,
 										(ConveyorBlock) s.shadowBlock.clone());
+								s.gui.updateStatusBarInfo();
 							}
 							
 							s.shadowBlock.setAlerted(false);

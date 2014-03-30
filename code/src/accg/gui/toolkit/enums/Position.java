@@ -45,4 +45,26 @@ public enum Position {
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * Returns if a component or container in this position should be laid out
+	 * horizontally or not. This is true if and only if the position is
+	 * {@link #BOTTOM} or {@link #TOP}.
+	 * @return If a component or container in this position should be laid out
+	 * horizontally or not.
+	 */
+	public boolean isHorizontal() {
+		return (this == BOTTOM || this == TOP);
+	}
+	
+	/**
+	 * Returns if a component or container in this position should be laid out
+	 * vertically or not. This is true if and only if the position is
+	 * {@link #LEFT} or {@link #RIGHT}.
+	 * @return If a component or container in this position should be laid out
+	 * vertically or not.
+	 */
+	public boolean isVertical() {
+		return (this == LEFT || this == RIGHT);
+	}
 }

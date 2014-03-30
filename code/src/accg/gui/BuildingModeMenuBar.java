@@ -15,6 +15,13 @@ import accg.i18n.Messages;
 public class BuildingModeMenuBar extends MenuBar {
 	
 	public BuildingModeMenuBar(final MenuStack stack, final State s) {
+		add(new Button(Messages.get("BuildingModeMenuBar.rotate"), s.textures.iconMouse)); //$NON-NLS-1$
+		add(new Button(Messages.get("BuildingModeMenuBar.straight"), s.textures.iconExit)); //$NON-NLS-1$
+		add(new Button(Messages.get("BuildingModeMenuBar.up"), s.textures.iconGoUp)); //$NON-NLS-1$
+		add(new Button(Messages.get("BuildingModeMenuBar.down"), s.textures.iconGoDown)); //$NON-NLS-1$
+		add(new Button(Messages.get("BuildingModeMenuBar.left"), s.textures.iconGoLeft)); //$NON-NLS-1$
+		add(new Button(Messages.get("BuildingModeMenuBar.right"), s.textures.iconGoRight)); //$NON-NLS-1$
+		
 		
 		Button backItem = new Button(Messages.get("BuildingModeMenuBar.back"), s.textures.iconExit); //$NON-NLS-1$
 		backItem.addListener(new Listener() {
@@ -24,16 +31,10 @@ public class BuildingModeMenuBar extends MenuBar {
 				if (e instanceof MouseClickEvent) {
 					s.programMode = ProgramMode.NORMAL_MODE;
 					s.gui.updateItems();
+					s.gui.setStatusBarVisible(false);
 				}
 			}
 		});
 		add(backItem);
-		
-		add(new Button(Messages.get("BuildingModeMenuBar.rotate"), s.textures.iconMouse)); //$NON-NLS-1$
-		add(new Button(Messages.get("BuildingModeMenuBar.straight"), s.textures.iconExit)); //$NON-NLS-1$
-		add(new Button(Messages.get("BuildingModeMenuBar.up"), s.textures.iconGoUp)); //$NON-NLS-1$
-		add(new Button(Messages.get("BuildingModeMenuBar.down"), s.textures.iconGoDown)); //$NON-NLS-1$
-		add(new Button(Messages.get("BuildingModeMenuBar.left"), s.textures.iconGoLeft)); //$NON-NLS-1$
-		add(new Button(Messages.get("BuildingModeMenuBar.right"), s.textures.iconGoRight)); //$NON-NLS-1$
 	}
 }

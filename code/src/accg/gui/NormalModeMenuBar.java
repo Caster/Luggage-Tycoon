@@ -49,6 +49,8 @@ public class NormalModeMenuBar extends MenuBar {
 				if (e instanceof MouseClickEvent) {
 					s.programMode = ProgramMode.BUILDING_MODE;
 					s.gui.updateItems();
+					s.gui.updateStatusBarInfo();
+					s.gui.setStatusBarVisible(true);
 				}
 			}
 		});

@@ -1,5 +1,7 @@
 package accg.gui;
 
+import static org.lwjgl.opengl.GL11.*;
+
 import java.io.InputStream;
 
 import org.newdawn.slick.Font;
@@ -9,6 +11,7 @@ import org.newdawn.slick.util.ResourceLoader;
 import accg.State;
 import accg.gui.toolkit.Component;
 import accg.gui.toolkit.containers.LayeredPane;
+import accg.gui.toolkit.enums.Position;
 import accg.gui.toolkit.event.KeyEvent;
 import accg.gui.toolkit.event.MouseClickEvent;
 import accg.gui.toolkit.event.MouseDragEvent;
@@ -20,18 +23,76 @@ import accg.gui.toolkit.event.MouseScrollEvent;
  */
 public class MainGUI extends LayeredPane {
 	
+	private static MainGUI instance;
+	private static Font guiFont;
+	
 	private MainStack stack;
+	private MainStatusBar statusBar;
+	
+	/**
+	 * Returns a shared instance of the MainGUI.
+	 * 
+	 * @param state The state of the program, used to instantiate the instance
+	 *            if it was not instantiated yet.
+	 * @return A shared instance of the MainGUI.
+	 */
+	public static MainGUI getInstance(State state) {
+		if (instance == null) {
+			instance = new MainGUI(state);
+		}
+		
+		return instance;
+	}
 	
 	/**
 	 * Creates a new MainGUI.
 	 * @param state The state of the program.
 	 */
-	public MainGUI(State state) {
-		
+	private MainGUI(State state) {
 		stack = new MainStack(state);
 		add(stack);
 		
+		statusBar = new MainStatusBar(state);
+		statusBar.setParent(this);
+		statusBar.setVisible(false);
+		
 		setFont(loadFont());
+	}
+	
+	@Override
+	public void draw() {
+		if (statusBar.isVisible()) {
+			glPushMatrix();
+			glTranslatef(statusBar.getOutline().getX(),
+					statusBar.getOutline().getY(), 0);
+			statusBar.draw();
+			glPopMatrix();
+		}
+		
+		super.draw();
+	}
+	
+	@Override
+	public void layout() {
+		statusBar.layoutIfNeeded();
+		
+		Position statusBarPos = statusBar.getPosition();
+		boolean horLayout = statusBarPos.isHorizontal();
+		if (horLayout) {
+			statusBar.setX(0);
+			statusBar.setY(statusBarPos == Position.BOTTOM ?
+					getHeight() - statusBar.getPreferredHeight() : 0);
+			statusBar.setHeight(statusBar.getPreferredHeight());
+			statusBar.setWidth(getWidth());
+		} else {
+			statusBar.setX(statusBarPos == Position.LEFT ? 0 :
+				getWidth() - statusBar.getPreferredWidth());
+			statusBar.setY(0);
+			statusBar.setHeight(getHeight());
+			statusBar.setWidth(statusBar.getPreferredWidth());
+		}
+		
+		super.layout();
 	}
 	
 	/**
@@ -40,13 +101,18 @@ public class MainGUI extends LayeredPane {
 	 * @return The font, or <code>null</code> if it could not be loaded.
 	 */
 	public static Font loadFont() {
+		if (guiFont != null) {
+			return guiFont;
+		}
+		
 		try {
 			InputStream russoOneFontStream =
 					ResourceLoader.getResourceAsStream("res/fonts/RussoOne-Regular.ttf");
 			java.awt.Font russoOneAwt = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT,
 					russoOneFontStream);
 			russoOneAwt = russoOneAwt.deriveFont(14f);
-			return new TrueTypeFont(russoOneAwt, true);
+			guiFont = new TrueTypeFont(russoOneAwt, true);
+			return guiFont;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -79,7 +145,12 @@ public class MainGUI extends LayeredPane {
 	 * @return Whether the event has been handled by the GUI.
 	 */
 	public boolean handleMouseClickEvent(int x, int y) {
-		return sendEvent(new MouseClickEvent(x, getHeight() - y));
+		MouseClickEvent event = new MouseClickEvent(x, getHeight() - y);
+		boolean handled = sendEvent(event);
+		if (!handled) {
+			handled = statusBar.sendEvent(event);
+		}
+		return handled;
 	}
 	
 	/**
@@ -90,7 +161,12 @@ public class MainGUI extends LayeredPane {
 	 * @return Whether the event has been handled by the GUI.
 	 */
 	public boolean handleMouseDragEvent(int x, int y) {
-		return sendEvent(new MouseDragEvent(x, getHeight() - y));
+		MouseDragEvent event = new MouseDragEvent(x, getHeight() - y);
+		boolean handled = sendEvent(event);
+		if (!handled) {
+			handled = statusBar.sendEvent(event);
+		}
+		return handled;
 	}
 	
 	/**
@@ -101,7 +177,12 @@ public class MainGUI extends LayeredPane {
 	 * @return Whether the event has been handled by the GUI.
 	 */
 	public boolean handleMouseMoveEvent(int x, int y) {
-		return sendEvent(new MouseMoveEvent(x, getHeight() - y));
+		MouseMoveEvent event = new MouseMoveEvent(x, getHeight() - y);
+		boolean handled = sendEvent(event);
+		if (!handled) {
+			handled = statusBar.sendEvent(event);
+		}
+		return handled;
 	}
 	
 	/**
@@ -113,7 +194,22 @@ public class MainGUI extends LayeredPane {
 	 * @return Whether the event has been handled by the GUI.
 	 */
 	public boolean handleMouseScrollEvent(int x, int y, int dWheel) {
-		return sendEvent(new MouseScrollEvent(x, getHeight() - y, dWheel));
+		MouseScrollEvent event = new MouseScrollEvent(x, getHeight() - y, dWheel);
+		boolean handled = sendEvent(event);
+		if (!handled) {
+			handled = statusBar.sendEvent(event);
+		}
+		return handled;
+	}
+	
+	/**
+	 * Show or hide the {@link MainStatusBar}.
+	 * @param visible If the status bar should be shown.
+	 */
+	public void setStatusBarVisible(boolean visible) {
+		if (instance != null) {
+			instance.statusBar.setVisible(visible);
+		}
 	}
 	
 	/**
@@ -125,5 +221,12 @@ public class MainGUI extends LayeredPane {
 	 */
 	public void updateItems() {
 		stack.updateItems();
+	}
+	
+	/**
+	 * Update information shown on the {@link MainStatusBar}.
+	 */
+	public void updateStatusBarInfo() {
+		statusBar.updateInfo();
 	}
 }
