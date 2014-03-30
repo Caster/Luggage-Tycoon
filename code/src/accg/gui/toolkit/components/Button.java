@@ -1,10 +1,16 @@
-package accg.gui.toolkit;
+package accg.gui.toolkit.components;
 
 import static org.lwjgl.opengl.GL11.*;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 
+import accg.gui.toolkit.Component;
+import accg.gui.toolkit.Event;
+import accg.gui.toolkit.Listener;
+import accg.gui.toolkit.containers.MenuBar;
+import accg.gui.toolkit.enums.ButtonType;
+import accg.gui.toolkit.enums.Presentation;
 import accg.gui.toolkit.event.MouseClickEvent;
 
 /**
@@ -21,67 +27,9 @@ public class Button extends Component implements Listener {
 	public static final int PADDING = 10;
 	
 	/**
-	 * The Type of a {@link Button} indicates what properties it
-	 * has. Refer to the documentation of the enum members for details.
-	 */
-	public enum Type {
-		
-		/**
-		 * A regular menu item.
-		 */
-		NORMAL,
-		
-		/**
-		 * A menu item that has a boolean isChecked property. When
-		 * clicked, the value of that property is toggled and this is
-		 * also indicated visually.
-		 */
-		CHECKABLE,
-		
-		/**
-		 * Same as a {@link #CHECKABLE} menu item, but whenever a menu
-		 * item is checked, all other menu items in the same {@link MenuBar}
-		 * are automatically unchecked.
-		 */
-		CHECKABLE_UNIQUE
-	}
-	
-	/**
 	 * Presentation of items.
 	 */
 	protected Presentation presentation = Presentation.ICON_LEFT_TEXT;
-	
-	/**
-	 * Possible presentations/layouts for items in a {@link MenuBar}. A
-	 * presentation defines the style of button.
-	 */
-	public enum Presentation {
-		
-		/**
-		 * A small icon is shown on the left of the text.
-		 */
-		ICON_LEFT_TEXT("(small) Icon left of text"),
-		
-		/**
-		 * A large icon is shown on top of the text.
-		 */
-		ICON_ABOVE_TEXT("(large) Icon above text");
-		
-		private Presentation(String name) {
-			this.name = name;
-		}
-		
-		private String name;
-		
-		/**
-		 * Return a human-readable description of the presentation type.
-		 * 
-		 * @return A human-readable, short description.
-		 */
-		public String getName() {
-			return name;
-		}
-	}
 	
 	/**
 	 * Construct a new {@link Button} with given text and icon.
@@ -93,7 +41,7 @@ public class Button extends Component implements Listener {
 	 *         {@code icon} is {@code null}.
 	 */
 	public Button(String text, Texture icon) {
-		this(text, icon, Type.NORMAL);
+		this(text, icon, ButtonType.NORMAL);
 	}
 	
 	/**
@@ -106,7 +54,7 @@ public class Button extends Component implements Listener {
 	 * @throws IllegalArgumentException when either {@code text} or
 	 *         {@code icon} is {@code null}.
 	 */
-	public Button(String text, Texture icon, Type type) {
+	public Button(String text, Texture icon, ButtonType type) {
 		if (text == null || icon == null) {
 			throw new IllegalArgumentException("Neither text nor icon "
 					+ "can be null for a MenuBarItem.");
@@ -249,9 +197,10 @@ public class Button extends Component implements Listener {
 	@Override
 	public void event(Event event) {
 		if (event instanceof MouseClickEvent) {
-			if (this.type == Type.CHECKABLE || this.type == Type.CHECKABLE_UNIQUE) {
+			if (this.type == ButtonType.CHECKABLE ||
+					this.type == ButtonType.CHECKABLE_UNIQUE) {
 				this.checked = !this.checked;
-				if (this.checked && this.type == Type.CHECKABLE_UNIQUE
+				if (this.checked && this.type == ButtonType.CHECKABLE_UNIQUE
 						&& parent != null && parent instanceof MenuBar) {
 					((MenuBar) parent).uncheckOtherItems(this);
 				}
@@ -267,7 +216,8 @@ public class Button extends Component implements Listener {
 	 * @param checked The new value for the isChecked property of this item.
 	 */
 	public void setChecked(boolean checked) {
-		if (this.type == Type.CHECKABLE || this.type == Type.CHECKABLE_UNIQUE) {
+		if (this.type == ButtonType.CHECKABLE ||
+				this.type == ButtonType.CHECKABLE_UNIQUE) {
 			this.checked = checked;
 		}
 	}
@@ -293,7 +243,7 @@ public class Button extends Component implements Listener {
 	/** Icon of this menu item. */
 	protected Texture icon;
 	/** Type of this menu item. */
-	protected Type type;
+	protected ButtonType type;
 	/** In [0, 10); used for the hover animation. */
 	protected int hoverAmount;
 	/** Indicates if this menu item is checked. */

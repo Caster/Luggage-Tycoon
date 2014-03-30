@@ -1,6 +1,9 @@
-package accg.gui.toolkit;
+package accg.gui.toolkit.containers;
 
 import java.util.ArrayList;
+
+import accg.gui.toolkit.Component;
+import accg.gui.toolkit.Container;
 
 /**
  * A list of buttons (or components in general), shown next to each other.

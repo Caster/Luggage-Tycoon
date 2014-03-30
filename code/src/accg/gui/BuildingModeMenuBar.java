@@ -3,6 +3,9 @@ package accg.gui;
 import accg.State;
 import accg.State.ProgramMode;
 import accg.gui.toolkit.*;
+import accg.gui.toolkit.components.Button;
+import accg.gui.toolkit.containers.MenuBar;
+import accg.gui.toolkit.containers.MenuStack;
 import accg.gui.toolkit.event.MouseClickEvent;
 import accg.i18n.Messages;
 

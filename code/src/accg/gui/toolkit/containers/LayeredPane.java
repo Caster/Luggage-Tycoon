@@ -1,6 +1,9 @@
-package accg.gui.toolkit;
+package accg.gui.toolkit.containers;
 
 import java.util.ArrayList;
+
+import accg.gui.toolkit.Component;
+import accg.gui.toolkit.Container;
 
 /**
  * A layered pane is a component that stacks various components on top of each
@@ -59,7 +62,7 @@ public class LayeredPane extends Container {
 
 	@Override
 	public void add(Component toAdd) {
-		toAdd.parent = this;
+		toAdd.setParent(this);
 		components.add(toAdd);
 	}
 

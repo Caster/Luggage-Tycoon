@@ -1,8 +1,10 @@
-package accg.gui.toolkit;
+package accg.gui.toolkit.components;
 
 import static org.lwjgl.opengl.GL11.*;
 
 import org.newdawn.slick.Color;
+
+import accg.gui.toolkit.Component;
 
 /**
  * A component that displays one line of static text.

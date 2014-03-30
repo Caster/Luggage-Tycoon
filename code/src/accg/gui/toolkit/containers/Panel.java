@@ -1,6 +1,9 @@
-package accg.gui.toolkit;
+package accg.gui.toolkit.containers;
 
 import java.util.Collections;
+
+import accg.gui.toolkit.Component;
+import accg.gui.toolkit.Container;
 
 /**
  * A panel is a component that contains one child. This child is then

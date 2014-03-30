@@ -1,7 +1,10 @@
-package accg.gui.toolkit;
+package accg.gui.toolkit.components;
 
 import org.newdawn.slick.opengl.Texture;
 
+import accg.gui.toolkit.Event;
+import accg.gui.toolkit.Listener;
+import accg.gui.toolkit.enums.ButtonType;
 import accg.gui.toolkit.event.MouseClickEvent;
 
 /**
@@ -24,7 +27,7 @@ public class ToggleMenuBarItem extends Button {
 	 */
 	public ToggleMenuBarItem(String text1, Texture icon1, String text2,
 			Texture icon2) {
-		this(text1, icon1, text2, icon2, Type.NORMAL);
+		this(text1, icon1, text2, icon2, ButtonType.NORMAL);
 	}
 	
 	/**
@@ -40,7 +43,7 @@ public class ToggleMenuBarItem extends Button {
 	 * @param type {@link Button.Type} of the menu item.
 	 */
 	public ToggleMenuBarItem(String text1, Texture icon1, String text2,
-			Texture icon2, Type type) {
+			Texture icon2, ButtonType type) {
 		super(text1, icon1, type);
 		this.text2 = (text2 == null ? text1 : text2);
 		this.icon2 = (icon2 == null ? icon1 : icon2);

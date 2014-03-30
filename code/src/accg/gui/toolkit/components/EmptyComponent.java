@@ -1,4 +1,6 @@
-package accg.gui.toolkit;
+package accg.gui.toolkit.components;
+
+import accg.gui.toolkit.Component;
 
 /**
  * Component that displays nothing.

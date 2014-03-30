@@ -5,11 +5,11 @@ import org.newdawn.slick.opengl.Texture;
 import accg.State;
 import accg.gui.toolkit.Event;
 import accg.gui.toolkit.Listener;
-import accg.gui.toolkit.MenuBar;
-import accg.gui.toolkit.Button;
-import accg.gui.toolkit.Button.Type;
-import accg.gui.toolkit.MenuStack;
-import accg.gui.toolkit.MenuStack.Alignment;
+import accg.gui.toolkit.components.Button;
+import accg.gui.toolkit.containers.MenuBar;
+import accg.gui.toolkit.containers.MenuStack;
+import accg.gui.toolkit.enums.Alignment;
+import accg.gui.toolkit.enums.ButtonType;
 import accg.gui.toolkit.event.MouseClickEvent;
 
 /**
@@ -18,7 +18,7 @@ import accg.gui.toolkit.event.MouseClickEvent;
 public class AlignmentMenuBar extends MenuBar {
 	
 	public AlignmentMenuBar(final MenuStack stack, final State s) {
-		for (int i = 0; i < MenuStack.Alignment.values().length; i++) {
+		for (int i = 0; i < Alignment.values().length; i++) {
 			add(generateAlignmentItem(i, stack, s));
 		}
 	}
@@ -31,10 +31,10 @@ public class AlignmentMenuBar extends MenuBar {
 	 * @return A newly created {@link Button}.
 	 */
 	private Button generateAlignmentItem(final int index, final MenuStack stack, final State s) {
-		final Alignment alignment = MenuStack.Alignment.values()[index];
+		final Alignment alignment = Alignment.values()[index];
 		// create the item
 		Button mbi = new Button(alignment.getName(),
-				getAlignmentIcon(index, s), Type.CHECKABLE_UNIQUE);
+				getAlignmentIcon(index, s), ButtonType.CHECKABLE_UNIQUE);
 
 		mbi.addListener(new Listener() {
 			
@@ -63,7 +63,7 @@ public class AlignmentMenuBar extends MenuBar {
 	 * @return An icon, or {@code null} if index is invalid.
 	 */
 	private Texture getAlignmentIcon(final int index, State s) {
-		if (index < 0 || index >= MenuStack.Alignment.values().length) {
+		if (index < 0 || index >= Alignment.values().length) {
 			return null;
 		}
 		

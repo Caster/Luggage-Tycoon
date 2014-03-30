@@ -4,8 +4,11 @@ import org.newdawn.slick.opengl.Texture;
 
 import accg.State;
 import accg.gui.toolkit.*;
-import accg.gui.toolkit.Button.Type;
-import accg.gui.toolkit.MenuStack.Position;
+import accg.gui.toolkit.components.Button;
+import accg.gui.toolkit.containers.MenuBar;
+import accg.gui.toolkit.containers.MenuStack;
+import accg.gui.toolkit.enums.ButtonType;
+import accg.gui.toolkit.enums.Position;
 import accg.gui.toolkit.event.MouseClickEvent;
 
 /**
@@ -14,7 +17,7 @@ import accg.gui.toolkit.event.MouseClickEvent;
 public class PositionMenuBar extends MenuBar {
 	
 	public PositionMenuBar(final MenuStack stack, final State s) {
-		for (int i = 0; i < MenuStack.Position.values().length; i++) {
+		for (int i = 0; i < Position.values().length; i++) {
 			add(generatePositionItem(i, stack, s));
 		}
 	}
@@ -27,10 +30,10 @@ public class PositionMenuBar extends MenuBar {
 	 * @return A newly created {@link Button}.
 	 */
 	private Button generatePositionItem(final int index, final MenuStack stack, final State s) {
-		final Position pos = MenuStack.Position.values()[index];
+		final Position pos = Position.values()[index];
 		// create the item
 		Button mbi = new Button(pos.getName(),
-				getPositionIcon(index, s), Type.CHECKABLE_UNIQUE);
+				getPositionIcon(index, s), ButtonType.CHECKABLE_UNIQUE);
 		mbi.addListener(new Listener() {
 			
 			@Override
@@ -58,7 +61,7 @@ public class PositionMenuBar extends MenuBar {
 	 * @return An icon, or {@code null} if index is invalid.
 	 */
 	private Texture getPositionIcon(final int index, State s) {
-		if (index < 0 || index >= MenuStack.Position.values().length) {
+		if (index < 0 || index >= Position.values().length) {
 			return null;
 		}
 		

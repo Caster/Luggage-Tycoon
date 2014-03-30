@@ -1,8 +1,13 @@
-package accg.gui.toolkit;
+package accg.gui.toolkit.containers;
 
 import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
+
+import accg.gui.toolkit.Component;
+import accg.gui.toolkit.Container;
+import accg.gui.toolkit.components.Button;
+import accg.gui.toolkit.enums.Orientation;
 
 /**
  * A MenuBar is a menu with zero or more {@link Button}s in it.
@@ -23,21 +28,6 @@ public class MenuBar extends Container {
 	 * The orientation of this menu bar: horizontal or vertical.
 	 */
 	protected Orientation orientation = Orientation.HORIZONTAL;
-	
-	/**
-	 * Possible orientations for a {@link MenuBar}.
-	 */
-	public enum Orientation {
-		/**
-		 * A horizontal menu bar.
-		 */
-		HORIZONTAL,
-		
-		/**
-		 * A vertical menu bar.
-		 */
-		VERTICAL
-	}
 
 	/**
 	 * The preferred width; set in {@link #layout()}.

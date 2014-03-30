@@ -5,11 +5,11 @@ import org.newdawn.slick.opengl.Texture;
 import accg.State;
 import accg.gui.toolkit.Event;
 import accg.gui.toolkit.Listener;
-import accg.gui.toolkit.MenuBar;
-import accg.gui.toolkit.Button;
-import accg.gui.toolkit.Button.Presentation;
-import accg.gui.toolkit.Button.Type;
-import accg.gui.toolkit.MenuStack;
+import accg.gui.toolkit.components.Button;
+import accg.gui.toolkit.containers.MenuBar;
+import accg.gui.toolkit.containers.MenuStack;
+import accg.gui.toolkit.enums.ButtonType;
+import accg.gui.toolkit.enums.Presentation;
 import accg.gui.toolkit.event.MouseClickEvent;
 
 /**
@@ -18,7 +18,7 @@ import accg.gui.toolkit.event.MouseClickEvent;
 public class PresentationMenuBar extends MenuBar {
 	
 	public PresentationMenuBar(final MenuStack stack, final State s) {
-		for (int i = 0; i < Button.Presentation.values().length; i++) {
+		for (int i = 0; i < Presentation.values().length; i++) {
 			add(generatePresentationItem(i, stack, s));
 		}
 	}
@@ -30,10 +30,10 @@ public class PresentationMenuBar extends MenuBar {
 	 * @return A newly created {@link Button}.
 	 */
 	private Button generatePresentationItem(final int index, final MenuStack stack, final State s) {
-		final Presentation pres = Button.Presentation.values()[index];
+		final Presentation pres = Presentation.values()[index];
 		// create the item
 		Button mbi = new Button(pres.getName(),
-				getPresentationIcon(index, s), Type.CHECKABLE_UNIQUE);
+				getPresentationIcon(index, s), ButtonType.CHECKABLE_UNIQUE);
 		mbi.addListener(new Listener() {
 			
 			@Override
@@ -60,7 +60,7 @@ public class PresentationMenuBar extends MenuBar {
 	 * @return An icon, or {@code null} if index is invalid.
 	 */
 	private Texture getPresentationIcon(final int index, State s) {
-		if (index < 0 || index >= Button.Presentation.values().length) {
+		if (index < 0 || index >= Presentation.values().length) {
 			return null;
 		}
 		

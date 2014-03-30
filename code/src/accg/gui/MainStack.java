@@ -2,8 +2,10 @@ package accg.gui;
 
 import accg.State;
 import accg.State.ProgramMode;
-import accg.gui.toolkit.Button;
-import accg.gui.toolkit.MenuStack;
+import accg.gui.toolkit.containers.MenuStack;
+import accg.gui.toolkit.enums.Alignment;
+import accg.gui.toolkit.enums.Position;
+import accg.gui.toolkit.enums.Presentation;
 
 /**
  * This class manages the menu stack in the GUI.
@@ -37,13 +39,13 @@ public class MainStack extends MenuStack {
 		addToCollection(PRESENTATION_MENU, new PresentationMenuBar(this, state));
 		
 		int alignmentId = state.prefs.getInt("menu.alignment", State.DEF_MENU_ALIGNMENT);
-		setAlignment(MenuStack.Alignment.values()[alignmentId]);
+		setAlignment(Alignment.values()[alignmentId]);
 		
 		int positionId = state.prefs.getInt("menu.position", State.DEF_MENU_POSITION);
-		setPosition(MenuStack.Position.values()[positionId]);
+		setPosition(Position.values()[positionId]);
 		
 		int presentationId = state.prefs.getInt("menu.presentation", State.DEF_MENU_PRESENTATION);
-		setPresentation(Button.Presentation.values()[presentationId]);
+		setPresentation(Presentation.values()[presentationId]);
 		
 		updateItems();
 	}

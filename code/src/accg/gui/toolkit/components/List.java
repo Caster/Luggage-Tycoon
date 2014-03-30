@@ -1,4 +1,4 @@
-package accg.gui.toolkit;
+package accg.gui.toolkit.components;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -7,6 +7,9 @@ import java.util.Arrays;
 
 import org.newdawn.slick.Color;
 
+import accg.gui.toolkit.Component;
+import accg.gui.toolkit.Event;
+import accg.gui.toolkit.Listener;
 import accg.gui.toolkit.event.*;
 
 /**

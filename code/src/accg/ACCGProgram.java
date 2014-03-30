@@ -70,11 +70,6 @@ public class ACCGProgram {
 	private Camera camera;
 	
 	/**
-	 * The GUI used in the program.
-	 */
-	private MainGUI gui;
-	
-	/**
 	 * Point where mouse was pressed. Is compared to point where mouse
 	 * is released to see if it was a click or not.
 	 */
@@ -222,10 +217,9 @@ public class ACCGProgram {
 		
 		// intialise GUI stuff
 		loadPreferences(s);
-		gui = new MainGUI(s);
-		gui.setWidth(displayWidth);
-		gui.setHeight(displayHeight);
-		s.gui = gui;
+		s.gui = new MainGUI(s);
+		s.gui.setWidth(displayWidth);
+		s.gui.setHeight(displayHeight);
 		
 		// enable some GL stuff
 		glEnable(GL_LIGHTING);
@@ -253,8 +247,8 @@ public class ACCGProgram {
 			if (displayWidth != Display.getWidth() || displayHeight != Display.getHeight()) {
 				displayWidth = Display.getWidth();
 				displayHeight = Display.getHeight();
-				gui.setWidth(displayWidth);
-				gui.setHeight(displayHeight);
+				s.gui.setWidth(displayWidth);
+				s.gui.setHeight(displayHeight);
 			}
 			
 			// update time
@@ -293,7 +287,7 @@ public class ACCGProgram {
 			// handle events
 			handleKeyEvents(s);
 			handlePressedKeys();
-			handleScrollEvents();
+			handleScrollEvents(s);
 			handleMouseEvents(s);
 
 			// draw the scene (not if we are in the start screen)
@@ -331,7 +325,7 @@ public class ACCGProgram {
 			GUIUtils.make2D();
 			//gui.outputDebug();
 			glEnable(GL_BLEND);
-			gui.draw();
+			s.gui.draw();
 			glDisable(GL_BLEND);
 			GUIUtils.make3D();
 			
@@ -356,7 +350,7 @@ public class ACCGProgram {
 			
 			if (Keyboard.getEventKeyState()) {
 				// perhaps the GUI wants to handle this?
-				if (gui.handleKeyEvent(Keyboard.getEventCharacter())) {
+				if (s.gui.handleKeyEvent(Keyboard.getEventCharacter())) {
 					continue;
 				}
 				
@@ -491,14 +485,14 @@ public class ACCGProgram {
 	/**
 	 * Handles scrollwheel events from the mouse.
 	 */
-	public void handleScrollEvents() {
+	public void handleScrollEvents(State s) {
 		int dWheel = Mouse.getDWheel();
 		if (dWheel == 0) {
 			return;
 		}
 		
 		// first see if the menu wants to handle this
-		boolean handledByMenu = gui.handleMouseScrollEvent(Mouse.getX(), Mouse.getY(), dWheel);
+		boolean handledByMenu = s.gui.handleMouseScrollEvent(Mouse.getX(), Mouse.getY(), dWheel);
 		
 		// otherwise, let the camera handle it
 		if (!handledByMenu) {
@@ -542,7 +536,7 @@ public class ACCGProgram {
 						if (clickedPoint != null) {
 							if (Math.abs(clickedPoint.getX() - Mouse.getX()) < 3 &&
 									Math.abs(clickedPoint.getY() - Mouse.getY()) < 3) {
-								gui.handleMouseClickEvent(Mouse.getX(), Mouse.getY());
+								s.gui.handleMouseClickEvent(Mouse.getX(), Mouse.getY());
 							}
 							
 							clickedPoint = null;
@@ -574,9 +568,9 @@ public class ACCGProgram {
 					// see if a menubar is hovered
 					
 					if (Mouse.isButtonDown(0)) {
-						handledMouseMoveByMenu = gui.handleMouseDragEvent(Mouse.getX(), Mouse.getY());
+						handledMouseMoveByMenu = s.gui.handleMouseDragEvent(Mouse.getX(), Mouse.getY());
 					} else {
-						handledMouseMoveByMenu = gui.handleMouseMoveEvent(Mouse.getX(), Mouse.getY());
+						handledMouseMoveByMenu = s.gui.handleMouseMoveEvent(Mouse.getX(), Mouse.getY());
 					}
 					
 					// in building mode, we might have to draw an object where the mouse

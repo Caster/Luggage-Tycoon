@@ -1,4 +1,4 @@
-package accg.gui.toolkit;
+package accg.gui.toolkit.components;
 
 import static accg.gui.toolkit.GLUtils.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -8,6 +8,10 @@ import java.awt.Color;
 import org.lwjgl.util.Rectangle;
 import org.newdawn.slick.opengl.Texture;
 
+import accg.gui.toolkit.Event;
+import accg.gui.toolkit.GLUtils;
+import accg.gui.toolkit.Listener;
+import accg.gui.toolkit.enums.Presentation;
 import accg.gui.toolkit.event.*;
 
 /**

@@ -1,11 +1,17 @@
-package accg.gui.toolkit;
+package accg.gui.toolkit.containers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import accg.gui.toolkit.Button.Presentation;
-import accg.gui.toolkit.MenuBar.Orientation;
+import accg.gui.toolkit.Component;
+import accg.gui.toolkit.Container;
+import accg.gui.toolkit.Listener;
+import accg.gui.toolkit.components.Button;
+import accg.gui.toolkit.enums.Alignment;
+import accg.gui.toolkit.enums.Orientation;
+import accg.gui.toolkit.enums.Position;
+import accg.gui.toolkit.enums.Presentation;
 
 /**
  * This class manages a GUI with several possible menu bars.
@@ -57,84 +63,9 @@ public class MenuStack extends Container {
 	protected Alignment alignment;
 	
 	/**
-	 * Possible alignments for menu bars inside the {@link MenuStack}.
-	 * 
-	 * Picking an alignment will move the menu bar to the according position
-	 * on the screen.
-	 */
-	public enum Alignment {
-		/** Left or top. */
-		BEGIN("Left / top"),
-		/** Center. */
-		CENTER("Center"),
-		/** Right or bottom. */
-		END("Right / bottom");
-		
-		private Alignment(String name) {
-			this.name = name;
-		}
-		
-		private String name;
-		
-		/**
-		 * Returns a human-readable description of the alignment type.
-		 * 
-		 * @return A human-readable, short description.
-		 */
-		public String getName() {
-			return name;
-		}
-	}
-	
-	/**
 	 * Position of this menu collection.
 	 */
 	protected Position position;
-	
-	/**
-	 * Possible positions for a {@link MenuStack}.
-	 */
-	public enum Position {
-		
-		/**
-		 * The menu stack is shown on the top of the screen.
-		 */
-		TOP,
-
-		/**
-		 * The menu stack is shown on the right of the screen.
-		 */
-		RIGHT,
-
-		/**
-		 * The menu stack is shown on the bottom of the screen.
-		 */
-		BOTTOM,
-
-		/**
-		 * The menu stack is shown on the left of the screen.
-		 */
-		LEFT;
-		
-		private Position() {
-			this.name = name().charAt(0) + name().substring(1).toLowerCase();
-		}
-		
-		private Position(String name) {
-			this.name = name;
-		}
-		
-		private String name;
-		
-		/**
-		 * Returns a human-readable description of the position type.
-		 * 
-		 * @return A human-readable, short description.
-		 */
-		public String getName() {
-			return name;
-		}
-	}
 	
 	/**
 	 * The presentation of all buttons in this menu stack.

@@ -8,7 +8,7 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import accg.State;
 import accg.gui.toolkit.Component;
-import accg.gui.toolkit.LayeredPane;
+import accg.gui.toolkit.containers.LayeredPane;
 import accg.gui.toolkit.event.KeyEvent;
 import accg.gui.toolkit.event.MouseClickEvent;
 import accg.gui.toolkit.event.MouseDragEvent;
