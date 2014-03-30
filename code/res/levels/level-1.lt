@@ -5,4 +5,4 @@ blocks
 eb 0 4 0 r nd [10]
 cf 1 4 0 r nd
 lb 8 4 0 r nd
-blocklimit 6
+blocklimit 9

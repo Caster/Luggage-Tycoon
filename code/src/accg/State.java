@@ -98,6 +98,11 @@ public class State {
 	public String levelName;
 	
 	/**
+	 * Number of the currently loaded level. May be -1 if not applicable.
+	 */
+	public int levelNumber;
+	
+	/**
 	 * The simulation time in seconds when the last frame was rendered.
 	 * 
 	 * May of course not be initialized, during the rendering of the first

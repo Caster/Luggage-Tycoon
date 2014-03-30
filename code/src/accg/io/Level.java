@@ -281,10 +281,11 @@ public class Level {
 		s.fieldHeight = fieldHeight;
 		
 		s.levelName = getLevelName();
+		s.levelNumber = levelNumber;
 		
 		s.simulation = new Simulation(s);
 		s.world = new World(s);
-		
+		s.world.setBlockLimit(blockLimit);
 		for (Block b : blocks) {
 			s.world.addBlock(s, b);
 		}

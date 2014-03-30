@@ -661,6 +661,11 @@ public class ACCGProgram {
 	 * @param s State, used to look-up ShadowBlock in.
 	 */
 	private void updateShadowBlockAlerted(State s) {
+		if (s.world.getBlockCount() == s.world.getBlockLimit()) {
+			s.shadowBlock.setAlerted(true);
+			return;
+		}
+		
 		s.shadowBlock.setAlerted(s.world.bc.getBlockFuzzy(s.shadowBlock.getX(),
 				s.shadowBlock.getY(), s.shadowBlock.getZ()) != null);
 		if (!s.world.bc.checkBlockFuzzy(s.shadowBlock.getX(),

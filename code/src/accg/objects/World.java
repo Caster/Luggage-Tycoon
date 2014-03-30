@@ -25,6 +25,15 @@ public class World extends Container<DrawableObject> {
 	public Container<Luggage> luggage;
 	
 	/**
+	 * How many blocks have been placed in this World.
+	 */
+	protected int blockCount;
+	/**
+	 * How many blocks can be built in the scene.
+	 */
+	protected int blockLimit;
+	
+	/**
 	 * State of the program, used to access {@link Simulation}.
 	 */
 	private State state;
@@ -46,6 +55,9 @@ public class World extends Container<DrawableObject> {
 		
 		luggage = new Container<>();
 		addObject(luggage);
+		
+		blockCount = 0;
+		blockLimit = -1;
 	}
 	
 	/**
@@ -102,6 +114,10 @@ public class World extends Container<DrawableObject> {
 	 * Add a block to the {@link BlockCollection} in this {@link World}.
 	 * The block will be placed at the position it indicates.
 	 * 
+	 * <p>If adding the given block would violate the block limit, nothing will
+	 * happen. It is possible to place a block at the position of some other
+	 * block however, at all times.
+	 * 
 	 * @param s State, used to look-up neighbors.
 	 * @param toAdd {@link ConveyorBlock} to be added.
 	 * @throws NullPointerException If <code>cb == null</code>.
@@ -110,8 +126,15 @@ public class World extends Container<DrawableObject> {
 		Block b;
 		if ((b = bc.getBlock(toAdd.x, toAdd.y, toAdd.z)) != null) {
 			b.onDestroy();
+			blockCount--;
 		}
+		
+		if (blockCount + 1 > blockLimit) {
+			return;
+		}
+		
 		bc.setBlock(toAdd);
+		blockCount++;
 		
 		if (toAdd instanceof ConveyorBlock) {
 			state.simulation.addConveyorBlock(s, (ConveyorBlock) toAdd);
@@ -127,6 +150,23 @@ public class World extends Container<DrawableObject> {
 		}
 	}
 
+	/**
+	 * Returns the number of blocks in this World.
+	 * @return The number of blocks that was added through the
+	 *         {@link #addBlock(State, Block)} function.
+	 */
+	public int getBlockCount() {
+		return blockCount;
+	}
+	
+	/**
+	 * Returns the number of blocks that may be placed.
+	 * @return The number of blocks that may be placed.
+	 */
+	public int getBlockLimit() {
+		return blockLimit;
+	}
+	
 	/**
 	 * Return the index of the first coordinate in the given list on which a
 	 * block is positioned. If no block is occupied, the length of the given
@@ -271,6 +311,16 @@ public class World extends Container<DrawableObject> {
 		}
 		
 		return result;
+	}
+	
+	/**
+	 * Change how many blocks may be placed in this world. Note that when
+	 * decreasing this value, no blocks are automatically removed if the number
+	 * of blocks is violating the new limit.
+	 * @param blockLimit The new limit on number of blocks that can be placed.
+	 */
+	public void setBlockLimit(int blockLimit) {
+		this.blockLimit = blockLimit;
 	}
 	
 	/**
