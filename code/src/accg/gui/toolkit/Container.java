@@ -5,7 +5,6 @@ import static org.lwjgl.opengl.GL11.*;
 import java.util.List;
 
 import accg.gui.toolkit.event.MouseEvent;
-import accg.gui.toolkit.event.MouseMoveEvent;
 
 /**
  * A GUI container. This is a component that can contain other components
@@ -156,12 +155,7 @@ public abstract class Container extends Component {
 		
 		// handle the event ourselves
 		if (!handled) {
-			super.sendEvent(e);
-		}
-		
-		// always relay MouseMoveEvents
-		if (e instanceof MouseMoveEvent) {
-			return false;
+			handled = super.sendEvent(e);
 		}
 		
 		if (isTransparent()) {
