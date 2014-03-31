@@ -7,6 +7,7 @@ import java.util.List;
 
 import accg.gui.toolkit.Component;
 import accg.gui.toolkit.Container;
+import accg.gui.toolkit.enums.Alignment;
 import accg.gui.toolkit.enums.Position;
 
 public class StatusBar extends Container {
@@ -161,5 +162,28 @@ public class StatusBar extends Container {
 	public void setPosition(Position newPosition) {
 		this.position = newPosition;
 		needsLayout();
+	}
+	
+	/**
+	 * Update the position of the status bar to avoid, as good as possible, a
+	 * conflict with the given position and alignment of a {@link MenuStack}.
+	 * 
+	 * @param menuPos Position of the {@link MenuStack}.
+	 * @param menuAlign Alignment of the {@link MenuStack}.
+	 */
+	public void updatePosition(Position menuPos, Alignment menuAlign) {
+		switch (menuPos) {
+		case TOP:
+			setPosition(Position.BOTTOM);
+			break;
+		case LEFT:
+		case RIGHT:
+			setPosition(menuAlign == Alignment.END ? Position.TOP :
+				Position.BOTTOM);
+			break;
+		case BOTTOM:
+			setPosition(Position.TOP);
+			break;
+		}
 	}
 }

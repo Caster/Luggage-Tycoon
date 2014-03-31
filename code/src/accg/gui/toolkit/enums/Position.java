@@ -47,6 +47,22 @@ public enum Position {
 	}
 	
 	/**
+	 * Returns the "opposite" position of the current one. For example, the
+	 * opposite of TOP is BOTTOM. The opposite of LEFT is RIGHT.
+	 * 
+	 * @return The "opposite" position of the current one.
+	 */
+	public Position getOpposite() {
+		switch (this) {
+		case TOP: return BOTTOM;
+		case RIGHT: return LEFT;
+		case BOTTOM: return TOP;
+		case LEFT: return RIGHT;
+		}
+		return null;
+	}
+	
+	/**
 	 * Returns if a component or container in this position should be laid out
 	 * horizontally or not. This is true if and only if the position is
 	 * {@link #BOTTOM} or {@link #TOP}.

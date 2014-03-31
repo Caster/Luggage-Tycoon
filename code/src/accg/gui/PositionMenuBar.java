@@ -41,6 +41,7 @@ public class PositionMenuBar extends MenuBar {
 				if (e instanceof MouseClickEvent) {
 					s.prefs.putInt("menu.position", index);
 					stack.setPosition(pos);
+					s.gui.updateStatusBarPosition();
 				}
 			}
 		});

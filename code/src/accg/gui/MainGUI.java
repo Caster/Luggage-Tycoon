@@ -55,6 +55,7 @@ public class MainGUI extends LayeredPane {
 		
 		statusBar = new MainStatusBar(state);
 		statusBar.setParent(this);
+		updateStatusBarPosition();
 		statusBar.setVisible(false);
 		statusBarShownPortion = 0;
 		
@@ -223,9 +224,7 @@ public class MainGUI extends LayeredPane {
 	 * @param visible If the status bar should be shown.
 	 */
 	public void setStatusBarVisible(boolean visible) {
-		if (instance != null) {
-			instance.statusBar.setVisible(visible);
-		}
+		statusBar.setVisible(visible);
 	}
 	
 	/**
@@ -244,5 +243,13 @@ public class MainGUI extends LayeredPane {
 	 */
 	public void updateStatusBarInfo() {
 		statusBar.updateInfo();
+	}
+	
+	/**
+	 * Change the position of the {@link MainStatusBar} to a suitable one, using
+	 * the position and alignment of the {@link MainStack} to determine that.
+	 */
+	public void updateStatusBarPosition() {
+		statusBar.updatePosition(stack.getPosition(), stack.getAlignment());
 	}
 }

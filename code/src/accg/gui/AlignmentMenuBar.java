@@ -43,6 +43,7 @@ public class AlignmentMenuBar extends MenuBar {
 				if (e instanceof MouseClickEvent) {
 					s.prefs.putInt("menu.alignment", index);
 					stack.setAlignment(alignment);
+					s.gui.updateStatusBarPosition();
 				}
 			}
 		});
