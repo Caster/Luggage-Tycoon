@@ -386,9 +386,11 @@ public class ACCGProgram {
 								Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
 							s.shadowBlock.setOrientation(
 									s.shadowBlock.getOrientation().rotateLeft());
+							s.gui.getStack().buildBar.rotateLeftItem.touch();
 						} else {
 							s.shadowBlock.setOrientation(
 									s.shadowBlock.getOrientation().rotateRight());
+							s.gui.getStack().buildBar.rotateRightItem.touch();
 						}
 					}
 					break;

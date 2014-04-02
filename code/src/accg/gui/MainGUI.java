@@ -11,6 +11,7 @@ import org.newdawn.slick.util.ResourceLoader;
 import accg.State;
 import accg.gui.toolkit.Component;
 import accg.gui.toolkit.containers.LayeredPane;
+import accg.gui.toolkit.containers.MenuStack;
 import accg.gui.toolkit.enums.Position;
 import accg.gui.toolkit.event.KeyEvent;
 import accg.gui.toolkit.event.MouseClickEvent;
@@ -251,5 +252,13 @@ public class MainGUI extends LayeredPane {
 	 */
 	public void updateStatusBarPosition() {
 		statusBar.updatePosition(stack.getPosition(), stack.getAlignment());
+	}
+	
+	/**
+	 * Returns the {@link MenuStack} of the GUI.
+	 * @return The {@link MenuStack}.
+	 */
+	public MainStack getStack() {
+		return stack;
 	}
 }

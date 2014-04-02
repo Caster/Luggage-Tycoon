@@ -2,6 +2,7 @@ package accg.gui;
 
 import accg.State;
 import accg.State.ProgramMode;
+import accg.gui.toolkit.containers.MenuBar;
 import accg.gui.toolkit.containers.MenuStack;
 import accg.gui.toolkit.enums.Alignment;
 import accg.gui.toolkit.enums.Position;
@@ -17,6 +18,8 @@ public class MainStack extends MenuStack {
 	public static final String ALIGNMENT_MENU = "alignment";
 	public static final String PRESENTATION_MENU = "presentation";
 	
+	public BuildingModeMenuBar buildBar;
+	
 	/**
 	 * The state of the program.
 	 */
@@ -31,7 +34,7 @@ public class MainStack extends MenuStack {
 
 		addToCollection(ProgramMode.START_MODE, new StartModeMenuBar(this, state));
 		addToCollection(ProgramMode.NORMAL_MODE, new NormalModeMenuBar(this, state));
-		addToCollection(ProgramMode.BUILDING_MODE, new BuildingModeMenuBar(this, state));
+		addToCollection(ProgramMode.BUILDING_MODE, buildBar = new BuildingModeMenuBar(this, state));
 		addToCollection(ProgramMode.SIMULATION_MODE, new SimulationModeMenuBar(this, state));
 		addToCollection(SETTINGS_MENU, new SettingsMenuBar(this, state));
 		addToCollection(POSITION_MENU, new PositionMenuBar(this, state));

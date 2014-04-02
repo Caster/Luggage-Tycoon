@@ -17,6 +17,9 @@ import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
  * Menu bar for the building mode.
  */
 public class BuildingModeMenuBar extends MenuBar {
+
+	public Button rotateLeftItem;
+	public Button rotateRightItem;
 	
 	Button straightButton;
 	Button ascendingButton;
@@ -26,7 +29,7 @@ public class BuildingModeMenuBar extends MenuBar {
 	
 	public BuildingModeMenuBar(final MenuStack stack, final State s) {
 		
-		Button rotateLeftItem = new Button(Messages.get("BuildingModeMenuBar.rotateLeft"),
+		rotateLeftItem = new Button(Messages.get("BuildingModeMenuBar.rotateLeft"),
 				s.textures.iconLeft);
 		rotateLeftItem.setShortcutHint("Shift+R");
 		rotateLeftItem.addListener(new Listener() {
@@ -44,7 +47,7 @@ public class BuildingModeMenuBar extends MenuBar {
 		});
 		add(rotateLeftItem);
 		
-		Button rotateRightItem = new Button(Messages.get("BuildingModeMenuBar.rotateRight"),
+		rotateRightItem = new Button(Messages.get("BuildingModeMenuBar.rotateRight"),
 				s.textures.iconRight);
 		rotateRightItem.setShortcutHint("R");
 		rotateRightItem.addListener(new Listener() {

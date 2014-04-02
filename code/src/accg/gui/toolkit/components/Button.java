@@ -304,6 +304,21 @@ public class Button extends Component implements Listener {
 		return presentation;
 	}
 	
+	/**
+	 * Shows a short animation on this button, as if it has been clicked very
+	 * quickly.
+	 * 
+	 * This can be used for example when this button has been activated in some
+	 * other way than clicking, for an additional clue that this button
+	 * corresponds to that action too.
+	 */
+	public void touch() {
+		
+		// set the hoverAmount value to 10, so it will behave as if the mouse
+		// just left the button
+		hoverAmount = 10;
+	}
+	
 	/** Describing text of this menu item. */
 	protected String text;
 	/** The shortcut hint of this menu item. */
