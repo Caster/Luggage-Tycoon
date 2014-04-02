@@ -27,6 +27,11 @@ public class Button extends Component implements Listener {
 	public static final int PADDING = 10;
 	
 	/**
+	 * Color of the shortcut hint.
+	 */
+	public static final Color SHORTCUT_HINT_COLOR = new Color(0, 0, 0, 0.5f);
+	
+	/**
 	 * Presentation of items.
 	 */
 	protected Presentation presentation = Presentation.ICON_LEFT_TEXT;
@@ -138,7 +143,7 @@ public class Button extends Component implements Listener {
 				// shortcut hint
 				getFont().drawString((outline.getWidth() +
 						textWidth) / 2 - shortcutWidth, getHeight() - PADDING - textHeight,
-						getShortcutHintText(), Color.gray);
+						getShortcutHintText(), SHORTCUT_HINT_COLOR);
 				break;
 			case ICON_LEFT_TEXT:
 				// text
@@ -149,7 +154,7 @@ public class Button extends Component implements Listener {
 				getFont().drawString(getFont().getLineHeight() +
 						2 * PADDING + textWidth - shortcutWidth,
 						getHeight() - PADDING - textHeight,
-						getShortcutHintText(), Color.gray);
+						getShortcutHintText(), SHORTCUT_HINT_COLOR);
 				break;
 			}
 		}
