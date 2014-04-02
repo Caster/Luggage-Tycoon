@@ -30,6 +30,10 @@ public class Textures {
 	public Texture iconZoomIn;
 	public Texture iconZoomOut;
 	public Texture iconOk;
+	public Texture iconLeft;
+	public Texture iconRight;
+	
+	// belts
 	public Texture iconBeltFlat;
 	public Texture iconBeltAscending;
 	public Texture iconBeltDescending;
@@ -86,6 +90,12 @@ public class Textures {
 					ResourceLoader.getResourceAsStream("res/icons/zoom-out.png"));
 			iconOk = TextureLoader.getTexture("PNG",
 					ResourceLoader.getResourceAsStream("res/icons/dialog-ok.png"));
+			iconLeft = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/object-rotate-left.png"));
+			iconRight = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/object-rotate-right.png"));
+			
+			// belts
 			iconBeltFlat = TextureLoader.getTexture("PNG",
 					ResourceLoader.getResourceAsStream("res/icons/belts/flat.png"));
 			iconBeltAscending = TextureLoader.getTexture("PNG",

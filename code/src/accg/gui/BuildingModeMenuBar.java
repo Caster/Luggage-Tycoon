@@ -26,7 +26,8 @@ public class BuildingModeMenuBar extends MenuBar {
 	
 	public BuildingModeMenuBar(final MenuStack stack, final State s) {
 		
-		Button rotateLeftItem = new Button(Messages.get("BuildingModeMenuBar.rotateLeft"), s.textures.iconMouse); //$NON-NLS-1$
+		Button rotateLeftItem = new Button(Messages.get("BuildingModeMenuBar.rotateLeft"),
+				s.textures.iconLeft);
 		rotateLeftItem.setShortcutHint("Shift+R");
 		rotateLeftItem.addListener(new Listener() {
 			
@@ -43,7 +44,8 @@ public class BuildingModeMenuBar extends MenuBar {
 		});
 		add(rotateLeftItem);
 		
-		Button rotateRightItem = new Button(Messages.get("BuildingModeMenuBar.rotateRight"), s.textures.iconMouse); //$NON-NLS-1$
+		Button rotateRightItem = new Button(Messages.get("BuildingModeMenuBar.rotateRight"),
+				s.textures.iconRight);
 		rotateRightItem.setShortcutHint("R");
 		rotateRightItem.addListener(new Listener() {
 			
