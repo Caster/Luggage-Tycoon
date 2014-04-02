@@ -1,5 +1,7 @@
 package accg.gui;
 
+import org.lwjgl.input.Keyboard;
+
 import accg.State;
 import accg.State.ProgramMode;
 import accg.gui.toolkit.*;
@@ -16,18 +18,38 @@ public class BuildingModeMenuBar extends MenuBar {
 	
 	public BuildingModeMenuBar(final MenuStack stack, final State s) {
 		
-		Button rotateItem = new Button(Messages.get("BuildingModeMenuBar.rotate"), s.textures.iconMouse); //$NON-NLS-1$
-		rotateItem.setShortcutHint("R");
-		rotateItem.addListener(new Listener() {
+		Button rotateLeftItem = new Button(Messages.get("BuildingModeMenuBar.rotateLeft"), s.textures.iconMouse); //$NON-NLS-1$
+		rotateLeftItem.setShortcutHint("R");
+		rotateLeftItem.addListener(new Listener() {
 			
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					System.err.println("Rotate!");
+					if (s.programMode == ProgramMode.BUILDING_MODE &&
+							s.shadowBlock != null && s.shadowBlock.isVisible()) {
+						s.shadowBlock.setOrientation(
+								s.shadowBlock.getOrientation().rotateLeft());
+					}
 				}
 			}
 		});
-		add(rotateItem);
+		add(rotateLeftItem);
+		Button rotateRightItem = new Button(Messages.get("BuildingModeMenuBar.rotateRight"), s.textures.iconMouse); //$NON-NLS-1$
+		rotateRightItem.setShortcutHint("Shift+R");
+		rotateRightItem.addListener(new Listener() {
+			
+			@Override
+			public void event(Event e) {
+				if (e instanceof MouseClickEvent) {
+					if (s.programMode == ProgramMode.BUILDING_MODE &&
+							s.shadowBlock != null && s.shadowBlock.isVisible()) {
+						s.shadowBlock.setOrientation(
+								s.shadowBlock.getOrientation().rotateRight());
+					}
+				}
+			}
+		});
+		add(rotateRightItem);
 		
 		add(new Button(Messages.get("BuildingModeMenuBar.straight"), s.textures.iconExit)); //$NON-NLS-1$
 		add(new Button(Messages.get("BuildingModeMenuBar.up"), s.textures.iconGoUp)); //$NON-NLS-1$

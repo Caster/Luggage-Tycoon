@@ -75,10 +75,10 @@ public class Button extends Component implements Listener {
 		switch (getPresentation()) {
 		default:
 		case ICON_ABOVE_TEXT:
-			return Math.max(getPreferredHeight(), getFont().getWidth(text))
+			return Math.max(getPreferredHeight(), getFont().getWidth(getTotalText()))
 					+ 2 * PADDING;
 		case ICON_LEFT_TEXT:
-			return getFont().getWidth(text) + 3 * PADDING + getFont().getLineHeight();
+			return getFont().getWidth(getTotalText()) + 3 * PADDING + getFont().getLineHeight();
 		}
 	}
 
