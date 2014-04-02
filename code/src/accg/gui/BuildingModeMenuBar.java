@@ -19,14 +19,14 @@ public class BuildingModeMenuBar extends MenuBar {
 	public BuildingModeMenuBar(final MenuStack stack, final State s) {
 		
 		Button rotateLeftItem = new Button(Messages.get("BuildingModeMenuBar.rotateLeft"), s.textures.iconMouse); //$NON-NLS-1$
-		rotateLeftItem.setShortcutHint("R");
+		rotateLeftItem.setShortcutHint("Shift+R");
 		rotateLeftItem.addListener(new Listener() {
 			
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
 					if (s.programMode == ProgramMode.BUILDING_MODE &&
-							s.shadowBlock != null && s.shadowBlock.isVisible()) {
+							s.shadowBlock != null) {
 						s.shadowBlock.setOrientation(
 								s.shadowBlock.getOrientation().rotateLeft());
 					}
@@ -35,14 +35,14 @@ public class BuildingModeMenuBar extends MenuBar {
 		});
 		add(rotateLeftItem);
 		Button rotateRightItem = new Button(Messages.get("BuildingModeMenuBar.rotateRight"), s.textures.iconMouse); //$NON-NLS-1$
-		rotateRightItem.setShortcutHint("Shift+R");
+		rotateRightItem.setShortcutHint("R");
 		rotateRightItem.addListener(new Listener() {
 			
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
 					if (s.programMode == ProgramMode.BUILDING_MODE &&
-							s.shadowBlock != null && s.shadowBlock.isVisible()) {
+							s.shadowBlock != null) {
 						s.shadowBlock.setOrientation(
 								s.shadowBlock.getOrientation().rotateRight());
 					}
@@ -51,11 +51,11 @@ public class BuildingModeMenuBar extends MenuBar {
 		});
 		add(rotateRightItem);
 		
-		add(new Button(Messages.get("BuildingModeMenuBar.straight"), s.textures.iconExit)); //$NON-NLS-1$
-		add(new Button(Messages.get("BuildingModeMenuBar.up"), s.textures.iconGoUp)); //$NON-NLS-1$
-		add(new Button(Messages.get("BuildingModeMenuBar.down"), s.textures.iconGoDown)); //$NON-NLS-1$
-		add(new Button(Messages.get("BuildingModeMenuBar.left"), s.textures.iconGoLeft)); //$NON-NLS-1$
-		add(new Button(Messages.get("BuildingModeMenuBar.right"), s.textures.iconGoRight)); //$NON-NLS-1$
+		add(new Button(Messages.get("BuildingModeMenuBar.straight"), s.textures.iconBeltFlat)); //$NON-NLS-1$
+		add(new Button(Messages.get("BuildingModeMenuBar.up"), s.textures.iconBeltAscending)); //$NON-NLS-1$
+		add(new Button(Messages.get("BuildingModeMenuBar.down"), s.textures.iconBeltDescending)); //$NON-NLS-1$
+		add(new Button(Messages.get("BuildingModeMenuBar.left"), s.textures.iconBeltLeft)); //$NON-NLS-1$
+		add(new Button(Messages.get("BuildingModeMenuBar.right"), s.textures.iconBeltRight)); //$NON-NLS-1$
 		
 		Button backItem = new Button(Messages.get("BuildingModeMenuBar.back"), s.textures.iconExit); //$NON-NLS-1$
 		backItem.addListener(new Listener() {

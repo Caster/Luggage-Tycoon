@@ -30,6 +30,11 @@ public class Textures {
 	public Texture iconZoomIn;
 	public Texture iconZoomOut;
 	public Texture iconOk;
+	public Texture iconBeltFlat;
+	public Texture iconBeltAscending;
+	public Texture iconBeltDescending;
+	public Texture iconBeltLeft;
+	public Texture iconBeltRight;
 	
 	// scene textures
 	public Texture conveyor;
@@ -81,6 +86,16 @@ public class Textures {
 					ResourceLoader.getResourceAsStream("res/icons/zoom-out.png"));
 			iconOk = TextureLoader.getTexture("PNG",
 					ResourceLoader.getResourceAsStream("res/icons/dialog-ok.png"));
+			iconBeltFlat = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/belts/flat.png"));
+			iconBeltAscending = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/belts/ascending.png"));
+			iconBeltDescending = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/belts/descending.png"));
+			iconBeltLeft = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/belts/left.png"));
+			iconBeltRight = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/belts/right.png"));
 			
 			// scene textures
 			conveyor = TextureLoader.getTexture("PNG",
