@@ -402,18 +402,21 @@ public class ACCGProgram {
 				case Keyboard.KEY_F:
 					if (changingBlock) {
 						s.shadowBlock.setConveyorBlockType(ConveyorBlockType.FLAT);
+						s.gui.updateItems();
 					}
 					break;
 				// switch to *A*scending conveyor block in building mode
 				case Keyboard.KEY_A:
 					if (changingBlock) {
 						s.shadowBlock.setConveyorBlockType(ConveyorBlockType.ASCENDING);
+						s.gui.updateItems();
 					}
 					break;
 				// switch to *D*escending conveyor block in building mode
 				case Keyboard.KEY_D:
 					if (changingBlock) {
 						s.shadowBlock.setConveyorBlockType(ConveyorBlockType.DESCENDING);
+						s.gui.updateItems();
 					}
 					break;
 				// switch to bend *L*eft conveyor block in building mode
@@ -424,6 +427,7 @@ public class ACCGProgram {
 					} else {
 						s.shadowBlock.setConveyorBlockType(ConveyorBlockType.BEND_LEFT);
 					}
+					s.gui.updateItems();
 				}
 				break;
 				}

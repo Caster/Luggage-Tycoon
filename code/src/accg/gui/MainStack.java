@@ -55,5 +55,29 @@ public class MainStack extends MenuStack {
 	 */
 	public void updateItems() {
 		addMenuOnPosition(0, state.programMode);
+		
+		BuildingModeMenuBar bar = (BuildingModeMenuBar) menuBars.get(ProgramMode.BUILDING_MODE);
+		
+		switch (state.shadowBlock.getConveyorBlockType()) {
+		case FLAT:
+			bar.setHighlightedItem(bar.straightButton);
+			break;
+		case ASCENDING:
+			bar.setHighlightedItem(bar.ascendingButton);
+			break;
+		case DESCENDING:
+			bar.setHighlightedItem(bar.descendingButton);
+			break;
+		case BEND_LEFT:
+			bar.setHighlightedItem(bar.leftButton);
+			break;
+		case BEND_RIGHT:
+			bar.setHighlightedItem(bar.rightButton);
+			break;
+		case ENTER:
+		case LEAVE:
+		default:
+			break;
+		}
 	}
 }

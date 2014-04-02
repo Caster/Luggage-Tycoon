@@ -2,6 +2,7 @@ package accg.gui;
 
 import accg.State;
 import accg.State.ProgramMode;
+import accg.gui.toolkit.Component;
 import accg.gui.toolkit.Event;
 import accg.gui.toolkit.Listener;
 import accg.gui.toolkit.components.Button;
@@ -148,5 +149,15 @@ public class BuildingModeMenuBar extends MenuBar {
 			}
 		});
 		add(backItem);
+	}
+	
+	public void setHighlightedItem(Button b) {
+		for (Component c : getChildren()) {
+			if (c instanceof Button) {
+				((Button) c).setChecked(false);
+			}
+		}
+		
+		b.setChecked(true);
 	}
 }
