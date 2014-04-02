@@ -65,6 +65,8 @@ public class Button extends Component implements Listener {
 		this.type = type;
 		this.checked = false;
 		
+		this.shortcutHint = "";
+		
 		addListener(this);
 	}
 
@@ -122,20 +124,32 @@ public class Button extends Component implements Listener {
 		// render text
 		glEnable(GL_TEXTURE_2D);
 		
-		int textWidth = getFont().getWidth(text);
+		int textWidth = getFont().getWidth(getTotalText());
 		int textHeight = getFont().getLineHeight();
+		int shortcutWidth = getFont().getWidth(getShortcutHintText());
 		if (this.drawText) {
 			switch (presentation) {
-			default :
-			case ICON_ABOVE_TEXT :
-				getFont().drawString(0 + (outline.getWidth() -
+			default:
+			case ICON_ABOVE_TEXT:
+				// text
+				getFont().drawString((outline.getWidth() -
 						textWidth) / 2, getHeight() - PADDING - textHeight,
 						text, Color.black);
+				// shortcut hint
+				getFont().drawString((outline.getWidth() +
+						textWidth) / 2 - shortcutWidth, getHeight() - PADDING - textHeight,
+						getShortcutHintText(), Color.gray);
 				break;
-			case ICON_LEFT_TEXT :
-				getFont().drawString(0 + getFont().getLineHeight() +
+			case ICON_LEFT_TEXT:
+				// text
+				getFont().drawString(getFont().getLineHeight() +
 						2 * PADDING, getHeight() - PADDING - textHeight,
 						text, Color.black);
+				// shortcut hint
+				getFont().drawString(getFont().getLineHeight() +
+						2 * PADDING + textWidth - shortcutWidth,
+						getHeight() - PADDING - textHeight,
+						getShortcutHintText(), Color.gray);
 				break;
 			}
 		}
@@ -175,6 +189,28 @@ public class Button extends Component implements Listener {
 		}
 		
 		glDisable(GL_TEXTURE_2D);
+	}
+	
+	/**
+	 * Returns the text shown on this button; with shortcut hint if that is
+	 * available. This is only meant for layouting the button.
+	 * 
+	 * @return The total text, that is "text (shortcutHint)".
+	 */
+	protected String getTotalText() {
+		return text + getShortcutHintText();
+	}
+	
+	/**
+	 * Returns the shortcut hint text that is added to the normal text.
+	 * @return The shortcut hint text, that is " (shortcutHint)".
+	 */
+	protected String getShortcutHintText() {
+		if (shortcutHint == null || shortcutHint.isEmpty()) {
+			return "";
+		}
+		
+		return " (" + shortcutHint + ")";
 	}
 	
 	@Override
@@ -223,6 +259,31 @@ public class Button extends Component implements Listener {
 	}
 	
 	/**
+	 * Sets the shortcut hint. This is an indication of the shortcut that the
+	 * user can use to activate this action.
+	 * 
+	 * \note The shortcut hint is only used for display; not for the actual
+	 * shortcut handling.
+	 * 
+	 * @param hint The new shortcut hint.
+	 */
+	public void setShortcutHint(String hint) {
+		this.shortcutHint = hint;
+	}
+	
+	/**
+	 * Returns the current shortcut hint.
+	 * 
+	 * \note The shortcut hint is only used for display; not for the actual
+	 * shortcut handling.
+	 * 
+	 * @return The shortcut hint.
+	 */
+	public String getShortcutHint() {
+		return shortcutHint;
+	}
+	
+	/**
 	 * Changes the presentation of this menu item.
 	 * @param presentation New presentation for this menu item.
 	 */
@@ -240,6 +301,8 @@ public class Button extends Component implements Listener {
 	
 	/** Describing text of this menu item. */
 	protected String text;
+	/** The shortcut hint of this menu item. */
+	protected String shortcutHint;
 	/** Icon of this menu item. */
 	protected Texture icon;
 	/** Type of this menu item. */
