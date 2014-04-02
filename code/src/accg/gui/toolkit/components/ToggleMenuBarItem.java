@@ -40,7 +40,7 @@ public class ToggleMenuBarItem extends Button {
 	 *              In case this is {@code null}, {@code text1} is used.
 	 * @param icon2 Icon that is displayed in alternate state.
 	 *              In case this is {@code null}, {@code icon1} is used.
-	 * @param type {@link Button.Type} of the menu item.
+	 * @param type {@link ButtonType} of the menu item.
 	 */
 	public ToggleMenuBarItem(String text1, Texture icon1, String text2,
 			Texture icon2, ButtonType type) {

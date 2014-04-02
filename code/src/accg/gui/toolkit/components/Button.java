@@ -50,7 +50,7 @@ public class Button extends Component implements Listener {
 	 * 
 	 * @param text Text that is displayed next to the icon.
 	 * @param icon Icon that is displayed.
-	 * @param type {@link Type} of the menu item.
+	 * @param type {@link ButtonType} of the menu item.
 	 * @throws IllegalArgumentException when either {@code text} or
 	 *         {@code icon} is {@code null}.
 	 */
@@ -184,7 +184,7 @@ public class Button extends Component implements Listener {
 	
 	/**
 	 * Return if this menu item is checked. Only applicable if the type of this
-	 * menu item is {@link Type#CHECKABLE} or {@link Type#CHECKABLE_UNIQUE}. If
+	 * menu item is {@link ButtonType#CHECKABLE} or {@link ButtonType#CHECKABLE_UNIQUE}. If
 	 * that is not the case, this method will always return false.
 	 * 
 	 * @return If this menu item is checked, or false if the notion of checked
@@ -210,8 +210,8 @@ public class Button extends Component implements Listener {
 	
 	/**
 	 * Change if this menu item is checked or not. Only has effect if the
-	 * type of this menu item is {@link Type#CHECKABLE} or
-	 * {@link Type#CHECKABLE_UNIQUE}.
+	 * type of this menu item is {@link ButtonType#CHECKABLE} or
+	 * {@link ButtonType#CHECKABLE_UNIQUE}.
 	 * 
 	 * @param checked The new value for the isChecked property of this item.
 	 */

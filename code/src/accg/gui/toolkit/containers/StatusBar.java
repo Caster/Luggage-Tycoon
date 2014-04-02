@@ -10,6 +10,10 @@ import accg.gui.toolkit.Container;
 import accg.gui.toolkit.enums.Alignment;
 import accg.gui.toolkit.enums.Position;
 
+/**
+ * A status bar is a component that displays a number of children next to
+ * each other.
+ */
 public class StatusBar extends Container {
 
 	/**
@@ -21,6 +25,7 @@ public class StatusBar extends Container {
 	 * List of components in this StatusBar.
 	 */
 	protected ArrayList<Component> children;
+	
 	/**
 	 * The position of this StatusBar in its parent.
 	 */
@@ -31,7 +36,7 @@ public class StatusBar extends Container {
 	 * parent {@link Container} and has no child {@link Component Components}.
 	 */
 	public StatusBar() {
-		this.children = new ArrayList<Component>();
+		this.children = new ArrayList<>();
 		this.position = Position.BOTTOM;
 	}
 	
@@ -43,7 +48,7 @@ public class StatusBar extends Container {
 	 * @param position Position of the StatusBar to be created in its parent.
 	 */
 	public StatusBar(Position position) {
-		this.children = new ArrayList<Component>();
+		this.children = new ArrayList<>();
 		this.position = position;
 	}
 	
