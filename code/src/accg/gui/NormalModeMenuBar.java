@@ -73,19 +73,6 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(saveItem);
 		
-		// TODO [ws] decide whether we want settings during normal mode
-		Button settingsItem = new Button(Messages.get("NormalModeMenuBar.settings"), s.textures.iconConfigure); //$NON-NLS-1$
-		settingsItem.addListener(new Listener() {
-			
-			@Override
-			public void event(Event e) {
-				if (e instanceof MouseClickEvent) {
-					stack.addMenuBelowOrClose(NormalModeMenuBar.this, MainStack.SETTINGS_MENU);
-				}
-			}
-		});
-		add(settingsItem);
-		
 		Button backItem = new Button(Messages.get("NormalModeMenuBar.back"), s.textures.iconExit); //$NON-NLS-1$
 		backItem.addListener(new Listener() {
 			

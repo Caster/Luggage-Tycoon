@@ -58,7 +58,7 @@ public class StartModeMenuBar extends MenuBar {
 		});
 		add(sandBoxItem);
 		
-		Button settingsItem = new Button(Messages.get("NormalModeMenuBar.settings"), s.textures.iconConfigure); //$NON-NLS-1$
+		Button settingsItem = new Button(Messages.get("StartModeMenuBar.settings"), s.textures.iconConfigure); //$NON-NLS-1$
 		settingsItem.addListener(new Listener() {
 			
 			@Override
