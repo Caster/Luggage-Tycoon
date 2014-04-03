@@ -60,6 +60,11 @@ public class MainStack extends MenuStack {
 		
 		BuildingModeMenuBar bar = (BuildingModeMenuBar) menuBars.get(ProgramMode.BUILDING_MODE);
 		
+		if (state.shadowBlock.getConveyorBlockType() == null) {
+			bar.setHighlightedItem(null);
+			return;
+		}
+		
 		switch (state.shadowBlock.getConveyorBlockType()) {
 		case FLAT:
 			bar.setHighlightedItem(bar.straightButton);

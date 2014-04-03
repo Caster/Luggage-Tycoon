@@ -159,10 +159,8 @@ public class BuildingModeMenuBar extends MenuBar {
 	public void setHighlightedItem(Button b) {
 		for (Component c : getChildren()) {
 			if (c instanceof Button) {
-				((Button) c).setChecked(false);
+				((Button) c).setChecked(b == c);
 			}
 		}
-		
-		b.setChecked(true);
 	}
 }

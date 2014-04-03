@@ -26,6 +26,17 @@ public class ShadowBlock extends Block {
 	private boolean visible;
 	
 	/**
+	 * Creates a new shadow object with no object yet.
+	 */
+	public ShadowBlock() {
+		super(0, 0, 0, Orientation.UP);
+		this.block = null;
+		this.alerted = false;
+		this.transparent = true;
+		this.visible = false;
+	}
+	
+	/**
 	 * Creates a new shadow object with the given object.
 	 * @param object The object to draw.
 	 */
@@ -45,7 +56,7 @@ public class ShadowBlock extends Block {
 	@Override
 	public void draw(State s) {
 		
-		if (!visible) {
+		if (!visible || block == null) {
 			return;
 		}
 		
@@ -75,7 +86,8 @@ public class ShadowBlock extends Block {
 	 * ConveyorBlock, return its type. Otherwise, return {@code null}.
 	 * 
 	 * @return Type of ConveyorBlock that is shadowed, if the shadowed block is
-	 *         a ConveyorBlock. If not, {@code null}.
+	 *         a ConveyorBlock. If not, {@code null}. The return value is also
+	 *         {@code null} in case there is no object that is shadowed.
 	 */
 	public ConveyorBlockType getConveyorBlockType() {
 		if (this.block instanceof ConveyorBlock) {
@@ -85,29 +97,83 @@ public class ShadowBlock extends Block {
 		}
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * <p>In case there is no object that is shadowed by this block, the value
+	 * -1 is returned.
+	 */
 	@Override
 	public int getHeight() {
+		if (this.block == null) {
+			return -1;
+		}
 		return this.block.getHeight();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * <p>In case there is no object that is shadowed by this block, the value
+	 * -1 is returned.
+	 */
 	@Override
 	public int getX() {
+		if (this.block == null) {
+			return -1;
+		}
 		return this.block.getX();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * <p>In case there is no object that is shadowed by this block, the value
+	 * -1 is returned.
+	 */
 	@Override
 	public int getY() {
+		if (this.block == null) {
+			return -1;
+		}
 		return this.block.getY();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * <p>In case there is no object that is shadowed by this block, the value
+	 * -1 is returned.
+	 */
 	@Override
 	public int getZ() {
+		if (this.block == null) {
+			return -1;
+		}
 		return this.block.getZ();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * <p>In case there is no object that is shadowed by this block, the value
+	 * {@code null} is returned.
+	 */
 	@Override
 	public Orientation getOrientation() {
+		if (this.block == null) {
+			return null;
+		}
 		return this.block.getOrientation();
+	}
+	
+	/**
+	 * Return if this {@link ShadowBlock} is actually shadowing a block or not.
+	 * 
+	 * @return If this {@link ShadowBlock} is actually shadowing a block or not.
+	 */
+	public boolean hasBlock() {
+		return (this.block != null);
 	}
 	
 	/**
@@ -145,7 +211,12 @@ public class ShadowBlock extends Block {
 	 * @param type The (possibly new) type to change to.
 	 */
 	public void setConveyorBlockType(ConveyorBlockType type) {
-		if (type == null || type == getConveyorBlockType()) {
+		if (type == null) {
+			this.block = null;
+			return;
+		}
+		
+		if (type == getConveyorBlockType()) {
 			return;
 		}
 		
@@ -168,26 +239,45 @@ public class ShadowBlock extends Block {
 		
 		// also initialize scale factor properly
 		setAlerted(this.alerted);
+		// If the shadowed block was null before, the position is not properly
+		// initialised, so we fix that here. Note that explicit use of member
+		// variables instead of the getters at this point!
+		setX(this.x);
+		setY(this.y);
+		setZ(this.z);
+		setOrientation(this.orientation);
 	}
 	
 	@Override
 	public void setX(int x) {
-		this.block.setX(x);
+		super.setX(x);
+		if (this.block != null) {
+			this.block.setX(x);
+		}
 	}
 	
 	@Override
 	public void setY(int y) {
-		this.block.setY(y);
+		super.setY(y);
+		if (this.block != null) {
+			this.block.setY(y);
+		}
 	}
 	
 	@Override
 	public void setZ(int z) {
-		this.block.setZ(z);
+		super.setZ(z);
+		if (this.block != null) {
+			this.block.setZ(z);
+		}
 	}
 	
 	@Override
 	public void setOrientation(Orientation orientation) {
-		this.block.setOrientation(orientation);
+		super.setOrientation(orientation);
+		if (this.block != null) {
+			this.block.setOrientation(orientation);
+		}
 	}
 	
 	/**
@@ -197,9 +287,9 @@ public class ShadowBlock extends Block {
 	 * @param position New position.
 	 */
 	public void setPosition(Vector3f position) {
-		this.block.x = (int) position.x;
-		this.block.y = (int) position.y;
-		this.block.z = (int) position.z;
+		setX((int) position.x);
+		setY((int) position.y);
+		setZ((int) position.z);
 	}
 	
 	/**
@@ -209,7 +299,9 @@ public class ShadowBlock extends Block {
 	 */
 	public void setAlerted(boolean alerted) {
 		this.alerted = alerted;
-		block.setScaleFactor(alerted ? 1.05f : 1);
+		if (this.block != null) {
+			block.setScaleFactor(alerted ? 1.05f : 1);
+		}
 	}
 	
 	/**

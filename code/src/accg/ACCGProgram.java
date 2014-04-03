@@ -32,11 +32,9 @@ import accg.gui.toolkit.GLUtils;
 import accg.gui.toolkit.GUIUtils;
 import accg.i18n.Messages;
 import accg.objects.Floor;
-import accg.objects.Orientation;
 import accg.objects.ShadowBlock;
 import accg.objects.blocks.ConveyorBlock;
 import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
-import accg.objects.blocks.FlatConveyorBlock;
 import accg.utils.Utils;
 
 /**
@@ -211,9 +209,7 @@ public class ACCGProgram {
 		s.textures = new Textures();
 		s.floor = new Floor();
 		s.floor.setBackgroundColor(BACKGROUND_COLOR);
-		// TODO: This is only temporary, for testing. This should be controlled through some
-		//       kind of menu where blocks or 'nothing' can be selected.
-		s.shadowBlock = new ShadowBlock(new FlatConveyorBlock(0, 0, 0, Orientation.LEFT));
+		s.shadowBlock = new ShadowBlock();
 		s.startTime = (float) Sys.getTime() / Sys.getTimerResolution();
 		camera = new Camera(s);
 		clickedPoint = null;
@@ -306,7 +302,7 @@ public class ACCGProgram {
 				glMultMatrix(shadowMatrix);
 				s.world.draw(s);
 				if (s.programMode == ProgramMode.BUILDING_MODE &&
-						s.shadowBlock != null) {
+						s.shadowBlock.hasBlock()) {
 					s.shadowBlock.draw(s);
 				}
 				glPopMatrix();
@@ -319,7 +315,7 @@ public class ACCGProgram {
 				// step 4: draw objects
 				s.world.draw(s);
 				if (s.programMode == ProgramMode.BUILDING_MODE &&
-						s.shadowBlock != null) {
+						s.shadowBlock.hasBlock()) {
 					s.shadowBlock.draw(s);
 				}
 			}
@@ -384,7 +380,7 @@ public class ACCGProgram {
 				// *R*otate a block in building mode
 				case Keyboard.KEY_R:
 					if (s.programMode == ProgramMode.BUILDING_MODE &&
-							s.shadowBlock != null && s.shadowBlock.isVisible()) {
+							s.shadowBlock.hasBlock() && s.shadowBlock.isVisible()) {
 						if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ||
 								Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
 							s.shadowBlock.setOrientation(
@@ -493,6 +489,9 @@ public class ACCGProgram {
 	
 	/**
 	 * Handles scrollwheel events from the mouse.
+	 * 
+	 * @param s State of the program. Used to access the GUI and let that handle
+	 *          scroll events, possibly, before letting the camera handle it.
 	 */
 	public void handleScrollEvents(State s) {
 		int dWheel = Mouse.getDWheel();
@@ -537,7 +536,7 @@ public class ACCGProgram {
 					if (Mouse.getEventButtonState()) {
 						clickedPoint = new Point(Mouse.getX(), Mouse.getY());
 						// make ShadowBlock not transparent anymore
-						if (s.shadowBlock != null && s.shadowBlock.isVisible()) {
+						if (s.shadowBlock.hasBlock() && s.shadowBlock.isVisible()) {
 							s.shadowBlock.setTransparent(false);
 							updateShadowBlockAlerted(s);
 						}
@@ -553,7 +552,7 @@ public class ACCGProgram {
 						
 						// check if the mouse was released after a drag: in that
 						// case, add a new block at that position
-						if (s.shadowBlock != null) {
+						if (s.shadowBlock.hasBlock()) {
 							if (s.shadowBlock.isVisible() &&
 									!s.shadowBlock.isAlerted() &&
 									!s.shadowBlock.isTransparent()) {
@@ -587,7 +586,7 @@ public class ACCGProgram {
 					// hovers (that is, calculate intersection of a projected ray from the
 					// mouse with the scene, et cetera)
 					if (s.programMode == ProgramMode.BUILDING_MODE &&
-							s.shadowBlock != null && !Mouse.isButtonDown(0)) {
+							s.shadowBlock.hasBlock() && !Mouse.isButtonDown(0)) {
 						if (handledMouseMoveByMenu) {
 							s.shadowBlock.setVisible(false);
 						} else {
@@ -600,7 +599,7 @@ public class ACCGProgram {
 				
 				// handle left mouse button: mouse button 0
 				if (!handledButton[0] && !handledMouseMoveByMenu && Mouse.isButtonDown(0)) {
-					if (s.programMode == ProgramMode.BUILDING_MODE && s.shadowBlock != null) {
+					if (s.programMode == ProgramMode.BUILDING_MODE && s.shadowBlock.hasBlock()) {
 						updateShadowBlockHeight(Mouse.getX(), Mouse.getY(), s);
 					} else {
 						camera.moveByMouse(dx, dy);
@@ -665,16 +664,20 @@ public class ACCGProgram {
 	 * @param s State, used to look-up ShadowBlock in.
 	 */
 	private void updateShadowBlockAlerted(State s) {
+		if (!s.shadowBlock.hasBlock()) {
+			return;
+		}
+		
 		if (s.world.getBlockCount() == s.world.getBlockLimit()) {
 			s.shadowBlock.setAlerted(true);
 			return;
 		}
 		
-		s.shadowBlock.setAlerted(s.world.bc.getBlockFuzzy(s.shadowBlock.getX(),
-				s.shadowBlock.getY(), s.shadowBlock.getZ()) != null);
-		if (!s.world.bc.checkBlockFuzzy(s.shadowBlock.getX(),
+		if (s.world.bc.checkBlockFuzzy(s.shadowBlock.getX(),
 				s.shadowBlock.getY(), s.shadowBlock.getZ(),
 				s.shadowBlock.getHeight())) {
+			s.shadowBlock.setAlerted(false);
+		} else {
 			s.shadowBlock.setAlerted(true);
 		}
 	}
