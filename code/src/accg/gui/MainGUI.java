@@ -252,6 +252,9 @@ public class MainGUI extends LayeredPane {
 						Level nextLevel = SavedGameManager.getNextLevel(instance.state);
 						if (nextLevel != null) {
 							nextLevel.loadInState(instance.state);
+							instance.state.programMode = ProgramMode.NORMAL_MODE;
+							instance.updateItems();
+							instance.updateStatusBarMode(instance.state.programMode);
 						} else {
 							instance.state.programMode = ProgramMode.START_MODE;
 							instance.updateItems();
