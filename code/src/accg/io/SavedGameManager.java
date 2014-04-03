@@ -181,6 +181,25 @@ public class SavedGameManager {
 	}
 	
 	/**
+	 * Remove the given saved game from disk.
+	 * 
+	 * @param gameName Name of the game to load. This can be one of the names
+	 *            returned by {@link #getSavedGames()}.
+	 * @throws FileNotFoundException If the given saved game was not found.
+	 */
+	public static void removeSavedGame(String gameName) throws FileNotFoundException {
+		File toRemove = new File(SAVED_GAMES_DIR, gameName + ".lt");
+		
+		if (!toRemove.exists()) {
+			throw new FileNotFoundException("File \"" + gameName + ".lt\" could not "
+					+ "be found in directory \"" + SAVED_GAMES_DIR.getAbsolutePath()
+					+ "\".");
+		}
+		
+		toRemove.delete();
+	}
+	
+	/**
 	 * Write a given game to disk.
 	 * 
 	 * @param name Name of the file for the game. It will actually be stored on

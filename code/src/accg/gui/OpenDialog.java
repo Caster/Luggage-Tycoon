@@ -22,15 +22,61 @@ public class OpenDialog extends Dialog {
 		
 		// the body
 		final Component body;
+		final List savedGamesList = new List(40, 6);
 		String[] savedGames = SavedGameManager.getSavedGames();
 		if (savedGames.length > 0) {
-			List l = new List(40, 6);
-			l.addElements(savedGames);
-			body = l;
+			savedGamesList.addElements(savedGames);
+			body = savedGamesList;
 		} else {
 			body = new Label(Messages.get("OpenDialog.noSavedGames")); //$NON-NLS-1$
 		}
 		setBody(body);
+		
+		// Remove button
+		if (body == savedGamesList) {
+			final Button removeButton = new Button(Messages.get("OpenDialog.remove"), s.textures.iconBomb); //$NON-NLS-1$
+			removeButton.addListener(new Listener() {
+				@Override
+				public void event(Event event) {
+					if (event instanceof MouseClickEvent) {
+						Button yesButton = new Button(Messages.get("OpenDialog.yes"), s.textures.iconOk); //$NON-NLS-1$
+						Button noButton = new Button(Messages.get("OpenDialog.no"), s.textures.iconExit); //$NON-NLS-1$
+						final Dialog confirmDialog = new Dialog(Messages.get("OpenDialog.confirm"),
+								new Label(String.format(Messages.get("OpenDialog.removeConfirm"),
+										savedGamesList.getSelectedElement())),
+								yesButton, noButton);
+						yesButton.addListener(new Listener() {
+							@Override
+							public void event(Event event) {
+								if (event instanceof MouseClickEvent) {
+									confirmDialog.setVisible(false);
+									try {
+										SavedGameManager.removeSavedGame(savedGamesList.getSelectedElement());
+										savedGamesList.removeSelectedElement();
+										if (savedGamesList.getElementCount() == 0) {
+											removeButton.setVisible(false);
+											OpenDialog.this.setBody(new Label(Messages.get("OpenDialog.noSavedGames"))); //$NON-NLS-1$
+										}
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
+							}
+						});
+						noButton.addListener(new Listener() {
+							@Override
+							public void event(Event event) {
+								if (event instanceof MouseClickEvent) {
+									confirmDialog.setVisible(false);
+								}
+							}
+						});
+						s.gui.add(confirmDialog);
+					}
+				}
+			});
+			addButton(removeButton);
+		}
 		
 		// OK button
 		Button okButton = new Button(Messages.get("OpenDialog.ok"), s.textures.iconOk); //$NON-NLS-1$

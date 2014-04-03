@@ -200,6 +200,14 @@ public class List extends Component {
 	}
 	
 	/**
+	 * Returns the number of elements currently in this list.
+	 * @return The number of elements currently in this list.
+	 */
+	public int getElementCount() {
+		return elements.size();
+	}
+	
+	/**
 	 * Returns the value of the selected element.
 	 * @return The value of the selected element.
 	 */
@@ -213,6 +221,17 @@ public class List extends Component {
 	 */
 	public int getSelectedIndex() {
 		return selectedIndex;
+	}
+	
+	/**
+	 * Remove the currently selected element from the list and select the
+	 * element before that one.
+	 */
+	public void removeSelectedElement() {
+		if (selectedIndex >= 0 && selectedIndex < elements.size()) {
+			elements.remove(selectedIndex);
+			selectedIndex--;
+		}
 	}
 	
 	/**
