@@ -67,7 +67,47 @@ public class StartScreenBackground {
 			glVertex3d(Display.getWidth(), 0, 0);
 		}
 		glEnd();
-
+		
+		// conveyor belts
+		s.textures.conveyor.bind();
+		
+		glPushMatrix();
+		glTranslatef(-100, 500, 0);
+		glRotatef(-70, 0, 0, 1);
+		drawConveyorBelt(s);
+		glPopMatrix();
+		
+		glPushMatrix();
+		glTranslatef(-100, 200, 0);
+		glRotatef(-20, 0, 0, 1);
+		drawConveyorBelt(s);
+		glPopMatrix();
+		
+		glPushMatrix();
+		glTranslatef(Display.getWidth() + 100, Display.getHeight() - 400, 0);
+		glRotatef(120, 0, 0, 1);
+		drawConveyorBelt(s);
+		glPopMatrix();
+		
+		glPushMatrix();
+		glTranslatef(Display.getWidth() - 300, Display.getHeight() + 100, 0);
+		glRotatef(-40, 0, 0, 1);
+		drawConveyorBelt(s);
+		glPopMatrix();
+		
+		glPushMatrix();
+		glTranslatef(800, Display.getHeight() + 100, 0);
+		glRotatef(190, 0, 0, 1);
+		drawConveyorBelt(s);
+		glPopMatrix();
+		
+		glPushMatrix();
+		glTranslatef(Display.getWidth() + 100, 400, 0);
+		glRotatef(210, 0, 0, 1);
+		drawConveyorBelt(s);
+		glPopMatrix();
+		
+		// the text
 		glEnable(GL_BLEND);
 		String text = "Luggage Tycoon";
 		int textWidth = largeFont.getWidth(text);
@@ -76,5 +116,21 @@ public class StartScreenBackground {
 				(Display.getHeight() - textHeight) / 2, text, Color.black);
 		
 		glDisable(GL_TEXTURE_2D);
+	}
+	
+	protected static void drawConveyorBelt(State s) {
+
+		glBegin(GL_QUADS);
+		{
+			glTexCoord2f(5 * s.time, 0);
+			glVertex2d(0, 0);
+			glTexCoord2f(5 * s.time, 1);
+			glVertex2d(0, 50);
+			glTexCoord2f(5 * s.time + 40, 1);
+			glVertex2d(1000, 50);
+			glTexCoord2f(5 * s.time + 40, 0);
+			glVertex2d(1000, 0);
+		}
+		glEnd();
 	}
 }
