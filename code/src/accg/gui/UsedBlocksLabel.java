@@ -28,10 +28,14 @@ public class UsedBlocksLabel extends Label {
 	 */
 	public void updateInfo() {
 		if (this.state.world != null) {
-			setText(String.format(Messages.get("UsedBlocksLabel.blocksPlaced"), //$NON-NLS-1$
-					this.state.world.getBlockCount(),
-					(this.state.world.getBlockLimit() < 0 ? "∞" :
-						String.valueOf(this.state.world.getBlockLimit()))));
+			if (this.state.world.getBlockLimit() >= 0) {
+				setText(String.format(Messages.get("UsedBlocksLabel.blocksPlaced"), //$NON-NLS-1$
+						this.state.world.getBlockCount(),
+						this.state.world.getBlockLimit()));
+			} else {
+				setText(String.format(Messages.get("UsedBlocksLabel.blocksPlacedInf"), //$NON-NLS-1$
+						this.state.world.getBlockCount()));
+			}
 		}
 	}
 }

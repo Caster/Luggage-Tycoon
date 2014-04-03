@@ -11,12 +11,10 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import accg.ACCGProgram;
 import accg.State;
 import accg.State.ProgramMode;
 import accg.objects.Block;
 import accg.objects.Luggage.LuggageColor;
-import accg.objects.Floor;
 import accg.objects.Orientation;
 import accg.objects.World;
 import accg.objects.blocks.EnterBlock;
@@ -289,9 +287,6 @@ public class Level {
 		for (Block b : blocks) {
 			s.world.addBlock(s, b);
 		}
-		
-		s.floor = new Floor();
-		s.floor.setBackgroundColor(ACCGProgram.BACKGROUND_COLOR);
 	}
 	
 	/**

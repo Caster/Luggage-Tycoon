@@ -129,7 +129,7 @@ public class World extends Container<DrawableObject> {
 			blockCount--;
 		}
 		
-		if (blockCount + 1 > blockLimit) {
+		if (blockLimit >= 0 && blockCount + 1 > blockLimit) {
 			return;
 		}
 		

@@ -51,6 +51,7 @@ public class StartModeMenuBar extends MenuBar {
 				if (e instanceof MouseClickEvent) {
 					s.simulation = new Simulation(s);
 					s.world = new World(s);
+					s.world.setBlockLimit(-1);
 					s.programMode = ProgramMode.NORMAL_MODE;
 					s.gui.updateItems();
 				}

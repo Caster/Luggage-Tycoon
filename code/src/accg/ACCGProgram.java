@@ -31,6 +31,7 @@ import accg.gui.toolkit.Component;
 import accg.gui.toolkit.GLUtils;
 import accg.gui.toolkit.GUIUtils;
 import accg.i18n.Messages;
+import accg.objects.Floor;
 import accg.objects.Orientation;
 import accg.objects.ShadowBlock;
 import accg.objects.blocks.ConveyorBlock;
@@ -208,6 +209,8 @@ public class ACCGProgram {
 		
 		// initialize stuff here
 		s.textures = new Textures();
+		s.floor = new Floor();
+		s.floor.setBackgroundColor(BACKGROUND_COLOR);
 		// TODO: This is only temporary, for testing. This should be controlled through some
 		//       kind of menu where blocks or 'nothing' can be selected.
 		s.shadowBlock = new ShadowBlock(new FlatConveyorBlock(0, 0, 0, Orientation.LEFT));

@@ -2,7 +2,6 @@ package accg.gui;
 
 import accg.State;
 import accg.State.ProgramMode;
-import accg.gui.toolkit.containers.MenuBar;
 import accg.gui.toolkit.containers.MenuStack;
 import accg.gui.toolkit.enums.Alignment;
 import accg.gui.toolkit.enums.Position;
