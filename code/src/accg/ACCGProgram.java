@@ -706,6 +706,7 @@ public class ACCGProgram {
 			return;
 		}
 		
+		blockToRemove.onDestroy();
 		s.world.bc.removeBlock(
 				(int) (interestingCells.get(firstTakenIndex).x),
 				(int) (interestingCells.get(firstTakenIndex).y),
