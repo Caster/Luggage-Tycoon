@@ -2,6 +2,7 @@ package accg.gui.toolkit.components;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.Color;
 
 import accg.gui.toolkit.Component;
@@ -75,7 +76,49 @@ public class TextField extends Component {
 				}
 				
 				if (e instanceof KeyEvent) {
-					addCharacterAtCursor(((KeyEvent) e).getKey());
+					
+					cursorShowCounter = 0;
+					
+					// is this a readable character?
+					if (((KeyEvent) e).getCharacter() >= ' ' && ((KeyEvent) e).getCharacter() != 127) {
+						addCharacterAtCursor(((KeyEvent) e).getCharacter());
+					}
+					
+					// perhaps backspace?
+					if (((KeyEvent) e).getKeyCode() == Keyboard.KEY_BACK) {
+						performBackspace();
+					}
+					
+					// perhaps delete?
+					if (((KeyEvent) e).getKeyCode() == Keyboard.KEY_DELETE) {
+						performDelete();
+					}
+					
+					// perhaps left-arrow?
+					if (((KeyEvent) e).getKeyCode() == Keyboard.KEY_LEFT) {
+						cursorLocation--;
+						if (cursorLocation < 0) {
+							cursorLocation = 0;
+						}
+					}
+					
+					// perhaps right-arrow?
+					if (((KeyEvent) e).getKeyCode() == Keyboard.KEY_RIGHT) {
+						cursorLocation++;
+						if (cursorLocation > text.length()) {
+							cursorLocation = text.length();
+						}
+					}
+					
+					// perhaps home?
+					if (((KeyEvent) e).getKeyCode() == Keyboard.KEY_HOME) {
+						cursorLocation = 0;
+					}
+					
+					// perhaps end?
+					if (((KeyEvent) e).getKeyCode() == Keyboard.KEY_END) {
+						cursorLocation = text.length();
+					}
 				}
 			}
 		});
@@ -133,6 +176,24 @@ public class TextField extends Component {
 	protected void addCharacterAtCursor(char key) {
 		text = text.substring(0, cursorLocation) + key + text.substring(cursorLocation);
 		cursorLocation++;
+	}
+	
+	protected void performBackspace() {
+		
+		if (cursorLocation == 0) {
+			return;
+		}
+		
+		text = text.substring(0, cursorLocation - 1) + text.substring(cursorLocation);
+		cursorLocation--;
+	}
+	protected void performDelete() {
+		
+		if (cursorLocation == text.length()) {
+			return;
+		}
+		
+		text = text.substring(0, cursorLocation) + text.substring(cursorLocation + 1);
 	}
 
 	@Override

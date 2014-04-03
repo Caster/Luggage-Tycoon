@@ -140,18 +140,18 @@ public class MainGUI extends LayeredPane {
 	/**
 	 * Handles a key event by giving it to the GUI.
 	 * 
+	 * @param keyCode The LWJGL event key code.
 	 * @param c The character typed.
-	 * (TODO This is quite ugly; investigate other ways to do this.)
 	 * @return Whether the event has been handled by the GUI.
 	 */
-	public boolean handleKeyEvent(char c) {
+	public boolean handleKeyEvent(int keyCode, char c) {
 		Component focused = Component.getKeyFocusElement();
 		
 		if (focused == null) {
 			return false;
 		}
 		
-		focused.sendEvent(new KeyEvent(c));
+		focused.sendEvent(new KeyEvent(keyCode, c));
 		return true;
 	}
 	

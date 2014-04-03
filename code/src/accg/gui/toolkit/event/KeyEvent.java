@@ -8,6 +8,11 @@ import accg.gui.toolkit.Event;
 public class KeyEvent extends Event {
 	
 	/**
+	 * The LWJGL key code of the pressed key.
+	 */
+	protected int keyCode;
+	
+	/**
 	 * The character of the key pressed.
 	 */
 	protected char c;
@@ -15,17 +20,27 @@ public class KeyEvent extends Event {
 	/**
 	 * Creates a new MouseClickEvent.
 	 * 
+	 * @param keyCode The LWJGL key code of the pressed key.
 	 * @param c The character of the key pressed.
 	 */
-	public KeyEvent(char c) {
+	public KeyEvent(int keyCode, char c) {
+		this.keyCode = keyCode;
 		this.c = c;
+	}
+	
+	/**
+	 * Returns the LWJGL key code of the pressed key.
+	 * @return The key code.
+	 */
+	public int getKeyCode() {
+		return keyCode;
 	}
 	
 	/**
 	 * Returns the key that was pressed.
 	 * @return The character of the key pressed.
 	 */
-	public char getKey() {
+	public char getCharacter() {
 		return c;
 	}
 }

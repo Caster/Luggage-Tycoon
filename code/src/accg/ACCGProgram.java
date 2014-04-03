@@ -349,7 +349,7 @@ public class ACCGProgram {
 			
 			if (Keyboard.getEventKeyState()) {
 				// perhaps the GUI wants to handle this?
-				if (s.gui.handleKeyEvent(Keyboard.getEventCharacter())) {
+				if (s.gui.handleKeyEvent(Keyboard.getEventKey(), Keyboard.getEventCharacter())) {
 					continue;
 				}
 				
