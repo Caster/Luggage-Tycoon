@@ -20,8 +20,9 @@ public class BuildingModeMenuBar extends MenuBar {
 
 	public Button rotateLeftItem;
 	public Button rotateRightItem;
+	public Button removeItem;
 	
-	public BuildingModeMenuBar(final MenuStack stack, final State s) {
+	public BuildingModeMenuBar(final MainStack stack, final State s) {
 		
 		rotateLeftItem = new Button(Messages.get("BuildingModeMenuBar.rotateLeft"),
 				s.textures.iconLeft);
@@ -70,6 +71,22 @@ public class BuildingModeMenuBar extends MenuBar {
 			}
 		});
 		add(chooseBlockItem);
+		
+		removeItem = new Button(Messages.get("BuildingModeMenuBar.remove"),
+				s.textures.iconBomb, ButtonType.CHECKABLE);
+		removeItem.setShortcutHint("Del");
+		removeItem.addListener(new Listener() {
+			
+			@Override
+			public void event(Event e) {
+				if (e instanceof MouseClickEvent) {
+					// de-select the selected block to build
+					stack.blockBar.setHighlightedItem(null);
+					System.err.println("Enter remove mode...");
+				}
+			}
+		});
+		add(removeItem);
 		
 		Button backItem = new Button(Messages.get("BuildingModeMenuBar.back"), s.textures.iconExit); //$NON-NLS-1$
 		backItem.addListener(new Listener() {

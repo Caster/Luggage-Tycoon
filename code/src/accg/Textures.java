@@ -32,6 +32,7 @@ public class Textures {
 	public Texture iconOk;
 	public Texture iconLeft;
 	public Texture iconRight;
+	public Texture iconBomb;
 	
 	// belts
 	public Texture iconBeltFlat;
@@ -94,6 +95,8 @@ public class Textures {
 					ResourceLoader.getResourceAsStream("res/icons/object-rotate-left.png"));
 			iconRight = TextureLoader.getTexture("PNG",
 					ResourceLoader.getResourceAsStream("res/icons/object-rotate-right.png"));
+			iconBomb = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/edit-bomb.png"));
 			
 			// belts
 			iconBeltFlat = TextureLoader.getTexture("PNG",
