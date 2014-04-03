@@ -16,10 +16,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.PixelFormat;
-import org.lwjgl.opengl.Util;
+import org.lwjgl.opengl.*;
 import org.lwjgl.util.Point;
 import org.lwjgl.util.glu.GLU;
 import org.newdawn.slick.Color;
@@ -31,6 +28,7 @@ import accg.gui.toolkit.Component;
 import accg.gui.toolkit.GLUtils;
 import accg.gui.toolkit.GUIUtils;
 import accg.i18n.Messages;
+import accg.objects.Block;
 import accg.objects.Floor;
 import accg.objects.ShadowBlock;
 import accg.objects.blocks.ConveyorBlock;
@@ -402,6 +400,9 @@ public class ACCGProgram {
 				// switch to *F*lat conveyor block in building mode 
 				case Keyboard.KEY_F:
 					if (changingBlock) {
+						// we are now not going to remove blocks anymore
+						s.removingBlocks = false;
+						
 						s.shadowBlock.setConveyorBlockType(ConveyorBlockType.FLAT);
 						s.gui.updateItems();
 					}
@@ -409,6 +410,9 @@ public class ACCGProgram {
 				// switch to *A*scending conveyor block in building mode
 				case Keyboard.KEY_A:
 					if (changingBlock) {
+						// we are now not going to remove blocks anymore
+						s.removingBlocks = false;
+						
 						s.shadowBlock.setConveyorBlockType(ConveyorBlockType.ASCENDING);
 						s.gui.updateItems();
 					}
@@ -416,21 +420,39 @@ public class ACCGProgram {
 				// switch to *D*escending conveyor block in building mode
 				case Keyboard.KEY_D:
 					if (changingBlock) {
+						// we are now not going to remove blocks anymore
+						s.removingBlocks = false;
+						
 						s.shadowBlock.setConveyorBlockType(ConveyorBlockType.DESCENDING);
 						s.gui.updateItems();
 					}
 					break;
 				// switch to bend *L*eft conveyor block in building mode
 				case Keyboard.KEY_B:
-				if (changingBlock) {
-					if (s.shadowBlock.getConveyorBlockType() == ConveyorBlockType.BEND_LEFT) {
-						s.shadowBlock.setConveyorBlockType(ConveyorBlockType.BEND_RIGHT);
-					} else {
-						s.shadowBlock.setConveyorBlockType(ConveyorBlockType.BEND_LEFT);
+					if (changingBlock) {
+						// we are now not going to remove blocks anymore
+						s.removingBlocks = false;
+						
+						if (s.shadowBlock.getConveyorBlockType() == ConveyorBlockType.BEND_LEFT) {
+							s.shadowBlock.setConveyorBlockType(ConveyorBlockType.BEND_RIGHT);
+						} else {
+							s.shadowBlock.setConveyorBlockType(ConveyorBlockType.BEND_LEFT);
+						}
+						s.gui.updateItems();
 					}
+					break;
+				case Keyboard.KEY_DELETE:
+					
+					// we are now going to remove blocks
+					s.removingBlocks = true;
+					
+					// hide the shadow block
+					s.shadowBlock.setConveyorBlockType(null);
+
+					// update the GUI
 					s.gui.updateItems();
-				}
-				break;
+					
+					break;
 				}
 			} else {
 				switch (Keyboard.getEventKey()) {
@@ -540,6 +562,12 @@ public class ACCGProgram {
 							s.shadowBlock.setTransparent(false);
 							updateShadowBlockAlerted(s);
 						}
+						
+						// check if the user is removing blocks
+						// then, remove the block that was clicked
+						if (s.removingBlocks) {
+							handleRemoval(s);
+						}
 					} else {
 						if (clickedPoint != null) {
 							if (Math.abs(clickedPoint.getX() - Mouse.getX()) < 3 &&
@@ -616,6 +644,71 @@ public class ACCGProgram {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Handles a block removal. This should be called when the user clicked the
+	 * scene and {@link State#removingBlocks} is <code>true</code>.
+	 * 
+	 * @param s The state.
+	 */
+	protected void handleRemoval(State s) {
+		
+		// TODO This is largely copied from updateShadowBlockPosition()
+		// find the intersection of the camera viewing ray with the scene AABB
+		findMouseViewVector(clickedPoint.getX(), clickedPoint.getY());		
+		double[] result = Utils.getIntersectWithBox(mousePos3DvectorNear,
+				mouseViewVector, -0.5, s.fieldLength - 0.5, -0.5, s.fieldWidth -
+				0.5, 0.0, s.fieldHeight);
+		// are we even hovering the scene?
+		if (result == null) {
+			s.shadowBlock.setVisible(false);
+			return;
+		}
+		
+		// we do not want to start behind the camera
+		result[0] = Math.max(0, result[0]);
+		Vector3f start = new Vector3f();
+		Vector3f end = new Vector3f();
+		start.scaleAdd((float) result[0], mouseViewVector, mousePos3DvectorNear);
+		start.add(offsetVector);
+		end.scaleAdd((float) result[1], mouseViewVector, mousePos3DvectorNear);
+		end.add(offsetVector);
+		// go a little further, to make sure we do not miss the cell on the ground
+		mouseViewVector.scale(0.5f);
+		end.add(mouseViewVector);
+		
+		// find interesting grid cells
+		ArrayList<Vector3f> interestingCells = Utils.bresenham3D(start, end);
+		// update end position to something that makes more sense
+		end.sub(mouseViewVector);
+		end.z = 0;
+		// check if the position for the block is in bounds, this may not be the case
+		// in some corner cases (particular view on edge of scene)
+		if (!s.world.bc.inBounds((int) end.x, (int) end.y, (int) end.z)) {
+			s.shadowBlock.setVisible(false);
+			return;
+		}
+		// position the shadowobject just before the first cell that contains a
+		// block, or hide it if the first block is taken already
+		int firstTakenIndex = s.world.getFirstTakenIndex(interestingCells);
+		
+		if (firstTakenIndex >= interestingCells.size()) {
+			return;
+		}
+		Block blockToRemove = s.world.bc.getBlock(
+				(int) (interestingCells.get(firstTakenIndex).x),
+				(int) (interestingCells.get(firstTakenIndex).y),
+				(int) (interestingCells.get(firstTakenIndex).z));
+		
+		if (!blockToRemove.isDeletable()) {
+			return;
+		}
+		
+		s.world.bc.removeBlock(
+				(int) (interestingCells.get(firstTakenIndex).x),
+				(int) (interestingCells.get(firstTakenIndex).y),
+				(int) (interestingCells.get(firstTakenIndex).z));
 	}
 	
 	/**

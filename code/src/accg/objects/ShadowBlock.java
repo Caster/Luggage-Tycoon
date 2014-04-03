@@ -208,8 +208,10 @@ public class ShadowBlock extends Block {
 	
 	/**
 	 * Change the 'shadowed' block to match the given type. Does nothing if the
-	 * given type is {@code null} or equal to the type returned by the method
-	 * {@link #getConveyorBlockType()}.
+	 * given type is equal to the type returned by the method
+	 * {@link #getConveyorBlockType()}. If the type is <code>null</code>, the
+	 * block will be removed from the {@link ShadowBlock} such that no block is
+	 * shadowed anymore.
 	 * 
 	 * <p>The position and orientation of the block that is 'shadowed' are kept.
 	 * 

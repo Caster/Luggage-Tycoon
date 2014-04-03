@@ -61,6 +61,8 @@ public class MainStack extends MenuStack {
 	public void updateItems() {
 		addMenuOnPosition(0, state.programMode);
 		
+		buildBar.removeItem.setChecked(state.removingBlocks);
+		
 		if (state.shadowBlock.getConveyorBlockType() == null) {
 			blockBar.setHighlightedItem(null);
 			return;

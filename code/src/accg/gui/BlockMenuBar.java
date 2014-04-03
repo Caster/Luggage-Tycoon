@@ -37,6 +37,7 @@ public class BlockMenuBar extends MenuBar {
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
 					stack.buildBar.removeItem.setChecked(false);
+					s.removingBlocks = false;
 					s.shadowBlock.setConveyorBlockType(ConveyorBlockType.FLAT);
 				}
 			}
@@ -53,6 +54,7 @@ public class BlockMenuBar extends MenuBar {
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
 					stack.buildBar.removeItem.setChecked(false);
+					s.removingBlocks = false;
 					s.shadowBlock.setConveyorBlockType(ConveyorBlockType.ASCENDING);
 				}
 			}
@@ -69,6 +71,7 @@ public class BlockMenuBar extends MenuBar {
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
 					stack.buildBar.removeItem.setChecked(false);
+					s.removingBlocks = false;
 					s.shadowBlock.setConveyorBlockType(ConveyorBlockType.DESCENDING);
 				}
 			}
@@ -85,6 +88,7 @@ public class BlockMenuBar extends MenuBar {
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
 					stack.buildBar.removeItem.setChecked(false);
+					s.removingBlocks = false;
 					s.shadowBlock.setConveyorBlockType(ConveyorBlockType.BEND_LEFT);
 				}
 			}
@@ -101,6 +105,7 @@ public class BlockMenuBar extends MenuBar {
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
 					stack.buildBar.removeItem.setChecked(false);
+					s.removingBlocks = false;
 					s.shadowBlock.setConveyorBlockType(ConveyorBlockType.BEND_RIGHT);
 				}
 			}

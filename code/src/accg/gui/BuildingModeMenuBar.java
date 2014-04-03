@@ -80,9 +80,15 @@ public class BuildingModeMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
+					
 					// de-select the selected block to build
 					stack.blockBar.setHighlightedItem(null);
-					System.err.println("Enter remove mode...");
+					
+					// we are now going to remove blocks
+					s.removingBlocks = true;
+					
+					// hide the shadow block
+					s.shadowBlock.setConveyorBlockType(null);
 				}
 			}
 		});

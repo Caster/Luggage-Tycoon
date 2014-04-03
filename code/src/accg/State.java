@@ -72,6 +72,16 @@ public class State {
 	public ProgramMode programMode = ProgramMode.START_MODE;
 	
 	/**
+	 * Whether the user is removing blocks at the moment. This only makes sense
+	 * in the {@link ProgramMode#BUILDING_MODE}.
+	 * 
+	 * If <code>true</code>, the user cannot build blocks; instead, blocks will
+	 * be removed when the user clicks on them. If <code>false</code>, the user
+	 * is able to build blocks instead.
+	 */
+	public boolean removingBlocks = false;
+	
+	/**
 	 * Length of the field, in number of grid squares.
 	 * 
 	 * <p>This is the number of squares along the X-axis.</p>
