@@ -269,27 +269,29 @@ public class ACCGProgram {
 			// advance the conveyor belts
 			s.beltPosition += s.beltSpeed * (s.time - s.prevTime);
 			
-			// start rendering stuff
-			glClearColor(BACKGROUND_COLOR);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glViewport(0, 0, Display.getWidth(), Display.getHeight());
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			gluPerspective(45, (float) Display.getWidth() / Display.getHeight(), 0.1f, 1000f);
-			
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			camera.setLookAt();
-			
 			// handle events
 			handleKeyEvents(s);
 			handlePressedKeys();
 			handleScrollEvents(s);
 			handleMouseEvents(s);
-			updateHighlightedBlock(s);
 
 			// draw the scene (not if we are in the start screen)
 			if (s.programMode != ProgramMode.START_MODE) {
+				
+				// start rendering stuff
+				glClearColor(BACKGROUND_COLOR);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				glViewport(0, 0, Display.getWidth(), Display.getHeight());
+				glMatrixMode(GL_PROJECTION);
+				glLoadIdentity();
+				gluPerspective(45, (float) Display.getWidth() / Display.getHeight(), 0.1f, 1000f);
+				
+				glMatrixMode(GL_MODELVIEW);
+				glLoadIdentity();
+				camera.setLookAt();
+				
+				updateHighlightedBlock(s);
+				
 				// step 1: draw floor
 				s.drawingShadows = false;
 				s.floor.draw(s);
@@ -317,6 +319,9 @@ public class ACCGProgram {
 						s.shadowBlock.hasBlock()) {
 					s.shadowBlock.draw(s);
 				}
+			} else {
+				// we are in the start screen, so draw it
+				StartScreenBackground.draw(s);
 			}
 			
 			// draw the menu bars
