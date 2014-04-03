@@ -290,7 +290,7 @@ public class World extends Container<DrawableObject> {
 				Block b = bc.getBlock((int) pos.x, (int) pos.y, (int) pos.z);
 				// do not draw something to the back of a LeaveBlock
 				if (!(b instanceof LeaveBlock)) {
-					if (b instanceof ConveyorBlock) {
+					if (b instanceof ConveyorBlock && !(b instanceof AscendingConveyorBlock)) {
 						ConveyorBlock cbn = (ConveyorBlock) b;
 						if (haveMatchingOrientations(cbn, cb)) {
 							result[0] = cbn;
