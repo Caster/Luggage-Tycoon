@@ -105,6 +105,11 @@ public class StatusBar extends Container {
 			child.setX(x);
 			child.setY(y);
 			
+			if (!child.isVisible()) {
+				child.setHeight(0);
+				child.setWidth(0);
+			}
+			
 			if (horLayout) {
 				x += child.getWidth() + PADDING;
 			} else {
