@@ -286,6 +286,7 @@ public class ACCGProgram {
 			handlePressedKeys();
 			handleScrollEvents(s);
 			handleMouseEvents(s);
+			updateHighlightedBlock(s);
 
 			// draw the scene (not if we are in the start screen)
 			if (s.programMode != ProgramMode.START_MODE) {
@@ -706,6 +707,72 @@ public class ACCGProgram {
 		}
 		
 		s.world.bc.removeBlock(
+				(int) (interestingCells.get(firstTakenIndex).x),
+				(int) (interestingCells.get(firstTakenIndex).y),
+				(int) (interestingCells.get(firstTakenIndex).z));
+	}
+	
+	/**
+	 * Updates the highlighted block, based on the mouse position.
+	 * 
+	 * This should be called every frame.
+	 * 
+	 * @param s The state.
+	 */
+	protected void updateHighlightedBlock(State s) {
+		
+		if (s.world == null) {
+			return;
+		}
+		
+		if (!s.removingBlocks) {
+			s.world.bc.setHighlight(-1, -1, -1);
+			return;
+		}
+		
+		// TODO This is largely copied from updateShadowBlockPosition()
+		// find the intersection of the camera viewing ray with the scene AABB
+		findMouseViewVector(Mouse.getX(), Mouse.getY());		
+		double[] result = Utils.getIntersectWithBox(mousePos3DvectorNear,
+				mouseViewVector, -0.5, s.fieldLength - 0.5, -0.5, s.fieldWidth -
+				0.5, 0.0, s.fieldHeight);
+		// are we even hovering the scene?
+		if (result == null) {
+			s.shadowBlock.setVisible(false);
+			return;
+		}
+		
+		// we do not want to start behind the camera
+		result[0] = Math.max(0, result[0]);
+		Vector3f start = new Vector3f();
+		Vector3f end = new Vector3f();
+		start.scaleAdd((float) result[0], mouseViewVector, mousePos3DvectorNear);
+		start.add(offsetVector);
+		end.scaleAdd((float) result[1], mouseViewVector, mousePos3DvectorNear);
+		end.add(offsetVector);
+		// go a little further, to make sure we do not miss the cell on the ground
+		mouseViewVector.scale(0.5f);
+		end.add(mouseViewVector);
+		
+		// find interesting grid cells
+		ArrayList<Vector3f> interestingCells = Utils.bresenham3D(start, end);
+		// update end position to something that makes more sense
+		end.sub(mouseViewVector);
+		end.z = 0;
+		// check if the position for the block is in bounds, this may not be the case
+		// in some corner cases (particular view on edge of scene)
+		if (!s.world.bc.inBounds((int) end.x, (int) end.y, (int) end.z)) {
+			s.shadowBlock.setVisible(false);
+			return;
+		}
+		// position the shadowobject just before the first cell that contains a
+		// block, or hide it if the first block is taken already
+		int firstTakenIndex = s.world.getFirstTakenIndex(interestingCells);
+		
+		if (firstTakenIndex >= interestingCells.size()) {
+			return;
+		}
+		s.world.bc.setHighlight(
 				(int) (interestingCells.get(firstTakenIndex).x),
 				(int) (interestingCells.get(firstTakenIndex).y),
 				(int) (interestingCells.get(firstTakenIndex).z));

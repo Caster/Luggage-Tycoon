@@ -1,5 +1,7 @@
 package accg.objects;
 
+import static org.lwjgl.opengl.GL11.*;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -39,6 +41,24 @@ public class BlockCollection extends DrawableObject implements Iterable<Block> {
 	 * The Z-size of this {@link BlockCollection}, in the number of blocks.
 	 */
 	private int sizeZ;
+
+	/**
+	 * The x-coordinate of the red highlighted block. This is only used when
+	 * deleting.
+	 */
+	private int highlightX = -1;
+
+	/**
+	 * The y-coordinate of the red highlighted block. This is only used when
+	 * deleting.
+	 */
+	private int highlightY = -1;
+
+	/**
+	 * The z-coordinate of the red highlighted block. This is only used when
+	 * deleting.
+	 */
+	private int highlightZ = -1;
 	
 	/**
 	 * Creates a new {@link BlockCollection} of the given size.
@@ -207,11 +227,20 @@ public class BlockCollection extends DrawableObject implements Iterable<Block> {
 	@Override
 	public void draw(State s) {
 		
-		for (Block[][] blockX : blocks) {
-			for (Block[] blockXY : blockX) {
-				for (Block block : blockXY) {
+		for (int x = 0; x < blocks.length; x++) {
+			Block[][] blockX = blocks[x];
+			for (int y = 0; y < blockX.length; y++) {
+				Block[] blockXY = blockX[y];
+				for (int z = 0; z < blockXY.length; z++) {
+					Block block = blockXY[z];
 					if (block != null) {
-						block.draw(s);
+						if (highlightX == x && highlightY == y && highlightZ == z && block.isDeletable()) {
+							glColor4f(1, 0, 0, 1);
+							block.draw(s);
+							glColor4f(1, 1, 1, 1);
+						} else {
+							block.draw(s);
+						}
 					}
 				}
 			}
@@ -229,6 +258,24 @@ public class BlockCollection extends DrawableObject implements Iterable<Block> {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Sets the highlighted block position.
+	 * 
+	 * The highlighted block will be drawn in red.
+	 * 
+	 * \note If you do not want any highlighted block, this can be set to
+	 * <code>(-1, -1, -1)</code>.
+	 * 
+	 * @param highlightX The x-coordinate.
+	 * @param highlightY The y-coordinate.
+	 * @param highlightZ The z-coordinate.
+	 */
+	public void setHighlight(int highlightX, int highlightY, int highlightZ) {
+		this.highlightX = highlightX;
+		this.highlightY = highlightY;
+		this.highlightZ = highlightZ;
 	}
 
 	@Override
