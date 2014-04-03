@@ -1,6 +1,7 @@
 package accg.simulation;
 
 import accg.State;
+import accg.gui.MainGUI;
 import accg.objects.Luggage;
 import accg.objects.blocks.LeaveBlock;
 
@@ -50,6 +51,8 @@ public class SimulationCallback extends ContactProcessedCallback {
 						if (lb.getAcceptColors() == null ||
 								lb.getAcceptColors().contains(lug.getColor())) {
 							state.world.luggage.remove((Luggage) rb1info.getUserPointer());
+							lb.incrementArrivedLuggageCount();
+							MainGUI.updateStatusBarInfo();
 						}
 					} else if (rb0info.getBodyType() == SimulationBodyType.LUGGAGE &&
 							rb1info.getBodyType() == SimulationBodyType.LEAVE_BLOCK) {
@@ -58,6 +61,8 @@ public class SimulationCallback extends ContactProcessedCallback {
 						if (lb.getAcceptColors() == null ||
 								lb.getAcceptColors().contains(lug.getColor())) {
 							state.world.luggage.remove((Luggage) rb1info.getUserPointer());
+							lb.incrementArrivedLuggageCount();
+							MainGUI.updateStatusBarInfo();
 						}
 					}
 				}

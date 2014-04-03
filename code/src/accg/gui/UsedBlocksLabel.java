@@ -4,6 +4,12 @@ import accg.State;
 import accg.gui.toolkit.components.Label;
 import accg.i18n.Messages;
 
+/**
+ * A UsedBlocksLabel is a {@link Label} that can indicate how many blocks have
+ * been placed by the user and what is the limit on how many blocks can be
+ * placed. This information is read from the {@link State} automatically and is
+ * updated with a simple {@link #updateInfo()} call.
+ */
 public class UsedBlocksLabel extends Label {
 
 	/**

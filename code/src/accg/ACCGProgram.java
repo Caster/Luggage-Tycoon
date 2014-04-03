@@ -587,7 +587,7 @@ public class ACCGProgram {
 									!s.shadowBlock.isTransparent()) {
 								s.world.addBlock(s,
 										(ConveyorBlock) s.shadowBlock.clone());
-								s.gui.updateStatusBarInfo();
+								MainGUI.updateStatusBarInfo();
 							}
 							
 							s.shadowBlock.setAlerted(false);

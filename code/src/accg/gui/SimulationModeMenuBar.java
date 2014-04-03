@@ -25,6 +25,7 @@ public class SimulationModeMenuBar extends MenuBar {
 					s.simulation.clearObjects(s);
 					s.programMode = ProgramMode.NORMAL_MODE;
 					s.gui.updateItems();
+					s.gui.setStatusBarVisible(false);
 				}
 			}
 		});

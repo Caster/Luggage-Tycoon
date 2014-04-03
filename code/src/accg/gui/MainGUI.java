@@ -9,6 +9,7 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.util.ResourceLoader;
 
 import accg.State;
+import accg.State.ProgramMode;
 import accg.gui.toolkit.Component;
 import accg.gui.toolkit.containers.LayeredPane;
 import accg.gui.toolkit.containers.MenuStack;
@@ -242,8 +243,19 @@ public class MainGUI extends LayeredPane {
 	/**
 	 * Update information shown on the {@link MainStatusBar}.
 	 */
-	public void updateStatusBarInfo() {
-		statusBar.updateInfo();
+	public static void updateStatusBarInfo() {
+		if (instance != null) {
+			instance.statusBar.updateInfo();
+		}
+	}
+	
+	/**
+	 * Update what is shown in the status bar, depending on the program mode.
+	 * 
+	 * @param mode The new program mode of the program.
+	 */
+	public void updateStatusBarMode(ProgramMode mode) {
+		statusBar.updateMode(mode);
 	}
 	
 	/**

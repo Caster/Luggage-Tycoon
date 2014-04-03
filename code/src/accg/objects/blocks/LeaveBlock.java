@@ -86,6 +86,12 @@ public class LeaveBlock extends FlatConveyorBlock {
 	private ArrayList<LuggageColor> acceptColors;
 	
 	/**
+	 * Count of how many pieces of luggage have arrived at this block.
+	 * (And have been accepted, so have the correct color.)
+	 */
+	private int arrivedLuggageCount;
+	
+	/**
 	 * Creates a new LeaveBlock on the specified position.
 	 * 
 	 * @param x The x-coordinate.
@@ -94,10 +100,7 @@ public class LeaveBlock extends FlatConveyorBlock {
 	 * @param orientation The orientation of this block.
 	 */
 	public LeaveBlock(int x, int y, int z, Orientation orientation) {
-		super(x, y, z, orientation);
-		
-		this.type = ConveyorBlockType.LEAVE;
-		this.acceptColors = null;
+		this(x, y, z, orientation, true);
 	}
 	
 	/**
@@ -115,6 +118,7 @@ public class LeaveBlock extends FlatConveyorBlock {
 		
 		this.type = ConveyorBlockType.LEAVE;
 		this.acceptColors = null;
+		this.arrivedLuggageCount = 0;
 	}
 	
 	/**
@@ -186,6 +190,15 @@ public class LeaveBlock extends FlatConveyorBlock {
 		return acceptColors;
 	}
 	
+	/**
+	 * Returns the number of pieces of luggage that have arrived at this block
+	 * and have been accepted, that is, had the right color.
+	 * @return The number of pieces of luggage that has been accepted.
+	 */
+	public int getArrivedLuggageCount() {
+		return arrivedLuggageCount;
+	}
+	
 	@Override
 	public String getBlockID() {
 		return "lb";
@@ -194,6 +207,22 @@ public class LeaveBlock extends FlatConveyorBlock {
 	@Override
 	public ConveyorBlockType getConveyorBlockType() {
 		return ConveyorBlockType.LEAVE;
+	}
+	
+	/**
+	 * Increments the number of pieces of luggage that have arrived at this
+	 * block and have been accepted by one.
+	 */
+	public void incrementArrivedLuggageCount() {
+		arrivedLuggageCount++;
+	}
+	
+	/**
+	 * Resets the number of pieces of luggage that have arrived at this
+	 * block and have been accepted to zero.
+	 */
+	public void resetArrivedLuggageCount() {
+		arrivedLuggageCount = 0;
 	}
 	
 	/**

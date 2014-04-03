@@ -6,6 +6,7 @@ import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 
 import accg.State;
+import accg.gui.MainGUI;
 import accg.objects.*;
 import accg.objects.Luggage.LuggageColor;
 import accg.objects.blocks.*;
@@ -181,6 +182,7 @@ public class Simulation {
 					s.world.luggage.addObject(newLuggage);
 					addLuggageToPhysicsEngine(newLuggage);
 					eb.incrementGeneratedLuggageNum();
+					MainGUI.updateStatusBarInfo();
 				}
 			}
 		}

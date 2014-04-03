@@ -14,6 +14,7 @@ import accg.gui.toolkit.event.MouseClickEvent;
 import accg.i18n.Messages;
 import accg.objects.Block;
 import accg.objects.blocks.EnterBlock;
+import accg.objects.blocks.LeaveBlock;
 
 /**
  * Menu bar for the normal mode.
@@ -33,9 +34,16 @@ public class NormalModeMenuBar extends MenuBar {
 						if (b instanceof EnterBlock) {
 							((EnterBlock) b).resetGeneratedLuggageNum();
 						}
+						if (b instanceof LeaveBlock) {
+							((LeaveBlock) b).resetArrivedLuggageCount();
+						}
 					}
 					s.programMode = ProgramMode.SIMULATION_MODE;
 					s.gui.updateItems();
+					
+					s.gui.updateStatusBarMode(s.programMode);
+					MainGUI.updateStatusBarInfo();
+					s.gui.setStatusBarVisible(true);
 				}
 			}
 		});
@@ -49,7 +57,9 @@ public class NormalModeMenuBar extends MenuBar {
 				if (e instanceof MouseClickEvent) {
 					s.programMode = ProgramMode.BUILDING_MODE;
 					s.gui.updateItems();
-					s.gui.updateStatusBarInfo();
+					
+					s.gui.updateStatusBarMode(s.programMode);
+					MainGUI.updateStatusBarInfo();
 					s.gui.setStatusBarVisible(true);
 				}
 			}
