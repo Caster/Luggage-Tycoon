@@ -178,6 +178,10 @@ public class TextField extends Component {
 		cursorLocation++;
 	}
 	
+	/**
+	 * Performs a backspace action, which means that the character before the cursor
+	 * is removed.
+	 */
 	protected void performBackspace() {
 		
 		if (cursorLocation == 0) {
@@ -187,6 +191,11 @@ public class TextField extends Component {
 		text = text.substring(0, cursorLocation - 1) + text.substring(cursorLocation);
 		cursorLocation--;
 	}
+	
+	/**
+	 * Performs a delete action, which means that the character after the cursor
+	 * is removed.
+	 */
 	protected void performDelete() {
 		
 		if (cursorLocation == text.length()) {
