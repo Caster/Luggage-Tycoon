@@ -151,6 +151,26 @@ public class World extends Container<DrawableObject> {
 	}
 
 	/**
+	 * Removes a block to the {@link BlockCollection} in this {@link World}.
+	 * If there was no block at the specified location, nothing happens.
+	 * 
+	 * @param x The x-coordinate of the block to remove.
+	 * @param y The y-coordinate of the block to remove.
+	 * @param z The z-coordinate of the block to remove.
+	 */
+	public void removeBlock(int x, int y, int z) {
+		
+		if (bc.getBlock(x, y, z) == null) {
+			return;
+		}
+		
+		bc.getBlock(x, y, z).onDestroy();
+		bc.removeBlock(x, y, z);
+		
+		blockCount--;
+	}
+
+	/**
 	 * Returns the number of blocks in this World.
 	 * @return The number of blocks that was added through the
 	 *         {@link #addBlock(State, Block)} function.

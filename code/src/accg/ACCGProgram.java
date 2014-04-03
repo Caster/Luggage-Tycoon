@@ -706,11 +706,12 @@ public class ACCGProgram {
 			return;
 		}
 		
-		blockToRemove.onDestroy();
-		s.world.bc.removeBlock(
+		s.world.removeBlock(
 				(int) (interestingCells.get(firstTakenIndex).x),
 				(int) (interestingCells.get(firstTakenIndex).y),
 				(int) (interestingCells.get(firstTakenIndex).z));
+		
+		s.gui.updateStatusBarInfo();
 	}
 	
 	/**
