@@ -117,6 +117,12 @@ public abstract class Block extends DrawableObject {
 	}
 	
 	/**
+	 * Returns a short ID that is written to a file when saving the block.
+	 * @return A short ID that is written to a file when saving the block.
+	 */
+	public abstract String getBlockID();
+	
+	/**
 	 * Returns the height of this block.
 	 * @return The height.
 	 */

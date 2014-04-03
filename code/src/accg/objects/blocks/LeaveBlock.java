@@ -187,6 +187,11 @@ public class LeaveBlock extends FlatConveyorBlock {
 	}
 	
 	@Override
+	public String getBlockID() {
+		return "lb";
+	}
+	
+	@Override
 	public ConveyorBlockType getConveyorBlockType() {
 		return ConveyorBlockType.LEAVE;
 	}

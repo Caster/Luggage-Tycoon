@@ -179,4 +179,18 @@ public class SavedGameManager {
 			throws FileNotFoundException {
 		return new Level(new File(SAVED_GAMES_DIR, gameName + ".lt"));
 	}
+	
+	/**
+	 * Write a given game to disk.
+	 * 
+	 * @param name Name of the file for the game. It will actually be stored on
+	 *             disk as "name.lt", so with the extension added to it.
+	 *             When retrieving the game using for example
+	 *             {@link #getSavedGames()} you will get just "name" back again.
+	 * @param game The game to be saved to disk.
+	 * @throws IOException In case the file could not be opened for writing.
+	 */
+	public static void saveGame(String name, Level game) throws IOException {
+		game.writeToFile(new File(SAVED_GAMES_DIR, name + ".lt"));
+	}
 }

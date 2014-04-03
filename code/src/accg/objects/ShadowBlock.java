@@ -81,6 +81,11 @@ public class ShadowBlock extends Block {
 		}
 	}
 
+	@Override
+	public String getBlockID() {
+		return "sb";
+	}
+	
 	/**
 	 * In case the block that is 'shadowed' by this object is an instance of a
 	 * ConveyorBlock, return its type. Otherwise, return {@code null}.

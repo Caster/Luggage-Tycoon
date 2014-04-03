@@ -74,6 +74,16 @@ public enum Orientation {
 	}
 	
 	/**
+	 * Returns the ID of an orientation, as can be used in a string
+	 * representation or in a file, for example a saved game.
+	 * @return The ID of an orientation. This is the first letter of the name,
+	 *         in lower case. It is guaranteed to be unique.
+	 */
+	public String getOrientationID() {
+		return Character.toString(Character.toLowerCase(name().charAt(0)));
+	}
+	
+	/**
 	 * Given a position in 3D, return a position next to this position on the
 	 * same height that one would be in if doing one step in the direction
 	 * represented by this Orientation.

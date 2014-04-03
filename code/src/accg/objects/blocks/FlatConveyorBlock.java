@@ -23,6 +23,11 @@ public class FlatConveyorBlock extends ConveyorBlock {
 	}
 	
 	@Override
+	public String getBlockID() {
+		return "cf";
+	}
+	
+	@Override
 	public ArrayList<Vector3f> getTopCoordinatesLeft(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> lefts = new ArrayList<>();

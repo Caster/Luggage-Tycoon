@@ -262,7 +262,7 @@ public class TextField extends Component {
 	}
 	
 	/**
-	 * Changes the text in this label.
+	 * Changes the text in this text field.
 	 * @param text The new text.
 	 */
 	public void setText(String text) {
@@ -273,7 +273,7 @@ public class TextField extends Component {
 	}
 	
 	/**
-	 * Returns the text shown in this label.
+	 * Returns the text shown in this text field.
 	 * @return The text of this label.
 	 */
 	public String getText() {

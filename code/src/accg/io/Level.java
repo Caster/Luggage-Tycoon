@@ -1,10 +1,14 @@
 package accg.io;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -122,7 +126,7 @@ public class Level {
 			this.blocks = new ArrayList<>();
 			String line = "";
 			int lineNum = 5;
-			Pattern blockPattern = Pattern.compile("([A-Za-z]{2})\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+([lurd])\\s+(nd)?"
+			Pattern blockPattern = Pattern.compile("([A-Za-z]{2})\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+([lurd])(?:\\s+(nd)?)?"
 					+ "(?:\\s+\\[(?:(\\d+)\\s+)?(\\w+[\\s+\\w+]*)?\\])?");
 			while (levelScanner.hasNextLine() && !(line = levelScanner.nextLine()).startsWith("blocklimit")) {
 				lineNum++;
@@ -217,20 +221,20 @@ public class Level {
 	}
 	
 	/**
-	 * Construct a level from the current state of the program. This basically
-	 * means that all blocks that are currently placed in the scene are stored
-	 * in this level, most other values are set to some default value.
+	 * Construct a level from the current state of the program. Assumes that
+	 * {@link State#world} is not {@code null}.
 	 * 
 	 * @param s State of the program. Used to access {@link World}.
+	 * @throws NullPointerException In case {@code s.world == null}.
 	 */
 	public Level(State s) {
-		this.levelNumber = -1;
-		this.levelName = null;
+		this.levelNumber = s.levelNumber;
+		this.levelName = s.levelName;
 		this.blocks = new ArrayList<>();
 		this.fieldLength = s.fieldLength;
 		this.fieldWidth = s.fieldWidth;
 		this.fieldHeight = s.fieldHeight;
-		this.blockLimit = -1;
+		this.blockLimit = s.world.getBlockLimit();
 		
 		for (Block b : s.world.bc) {
 			this.blocks.add(b);
@@ -312,5 +316,67 @@ public class Level {
 	 */
 	public void setLevelNumber(int levelNumber) {
 		this.levelNumber = levelNumber;
+	}
+	
+	/**
+	 * Write this {@link Level} to a file, which can be read with for example
+	 * {@link #Level(File)} or {@link #Level(InputStream)} again.
+	 * @param output File to write to.
+	 * @throws IOException If creating a {@link FileWriter} on the given file
+	 *             does throw this exception.
+	 */
+	public void writeToFile(File output) throws IOException {
+		// try-with-resources to close file
+		try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(output)))) {
+			pw.println("Luggage Tycoon level file.");
+			pw.println("\"" + (levelName == null ? "" : levelName) + "\" " + levelNumber);
+			pw.println(fieldLength + "x" + fieldWidth + "x" + fieldHeight);
+			
+			pw.println("blocks");
+			for (Block b : blocks) {
+				pw.print(b.getBlockID() + " " + b.getX() + " " + b.getY() + " " +
+						b.getZ() + " " + b.getOrientation().getOrientationID());
+				if (!b.isDeletable()) {
+					pw.print(" nd");
+				}
+				
+				if (b instanceof EnterBlock) {
+					EnterBlock eb = (EnterBlock) b;
+					if (eb.getLuggageNum() >= 0 || (eb.getLuggageColors() != null &&
+							eb.getLuggageColors().size() > 0)) {
+						pw.print(" [");
+						if (eb.getLuggageNum() >= 0) {
+							pw.print(eb.getLuggageNum());
+						}
+						
+						if (eb.getLuggageColors() != null) {
+							for (LuggageColor lc : eb.getLuggageColors()) {
+								pw.print(" " + lc.name().toLowerCase());
+							}
+						}
+						pw.print("]");
+					}
+				}
+				
+				if (b instanceof LeaveBlock) {
+					LeaveBlock lb = (LeaveBlock) b;
+					if (lb.getAcceptColors() != null && lb.getAcceptColors().size() > 0) {
+						pw.print(" [");
+						boolean first = true;
+						for (LuggageColor lc : lb.getAcceptColors()) {
+							pw.print((first ? "" : " ") + lc.name().toLowerCase());
+							first = false;
+						}
+						pw.print("]");
+					}
+				}
+				
+				pw.println();
+			}
+			
+			if (blockLimit >= 0) {
+				pw.println("blocklimit " + blockLimit);
+			}
+		}
 	}
 }

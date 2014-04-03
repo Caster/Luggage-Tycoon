@@ -39,6 +39,11 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 	}
 	
 	@Override
+	public String getBlockID() {
+		return "cd";
+	}
+	
+	@Override
 	public ArrayList<Vector3f> getTopCoordinatesLeft(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> lefts = new ArrayList<>();

@@ -62,12 +62,7 @@ public class NormalModeMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					TextField tf = new TextField(40);
-					tf.requestFocus();
-					Dialog dialog = new Dialog(Messages.get("NormalModeMenuBar.saveDialogHeader"), tf, //$NON-NLS-1$
-							new Button(Messages.get("NormalModeMenuBar.ok"), s.textures.iconOk), //$NON-NLS-1$
-							new Button(Messages.get("NormalModeMenuBar.cancel"), s.textures.iconExit)); //$NON-NLS-1$
-					s.gui.add(dialog);
+					s.gui.add(new SaveDialog(s));
 				}
 			}
 		});

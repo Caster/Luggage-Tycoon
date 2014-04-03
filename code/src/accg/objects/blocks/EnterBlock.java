@@ -207,6 +207,11 @@ public class EnterBlock extends FlatConveyorBlock {
 	}
 	
 	@Override
+	public String getBlockID() {
+		return "eb";
+	}
+	
+	@Override
 	public ConveyorBlockType getConveyorBlockType() {
 		return ConveyorBlockType.ENTER;
 	}

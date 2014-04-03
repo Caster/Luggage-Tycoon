@@ -45,6 +45,11 @@ public class BendLeftConveyorBlock extends ConveyorBlock {
 	}
 	
 	@Override
+	public String getBlockID() {
+		return "cbl";
+	}
+	
+	@Override
 	public ArrayList<Vector3f> getTopCoordinatesLeft(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
