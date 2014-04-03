@@ -16,8 +16,10 @@ public class MainStack extends MenuStack {
 	public static final String POSITION_MENU = "position";
 	public static final String ALIGNMENT_MENU = "alignment";
 	public static final String PRESENTATION_MENU = "presentation";
-	
+	public static final String BLOCK_MENU = "block";
+
 	public BuildingModeMenuBar buildBar;
+	public BlockMenuBar blockBar;
 	
 	/**
 	 * The state of the program.
@@ -39,6 +41,7 @@ public class MainStack extends MenuStack {
 		addToCollection(POSITION_MENU, new PositionMenuBar(this, state));
 		addToCollection(ALIGNMENT_MENU, new AlignmentMenuBar(this, state));
 		addToCollection(PRESENTATION_MENU, new PresentationMenuBar(this, state));
+		addToCollection(BLOCK_MENU, blockBar = new BlockMenuBar(this, state));
 		
 		int alignmentId = state.prefs.getInt("menu.alignment", State.DEF_MENU_ALIGNMENT);
 		setAlignment(Alignment.values()[alignmentId]);
@@ -58,28 +61,26 @@ public class MainStack extends MenuStack {
 	public void updateItems() {
 		addMenuOnPosition(0, state.programMode);
 		
-		BuildingModeMenuBar bar = (BuildingModeMenuBar) menuBars.get(ProgramMode.BUILDING_MODE);
-		
 		if (state.shadowBlock.getConveyorBlockType() == null) {
-			bar.setHighlightedItem(null);
+			blockBar.setHighlightedItem(null);
 			return;
 		}
 		
 		switch (state.shadowBlock.getConveyorBlockType()) {
 		case FLAT:
-			bar.setHighlightedItem(bar.straightButton);
+			blockBar.setHighlightedItem(blockBar.straightButton);
 			break;
 		case ASCENDING:
-			bar.setHighlightedItem(bar.ascendingButton);
+			blockBar.setHighlightedItem(blockBar.ascendingButton);
 			break;
 		case DESCENDING:
-			bar.setHighlightedItem(bar.descendingButton);
+			blockBar.setHighlightedItem(blockBar.descendingButton);
 			break;
 		case BEND_LEFT:
-			bar.setHighlightedItem(bar.leftButton);
+			blockBar.setHighlightedItem(blockBar.leftButton);
 			break;
 		case BEND_RIGHT:
-			bar.setHighlightedItem(bar.rightButton);
+			blockBar.setHighlightedItem(blockBar.rightButton);
 			break;
 		case ENTER:
 		case LEAVE:

@@ -21,12 +21,6 @@ public class BuildingModeMenuBar extends MenuBar {
 	public Button rotateLeftItem;
 	public Button rotateRightItem;
 	
-	Button straightButton;
-	Button ascendingButton;
-	Button descendingButton;
-	Button leftButton;
-	Button rightButton;
-	
 	public BuildingModeMenuBar(final MenuStack stack, final State s) {
 		
 		rotateLeftItem = new Button(Messages.get("BuildingModeMenuBar.rotateLeft"),
@@ -65,81 +59,17 @@ public class BuildingModeMenuBar extends MenuBar {
 		});
 		add(rotateRightItem);
 		
-		straightButton = new Button(Messages.get("BuildingModeMenuBar.straight"),
-				s.textures.iconBeltFlat,
-				ButtonType.CHECKABLE_UNIQUE);
-		straightButton.setShortcutHint("C+F");
-		straightButton.setChecked(true);
-		straightButton.addListener(new Listener() {
+		Button chooseBlockItem = new Button(Messages.get("BuildingModeMenuBar.chooseBlock"), s.textures.iconConfigure); //$NON-NLS-1$
+		chooseBlockItem.addListener(new Listener() {
 			
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					s.shadowBlock.setConveyorBlockType(ConveyorBlockType.FLAT);
+					stack.addMenuBelowOrClose(BuildingModeMenuBar.this, MainStack.BLOCK_MENU);
 				}
 			}
 		});
-		add(straightButton);
-		
-		ascendingButton = new Button(Messages.get("BuildingModeMenuBar.up"),
-				s.textures.iconBeltAscending,
-				ButtonType.CHECKABLE_UNIQUE);
-		ascendingButton.setShortcutHint("C+A");
-		ascendingButton.addListener(new Listener() {
-			
-			@Override
-			public void event(Event e) {
-				if (e instanceof MouseClickEvent) {
-					s.shadowBlock.setConveyorBlockType(ConveyorBlockType.ASCENDING);
-				}
-			}
-		});
-		add(ascendingButton);
-		
-		descendingButton = new Button(Messages.get("BuildingModeMenuBar.down"),
-				s.textures.iconBeltDescending,
-				ButtonType.CHECKABLE_UNIQUE);
-		descendingButton.setShortcutHint("C+D");
-		descendingButton.addListener(new Listener() {
-			
-			@Override
-			public void event(Event e) {
-				if (e instanceof MouseClickEvent) {
-					s.shadowBlock.setConveyorBlockType(ConveyorBlockType.DESCENDING);
-				}
-			}
-		});
-		add(descendingButton);
-		
-		leftButton = new Button(Messages.get("BuildingModeMenuBar.left"),
-				s.textures.iconBeltLeft,
-				ButtonType.CHECKABLE_UNIQUE);
-		leftButton.setShortcutHint("C+B");
-		leftButton.addListener(new Listener() {
-			
-			@Override
-			public void event(Event e) {
-				if (e instanceof MouseClickEvent) {
-					s.shadowBlock.setConveyorBlockType(ConveyorBlockType.BEND_LEFT);
-				}
-			}
-		});
-		add(leftButton);
-		
-		rightButton = new Button(Messages.get("BuildingModeMenuBar.right"),
-				s.textures.iconBeltRight,
-				ButtonType.CHECKABLE_UNIQUE);
-		rightButton.setShortcutHint("C+B,B");
-		rightButton.addListener(new Listener() {
-			
-			@Override
-			public void event(Event e) {
-				if (e instanceof MouseClickEvent) {
-					s.shadowBlock.setConveyorBlockType(ConveyorBlockType.BEND_RIGHT);
-				}
-			}
-		});
-		add(rightButton);
+		add(chooseBlockItem);
 		
 		Button backItem = new Button(Messages.get("BuildingModeMenuBar.back"), s.textures.iconExit); //$NON-NLS-1$
 		backItem.addListener(new Listener() {

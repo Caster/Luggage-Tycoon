@@ -288,14 +288,24 @@ public class MenuStack extends Container {
 	
 	/**
 	 * Adds a new menu bar at the given index. The menu bar that currently may be
-	 * on that index, and all menu bars below that, are removed. 
+	 * on that index, and all menu bars below that, are removed.
+	 * 
+	 * If the menu bar to add already is on this index, nothing is done (that means,
+	 * also sub-menu bars will not be removed).
 	 * 
 	 * @param index The index to put the new menu bar on.
 	 * @param key The key of the sub menu to add.
 	 */
 	public void addMenuOnPosition(int index, Object key) {
+		
+		MenuBar newBar = menuBars.get(key);
+		
+		if (visibleMenus.size() > index && newBar == visibleMenus.get(index)) {
+			return;
+		}
+		
 		removeAllBelow(index);
-		visibleMenus.add(menuBars.get(key));
+		visibleMenus.add(newBar);
 		
 		updateVisibilities();
 		
