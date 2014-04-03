@@ -255,10 +255,12 @@ public class MainGUI extends LayeredPane {
 							instance.state.programMode = ProgramMode.NORMAL_MODE;
 							instance.updateItems();
 							instance.updateStatusBarMode(instance.state.programMode);
+							instance.setStatusBarVisible(false);
 						} else {
 							instance.state.programMode = ProgramMode.START_MODE;
 							instance.updateItems();
 							instance.updateStatusBarMode(instance.state.programMode);
+							instance.setStatusBarVisible(false);
 						}
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
