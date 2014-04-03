@@ -770,6 +770,7 @@ public class ACCGProgram {
 		int firstTakenIndex = s.world.getFirstTakenIndex(interestingCells);
 		
 		if (firstTakenIndex >= interestingCells.size()) {
+			s.world.bc.setHighlight(-1, -1, -1);
 			return;
 		}
 		s.world.bc.setHighlight(
