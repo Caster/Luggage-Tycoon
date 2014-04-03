@@ -711,7 +711,7 @@ public class ACCGProgram {
 				(int) (interestingCells.get(firstTakenIndex).y),
 				(int) (interestingCells.get(firstTakenIndex).z));
 		
-		s.gui.updateStatusBarInfo();
+		MainGUI.updateStatusBarInfo();
 	}
 	
 	/**
