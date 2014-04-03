@@ -54,6 +54,7 @@ public class StartModeMenuBar extends MenuBar {
 					s.world.setBlockLimit(-1);
 					s.programMode = ProgramMode.NORMAL_MODE;
 					s.gui.updateItems();
+					s.loadedBuiltinLevel = false;
 				}
 			}
 		});

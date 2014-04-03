@@ -53,6 +53,7 @@ public class ChooseLevelDialog extends Dialog {
 							Level level = SavedGameManager.loadLevelByName(
 									l.getSelectedElement());
 							level.loadInState(s);
+							s.loadedBuiltinLevel = true;
 							ACCGProgram.setLoadedLevel(level.getLevelName());
 						} catch (Exception levelException) {
 							

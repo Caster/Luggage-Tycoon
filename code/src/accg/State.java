@@ -201,4 +201,10 @@ public class State {
 	 * If the escape key has been pressed.
 	 */
 	public boolean escPressed = false;
+	
+	/**
+	 * If a level is currently loaded that is built in. It may also be the case
+	 * that no level is loaded at all when this value is false.
+	 */
+	public boolean loadedBuiltinLevel = false;
 }

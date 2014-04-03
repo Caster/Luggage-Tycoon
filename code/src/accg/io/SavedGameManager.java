@@ -104,6 +104,30 @@ public class SavedGameManager {
 	};
 	
 	/**
+	 * Returns the level after the one with the given number, or {@code null}
+	 * if that was the last level. The current level is read from the state.
+	 * 
+	 * @param s The state of the program, used to access the shared persistent
+	 *          preferences object.
+	 * @return Level after given one, or {@code null} if no such level exists.
+	 * @throws FileNotFoundException If the name of the next game was not found.
+	 *             This means that the code should be updated probably.
+	 */
+	public static Level getNextLevel(State s) throws FileNotFoundException {
+		int maxUnlocked = s.prefs.getInt("level.unlocked", 0);
+		if (s.levelNumber > maxUnlocked) {
+			s.prefs.putInt("level.unlocked", s.levelNumber);
+		}
+		
+		String[] unlockedLevels = getUnlockedLevels(s);
+		if (unlockedLevels.length > s.levelNumber) {
+			return loadLevelByName(unlockedLevels[s.levelNumber]);
+		} else {
+			return null;
+		}
+	}
+	
+	/**
 	 * Return a list of saved games. This only includes games saved by the user,
 	 * not bundled saved games.
 	 * 

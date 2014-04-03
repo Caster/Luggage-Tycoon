@@ -270,12 +270,16 @@ public class Level {
 	 * {@link Simulation} in the state are being modified.
 	 * @param s State to load Level in.
 	 * @throws IllegalStateException If the given State does not have a program
-	 *             mode of {@link ProgramMode#NORMAL_MODE}.
+	 *             mode of {@link ProgramMode#NORMAL_MODE} or a mode of
+	 *             {@link ProgramMode#SIMULATION_MODE} and the state has a value
+	 *             of true for {@link State#loadedBuiltinLevel}.
 	 */
 	public void loadInState(State s) {
-		if (s.programMode != ProgramMode.NORMAL_MODE) {
+		if (s.programMode != ProgramMode.NORMAL_MODE &&
+				!(s.programMode == ProgramMode.SIMULATION_MODE &&
+					s.loadedBuiltinLevel)) {
 			throw new IllegalStateException("A level can only be loaded when "
-					+ "the program is in the \"normal mode\".");
+					+ "the program is in the \"normal mode\" or \"simulation mode\".");
 		}
 		
 		s.fieldLength = fieldLength;

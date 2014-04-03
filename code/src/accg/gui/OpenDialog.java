@@ -97,6 +97,7 @@ public class OpenDialog extends Dialog {
 							Level level = SavedGameManager.loadSavedGame(
 									l.getSelectedElement());
 							level.loadInState(s);
+							s.loadedBuiltinLevel = false;
 							ACCGProgram.setLoadedLevel(l.getSelectedElement() + ".lt");
 						} catch (Exception levelException) {
 							

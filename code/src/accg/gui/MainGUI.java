@@ -2,6 +2,7 @@ package accg.gui;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import org.newdawn.slick.Font;
@@ -11,6 +12,11 @@ import org.newdawn.slick.util.ResourceLoader;
 import accg.State;
 import accg.State.ProgramMode;
 import accg.gui.toolkit.Component;
+import accg.gui.toolkit.Event;
+import accg.gui.toolkit.Listener;
+import accg.gui.toolkit.components.Button;
+import accg.gui.toolkit.components.Label;
+import accg.gui.toolkit.containers.Dialog;
 import accg.gui.toolkit.containers.LayeredPane;
 import accg.gui.toolkit.containers.MenuStack;
 import accg.gui.toolkit.enums.Position;
@@ -19,6 +25,9 @@ import accg.gui.toolkit.event.MouseClickEvent;
 import accg.gui.toolkit.event.MouseDragEvent;
 import accg.gui.toolkit.event.MouseMoveEvent;
 import accg.gui.toolkit.event.MouseScrollEvent;
+import accg.i18n.Messages;
+import accg.io.Level;
+import accg.io.SavedGameManager;
 
 /**
  * This class manages the GUI of the program.
@@ -28,6 +37,7 @@ public class MainGUI extends LayeredPane {
 	private static MainGUI instance;
 	private static Font guiFont;
 	
+	private State state;
 	private MainStack stack;
 	private MainStatusBar statusBar;
 	private double statusBarShownPortion;
@@ -52,6 +62,8 @@ public class MainGUI extends LayeredPane {
 	 * @param state The state of the program.
 	 */
 	private MainGUI(State state) {
+		this.state = state;
+		
 		stack = new MainStack(state);
 		add(stack);
 		
@@ -219,6 +231,39 @@ public class MainGUI extends LayeredPane {
 			handled = statusBar.sendEvent(event);
 		}
 		return handled;
+	}
+	
+	/**
+	 * Should be called when a level is completed. Shows a happy message to the
+	 * user and lets hem / her advance to the next level.
+	 */
+	public static void levelCompleted() {
+		Button nextButton = new Button(Messages.get("MainGUI.happyDialog.next"),
+				instance.state.textures.iconOk);
+		final Dialog happyDialog = new Dialog(Messages.get("MainGUI.happyDialog.caption"),
+				new Label(Messages.get("MainGUI.happyDialog.congrats")), nextButton);
+		nextButton.addListener(new Listener() {
+			@Override
+			public void event(Event event) {
+				if (event instanceof MouseClickEvent) {
+					happyDialog.setVisible(false);
+					
+					try {
+						Level nextLevel = SavedGameManager.getNextLevel(instance.state);
+						if (nextLevel != null) {
+							nextLevel.loadInState(instance.state);
+						} else {
+							instance.state.programMode = ProgramMode.START_MODE;
+							instance.updateItems();
+							instance.updateStatusBarMode(instance.state.programMode);
+						}
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		instance.add(happyDialog);
 	}
 	
 	/**
