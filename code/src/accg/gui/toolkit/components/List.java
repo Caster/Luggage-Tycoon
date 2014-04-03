@@ -232,6 +232,9 @@ public class List extends Component {
 			elements.remove(selectedIndex);
 			selectedIndex--;
 		}
+		if (selectedIndex < 0) {
+			selectedIndex = 0;
+		}
 	}
 	
 	/**
