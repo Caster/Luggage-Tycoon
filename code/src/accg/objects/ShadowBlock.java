@@ -61,12 +61,12 @@ public class ShadowBlock extends Block {
 		
 		block.draw(s);
 		
-		if (transparent) {
-			glDisable(GL_BLEND);
-		}
-		
 		if (block instanceof ConveyorBlock) {
 			((ConveyorBlock) block).drawArrow(s);
+		}
+		
+		if (transparent) {
+			glDisable(GL_BLEND);
 		}
 	}
 

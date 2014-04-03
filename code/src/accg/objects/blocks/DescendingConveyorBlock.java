@@ -1,5 +1,7 @@
 package accg.objects.blocks;
 
+import static org.lwjgl.opengl.GL11.*;
+
 import java.util.ArrayList;
 
 import javax.vecmath.Vector3f;
@@ -15,6 +17,20 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 	
 	public DescendingConveyorBlock(int x, int y, int z, Orientation orientation, boolean deletable) {
 		super(x, y, z, orientation, deletable, ConveyorBlockType.DESCENDING);
+	}
+
+	@Override
+	protected void drawArrowShape() {
+		glNormal3f(0, 0, 1);
+		glVertex3f(-0.12f, -0.3f, 1.22f);
+		glVertex3f(-0.12f, 0.1f, 1.08f);
+		glVertex3f(0.12f, 0.1f, 1.08f);
+		glVertex3f(0.12f, -0.3f, 1.22f);
+		
+		glVertex3f(0, 0.1f, 1.08f);
+		glVertex3f(0.25f, 0.1f, 1.08f);
+		glVertex3f(0, 0.3f, 1.01f);
+		glVertex3f(-0.25f, 0.1f, 1.08f);
 	}
 	
 	@Override

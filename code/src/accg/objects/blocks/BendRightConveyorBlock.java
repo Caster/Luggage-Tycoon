@@ -1,5 +1,7 @@
 package accg.objects.blocks;
 
+import static org.lwjgl.opengl.GL11.*;
+
 import java.util.ArrayList;
 
 import javax.vecmath.Vector3f;
@@ -16,6 +18,24 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 
 	public BendRightConveyorBlock(int x, int y, int z, Orientation orientation, boolean deletable) {
 		super(x, y, z, orientation, deletable, ConveyorBlockType.BEND_RIGHT);
+	}
+	
+	@Override
+	protected void drawArrowShape() {
+		glNormal3f(0, 0, 1);
+		
+		double step = Math.PI / 32;
+		for (int i = 0; i < 16; i++) {
+			glVertex3f(0.3f - 0.18f * (float) Math.cos(step * i), -0.3f + 0.18f * (float) Math.sin(step * i), 1);
+			glVertex3f(0.3f - 0.42f * (float) Math.cos(step * i), -0.3f + 0.42f * (float) Math.sin(step * i), 1);
+			glVertex3f(0.3f - 0.42f * (float) Math.cos(step * (i + 1)), -0.3f + 0.42f * (float) Math.sin(step * (i + 1)), 1);
+			glVertex3f(0.3f - 0.18f * (float) Math.cos(step * (i + 1)), -0.3f + 0.18f * (float) Math.sin(step * (i + 1)), 1);
+		}
+		
+		glVertex3f(0.3f, 0, 1);
+		glVertex3f(0.3f, 0.25f, 1);
+		glVertex3f(0.5f, 0, 1);
+		glVertex3f(0.3f, -0.25f, 1);
 	}
 	
 	@Override

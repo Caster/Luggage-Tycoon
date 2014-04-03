@@ -30,7 +30,41 @@ public abstract class ConveyorBlock extends Block {
 	 * Type of this conveyor block.
 	 */
 	public enum ConveyorBlockType {
-		ASCENDING, BEND_LEFT, BEND_RIGHT, DESCENDING, FLAT, ENTER, LEAVE
+		
+		/**
+		 * An ascending conveyor belt.
+		 */
+		ASCENDING,
+		
+		/**
+		 * A bend to the left.
+		 */
+		BEND_LEFT,
+		
+		/**
+		 * A bend to the right.
+		 */
+		BEND_RIGHT,
+
+		/**
+		 * An descending conveyor belt.
+		 */
+		DESCENDING,
+
+		/**
+		 * A flat, straight conveyor belt.
+		 */
+		FLAT,
+		
+		/**
+		 * An enter block (where luggage items enter the world).
+		 */
+		ENTER,
+		
+		/**
+		 * A leave block (where luggage items exit the world).
+		 */
+		LEAVE
 	}
 	
 	/**
@@ -112,7 +146,8 @@ public abstract class ConveyorBlock extends Block {
 	/**
 	 * Returns a list of the texture coordinates for the top part of the conveyor belt.
 	 * These should correspond to the coordinates given by the methods
-	 * {@link #getTopCoordinatesLeft()} and {@link #getTopCoordinatesRight()}.
+	 * {@link #getTopCoordinatesLeft(ConveyorBlock, ConveyorBlock)} and
+	 * {@link #getTopCoordinatesRight(ConveyorBlock, ConveyorBlock)}.
 	 * 
 	 * @return An ArrayList of the texture coordinates.
 	 */
@@ -246,7 +281,7 @@ public abstract class ConveyorBlock extends Block {
 		}
 		
 		glPushMatrix();
-		glTranslated(x, y, z / 4.0 - 0.375);
+		glTranslated(x, y, z / 4.0 - 0.6);
 		glRotated(-orientation.angle, 0, 0, 1);
 		
 		glColor4f(1, 1, 0, 1 - s.beltSpeed);
@@ -254,16 +289,7 @@ public abstract class ConveyorBlock extends Block {
 		glEnable(GL_BLEND);
 		glBegin(GL_QUADS);
 		{
-			glNormal3f(0, 0, 1);
-			glVertex3f(-0.12f, -0.3f, 1);
-			glVertex3f(-0.12f, 0.1f, 1);
-			glVertex3f(0.12f, 0.1f, 1);
-			glVertex3f(0.12f, -0.3f, 1);
-			
-			glVertex3f(0, 0.1f, 1);
-			glVertex3f(0.25f, 0.1f, 1);
-			glVertex3f(0, 0.3f, 1);
-			glVertex3f(-0.25f, 0.1f, 1);
+			drawArrowShape();
 		}
 		glEnd();
 		glDisable(GL_BLEND);
@@ -271,6 +297,25 @@ public abstract class ConveyorBlock extends Block {
 		glColor4f(1, 1, 1, 1);
 		
 		glPopMatrix();
+	}
+	
+	/**
+	 * Draws the shape of the arrow. This is used by {@link #drawArrow(State)}.
+	 * 
+	 * This should be overridden by subclasses for which the default shape is
+	 * not appropriate.
+	 */
+	protected void drawArrowShape() {
+		glNormal3f(0, 0, 1);
+		glVertex3f(-0.12f, -0.3f, 1);
+		glVertex3f(-0.12f, 0.1f, 1);
+		glVertex3f(0.12f, 0.1f, 1);
+		glVertex3f(0.12f, -0.3f, 1);
+		
+		glVertex3f(0, 0.1f, 1);
+		glVertex3f(0.25f, 0.1f, 1);
+		glVertex3f(0, 0.3f, 1);
+		glVertex3f(-0.25f, 0.1f, 1);
 	}
 
 	/**
