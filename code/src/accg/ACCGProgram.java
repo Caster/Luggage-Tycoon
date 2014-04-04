@@ -379,7 +379,7 @@ public class ACCGProgram {
 					}
 					break;
 				case Keyboard.KEY_ESCAPE:
-					s.escPressed = true;
+					//s.escPressed = true; // TODO ignore Escape for now
 					break;
 				// *R*otate a block in building mode
 				case Keyboard.KEY_R:
