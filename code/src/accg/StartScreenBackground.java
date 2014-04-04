@@ -57,6 +57,7 @@ public class StartScreenBackground {
 		s.textures.floorSimulationMode.bind();
 		glBegin(GL_QUADS);
 		{
+			glNormal3f(0, 0, 1);
 			glTexCoord2f(0, 0);
 			glVertex3d(0, 0, 0);
 			glTexCoord2f(0, Display.getHeight() / 200f);
