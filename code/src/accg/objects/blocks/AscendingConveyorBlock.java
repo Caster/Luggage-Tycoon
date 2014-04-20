@@ -20,6 +20,98 @@ import accg.objects.Orientation;
 public class AscendingConveyorBlock extends ConveyorBlock {
 
 	/**
+	 * Series of points that define the hull around this block.
+	 */
+	public static final Vector3f[] HULL_POINTS = new Vector3f[] {
+		// bottom quad
+		new Vector3f(-0.5f, -0.5f, 0),
+		new Vector3f(0.5f, -0.5f, 0),
+		new Vector3f(0.5f, 0.5f, 0.25f),
+		new Vector3f(-0.5f, 0.5f, 0.25f),
+
+		// quad below conveyor, facing upwards
+		new Vector3f(-0.375f, -0.5f, 0.125f),
+		new Vector3f(0.375f, -0.5f, 0.125f),
+		new Vector3f(0.375f, 0.5f, 0.375f),
+		new Vector3f(-0.375f, 0.5f, 0.375f),
+		
+		// left top quad
+		new Vector3f(-0.5f, -0.5f, 0.625f),
+		new Vector3f(-0.375f, -0.5f, 0.625f),
+		new Vector3f(-0.375f, 0.5f, 0.875f),
+		new Vector3f(-0.5f, 0.5f, 0.875f),
+		
+		// right top quad
+		new Vector3f(0.5f, -0.5f, 0.625f),
+		new Vector3f(0.5f, 0.5f, 0.875f),
+		new Vector3f(0.375f, 0.5f, 0.875f),
+		new Vector3f(0.375f, -0.5f, 0.625f),
+		
+		// quad below conveyor at back
+		new Vector3f(0.5f, -0.5f, 0),
+		new Vector3f(0.5f, -0.5f, 0.125f),
+		new Vector3f(-0.5f, -0.5f, 0.125f),
+		new Vector3f(-0.5f, -0.5f, 0f),
+		
+		// quad below conveyor at front
+		new Vector3f(0.5f, 0.5f, 0.25f),
+		new Vector3f(-0.5f, 0.5f, 0.25f),
+		new Vector3f(-0.5f, 0.5f, 0.375f),
+		new Vector3f(0.5f, 0.5f, 0.375f),
+		
+		// left outer wall
+		new Vector3f(-0.5f, -0.5f, 0),
+		new Vector3f(-0.5f, -0.5f, 0.625f),
+		new Vector3f(-0.5f, 0.5f, 0.875f),
+		new Vector3f(-0.5f, 0.5f, 0.25f),
+		
+		// left inner wall
+		new Vector3f(-0.375f, -0.5f, 0.625f),
+		new Vector3f(-0.375f, -0.5f, 0.125f),
+		new Vector3f(-0.375f, 0.5f, 0.375f),
+		new Vector3f(-0.375f, 0.5f, 0.875f),
+		
+		// left front side
+		new Vector3f(-0.5f, 0.5f, 0.375f),
+		new Vector3f(-0.5f, 0.5f, 0.875f),
+		new Vector3f(-0.375f, 0.5f, 0.875f),
+		new Vector3f(-0.375f, 0.5f, 0.375f),
+		
+		// left back side
+		new Vector3f(-0.5f, -0.5f, 0.125f),
+		new Vector3f(-0.375f, -0.5f, 0.125f),
+		new Vector3f(-0.375f, -0.5f, 0.625f),
+		new Vector3f(-0.5f, -0.5f, 0.625f),
+		
+		// right outer wall
+		new Vector3f(0.5f, -0.5f, 0.625f),
+		new Vector3f(0.5f, -0.5f, 0),
+		new Vector3f(0.5f, 0.5f, 0.25f),
+		new Vector3f(0.5f, 0.5f, 0.875f),
+		
+		// right inner wall
+		new Vector3f(0.375f, -0.5f, 0.125f),
+		new Vector3f(0.375f, -0.5f, 0.625f),
+		new Vector3f(0.375f, 0.5f, 0.875f),
+		new Vector3f(0.375f, 0.5f, 0.375f),
+		
+		// right front side
+		new Vector3f(0.5f, 0.5f, 0.875f),
+		new Vector3f(0.5f, 0.5f, 0.375f),
+		new Vector3f(0.375f, 0.5f, 0.375f),
+		new Vector3f(0.375f, 0.5f, 0.875f),
+		
+		// right back side
+		new Vector3f(0.5f, -0.5f, 0.625f),
+		new Vector3f(0.375f, -0.5f, 0.625f),
+		new Vector3f(0.375f, -0.5f, 0.125f),
+		new Vector3f(0.5f, -0.5f, 0.125f)
+	};
+	static {
+		applyZFightingCorrection(HULL_POINTS);
+	}
+	
+	/**
 	 * Construct a new conveyor block at given position and with given orientation.
 	 * The constructed block will be deletable.
 	 * 
@@ -77,8 +169,7 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	
 	@Override
 	public Vector3f[] getHullPoints() {
-		// TODO Auto-generated method stub
-		return null;
+		return HULL_POINTS;
 	}
 	
 	@Override

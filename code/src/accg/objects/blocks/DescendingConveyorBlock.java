@@ -16,6 +16,17 @@ import accg.objects.Orientation;
 public class DescendingConveyorBlock extends ConveyorBlock {
 
 	/**
+	 * Series of points that define the hull around this block.
+	 */
+	public static final Vector3f[] HULL_POINTS = new Vector3f[AscendingConveyorBlock.HULL_POINTS.length];
+	static {
+		for (int i = 0; i < HULL_POINTS.length; i++) {
+			HULL_POINTS[i] = new Vector3f(-AscendingConveyorBlock.HULL_POINTS[i].x,
+					-AscendingConveyorBlock.HULL_POINTS[i].y, AscendingConveyorBlock.HULL_POINTS[i].z);
+		}
+	}
+	
+	/**
 	 * Construct a new conveyor block at given position and with given orientation.
 	 * The constructed block will be deletable.
 	 * 
@@ -73,8 +84,7 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 	
 	@Override
 	public Vector3f[] getHullPoints() {
-		// TODO Auto-generated method stub
-		return null;
+		return HULL_POINTS;
 	}
 	
 	@Override

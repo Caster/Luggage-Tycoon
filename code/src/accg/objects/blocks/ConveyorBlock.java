@@ -331,7 +331,9 @@ public abstract class ConveyorBlock extends Block {
 		glTranslated(0, 0, -(z - belowPos) / 4.0f + (belowPos > 0 ? 0.125f : 0));
 
 		cylinder.draw(0.2f * scaleFactor, 0.2f * scaleFactor,
-				(z - belowPos) / 4.0f - (belowPos > 0 ? 0.125f : 0), 16, 1);
+				(z - belowPos) / 4.0f - (belowPos > 0 ? 0.125f : 0) +
+				(getConveyorBlockType() == ConveyorBlockType.ASCENDING ||
+				getConveyorBlockType() == ConveyorBlockType.DESCENDING ? 0.15f : 0), 16, 1);
 		
 		glPopMatrix();
 	}
