@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import javax.vecmath.Vector3f;
 
-import accg.State;
 import accg.objects.Block;
 import accg.objects.Orientation;
 
@@ -20,14 +19,38 @@ import accg.objects.Orientation;
  */
 public class AscendingConveyorBlock extends ConveyorBlock {
 
+	/**
+	 * Construct a new conveyor block at given position and with given orientation.
+	 * The constructed block will be deletable.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @param z The z-coordinate.
+	 * @param orientation The orientation.
+	 */
 	public AscendingConveyorBlock(int x, int y, int z, Orientation orientation) {
 		super(x, y, z, orientation, ConveyorBlockType.ASCENDING);
 	}
 	
+	/**
+	 * Construct a new conveyor block at given position and with given orientation.
+	 * The constructed block will be deletable depending on the parameter.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @param z The z-coordinate.
+	 * @param orientation The orientation.
+	 * @param deletable If the block can be deleted or not.
+	 */
 	public AscendingConveyorBlock(int x, int y, int z, Orientation orientation, boolean deletable) {
 		super(x, y, z, orientation, deletable, ConveyorBlockType.ASCENDING);
 	}
 
+	@Override
+	public int getHeight() {
+		return super.getHeight() + 1;
+	}
+	
 	@Override
 	protected void drawArrowShape() {
 		glNormal3f(0, 0, 1);
@@ -50,6 +73,12 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	@Override
 	public String getBlockID() {
 		return "ca";
+	}
+	
+	@Override
+	public Vector3f[] getHullPoints() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	@Override

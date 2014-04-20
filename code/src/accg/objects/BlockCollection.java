@@ -1,7 +1,8 @@
 package accg.objects;
 
-import static org.lwjgl.opengl.GL11.*;
+import static accg.gui.toolkit.GLUtils.*;
 
+import java.awt.Color;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -150,6 +151,24 @@ public class BlockCollection extends DrawableObject implements Iterable<Block> {
 	}
 	
 	/**
+	 * Return the height of the first block below the given position. The given
+	 * position is hence <i>not</i> considered, only (x, y, z - 1) and below.
+	 * 
+	 * @param x X-coordinate of query position.
+	 * @param y Y-coordinate of query position.
+	 * @param z Z-coordinate of query position.
+	 * @return A value between -1 and z - 1, boundaries inclusive, or -1 if z < -1.
+	 *         At (x, y, \ret) a block is present in this BlockCollection if z >= 0.
+	 *         Otherwise, there is no block below the given position.
+	 */
+	public int getFirstBlockBelowHeight(int x, int y, int z) {
+		do {
+			z--;
+		} while (z >= 0 && blocks[x][y][z] == null);
+		return Math.max(-1, z);
+	}
+	
+	/**
 	 * Returns the block that is exactly on the given coordinate, or extends
 	 * to the given coordinate.
 	 * 
@@ -235,9 +254,9 @@ public class BlockCollection extends DrawableObject implements Iterable<Block> {
 					Block block = blockXY[z];
 					if (block != null) {
 						if (highlightX == x && highlightY == y && highlightZ == z && block.isDeletable()) {
-							glColor4f(1, 0, 0, 1);
+							glColor4f(ShadowBlock.COLORS[2]);
 							block.draw(s);
-							glColor4f(1, 1, 1, 1);
+							glColor4f(Color.WHITE);
 						} else {
 							block.draw(s);
 						}

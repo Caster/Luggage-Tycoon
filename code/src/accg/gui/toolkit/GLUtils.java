@@ -10,6 +10,12 @@ import javax.vecmath.Vector3f;
 public class GLUtils {
 	
 	/**
+	 * The last colors that were fed to {@link #glColor4f(Color)}. The first
+	 * index contains the most recent color, later indices contain earlier
+	 * colors. Every call shifts the colors.
+	 */
+	private static Color[] lastColors = new Color[2];
+	/**
 	 * A vector that may be used in methods in this class. Spares object
 	 * allocations for frequent calls.
 	 */
@@ -112,6 +118,39 @@ public class GLUtils {
 	}
 	
 	/**
+	 * Given a quad as a series of points in counter-clockwise order, put
+	 * glVertex3f commands that form that quad and also include glNormal3f
+	 * commands automatically.
+	 * 
+	 * <p>The normal is being calculated as follows: consider the points as
+	 * follows: <code>v1, v2, v3, v4</code>. We now first calculate
+	 * <code>d1 = v2 - v1</code> and <code>d2 = v4 - v1</code>. The normal is
+	 * now calculated as follows: <code>n = d1 x d2</code>.
+	 * 
+	 * @param quad The quad to put, given as a series of 4 points in counter-
+	 *             clockwise order.
+	 * @param scaleFactor Factor to multiply each and every coordinate with.
+	 * @throws IllegalArgumentException In case {@code quad == null} or when
+	 *             {@code quad.length != 4}.
+	 */
+	public static void drawQuadAndNormals(Vector3f[] quad, float scaleFactor) {
+		if (quad == null || quad.length != 4) {
+			throw new IllegalArgumentException("Cannot draw a quad that does "
+					+ "not have exactly 4 points.");
+		}
+		
+		d1.sub(quad[1], quad[0]);
+		d2.sub(quad[3], quad[0]);
+		normal.cross(d1, d2);
+		normal.normalize();
+		
+		glNormal3f(normal);
+		for (int i = 0; i < 4; i++) {
+			glVertex3f(quad[i], scaleFactor);
+		}
+	}
+	
+	/**
 	 * Given a series of quads, draw them using
 	 * {@link #drawQuadAndNormals(Vector3f[])}.
 	 * 
@@ -129,6 +168,29 @@ public class GLUtils {
 		for (int i = 0; i < quads.length; i += 4) {
 			System.arraycopy(quads, i, quadArray, 0, 4);
 			drawQuadAndNormals(quadArray);
+		}
+	}
+	
+	/**
+	 * Given a series of quads, draw them using
+	 * {@link #drawQuadAndNormals(Vector3f[])}.
+	 * 
+	 * @param quads An array of points spanning quads.
+	 * @param scaleFactor Factor to multiply each and every coordinate of every
+	 *            vertex of every quad with.
+	 * @throws IllegalArgumentException In case {@code quads == null} or when
+	 *             {@code quads.length == 0} or when
+	 *             {@code quads.length % 4 != 0}.
+	 */
+	public static void drawQuadsAndNormals(Vector3f[] quads, float scaleFactor) {
+		if (quads == null || quads.length == 0 || quads.length % 4 != 0) {
+			throw new IllegalArgumentException("Parameter `quads` should hold "
+					+ "a non-zero, multiple of 4 number of points.");
+		}
+		
+		for (int i = 0; i < quads.length; i += 4) {
+			System.arraycopy(quads, i, quadArray, 0, 4);
+			drawQuadAndNormals(quadArray, scaleFactor);
 		}
 	}
 	
@@ -175,8 +237,28 @@ public class GLUtils {
 	 * @param c The color to use.
 	 */
 	public static void glColor4f(Color c) {
+		lastColors[1] = lastColors[0];
+		lastColors[0] = c;
 		org.lwjgl.opengl.GL11.glColor4f(c.getRed() / 255f,
 				c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
+	}
+	
+	/**
+	 * Issues a glColor4f(...) call with the second-to-last color that was fed
+	 * to {@link #glColor4f(Color)}.
+	 */
+	public static void glColor4fReset() {
+		if (lastColors[1] != null) {
+			glColor4f(lastColors[1]);
+		}
+	}
+	
+	/**
+	 * Returns the last color set through the {@link #glColor4f(Color)} method.
+	 * @return The last color set through the {@link #glColor4f(Color)} method.
+	 */
+	public static Color glGetLastColor() {
+		return lastColors[0];
 	}
 	
 	/**
@@ -185,6 +267,16 @@ public class GLUtils {
 	 */
 	public static void glVertex3f(Vector3f v) {
 		org.lwjgl.opengl.GL11.glVertex3f(v.x, v.y, v.z);
+	}
+	
+	/**
+	 * Issues a glVertex3f(...) call based on a Vector3f.
+	 * @param v The vector to draw.
+	 * @param scaleFactor Factor to multiply each and every coordinate with.
+	 */
+	public static void glVertex3f(Vector3f v, float scaleFactor) {
+		org.lwjgl.opengl.GL11.glVertex3f(v.x * scaleFactor,
+				v.y * scaleFactor, v.z * scaleFactor);
 	}
 	
 	/**

@@ -7,12 +7,126 @@ import javax.vecmath.Vector3f;
 import accg.objects.Block;
 import accg.objects.Orientation;
 
+/**
+ * A flat conveyor block. Probably the most basic implementation of ConveyorBlock.
+ */
 public class FlatConveyorBlock extends ConveyorBlock {
 
+	/**
+	 * Series of points that define the hull around this block.
+	 */
+	public static final Vector3f[] HULL_POINTS = new Vector3f[] {
+		// bottom quad
+		new Vector3f(-0.5f, -0.5f, 0),
+		new Vector3f(0.5f, -0.5f, 0),
+		new Vector3f(0.5f, 0.5f, 0),
+		new Vector3f(-0.5f, 0.5f, 0),
+
+		// quad below conveyor, facing upwards
+		new Vector3f(-0.375f, -0.5f, 0.125f),
+		new Vector3f(0.375f, -0.5f, 0.125f),
+		new Vector3f(0.375f, 0.5f, 0.125f),
+		new Vector3f(-0.375f, 0.5f, 0.125f),
+		
+		// left top quad
+		new Vector3f(-0.5f, -0.5f, 0.625f),
+		new Vector3f(-0.375f, -0.5f, 0.625f),
+		new Vector3f(-0.375f, 0.5f, 0.625f),
+		new Vector3f(-0.5f, 0.5f, 0.625f),
+		
+		// right top quad
+		new Vector3f(0.5f, -0.5f, 0.625f),
+		new Vector3f(0.5f, 0.5f, 0.625f),
+		new Vector3f(0.375f, 0.5f, 0.625f),
+		new Vector3f(0.375f, -0.5f, 0.625f),
+		
+		// quad below conveyor at back
+		new Vector3f(0.5f, -0.5f, 0),
+		new Vector3f(0.5f, -0.5f, 0.125f),
+		new Vector3f(-0.5f, -0.5f, 0.125f),
+		new Vector3f(-0.5f, -0.5f, 0f),
+		
+		// quad below conveyor at front
+		new Vector3f(0.5f, 0.5f, 0),
+		new Vector3f(-0.5f, 0.5f, 0),
+		new Vector3f(-0.5f, 0.5f, 0.125f),
+		new Vector3f(0.5f, 0.5f, 0.125f),
+		
+		// left outer wall
+		new Vector3f(-0.5f, -0.5f, 0),
+		new Vector3f(-0.5f, -0.5f, 0.625f),
+		new Vector3f(-0.5f, 0.5f, 0.625f),
+		new Vector3f(-0.5f, 0.5f, 0),
+		
+		// left inner wall
+		new Vector3f(-0.375f, -0.5f, 0.625f),
+		new Vector3f(-0.375f, -0.5f, 0.125f),
+		new Vector3f(-0.375f, 0.5f, 0.125f),
+		new Vector3f(-0.375f, 0.5f, 0.625f),
+		
+		// left front side
+		new Vector3f(-0.5f, 0.5f, 0.125f),
+		new Vector3f(-0.5f, 0.5f, 0.625f),
+		new Vector3f(-0.375f, 0.5f, 0.625f),
+		new Vector3f(-0.375f, 0.5f, 0.125f),
+		
+		// left back side
+		new Vector3f(-0.5f, -0.5f, 0.125f),
+		new Vector3f(-0.375f, -0.5f, 0.125f),
+		new Vector3f(-0.375f, -0.5f, 0.625f),
+		new Vector3f(-0.5f, -0.5f, 0.625f),
+		
+		// right outer wall
+		new Vector3f(0.5f, -0.5f, 0.625f),
+		new Vector3f(0.5f, -0.5f, 0),
+		new Vector3f(0.5f, 0.5f, 0),
+		new Vector3f(0.5f, 0.5f, 0.625f),
+		
+		// right inner wall
+		new Vector3f(0.375f, -0.5f, 0.125f),
+		new Vector3f(0.375f, -0.5f, 0.625f),
+		new Vector3f(0.375f, 0.5f, 0.625f),
+		new Vector3f(0.375f, 0.5f, 0.125f),
+		
+		// right front side
+		new Vector3f(0.5f, 0.5f, 0.625f),
+		new Vector3f(0.5f, 0.5f, 0.125f),
+		new Vector3f(0.375f, 0.5f, 0.125f),
+		new Vector3f(0.375f, 0.5f, 0.625f),
+		
+		// right back side
+		new Vector3f(0.5f, -0.5f, 0.625f),
+		new Vector3f(0.375f, -0.5f, 0.625f),
+		new Vector3f(0.375f, -0.5f, 0.125f),
+		new Vector3f(0.5f, -0.5f, 0.125f)
+	};
+	static {
+		applyZFightingCorrection(HULL_POINTS);
+	}
+	
+	/**
+	 * Construct a new conveyor block at given position and with given orientation.
+	 * The constructed block will be deletable.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @param z The z-coordinate.
+	 * @param orientation The orientation.
+	 */
 	public FlatConveyorBlock(int x, int y, int z, Orientation orientation) {
 		super(x, y, z, orientation, ConveyorBlockType.FLAT);
 	}
 	
+	/**
+	 * Construct a new conveyor block at given position and with given orientation.
+	 * The constructed block will be deletable depending on the parameter.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @param z The z-coordinate.
+	 * @param orientation The orientation.
+	 * @param deletable If the block can be deleted or not.
+	 */
 	public FlatConveyorBlock(int x, int y, int z, Orientation orientation, boolean deletable) {
 		super(x, y, z, orientation, deletable, ConveyorBlockType.FLAT);
 	}
@@ -25,6 +139,11 @@ public class FlatConveyorBlock extends ConveyorBlock {
 	@Override
 	public String getBlockID() {
 		return "cf";
+	}
+	
+	@Override
+	public Vector3f[] getHullPoints() {
+		return HULL_POINTS;
 	}
 	
 	@Override

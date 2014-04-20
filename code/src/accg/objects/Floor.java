@@ -17,6 +17,10 @@ public class Floor extends DrawableObject {
 	 * Transparency of floor when drawing with shadows.
 	 */
 	private static final float SHADOW_TRANSPARENCY = 0.6f;
+	/**
+	 * Color used when drawing with shadows.
+	 */
+	private static final Color SHADOW_COLOR = new Color(1, 1, 1, SHADOW_TRANSPARENCY);
 	
 	/**
 	 * Background color, used to draw a small non-textured margin around the
@@ -26,12 +30,12 @@ public class Floor extends DrawableObject {
 	
 	@Override
 	public void draw(State s) {
-		glColor3d(1, 1, 1);
+		glColor4f(Color.WHITE);
 		glDepthMask(false);
 		glDisable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		if (s.drawingShadows) {
-			glColor4f(1, 1, 1, SHADOW_TRANSPARENCY);
+			glColor4f(SHADOW_COLOR);
 		}
 		glEnable(GL_TEXTURE_2D);
 		
@@ -77,7 +81,7 @@ public class Floor extends DrawableObject {
 			glEnd();
 			glEnable(GL_LIGHTING);
 		}
-		glColor4f(1, 1, 1, 1);
+		glColor4f(Color.WHITE);
 		glDisable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
 		glDepthMask(true);

@@ -9,16 +9,44 @@ import javax.vecmath.Vector3f;
 import accg.objects.Block;
 import accg.objects.Orientation;
 
+/**
+ * A DescendingConveyorBlock is much like an {@link AscendingConveyorBlock}, only it
+ * brings luggage a level lower instead of a level higher.
+ */
 public class DescendingConveyorBlock extends ConveyorBlock {
 
+	/**
+	 * Construct a new conveyor block at given position and with given orientation.
+	 * The constructed block will be deletable.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @param z The z-coordinate.
+	 * @param orientation The orientation.
+	 */
 	public DescendingConveyorBlock(int x, int y, int z, Orientation orientation) {
 		super(x, y, z, orientation, ConveyorBlockType.DESCENDING);
 	}
 	
+	/**
+	 * Construct a new conveyor block at given position and with given orientation.
+	 * The constructed block will be deletable depending on the parameter.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @param z The z-coordinate.
+	 * @param orientation The orientation.
+	 * @param deletable If the block can be deleted or not.
+	 */
 	public DescendingConveyorBlock(int x, int y, int z, Orientation orientation, boolean deletable) {
 		super(x, y, z, orientation, deletable, ConveyorBlockType.DESCENDING);
 	}
 
+	@Override
+	public int getHeight() {
+		return super.getHeight() + 1;
+	}
+	
 	@Override
 	protected void drawArrowShape() {
 		glNormal3f(0, 0, 1);
@@ -41,6 +69,12 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 	@Override
 	public String getBlockID() {
 		return "cd";
+	}
+	
+	@Override
+	public Vector3f[] getHullPoints() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	@Override

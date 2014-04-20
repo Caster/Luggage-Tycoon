@@ -1,5 +1,6 @@
 package accg.utils;
 
+import java.awt.Color;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,22 @@ public class Utils {
 	
 	/** Epsilon that can be used in comparisons. */
 	public static final float EPSILON = 0.0001f;
+	
+	/**
+	 * Blend two colors by multiplying the R, G, B and A components of the given
+	 * colors pairwise. This way, blending with white does not change a color,
+	 * but blending with black makes it black immediately.
+	 * 
+	 * @param a First color.
+	 * @param b Second color.
+	 * @return The blend of the two given colors, as described above.
+	 */
+	public static Color blend(Color a, Color b) {
+		return new Color(a.getRed() * b.getRed() / 65025f,
+				a.getGreen() * b.getGreen() / 65025f,
+				a.getBlue() * b.getBlue() / 65025f,
+				a.getAlpha() * b.getAlpha() / 65025f);
+	}
 	
 	/**
 	 * Perform Bresenham's algorithm in 3D and return the ordered list of

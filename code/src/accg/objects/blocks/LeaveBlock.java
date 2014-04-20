@@ -1,6 +1,5 @@
 package accg.objects.blocks;
 
-import static accg.gui.toolkit.GLUtils.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
@@ -27,52 +26,13 @@ public class LeaveBlock extends FlatConveyorBlock {
 	/**
 	 * Series of points that define the hull around this block.
 	 */
-	public static final Vector3f[] HULL_POINTS = new Vector3f[] {
-		new Vector3f(-0.5f, -0.375f, 1),
-		new Vector3f(-0.5f, -0.375f, 0.875f),
-		new Vector3f(0.5f, -0.375f, 0.875f),
-		new Vector3f(0.5f, -0.375f, 1),
-		
-		new Vector3f(0.5f, -0.375f, 1),
-		new Vector3f(0.5f, 0.5f, 1),
-		new Vector3f(-0.5f, 0.5f, 1),
-		new Vector3f(-0.5f, -0.375f, 1),
-		
-		new Vector3f(0.5f, 0.5f, 1),
-		new Vector3f(0.5f, 0.5f, 0),
-		new Vector3f(-0.5f, 0.5f, 0),
-		new Vector3f(-0.5f, 0.5f, 1),
-		
-		new Vector3f(-0.5f, 0.5f, 0),
-		new Vector3f(-0.5f, -0.375f, 0),
-		new Vector3f(0.5f, -0.375f, 0),
-		new Vector3f(0.5f, 0.5f, 0),
-		
-		new Vector3f(0.5f, -0.375f, 0),
-		new Vector3f(0.5f, -0.375f, 0.125f),
-		new Vector3f(-0.5f, -0.375f, 0.125f),
-		new Vector3f(-0.5f, -0.375f, 0),
-		
-		new Vector3f(-0.5f, 0.5f, 0),
-		new Vector3f(-0.5f, -0.375f, 0),
-		new Vector3f(-0.5f, -0.375f, 1),
-		new Vector3f(-0.5f, 0.5f, 1),
-		
-		new Vector3f(-0.5f, -0.375f, 0.125f),
-		new Vector3f(-0.375f, -0.375f, 0.125f),
-		new Vector3f(-0.375f, -0.375f, 0.875f),
-		new Vector3f(-0.5f, -0.375f, 0.875f),
-		
-		new Vector3f(0.5f, 0.5f, 1),
-		new Vector3f(0.5f, -0.375f, 1),
-		new Vector3f(0.5f, -0.375f, 0),
-		new Vector3f(0.5f, 0.5f, 0),
-		
-		new Vector3f(0.5f, -0.375f, 0.875f),
-		new Vector3f(0.375f, -0.375f, 0.875f),
-		new Vector3f(0.375f, -0.375f, 0.125f),
-		new Vector3f(0.5f, -0.375f, 0.125f)
-	};
+	public static final Vector3f[] HULL_POINTS = new Vector3f[EnterBlock.HULL_POINTS.length];
+	static {
+		for (int i = 0; i < HULL_POINTS.length; i++) {
+			HULL_POINTS[i] = new Vector3f(-EnterBlock.HULL_POINTS[i].x,
+					-EnterBlock.HULL_POINTS[i].y, EnterBlock.HULL_POINTS[i].z);
+		}
+	}
 	
 	/**
 	 * The shutter open factor. 0 means completely open, 1 means completely
@@ -147,14 +107,6 @@ public class LeaveBlock extends FlatConveyorBlock {
 		glTranslated(x, y, z / 4.0);
 		glRotated(-orientation.angle, 0, 0, 1);
 		
-		glColor4f(HULL_COLOR);
-		glBegin(GL_QUADS);
-		{
-			drawQuadsAndNormals(HULL_POINTS);
-		}
-		glEnd();
-		
-		glColor4f(Color.WHITE);
 		glEnable(GL_TEXTURE_2D);
 		s.textures.shutterExit.bind();
 		glBegin(GL_QUADS);
@@ -207,6 +159,16 @@ public class LeaveBlock extends FlatConveyorBlock {
 	@Override
 	public ConveyorBlockType getConveyorBlockType() {
 		return ConveyorBlockType.LEAVE;
+	}
+	
+	@Override
+	public int getHeight() {
+		return 4;
+	}
+	
+	@Override
+	public Vector3f[] getHullPoints() {
+		return HULL_POINTS;
 	}
 	
 	/**

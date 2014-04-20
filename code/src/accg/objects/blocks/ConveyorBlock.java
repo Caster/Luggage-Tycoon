@@ -3,6 +3,7 @@ package accg.objects.blocks;
 import static accg.gui.toolkit.GLUtils.*;
 import static org.lwjgl.opengl.GL11.*;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.vecmath.Vector3f;
@@ -25,6 +26,11 @@ import accg.utils.Utils;
  * the origin (0, 0), and the conveyor belt moves towards the positive y direction.
  */
 public abstract class ConveyorBlock extends Block {
+	
+	/**
+	 * Color of the hull surrounding the straight conveyor block.
+	 */
+	public static final Color HULL_COLOR = new Color(186, 189, 182);
 	
 	/**
 	 * Type of this conveyor block.
@@ -65,6 +71,40 @@ public abstract class ConveyorBlock extends Block {
 		 * A leave block (where luggage items exit the world).
 		 */
 		LEAVE
+	}
+	
+	/**
+	 * Shared {@link Cylinder} object, used for drawing.
+	 */
+	protected static final Cylinder cylinder = new Cylinder();
+	/**
+	 * Delta used for z-fighting corrections.
+	 */
+	protected static final float Z_DELTA = 0.001f;
+	
+	/**
+	 * Change coordinates of points of hull a bit to prevent z-fighting.
+	 * 
+	 * @param points Points that span the hull of a ConveyorBlock.
+	 */
+	protected static void applyZFightingCorrection(Vector3f[] points) {
+		// for z-fighting...
+		for (Vector3f v : points) {
+			if (v.x == -0.5f)  v.x += Z_DELTA;
+			else if (v.x < 0)  v.x -= Z_DELTA;
+			if (v.x ==  0.5f)  v.x -= Z_DELTA;
+			else if (v.x > 0)  v.x += Z_DELTA;
+			
+			if (v.y == -0.5f)  v.y += Z_DELTA;
+			else if (v.y < 0)  v.y -= Z_DELTA;
+			if (v.y ==  0.5f)  v.y -= Z_DELTA;
+			else if (v.y > 0)  v.y += Z_DELTA;
+			
+			if (v.z == -0.5f)  v.z += Z_DELTA;
+			else if (v.z < 0)  v.z -= Z_DELTA;
+			if (v.z ==  0.5f)  v.z -= Z_DELTA;
+			else if (v.z > 0)  v.z += Z_DELTA;
+		}
 	}
 	
 	/**
@@ -129,6 +169,8 @@ public abstract class ConveyorBlock extends Block {
 	 * Returns a list of the coordinates on the left side of the top part
 	 * of the conveyor belt.
 	 * 
+	 * @param neighbor1 First neighbor of this ConveyorBlock ("before" the block).
+	 * @param neighbor2 Second neighbor of this ConveyorBlock ("after" the block).
 	 * @return An ArrayList of the coordinates.
 	 */
 	public abstract ArrayList<Vector3f> getTopCoordinatesLeft(
@@ -138,6 +180,8 @@ public abstract class ConveyorBlock extends Block {
 	 * Returns a list of the coordinates on the right side of the top part
 	 * of the conveyor belt.
 	 * 
+	 * @param neighbor1 First neighbor of this ConveyorBlock ("before" the block).
+	 * @param neighbor2 Second neighbor of this ConveyorBlock ("after" the block).
 	 * @return An ArrayList of the coordinates.
 	 */
 	public abstract ArrayList<Vector3f> getTopCoordinatesRight(
@@ -149,6 +193,8 @@ public abstract class ConveyorBlock extends Block {
 	 * {@link #getTopCoordinatesLeft(ConveyorBlock, ConveyorBlock)} and
 	 * {@link #getTopCoordinatesRight(ConveyorBlock, ConveyorBlock)}.
 	 * 
+	 * @param neighbor1 First neighbor of this ConveyorBlock ("before" the block).
+	 * @param neighbor2 Second neighbor of this ConveyorBlock ("after" the block).
 	 * @return An ArrayList of the texture coordinates.
 	 */
 	public abstract ArrayList<Double> getTopTextureCoordinates(
@@ -158,6 +204,8 @@ public abstract class ConveyorBlock extends Block {
 	 * Returns a list of the coordinates on the left side of the bottom part
 	 * of the conveyor belt.
 	 * 
+	 * @param neighbor1 First neighbor of this ConveyorBlock ("before" the block).
+	 * @param neighbor2 Second neighbor of this ConveyorBlock ("after" the block).
 	 * @return An ArrayList of the coordinates.
 	 */
 	public abstract ArrayList<Vector3f> getBottomCoordinatesLeft(
@@ -167,6 +215,8 @@ public abstract class ConveyorBlock extends Block {
 	 * Returns a list of the coordinates on the right side of the bottom part
 	 * of the conveyor belt.
 	 * 
+	 * @param neighbor1 First neighbor of this ConveyorBlock ("before" the block).
+	 * @param neighbor2 Second neighbor of this ConveyorBlock ("after" the block).
 	 * @return An ArrayList of the coordinates.
 	 */
 	public abstract ArrayList<Vector3f> getBottomCoordinatesRight(
@@ -175,23 +225,42 @@ public abstract class ConveyorBlock extends Block {
 	/**
 	 * Returns a list of the texture coordinates for the bottom part of the conveyor belt.
 	 * These should correspond to the coordinates given by the methods
-	 * {@link #getBottomCoordinatesLeft()} and {@link #getBottomCoordinatesRight()}.
+	 * {@link #getBottomCoordinatesLeft(ConveyorBlock, ConveyorBlock)} and
+	 * {@link #getBottomCoordinatesRight(ConveyorBlock, ConveyorBlock)}.
 	 * 
+	 * @param neighbor1 First neighbor of this ConveyorBlock ("before" the block).
+	 * @param neighbor2 Second neighbor of this ConveyorBlock ("after" the block).
 	 * @return An ArrayList of the texture coordinates.
 	 */
 	public abstract ArrayList<Double> getBottomTextureCoordinates(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2);
 	
+	/**
+	 * Returns a list of points that form quads which in turn form a hull around
+	 * this conveyor block.
+	 * 
+	 * @return A list of points forming quads, forming a hull. List may be empty
+	 *         or {@code null} in case there is no hull.
+	 */
+	public abstract Vector3f[] getHullPoints();
+	
 	@Override
 	public void draw(State s) {
-		
-		drawScaffolding(s);
 
 		glPushMatrix();
 		glTranslated(x, y, z / 4.0);
 		glRotated(-orientation.angle, 0, 0, 1);
 		
-		// TODO draw the axes
+		drawScaffolding(s);
+		if (getHullPoints() != null && getHullPoints().length > 0) {
+			glColor4f(Utils.blend(HULL_COLOR, glGetLastColor()));
+			glBegin(GL_QUADS);
+			{
+				drawQuadsAndNormals(getHullPoints(), scaleFactor);
+			}
+			glEnd();
+			glColor4fReset();
+		}
 		
 		glEnable(GL_TEXTURE_2D);
 		s.textures.conveyor.bind();
@@ -246,23 +315,23 @@ public abstract class ConveyorBlock extends Block {
 	 */
 	private void drawScaffolding(State s) {
 		
-		drawPole(-0.5, -0.5);
-		drawPole(-0.5, 0.5);
-		drawPole(0.5, -0.5);
-		drawPole(0.5, 0.5);
-	}
-	
-	private void drawPole(double dx, double dy) {
-
+		int belowPos = s.world.bc.getFirstBlockBelowHeight(x, y, z);
+		if (belowPos >= 0) {
+			belowPos += s.world.bc.getBlock(x, y, belowPos).getHeight();
+		} else {
+			belowPos += 1;
+		}
+		
+		// check if we have something to draw
+		if (z - belowPos <= 0) {
+			return;
+		}
+		
 		glPushMatrix();
-		glTranslated(x + dx, y + dy, 0);
+		glTranslated(0, 0, -(z - belowPos) / 4.0f + (belowPos > 0 ? 0.125f : 0));
 
-		Cylinder c = new Cylinder();
-		c.draw(0.05f * scaleFactor, 0.02f * scaleFactor, 0.25f, 16, 1);
-		glPushMatrix();
-		glTranslated(0, 0, 0.25f);
-		c.draw(0.02f * scaleFactor, 0.02f * scaleFactor, z / 4.0f, 16, 1);
-		glPopMatrix();
+		cylinder.draw(0.2f * scaleFactor, 0.2f * scaleFactor,
+				(z - belowPos) / 4.0f - (belowPos > 0 ? 0.125f : 0), 16, 1);
 		
 		glPopMatrix();
 	}
@@ -474,6 +543,6 @@ public abstract class ConveyorBlock extends Block {
 	
 	@Override
 	public int getHeight() {
-		return 4; // conveyor belts have block 4
+		return 3;
 	}
 }

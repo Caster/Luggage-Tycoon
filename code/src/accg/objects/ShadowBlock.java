@@ -1,6 +1,9 @@
 package accg.objects;
 
 import static org.lwjgl.opengl.GL11.*;
+import static accg.gui.toolkit.GLUtils.*;
+
+import java.awt.Color;
 
 import javax.vecmath.Vector3f;
 
@@ -24,6 +27,20 @@ public class ShadowBlock extends Block {
 	private boolean alerted;
 	private boolean transparent;
 	private boolean visible;
+	
+	/**
+	 * Colors used for drawing:
+	 *  0 - not alerted, not transparent
+	 *  1 - not alerted,     transparent
+	 *  2 -     alerted, not transparent
+	 *  3 -     alerted,     transparent
+	 */
+	public static final Color[] COLORS = new Color[] {
+		new Color(1, 1, 1, 1f),
+		new Color(1, 1, 1, 0.50f),
+		new Color(0.75f, 0.01f, 0.01f, 1f),
+		new Color(0.75f, 0.01f, 0.01f, 0.50f)
+	};
 	
 	/**
 	 * Creates a new shadow object with no object yet.
@@ -64,11 +81,7 @@ public class ShadowBlock extends Block {
 			glEnable(GL_BLEND);
 		}
 		
-		if (alerted) {
-			glColor4f(0.75f, 0.01f, 0.01f, (transparent ? 0.50f : 1));
-		} else {
-			glColor4f(1, 1, 1, (transparent ? 0.50f : 1));
-		}
+		glColor4f(COLORS[(alerted ? 2 : 0) + (transparent ? 1 : 0)]);
 		
 		block.draw(s);
 		
@@ -307,7 +320,7 @@ public class ShadowBlock extends Block {
 	public void setAlerted(boolean alerted) {
 		this.alerted = alerted;
 		if (this.block != null) {
-			block.setScaleFactor(alerted ? 1.05f : 1);
+			block.setScaleFactor(alerted ? 1.0005f : 1);
 		}
 	}
 	

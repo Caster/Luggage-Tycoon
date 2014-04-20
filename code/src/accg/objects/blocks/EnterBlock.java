@@ -24,58 +24,126 @@ public class EnterBlock extends FlatConveyorBlock {
 	 */
 	public static final float DEFAULT_TIME_BETWEEN_LUGGAGE = 4;
 	/**
-	 * Color of the hull surrounding the straight conveyor block.
-	 */
-	public static final Color HULL_COLOR = new Color(186, 189, 182);
-	/**
 	 * Series of points that define the hull around this block.
 	 */
 	public static final Vector3f[] HULL_POINTS = new Vector3f[] {
+		// top front quad
 		new Vector3f(-0.5f, 0.375f, 1),
 		new Vector3f(0.5f, 0.375f, 1),
 		new Vector3f(0.5f, 0.375f, 0.875f),
 		new Vector3f(-0.5f, 0.375f, 0.875f),
 		
+		// top quad ("ceiling")
 		new Vector3f(0.5f, 0.375f, 1),
 		new Vector3f(-0.5f, 0.375f, 1),
 		new Vector3f(-0.5f, -0.5f, 1),
 		new Vector3f(0.5f, -0.5f, 1),
 		
-		new Vector3f(0.5f, -0.5f, 1),
-		new Vector3f(-0.5f, -0.5f, 1),
-		new Vector3f(-0.5f, -0.5f, 0),
-		new Vector3f(0.5f, -0.5f, 0),
-		
-		new Vector3f(-0.5f, -0.5f, 0),
-		new Vector3f(0.5f, -0.5f, 0),
-		new Vector3f(0.5f, 0.375f, 0),
-		new Vector3f(-0.5f, 0.375f, 0),
-		
-		new Vector3f(0.5f, 0.375f, 0),
-		new Vector3f(-0.5f, 0.375f, 0),
-		new Vector3f(-0.5f, 0.375f, 0.125f),
-		new Vector3f(0.5f, 0.375f, 0.125f),
-		
-		new Vector3f(-0.5f, -0.5f, 0),
-		new Vector3f(-0.5f, -0.5f, 1),
-		new Vector3f(-0.5f, 0.375f, 1),
-		new Vector3f(-0.5f, 0.375f, 0),
-		
-		new Vector3f(-0.5f, 0.375f, 0.125f),
-		new Vector3f(-0.5f, 0.375f, 0.875f),
-		new Vector3f(-0.375f, 0.375f, 0.875f),
+		// top quad of "bump" below conveyor sticking out
+		new Vector3f(0.375f, 0.375f, 0.125f),
+		new Vector3f(0.375f, 0.5f, 0.125f),
+		new Vector3f(-0.375f, 0.5f, 0.125f),
 		new Vector3f(-0.375f, 0.375f, 0.125f),
 		
+		// top left quad of "bump" below conveyor sticking out
+		new Vector3f(-0.375f, 0.375f, 0.625f),
+		new Vector3f(-0.375f, 0.5f, 0.625f),
+		new Vector3f(-0.5f, 0.5f, 0.625f),
+		new Vector3f(-0.5f, 0.375f, 0.625f),
+		
+		// top right quad of "bump" below conveyor sticking out
+		new Vector3f(0.5f, 0.375f, 0.625f),
+		new Vector3f(0.5f, 0.5f, 0.625f),
+		new Vector3f(0.375f, 0.5f, 0.625f),
+		new Vector3f(0.375f, 0.375f, 0.625f),
+		
+		// left outer wall of "bump" below conveyor sticking out
+		new Vector3f(-0.5f, 0.375f, 0),
+		new Vector3f(-0.5f, 0.375f, 0.625f),
+		new Vector3f(-0.5f, 0.5f, 0.625f),
+		new Vector3f(-0.5f, 0.5f, 0),
+		
+		// right outer wall of "bump" below conveyor sticking out
+		new Vector3f(0.5f, 0.375f, 0),
+		new Vector3f(0.5f, 0.5f, 0),
+		new Vector3f(0.5f, 0.5f, 0.625f),
+		new Vector3f(0.5f, 0.375f, 0.625f),
+		
+		// back outer quad
+		new Vector3f(0.5f, -0.5f, 1),
+		new Vector3f(-0.5f, -0.5f, 1),
+		new Vector3f(-0.5f, -0.5f, 0),
+		new Vector3f(0.5f, -0.5f, 0),
+		
+		// back inner quad
+		new Vector3f(0.375f, -0.375f, 0.625f),
+		new Vector3f(0.375f, -0.375f, 0.125f),
+		new Vector3f(-0.375f, -0.375f, 0.125f),
+		new Vector3f(-0.375f, -0.375f, 0.625f),
+		
+		// floor quad
+		new Vector3f(-0.5f, -0.5f, 0),
+		new Vector3f(0.5f, -0.5f, 0),
+		new Vector3f(0.5f, 0.5f, 0),
+		new Vector3f(-0.5f, 0.5f, 0),
+		
+		// front bottom quad
+		new Vector3f(0.5f, 0.5f, 0),
+		new Vector3f(-0.5f, 0.5f, 0),
+		new Vector3f(-0.5f, 0.5f, 0.125f),
+		new Vector3f(0.5f, 0.5f, 0.125f),
+		
+		// left outer wall
+		new Vector3f(-0.5f, -0.5f, 0),
+		new Vector3f(-0.5f, -0.5f, 1),
+		new Vector3f(-0.5f, 0.375f, 1),
+		new Vector3f(-0.5f, 0.375f, 0),
+		
+		// left inner wall
+		new Vector3f(-0.375f, -0.375f, 0.625f),
+		new Vector3f(-0.375f, -0.375f, 0.125f),
+		new Vector3f(-0.375f, 0.5f, 0.125f),
+		new Vector3f(-0.375f, 0.5f, 0.625f),
+		
+		// left front quad
+		new Vector3f(-0.5f, 0.375f, 0.625f),
+		new Vector3f(-0.5f, 0.375f, 0.875f),
+		new Vector3f(-0.375f, 0.375f, 0.875f),
+		new Vector3f(-0.375f, 0.375f, 0.625f),
+		
+		// left front quad ("bump")
+		new Vector3f(-0.5f, 0.5f, 0),
+		new Vector3f(-0.5f, 0.5f, 0.625f),
+		new Vector3f(-0.375f, 0.5f, 0.625f),
+		new Vector3f(-0.375f, 0.5f, 0),
+		
+		// right outer wall
 		new Vector3f(0.5f, -0.5f, 1),
 		new Vector3f(0.5f, -0.5f, 0),
 		new Vector3f(0.5f, 0.375f, 0),
 		new Vector3f(0.5f, 0.375f, 1),
 		
+		// right inner wall
+		new Vector3f(0.375f, -0.375f, 0.125f),
+		new Vector3f(0.375f, -0.375f, 0.625f),
+		new Vector3f(0.375f, 0.5f, 0.625f),
+		new Vector3f(0.375f, 0.5f, 0.125f),
+		
+		// right front quad
 		new Vector3f(0.5f, 0.375f, 0.875f),
-		new Vector3f(0.5f, 0.375f, 0.125f),
-		new Vector3f(0.375f, 0.375f, 0.125f),
-		new Vector3f(0.375f, 0.375f, 0.875f)
+		new Vector3f(0.5f, 0.375f, 0.625f),
+		new Vector3f(0.375f, 0.375f, 0.625f),
+		new Vector3f(0.375f, 0.375f, 0.875f),
+		
+		// right front quad ("bump")
+		new Vector3f(0.5f, 0.5f, 0.625f),
+		new Vector3f(0.5f, 0.5f, 0),
+		new Vector3f(0.375f, 0.5f, 0),
+		new Vector3f(0.375f, 0.5f, 0.625f)
 	};
+	static {
+		applyZFightingCorrection(HULL_POINTS);
+	}
 	/**
 	 * Time it takes, in seconds, to open the shutter completely.
 	 */
@@ -171,13 +239,6 @@ public class EnterBlock extends FlatConveyorBlock {
 		glTranslated(x, y, z / 4.0);
 		glRotated(-orientation.angle, 0, 0, 1);
 		
-		glColor4f(HULL_COLOR);
-		glBegin(GL_QUADS);
-		{
-			drawQuadsAndNormals(HULL_POINTS);
-		}
-		glEnd();
-		
 		float sof = getShutterOpenFactor(s);
 		glColor4f(Color.WHITE);
 		glEnable(GL_TEXTURE_2D);
@@ -222,6 +283,16 @@ public class EnterBlock extends FlatConveyorBlock {
 	 */
 	public int getGeneratedLuggageNum() {
 		return generatedLuggage;
+	}
+	
+	@Override
+	public int getHeight() {
+		return 4;
+	}
+	
+	@Override
+	public Vector3f[] getHullPoints() {
+		return HULL_POINTS;
 	}
 	
 	/**

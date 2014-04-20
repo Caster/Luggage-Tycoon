@@ -133,12 +133,9 @@ public class Simulation {
 		world.addRigidBody(r);
 		addedBodies.add(r);
 		
-		// hard-coded situations
-		if (cb.getConveyorBlockType() == ConveyorBlockType.ENTER) {
-			addBlockHull(cb, addedBodies, EnterBlock.HULL_POINTS);
-		}
-		if (cb.getConveyorBlockType() == ConveyorBlockType.LEAVE) {
-			addBlockHull(cb, addedBodies, LeaveBlock.HULL_POINTS);
+		// possibly add the hull of the block
+		if (cb.getHullPoints() != null && cb.getHullPoints().length > 0) {
+			addBlockHull(cb, addedBodies, cb.getHullPoints());
 		}
 		
 		// make sure the body is cleaned up when the conveyorblock is removed
@@ -247,8 +244,7 @@ public class Simulation {
 			Utils.rotatePoints(block.getOrientation(), points);
 			RigidBody body = new RigidBody(0, null, new ConvexHullShape(points));
 			// enable callback to delete luggage in the LeaveBlocks
-			if (block.getConveyorBlockType() == ConveyorBlockType.LEAVE &&
-					i == 8) {
+			if (block.getConveyorBlockType() == ConveyorBlockType.LEAVE && i == 32) {
 				body.setUserPointer(new SimulationBodyInfo(block, SimulationBodyType.LEAVE_BLOCK));
 			}
 			

@@ -6,17 +6,38 @@ import java.util.ArrayList;
 
 import javax.vecmath.Vector3f;
 
-import accg.State;
 import accg.objects.Block;
 import accg.objects.Orientation;
 import accg.utils.Utils;
 
+/**
+ * A ConveyorBlock that makes a 90 degree bend to the left.
+ */
 public class BendLeftConveyorBlock extends ConveyorBlock {
 
+	/**
+	 * Construct a new conveyor block at given position and with given orientation.
+	 * The constructed block will be deletable.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @param z The z-coordinate.
+	 * @param orientation The orientation.
+	 */
 	public BendLeftConveyorBlock(int x, int y, int z, Orientation orientation) {
 		super(x, y, z, orientation, ConveyorBlockType.BEND_LEFT);
 	}
 
+	/**
+	 * Construct a new conveyor block at given position and with given orientation.
+	 * The constructed block will be deletable depending on the parameter.
+	 * 
+	 * @param x The x-coordinate.
+	 * @param y The y-coordinate.
+	 * @param z The z-coordinate.
+	 * @param orientation The orientation.
+	 * @param deletable If the block can be deleted or not.
+	 */
 	public BendLeftConveyorBlock(int x, int y, int z, Orientation orientation, boolean deletable) {
 		super(x, y, z, orientation, deletable, ConveyorBlockType.BEND_LEFT);
 	}
@@ -47,6 +68,12 @@ public class BendLeftConveyorBlock extends ConveyorBlock {
 	@Override
 	public String getBlockID() {
 		return "cbl";
+	}
+	
+	@Override
+	public Vector3f[] getHullPoints() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	@Override
