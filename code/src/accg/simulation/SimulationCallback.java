@@ -41,9 +41,13 @@ public class SimulationCallback extends ContactProcessedCallback {
 					if (rb0info.getBodyType() == SimulationBodyType.FLOOR &&
 							rb1info.getBodyType() == SimulationBodyType.LUGGAGE) {
 						state.world.luggage.remove((Luggage) rb1info.getUserPointer());
+						state.world.incrementLostLuggageCount();
+						MainGUI.updateStatusBarInfo();
 					} else if (rb0info.getBodyType() == SimulationBodyType.LUGGAGE &&
 							rb1info.getBodyType() == SimulationBodyType.FLOOR) {
 						state.world.luggage.remove((Luggage) rb0info.getUserPointer());
+						state.world.incrementLostLuggageCount();
+						MainGUI.updateStatusBarInfo();
 					} else if (rb0info.getBodyType() == SimulationBodyType.LEAVE_BLOCK &&
 							rb1info.getBodyType() == SimulationBodyType.LUGGAGE) {
 						LeaveBlock lb = (LeaveBlock) rb0info.getUserPointer();

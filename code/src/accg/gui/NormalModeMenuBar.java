@@ -6,8 +6,6 @@ import accg.State.ProgramMode;
 import accg.gui.toolkit.Event;
 import accg.gui.toolkit.Listener;
 import accg.gui.toolkit.components.Button;
-import accg.gui.toolkit.components.TextField;
-import accg.gui.toolkit.containers.Dialog;
 import accg.gui.toolkit.containers.MenuBar;
 import accg.gui.toolkit.containers.MenuStack;
 import accg.gui.toolkit.event.MouseClickEvent;
@@ -21,6 +19,14 @@ import accg.objects.blocks.LeaveBlock;
  */
 public class NormalModeMenuBar extends MenuBar {
 	
+	/**
+	 * Construct a new menu bar for the normal mode. In this mode, the building
+	 * mode and simulation mode can be selected. Also, the current world can be
+	 * saved for later use.
+	 * 
+	 * @param stack Stack in which this menu is put.
+	 * @param s State of the program.
+	 */
 	public NormalModeMenuBar(final MenuStack stack, final State s) {
 		
 		Button simulateItem = new Button(Messages.get("NormalModeMenuBar.simulate"), s.textures.iconStart); //$NON-NLS-1$
@@ -38,6 +44,7 @@ public class NormalModeMenuBar extends MenuBar {
 							((LeaveBlock) b).resetArrivedLuggageCount();
 						}
 					}
+					s.world.resetLostLuggageCount();
 					s.programMode = ProgramMode.SIMULATION_MODE;
 					s.gui.updateItems();
 					

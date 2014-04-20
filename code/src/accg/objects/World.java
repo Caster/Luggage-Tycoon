@@ -32,6 +32,11 @@ public class World extends Container<DrawableObject> {
 	 * How many blocks can be built in the scene.
 	 */
 	protected int blockLimit;
+	/**
+	 * How many pieces of luggage have been lost.
+	 * A piece of luggage is lost when it falls on the floor for example.
+	 */
+	protected int lostLuggageCount;
 	
 	/**
 	 * State of the program, used to access {@link Simulation}.
@@ -58,6 +63,29 @@ public class World extends Container<DrawableObject> {
 		
 		blockCount = 0;
 		blockLimit = -1;
+		lostLuggageCount = 0;
+	}
+	
+	/**
+	 * Returns the number of lost pieces of luggage.
+	 * @return the number of lost pieces of luggage.
+	 */
+	public int getLostLuggageCount() {
+		return lostLuggageCount;
+	}
+	
+	/**
+	 * Increment the count of number of lost pieces of luggage.
+	 */
+	public void incrementLostLuggageCount() {
+		lostLuggageCount++;
+	}
+	
+	/**
+	 * Reset the count of number of lost pieces of luggage to zero.
+	 */
+	public void resetLostLuggageCount() {
+		lostLuggageCount = 0;
 	}
 	
 	/**

@@ -63,7 +63,7 @@ public class LuggageReachedGoalLabel extends Label {
 			}
 			
 			setText(String.format(Messages.get("LuggageReachedGoalLabel."
-					+ "information"), lugGenCount, lugCount, lugArrivedCount));
+					+ "information"), lugGenCount, lugCount, lugArrivedCount, this.state.world.getLostLuggageCount()));
 			if (lugArrivedCount == lugCount && state.loadedBuiltinLevel) {
 				MainGUI.levelCompleted();
 			}

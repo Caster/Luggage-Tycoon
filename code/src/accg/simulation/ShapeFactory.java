@@ -114,7 +114,7 @@ public class ShapeFactory {
 		public boolean hasNeighbor1;
 		/**
 		 * If the block has a neigbor, this is stored here.
-		 * See {@link #hasNeigbor1}. Otherwise, this is {@code null}.
+		 * See {@link #hasNeighbor1}. Otherwise, this is {@code null}.
 		 */
 		public ConveyorBlock neighbor1;
 		/**
@@ -124,7 +124,7 @@ public class ShapeFactory {
 		public boolean hasNeighbor2;
 		/**
 		 * If the block has a neigbor, this is stored here.
-		 * See {@link #hasNeigbor2}. Otherwise, this is {@code null}.
+		 * See {@link #hasNeighbor2}. Otherwise, this is {@code null}.
 		 */
 		public ConveyorBlock neighbor2;
 		
