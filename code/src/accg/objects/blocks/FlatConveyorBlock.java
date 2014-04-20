@@ -150,15 +150,17 @@ public class FlatConveyorBlock extends ConveyorBlock {
 	public ArrayList<Vector3f> getTopCoordinatesLeft(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
-		if (neighbor1 == null) {
+		if (neighbor1 == null && getConveyorBlockType() != ConveyorBlockType.ENTER) {
 			addBendYZ(lefts, Math.PI, Math.PI / 2, -0.375f, -0.375f, 0.25f, 0.125);
 		} else {
-			lefts.add(new Vector3f(-0.375f, -0.5f, 0.375f));
+			lefts.add(new Vector3f(-0.375f, -0.5f + (getConveyorBlockType() ==
+					ConveyorBlockType.ENTER ? 2 * Z_DELTA : 0), 0.375f));
 		}
-		if (neighbor2 == null) {
+		if (neighbor2 == null && getConveyorBlockType() != ConveyorBlockType.LEAVE) {
 			addBendYZ(lefts, Math.PI / 2, 0, -0.375f, 0.375f, 0.25f, 0.125);
 		} else {
-			lefts.add(new Vector3f(-0.375f, 0.5f, 0.375f));
+			lefts.add(new Vector3f(-0.375f, 0.5f - (getConveyorBlockType() ==
+					ConveyorBlockType.LEAVE ? 2 * Z_DELTA : 0), 0.375f));
 		}
 		return lefts;
 	}
@@ -167,15 +169,17 @@ public class FlatConveyorBlock extends ConveyorBlock {
 	public ArrayList<Vector3f> getTopCoordinatesRight(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> rights = new ArrayList<>();
-		if (neighbor1 == null) {
+		if (neighbor1 == null && getConveyorBlockType() != ConveyorBlockType.ENTER) {
 			addBendYZ(rights, Math.PI, Math.PI / 2, 0.375f, -0.375f, 0.25f, 0.125);
 		} else {
-			rights.add(new Vector3f(0.375f, -0.5f, 0.375f));
+			rights.add(new Vector3f(0.375f, -0.5f + (getConveyorBlockType() ==
+					ConveyorBlockType.ENTER ? 2 * Z_DELTA : 0), 0.375f));
 		}
-		if (neighbor2 == null) {
+		if (neighbor2 == null && getConveyorBlockType() != ConveyorBlockType.LEAVE) {
 			addBendYZ(rights, Math.PI / 2, 0, 0.375f, 0.375f, 0.25f, 0.125);
 		} else {
-			rights.add(new Vector3f(0.375f, 0.5f, 0.375f));
+			rights.add(new Vector3f(0.375f, 0.5f - (getConveyorBlockType() ==
+					ConveyorBlockType.LEAVE ? 2 * Z_DELTA : 0), 0.375f));
 		}
 		return rights;
 	}
@@ -185,14 +189,14 @@ public class FlatConveyorBlock extends ConveyorBlock {
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Double> texs = new ArrayList<>();
 		double texCoord;
-		if (neighbor1 == null) {
+		if (neighbor1 == null && getConveyorBlockType() != ConveyorBlockType.ENTER) {
 			texCoord = addBendTextureCoordinates(texs, Math.PI, Math.PI / 2,
 					0.125, 0.0);
 		} else {
 			texs.add(0.0);
 			texCoord = 0;
 		}
-		if (neighbor2 == null) {
+		if (neighbor2 == null && getConveyorBlockType() != ConveyorBlockType.LEAVE) {
 			addBendTextureCoordinates(texs, Math.PI / 2, 0, 0.125, texCoord + 6.0);
 		} else {
 			texs.add(8.0);
@@ -204,15 +208,17 @@ public class FlatConveyorBlock extends ConveyorBlock {
 	public ArrayList<Vector3f> getBottomCoordinatesLeft(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> lefts = new ArrayList<>();
-		if (neighbor2 == null) {
+		if (neighbor2 == null && getConveyorBlockType() != ConveyorBlockType.LEAVE) {
 			addBendYZ(lefts, Math.PI * 2, Math.PI * 3 / 2, -0.375f, 0.375f, 0.25f, 0.125);
 		} else {
-			lefts.add(new Vector3f(-0.375f, 0.5f, 0.125f));
+			lefts.add(new Vector3f(-0.375f, 0.5f - (getConveyorBlockType() ==
+					ConveyorBlockType.LEAVE ? 2 * Z_DELTA : 0), 0.125f));
 		}
-		if (neighbor1 == null) {
+		if (neighbor1 == null && getConveyorBlockType() != ConveyorBlockType.ENTER) {
 			addBendYZ(lefts, Math.PI * 3 / 2, Math.PI, -0.375f, -0.375f, 0.25f, 0.125);
 		} else {
-			lefts.add(new Vector3f(-0.375f, -0.5f, 0.125f));
+			lefts.add(new Vector3f(-0.375f, -0.5f + (getConveyorBlockType() ==
+					ConveyorBlockType.ENTER ? 2 * Z_DELTA : 0), 0.125f));
 		}
 		return lefts;
 	}
@@ -221,15 +227,17 @@ public class FlatConveyorBlock extends ConveyorBlock {
 	public ArrayList<Vector3f> getBottomCoordinatesRight(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> rights = new ArrayList<>();
-		if (neighbor2 == null) {
+		if (neighbor2 == null && getConveyorBlockType() != ConveyorBlockType.LEAVE) {
 			addBendYZ(rights, Math.PI * 2, Math.PI * 3 / 2, 0.375f, 0.375f, 0.25f, 0.125);
 		} else {
-			rights.add(new Vector3f(0.375f, 0.5f, 0.125f));
+			rights.add(new Vector3f(0.375f, 0.5f - (getConveyorBlockType() ==
+					ConveyorBlockType.LEAVE ? 2 * Z_DELTA : 0), 0.125f));
 		}
-		if (neighbor1 == null) {
+		if (neighbor1 == null && getConveyorBlockType() != ConveyorBlockType.ENTER) {
 			addBendYZ(rights, Math.PI * 3 / 2, Math.PI, 0.375f, -0.375f, 0.25f, 0.125);
 		} else {
-			rights.add(new Vector3f(0.375f, -0.5f, 0.125f));
+			rights.add(new Vector3f(0.375f, -0.5f + (getConveyorBlockType() ==
+					ConveyorBlockType.ENTER ? 2 * Z_DELTA : 0), 0.125f));
 		}
 		return rights;
 	}
@@ -239,14 +247,14 @@ public class FlatConveyorBlock extends ConveyorBlock {
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Double> texs = new ArrayList<>();
 		double texCoord;
-		if (neighbor2 == null) {
+		if (neighbor2 == null && getConveyorBlockType() != ConveyorBlockType.LEAVE) {
 			texCoord = addBendTextureCoordinates(texs, Math.PI * 2,
 					Math.PI * 3 / 2, 0.125, 0.0);
 		} else {
 			texs.add(0.0);
 			texCoord = 0;
 		}
-		if (neighbor1 == null) {
+		if (neighbor1 == null && getConveyorBlockType() != ConveyorBlockType.ENTER) {
 			addBendTextureCoordinates(texs, Math.PI * 3 / 2, Math.PI, 0.125,
 					texCoord + 6.0);
 		} else {
