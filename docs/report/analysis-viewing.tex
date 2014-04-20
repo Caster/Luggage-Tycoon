@@ -10,22 +10,25 @@ In the building mode, we can simply draw arrows on top of the conveyor belts tha
 
 We can use a texture of a small part of the conveyor belt, and repeat it in the length direction of the belt. A requirement is then that the texture does not get deformed, that is, the texture coordinates should be such that every repetition of the texture has (about) the same size. This is especially important since we are going to animate the texture, meaning that deformations in the texture would become visible as stretching or shortening of parts of the conveyor belt.
 
-\subsubsection{Calculating texture coordinates}
-First note that only the texture coordinates in the length direction are important here; for the other direction we can just use $0$ for the left side and $1$ for the right side.
-
-Now, for calculating the texture coordinates, we use the following strategy: we use fixed values for every point at the conveyor belt, and then we animate those linearly. Assuming that the fixed values indeed do not deform the texture too much, the animated texture will also not be deformed in this way.
-
-The problem left now is determining the fixed values. We pose the following requirements for them.
+\subsubsection{What is the problem?}
+\label{subsubsec:texture-coord-problem}
+Let us look at what the problem is in detail, before giving our solution in Section~\ref{subsubsec:texture-coord-calculate}. Recall that we want to indicate to the user that the conveyor belts are moving and that we want to do so by texturing the belts. This means that we map a 2D texture to the 3D surface of a conveyor belt. This is straightforward: if we only consider the top of each conveyor belt (the bottom is symmetric), then this is a surface in 3D that has a left and a right side. This is true because any conveyor belt block in our program has a fairly restricted shape. We can now map the left side of our texture to the left side of this 3D surface and similarly map the right side of our texture to the right side of the 3D surface and we are done. So, no problem? Not if we only consider one block. However, we have more requirements:
 \begin{itemize}
   \item As said before, they should not deform the texture (or only a little bit). Said differently, there is some $r$ such that for every point $p$ on the belt,
   \[
     l(p) \approx r \cdot t(p),
   \]
   where $l(p)$ means the length of the belt until point $p$ and $t(p)$ denotes the texture coordinate at point $p$.
-  \item Furthermore, we want the blocks to be tileable. As described in section~\ref{subsubsec:drawing-adjacent}, we want to draw adjacent blocks as one large conveyor belt. Therefore, we require that $t(p) \in \mathbb{Z}$ for points $p$ that connect to other belts.
-  \item Finally, we do not want the texture coordinates to become very high, since that means that the texture will be repeated many times on the conveyor belt, which may become noticable.
+  \item Furthermore, we want the blocks to be tileable. As described in section~\ref{subsubsec:drawing-adjacent}, we want to draw adjacent blocks as one large conveyor belt. Therefore, we require that $t(p) \in \mathbb{N}$ for points $p$ that connect to other belts.
+  \item Finally, we do not want the texture coordinates to become very high, since that means that the texture will be repeated many times on the conveyor belt, which may become noticeable.
 \end{itemize}
-We tried to find an exact solution, but this turns out to be hard, especially since the requirements are quite vague. Finally, we came up with an approximate solution manually, that is shown in Figure~\ref{fig:sketch-texturing}.
+The problem is mostly in the second requirement, that the texture must be tileable. This requirement basically states that the texture maps for different shapes of conveyor blocks have a relation to each other: if two shapes are drawn next to each other, then the texture maps must form a whole, they must connect seamlessly with each other. Consider two flat conveyor belts that are drawn next to each other (the top situation in Figure~\ref{fig:blocks-adjacent}) and for the sake of simplicity, only consider the top of these belts. The surfaces of both conveyor belts now consist of a quarter of a circle arc and some straight line, when looking from the side. This directly implies that the length of that surface is not a natural number: the length of the circumference of a circle is $2 \cdot \pi \cdot r$, where $r$ is the radius of the circle and $\pi \not\in \mathbb{N}$. We can pick $r = \frac{k}{2 \cdot \pi}$ for some $k \in \mathbb{N}$, however that implies that the length of the straight surface after the arc is not a natural number anymore. If the length of one conveyor belt block is $l$, then the length of the straight surface is $l - r$, which cannot be a natural number if $l \in \mathbb{N}$ and $r \not\in \mathbb{N}$.
+
+\subsubsection{Calculating texture coordinates}
+\label{subsubsec:texture-coord-calculate}
+For calculating the texture coordinates, we use the following strategy: we use fixed values for every point at the conveyor belt, and then we animate those linearly. Assuming that the fixed values indeed do not deform the texture too much, the animated texture will also not be deformed in this way.
+
+The problem left now is determining the fixed values while respecting the requirements described in Section~\ref{subsubsec:texture-coord-problem}. We tried to find an exact solution, but this turns out to be hard, especially since the requirements are quite vague. Finally, we came up with an approximate solution manually, that is shown in Figure~\ref{fig:sketch-texturing}. Note that it basically uses that $\pi \approx 3$. We used similar approximate texture mappings for other conveyor shapes. For example, for the \eo{ascending}{descending} conveyor belts, we used that the length of the side, which is $\sqrt{1^2 + (1/4)^2} = 1.0625 \approx 1$. We found that this solution works well in practice.
 \begin{figure}
   \begin{center}
     \includegraphics{sketch-texturing}
