@@ -357,6 +357,7 @@ public class ACCGProgram {
 					s.gui.updateItems();
 					break;
 				case SIMULATION_MODE:
+					s.simulation.clearObjects(s);
 					s.programMode = ProgramMode.NORMAL_MODE;
 					s.gui.updateItems();
 					s.gui.setStatusBarVisible(false);
