@@ -16,6 +16,208 @@ import accg.utils.Utils;
 public class BendLeftConveyorBlock extends ConveyorBlock {
 
 	/**
+	 * Number of segments used for constructing bend hull.
+	 */
+	public static final int NUM_SEGMENTS = 16;
+	/**
+	 * Series of points that define the hull around this block.
+	 * The resolution of the bend is 16 segments. This is multiplied with the number
+	 * of vertices per segment. This is the number of quads per segment times four.
+	 * The extra 14 quads are because the beginning and end of the bend have a straight piece. 
+	 */
+	public static final Vector3f[] HULL_POINTS = new Vector3f[14 * 4 + NUM_SEGMENTS * 4 * 7];
+	static {
+		int j = 0;
+		
+		// quad below conveyor at start of bend
+		HULL_POINTS[j++] = new Vector3f(0.5f, -0.5f, 0);
+		HULL_POINTS[j++] = new Vector3f(0.5f, -0.5f, 0.125f);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, -0.5f, 0.125f);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, -0.5f, 0);
+		
+		// quad left of conveyor at start of bend
+		HULL_POINTS[j++] = new Vector3f(-0.5f, -0.5f, 0.125f);
+		HULL_POINTS[j++] = new Vector3f(-0.375f, -0.5f, 0.125f);
+		HULL_POINTS[j++] = new Vector3f(-0.375f, -0.5f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, -0.5f, 0.625f);
+		
+		// quad right of conveyor at start of bend
+		HULL_POINTS[j++] = new Vector3f(0.375f, -0.5f, 0.125f);
+		HULL_POINTS[j++] = new Vector3f(0.5f, -0.5f, 0.125f);
+		HULL_POINTS[j++] = new Vector3f(0.5f, -0.5f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(0.375f, -0.5f, 0.625f);
+		
+		// quad below conveyor at end of bend
+		HULL_POINTS[j++] = new Vector3f(-0.5f, 0.5f, 0);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, -0.5f, 0);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, -0.5f, 0.125f);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, 0.5f, 0.125f);
+		
+		// quad left of conveyor at end of bend
+		HULL_POINTS[j++] = new Vector3f(-0.5f, -0.5f, 0.125f);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, -0.5f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, -0.375f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, -0.375f, 0.125f);
+		
+		// quad right of conveyor at end of bend
+		HULL_POINTS[j++] = new Vector3f(-0.5f, 0.375f, 0.125f);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, 0.375f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, 0.5f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, 0.5f, 0.125f);
+		
+		// floor quad at start of bend
+		HULL_POINTS[j++] = new Vector3f(-0.5f, -0.5f, 0);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, -0.375f, 0);
+		HULL_POINTS[j++] = new Vector3f(0.5f, -0.375f, 0);
+		HULL_POINTS[j++] = new Vector3f(0.5f, -0.5f, 0);
+		
+		// right outer wall at start of bend
+		HULL_POINTS[j++] = new Vector3f(0.5f, -0.5f, 0);
+		HULL_POINTS[j++] = new Vector3f(0.5f, -0.375f, 0);
+		HULL_POINTS[j++] = new Vector3f(0.5f, -0.375f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(0.5f, -0.5f, 0.625f);
+		
+		// right inner wall at start of bend
+		HULL_POINTS[j++] = new Vector3f(0.375f, -0.5f, 0.125f);
+		HULL_POINTS[j++] = new Vector3f(0.375f, -0.5f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(0.375f, -0.375f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(0.375f, -0.375f, 0.125f);
+		
+		// right wall top at start of bend
+		HULL_POINTS[j++] = new Vector3f(0.375f, -0.5f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(0.5f, -0.5f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(0.5f, -0.375f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(0.375f, -0.375f, 0.625f);
+		
+		// floor quad at end of bend
+		HULL_POINTS[j++] = new Vector3f(-0.5f, -0.375f, 0);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, 0.5f, 0);
+		HULL_POINTS[j++] = new Vector3f(-0.375f, 0.5f, 0);
+		HULL_POINTS[j++] = new Vector3f(-0.375f, -0.375f, 0);
+		
+		// right outer wall at end of bend
+		HULL_POINTS[j++] = new Vector3f(-0.5f, 0.5f, 0);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, 0.5f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(-0.375f, 0.5f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(-0.375f, 0.5f, 0);
+		
+		// right inner wall at end of bend
+		HULL_POINTS[j++] = new Vector3f(-0.5f, 0.375f, 0.125f);
+		HULL_POINTS[j++] = new Vector3f(-0.375f, 0.375f, 0.125f);
+		HULL_POINTS[j++] = new Vector3f(-0.375f, 0.375f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, 0.375f, 0.625f);
+		
+		// right wall top at end of bend
+		HULL_POINTS[j++] = new Vector3f(-0.5f, 0.375f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(-0.375f, 0.375f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(-0.375f, 0.5f, 0.625f);
+		HULL_POINTS[j++] = new Vector3f(-0.5f, 0.5f, 0.625f);
+		
+		double rad = 0;
+		for (int i = 0; i < NUM_SEGMENTS; i++) {
+			// floor quad
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.001, rad, -0.375f),
+					getBendXYCoordY(0.001, rad, -0.375f), 0);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.001, rad +
+					(Math.PI / (2 * NUM_SEGMENTS)), -0.375f),
+					getBendXYCoordY(0.001, rad + (Math.PI / (2 * NUM_SEGMENTS)),
+							-0.375f), 0);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.875f, rad +
+					(Math.PI / (2 * NUM_SEGMENTS)), -0.375f),
+					getBendXYCoordY(0.875f, rad + (Math.PI / (2 * NUM_SEGMENTS)),
+							-0.375f), 0);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.875f, rad, -0.375f),
+					getBendXYCoordY(0.875f, rad, -0.375f), 0);
+			
+			// quad just below conveyor
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.125, rad, -0.5f),
+					getBendXYCoordY(0.125, rad, -0.5f), 0.125f);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.875, rad, -0.5f),
+					getBendXYCoordY(0.875, rad, -0.5f), 0.125f);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.875, rad +
+					(Math.PI / (2 * NUM_SEGMENTS)), -0.5f),
+					getBendXYCoordY(0.875, rad + (Math.PI / (2 * NUM_SEGMENTS)),
+							-0.5f), 0.125f);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.125, rad +
+					(Math.PI / (2 * NUM_SEGMENTS)), -0.5f),
+					getBendXYCoordY(0.125, rad + (Math.PI / (2 * NUM_SEGMENTS)),
+							-0.5f), 0.125f);
+			
+			// left inner wall
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.125, rad, -0.5f),
+					getBendXYCoordY(0.125, rad, -0.5f), 0.125f);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.125, rad +
+					(Math.PI / (2 * NUM_SEGMENTS)), -0.5f),
+					getBendXYCoordY(0.125, rad + (Math.PI / (2 * NUM_SEGMENTS)),
+							-0.5f), 0.125f);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.125, rad +
+					(Math.PI / (2 * NUM_SEGMENTS)), -0.5f),
+					getBendXYCoordY(0.125, rad + (Math.PI / (2 * NUM_SEGMENTS)),
+							-0.5f), 0.625f);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.125, rad, -0.5f),
+					getBendXYCoordY(0.125, rad, -0.5f), 0.625f);
+			
+			// left wall top
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.001, rad, -0.5f),
+					getBendXYCoordY(0.001, rad, -0.5f), 0.625f);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.125, rad, -0.5f),
+					getBendXYCoordY(0.125, rad, -0.5f), 0.625f);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.125, rad +
+					(Math.PI / (2 * NUM_SEGMENTS)), -0.5f),
+					getBendXYCoordY(0.125, rad + (Math.PI / (2 * NUM_SEGMENTS)),
+							-0.5f), 0.625f);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.001, rad +
+					(Math.PI / (2 * NUM_SEGMENTS)), -0.5f),
+					getBendXYCoordY(0.001, rad + (Math.PI / (2 * NUM_SEGMENTS)),
+							-0.5f), 0.625f);
+			
+			// right inner wall
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.75, rad, -0.375f),
+					getBendXYCoordY(0.75, rad, -0.375f), 0.125f);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.75, rad, -0.375f),
+					getBendXYCoordY(0.75, rad, -0.375f), 0.625f);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.75, rad +
+					(Math.PI / (2 * NUM_SEGMENTS)), -0.375f),
+					getBendXYCoordY(0.75, rad + (Math.PI / (2 * NUM_SEGMENTS)),
+							-0.375f), 0.625f);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.75, rad +
+					(Math.PI / (2 * NUM_SEGMENTS)), -0.375f),
+					getBendXYCoordY(0.75, rad + (Math.PI / (2 * NUM_SEGMENTS)),
+							-0.375f), 0.125f);
+			
+			// right outer wall
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.875, rad, -0.375f),
+					getBendXYCoordY(0.875, rad, -0.375f), 0);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.875, rad +
+					(Math.PI / (2 * NUM_SEGMENTS)), -0.375f),
+					getBendXYCoordY(0.875, rad + (Math.PI / (2 * NUM_SEGMENTS)),
+							-0.375f), 0);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.875, rad +
+					(Math.PI / (2 * NUM_SEGMENTS)), -0.375f),
+					getBendXYCoordY(0.875, rad + (Math.PI / (2 * NUM_SEGMENTS)),
+							-0.375f), 0.625f);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.875, rad, -0.375f),
+					getBendXYCoordY(0.875, rad, -0.375f), 0.625f);
+			
+			// right wall top
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.75, rad, -0.375f),
+					getBendXYCoordY(0.75, rad, -0.375f), 0.625f);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.875, rad, -0.375f),
+					getBendXYCoordY(0.875, rad, -0.375f), 0.625f);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.875, rad +
+					(Math.PI / (2 * NUM_SEGMENTS)), -0.375f),
+					getBendXYCoordY(0.875, rad + (Math.PI / (2 * NUM_SEGMENTS)),
+							-0.375f), 0.625f);
+			HULL_POINTS[j++] = new Vector3f(getBendXYCoordX(0.75, rad +
+					(Math.PI / (2 * NUM_SEGMENTS)), -0.375f),
+					getBendXYCoordY(0.75, rad + (Math.PI / (2 * NUM_SEGMENTS)),
+							-0.375f), 0.625f);
+			
+			rad += (Math.PI / (2 * NUM_SEGMENTS));
+		}
+	}
+	
+	/**
 	 * Construct a new conveyor block at given position and with given orientation.
 	 * The constructed block will be deletable.
 	 * 
@@ -72,8 +274,7 @@ public class BendLeftConveyorBlock extends ConveyorBlock {
 	
 	@Override
 	public Vector3f[] getHullPoints() {
-		// TODO Auto-generated method stub
-		return null;
+		return HULL_POINTS;
 	}
 	
 	@Override

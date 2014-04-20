@@ -16,6 +16,23 @@ import accg.utils.Utils;
 public class BendRightConveyorBlock extends ConveyorBlock {
 
 	/**
+	 * Series of points that define the hull around this block.
+	 */
+	public static final Vector3f[] HULL_POINTS = new Vector3f[BendLeftConveyorBlock.HULL_POINTS.length];
+	static {
+		for (int i = 0; i < HULL_POINTS.length; i += 4) {
+			HULL_POINTS[i]     = new Vector3f(-BendLeftConveyorBlock.HULL_POINTS[i].x,
+					BendLeftConveyorBlock.HULL_POINTS[i].y, BendLeftConveyorBlock.HULL_POINTS[i].z);
+			HULL_POINTS[i + 1] = new Vector3f(-BendLeftConveyorBlock.HULL_POINTS[i + 3].x,
+					BendLeftConveyorBlock.HULL_POINTS[i + 3].y, BendLeftConveyorBlock.HULL_POINTS[i + 3].z);
+			HULL_POINTS[i + 2] = new Vector3f(-BendLeftConveyorBlock.HULL_POINTS[i + 2].x,
+					BendLeftConveyorBlock.HULL_POINTS[i + 2].y, BendLeftConveyorBlock.HULL_POINTS[i + 2].z);
+			HULL_POINTS[i + 3] = new Vector3f(-BendLeftConveyorBlock.HULL_POINTS[i + 1].x,
+					BendLeftConveyorBlock.HULL_POINTS[i + 1].y, BendLeftConveyorBlock.HULL_POINTS[i + 1].z);
+		}
+	}
+	
+	/**
 	 * Construct a new conveyor block at given position and with given orientation.
 	 * The constructed block will be deletable.
 	 * 
@@ -72,8 +89,7 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 	
 	@Override
 	public Vector3f[] getHullPoints() {
-		// TODO Auto-generated method stub
-		return null;
+		return HULL_POINTS;
 	}
 	
 	@Override

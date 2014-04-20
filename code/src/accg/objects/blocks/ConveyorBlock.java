@@ -404,11 +404,37 @@ public abstract class ConveyorBlock extends Block {
 			double radEnd, float zCoord, float xOffset, float yOffset, double rScale) {
 		for (double rad = radStart; (radStart < radEnd ? rad < radEnd : rad > radEnd);
 				rad += Math.signum(radEnd - radStart) * RAD_STEP) {
-			list.add(new Vector3f((float) (rScale * Math.cos(rad)) + xOffset,
-					(float) (rScale * Math.sin(rad)) + yOffset, zCoord));
+			list.add(new Vector3f(getBendXYCoordX(rScale, rad, xOffset),
+					getBendXYCoordY(rScale, rad, yOffset), zCoord));
 		}
 		list.add(new Vector3f((float) (rScale * Math.cos(radEnd)) + xOffset,
 				(float) (rScale * Math.sin(radEnd)) + yOffset, zCoord));
+	}
+	
+	/**
+	 * Return the X-coordinate for a point on a bend in the XY plane with a
+	 * given angle in radians and at given offset. 
+	 * 
+	 * @param rScale Scale factor for the radius of the bend.
+	 * @param rad Angle in radians.
+	 * @param xOffset Offset for the coordinate.
+	 * @return The X-coordinate for a point on the bend.
+	 */
+	protected static float getBendXYCoordX(double rScale, double rad, float xOffset) {
+		return (float) (rScale * Math.cos(rad)) + xOffset;
+	}
+	
+	/**
+	 * Return the Y-coordinate for a point on a bend in the XY plane with a
+	 * given angle in radians and at given offset. 
+	 * 
+	 * @param rScale Scale factor for the radius of the bend.
+	 * @param rad Angle in radians.
+	 * @param yOffset Offset for the coordinate.
+	 * @return The Y-coordinate for a point on the bend.
+	 */
+	protected static float getBendXYCoordY(double rScale, double rad, float yOffset) {
+		return (float) (rScale * Math.sin(rad)) + yOffset;
 	}
 	
 	/**
