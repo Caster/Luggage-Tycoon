@@ -238,7 +238,8 @@ public class ACCGProgram {
 		});
 		shadowMatrix.flip();
 		
-		while (!Display.isCloseRequested() && !s.escPressed) {
+		boolean isCloseRequested = false;
+		while (!Display.isCloseRequested() && !isCloseRequested) {
 			
 			// handle resize events
 			if (displayWidth != Display.getWidth() || displayHeight != Display.getHeight()) {
@@ -338,6 +339,31 @@ public class ACCGProgram {
 			glFlush(); // this is needed, else some stuff is not drawn
 
 			Display.update();
+			
+			// handle escape
+			if (s.escPressed) {
+				switch (s.programMode) {
+				case START_MODE:
+					isCloseRequested = true;
+					break;
+				case BUILDING_MODE:
+					s.programMode = ProgramMode.NORMAL_MODE;
+					s.gui.updateItems();
+					s.gui.setStatusBarVisible(false);
+					break;
+				case NORMAL_MODE:
+					s.programMode = ProgramMode.START_MODE;
+					s.gui.updateItems();
+					break;
+				case SIMULATION_MODE:
+					s.programMode = ProgramMode.NORMAL_MODE;
+					s.gui.updateItems();
+					s.gui.setStatusBarVisible(false);
+					break;
+				}
+				
+				s.escPressed = false;
+			}
 		}
 		
 		Display.destroy();
@@ -379,7 +405,7 @@ public class ACCGProgram {
 					}
 					break;
 				case Keyboard.KEY_ESCAPE:
-					//s.escPressed = true; // TODO ignore Escape for now
+					s.escPressed = true;
 					break;
 				// *R*otate a block in building mode
 				case Keyboard.KEY_R:

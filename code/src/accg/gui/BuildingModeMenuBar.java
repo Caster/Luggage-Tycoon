@@ -2,26 +2,40 @@ package accg.gui;
 
 import accg.State;
 import accg.State.ProgramMode;
-import accg.gui.toolkit.Component;
 import accg.gui.toolkit.Event;
 import accg.gui.toolkit.Listener;
 import accg.gui.toolkit.components.Button;
 import accg.gui.toolkit.containers.MenuBar;
-import accg.gui.toolkit.containers.MenuStack;
 import accg.gui.toolkit.enums.ButtonType;
 import accg.gui.toolkit.event.MouseClickEvent;
 import accg.i18n.Messages;
-import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
 
 /**
  * Menu bar for the building mode.
  */
 public class BuildingModeMenuBar extends MenuBar {
 
+	/**
+	 * Button in MenuBar that will trigger an action in which the ShadowBlock's
+	 * orientation is rotated to the left.
+	 */
 	public Button rotateLeftItem;
+	/**
+	 * Button in MenuBar that will trigger an action in which the ShadowBlock's
+	 * orientation is rotated to the right.
+	 */
 	public Button rotateRightItem;
+	/**
+	 * Button in MenuBar that will switch the mode to "deleting blocks".
+	 */
 	public Button removeItem;
 	
+	/**
+	 * A MenuBar that is shown when the program mode is {@link ProgramMode#BUILDING_MODE}.
+	 * 
+	 * @param stack Stack in which menu is put.
+	 * @param s State of the program.
+	 */
 	public BuildingModeMenuBar(final MainStack stack, final State s) {
 		
 		rotateLeftItem = new Button(Messages.get("BuildingModeMenuBar.rotateLeft"),
@@ -107,13 +121,5 @@ public class BuildingModeMenuBar extends MenuBar {
 			}
 		});
 		add(backItem);
-	}
-	
-	public void setHighlightedItem(Button b) {
-		for (Component c : getChildren()) {
-			if (c instanceof Button) {
-				((Button) c).setChecked(b == c);
-			}
-		}
 	}
 }
