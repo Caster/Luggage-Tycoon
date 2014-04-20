@@ -9,6 +9,7 @@ import accg.gui.toolkit.containers.MenuBar;
 import accg.gui.toolkit.enums.ButtonType;
 import accg.gui.toolkit.event.MouseClickEvent;
 import accg.i18n.Messages;
+import accg.objects.Block;
 
 /**
  * Menu bar for the building mode.
@@ -29,6 +30,19 @@ public class BuildingModeMenuBar extends MenuBar {
 	 * Button in MenuBar that will switch the mode to "deleting blocks".
 	 */
 	public Button removeItem;
+	/**
+	 * Button in MenuBar that when clicked will delete all deletable blocks in the scene.
+	 */
+	public Button removeAllItem;
+	
+	/**
+	 * Last created instance of this menu bar.
+	 */
+	protected static BuildingModeMenuBar instance;
+	/**
+	 * State of the program.
+	 */
+	protected State state;
 	
 	/**
 	 * A MenuBar that is shown when the program mode is {@link ProgramMode#BUILDING_MODE}.
@@ -37,6 +51,12 @@ public class BuildingModeMenuBar extends MenuBar {
 	 * @param s State of the program.
 	 */
 	public BuildingModeMenuBar(final MainStack stack, final State s) {
+		
+		if (instance == null) {
+			instance = this;
+		}
+		
+		this.state = s;
 		
 		rotateLeftItem = new Button(Messages.get("BuildingModeMenuBar.rotateLeft"),
 				s.textures.iconLeft);
@@ -108,6 +128,20 @@ public class BuildingModeMenuBar extends MenuBar {
 		});
 		add(removeItem);
 		
+		removeAllItem = new Button(Messages.get("BuildingModeMenuBar.removeAll"),
+				s.textures.iconBomb, ButtonType.CHECKABLE);
+		removeAllItem.setShortcutHint("Shift+Del");
+		removeAllItem.addListener(new Listener() {
+			
+			@Override
+			public void event(Event e) {
+				if (e instanceof MouseClickEvent) {
+					BuildingModeMenuBar.handleRemoveAllEvent();
+				}
+			}
+		});
+		add(removeAllItem);
+		
 		Button backItem = new Button(Messages.get("BuildingModeMenuBar.back"), s.textures.iconExit); //$NON-NLS-1$
 		backItem.addListener(new Listener() {
 			
@@ -121,5 +155,21 @@ public class BuildingModeMenuBar extends MenuBar {
 			}
 		});
 		add(backItem);
+	}
+	
+	/**
+	 * Handle click on the "remove all" menu item.
+	 */
+	public static void handleRemoveAllEvent() {
+		if (instance == null) {
+			return;
+		}
+		
+		for (Block b : instance.state.world.bc) {
+			if (b.isDeletable()) {
+				b.onDestroy();
+				instance.state.world.bc.removeBlock(b.getX(), b.getY(), b.getZ());
+			}
+		}
 	}
 }

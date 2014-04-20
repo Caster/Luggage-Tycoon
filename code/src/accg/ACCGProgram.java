@@ -23,6 +23,7 @@ import org.newdawn.slick.Color;
 
 import accg.State.ProgramMode;
 import accg.camera.Camera;
+import accg.gui.BuildingModeMenuBar;
 import accg.gui.MainGUI;
 import accg.gui.toolkit.Component;
 import accg.gui.toolkit.GLUtils;
@@ -475,14 +476,19 @@ public class ACCGProgram {
 					break;
 				case Keyboard.KEY_DELETE:
 					
-					// we are now going to remove blocks
-					s.removingBlocks = true;
-					
-					// hide the shadow block
-					s.shadowBlock.setConveyorBlockType(null);
-
-					// update the GUI
-					s.gui.updateItems();
+					if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) &&
+							!Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+						// we are now going to remove blocks
+						s.removingBlocks = true;
+						
+						// hide the shadow block
+						s.shadowBlock.setConveyorBlockType(null);
+	
+						// update the GUI
+						s.gui.updateItems();
+					} else {
+						BuildingModeMenuBar.handleRemoveAllEvent();
+					}
 					
 					break;
 				}
