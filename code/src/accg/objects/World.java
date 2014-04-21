@@ -259,6 +259,32 @@ public class World extends Container<DrawableObject> {
 	}
 	
 	/**
+	 * Return the block at the first coordinate in the given list on which a
+	 * block is positioned. If no block is occupied, {@code null} is returned.
+	 * Per cell, it is checked if a block is there in a fuzzy way: the height
+	 * of a block is taken into account.
+	 * 
+	 * @param coordinates List of coordinates to check.
+	 * @return Index of a coordinate, or length of given list.
+	 */
+	public Block getFirstTakenBlockFuzzy(ArrayList<Vector3f> coordinates) {
+		int i, cx, cy, cz;
+		Vector3f coord;
+		Block ret;
+		for (i = 0; i < coordinates.size(); i++) {
+			coord = coordinates.get(i);
+			cx = (int) coord.x;
+			cy = (int) coord.y;
+			cz = (int) coord.z;
+			if (bc.inBounds(cx, cy, cz) &&
+					(ret = bc.getBlockFuzzy(cx, cy, cz)) != null) {
+				return ret;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Return the neighbors of a block. Refer to {@link #getNeighbors(int, int, int)}
 	 * for a precise definition of what a neighbor is. This method is simply a
 	 * convenience method calling that method.

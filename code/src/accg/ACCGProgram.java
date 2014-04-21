@@ -740,7 +740,6 @@ public class ACCGProgram {
 			return;
 		}
 		
-		// TODO This is largely copied from updateShadowBlockPosition()
 		// find the intersection of the camera viewing ray with the scene AABB
 		findMouseViewVector(Mouse.getX(), Mouse.getY());		
 		double[] result = Utils.getIntersectWithBox(mousePos3DvectorNear,
@@ -748,7 +747,7 @@ public class ACCGProgram {
 				0.5, 0.0, s.fieldHeight);
 		// are we even hovering the scene?
 		if (result == null) {
-			s.shadowBlock.setVisible(false);
+			s.world.bc.setHighlight(-1, -1, -1);
 			return;
 		}
 		
@@ -766,17 +765,7 @@ public class ACCGProgram {
 		
 		// find interesting grid cells
 		ArrayList<Vector3f> interestingCells = Utils.bresenham3D(start, end);
-		// update end position to something that makes more sense
-		end.sub(mouseViewVector);
-		end.z = 0;
-		// check if the position for the block is in bounds, this may not be the case
-		// in some corner cases (particular view on edge of scene)
-		if (!s.world.bc.inBounds((int) end.x, (int) end.y, (int) end.z)) {
-			s.shadowBlock.setVisible(false);
-			return;
-		}
-		// position the shadowobject just before the first cell that contains a
-		// block, or hide it if the first block is taken already
+		// find interesting block closest to mouse
 		int firstTakenIndex = s.world.getFirstTakenIndex(interestingCells);
 		
 		if (firstTakenIndex >= interestingCells.size()) {
