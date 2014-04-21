@@ -79,7 +79,7 @@ public class Luggage extends DrawableObject {
 		 * Returns the color as a {@link java.awt.Color} object.
 		 * @return The color.
 		 */
-		private Color getColor() {
+		public Color getColor() {
 			return color;
 		}
 		

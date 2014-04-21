@@ -1,9 +1,11 @@
 package accg.objects.blocks;
 
+import static accg.gui.toolkit.GLUtils.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 import javax.vecmath.Vector3f;
 
@@ -27,10 +29,18 @@ public class LeaveBlock extends FlatConveyorBlock {
 	 * Series of points that define the hull around this block.
 	 */
 	public static final Vector3f[] HULL_POINTS = new Vector3f[EnterBlock.HULL_POINTS.length];
+	/**
+	 * Quad that is used while drawing luggage colors.
+	 */
+	protected static final Vector3f[] LUG_COL_QUAD = new Vector3f[4];
 	static {
 		for (int i = 0; i < HULL_POINTS.length; i++) {
 			HULL_POINTS[i] = new Vector3f(-EnterBlock.HULL_POINTS[i].x,
 					-EnterBlock.HULL_POINTS[i].y, EnterBlock.HULL_POINTS[i].z);
+		}
+		for (int i = 0; i < 4; i++) {
+			LUG_COL_QUAD[i] = new Vector3f(-EnterBlock.LUG_COL_QUAD[i].x,
+					-EnterBlock.LUG_COL_QUAD[i].y, EnterBlock.LUG_COL_QUAD[i].z);
 		}
 	}
 	
@@ -107,6 +117,8 @@ public class LeaveBlock extends FlatConveyorBlock {
 		glTranslated(x, y, z / 4.0);
 		glRotated(-orientation.angle, 0, 0, 1);
 		
+		drawLuggageColorQuads();
+		
 		glEnable(GL_TEXTURE_2D);
 		s.textures.shutterExit.bind();
 		glBegin(GL_QUADS);
@@ -128,6 +140,26 @@ public class LeaveBlock extends FlatConveyorBlock {
 		glPopMatrix();
 	}
 
+	/**
+	 * Draw some quads that indicate which colors of luggage can be generated.
+	 */
+	protected void drawLuggageColorQuads() {
+		LUG_COL_QUAD[0].z = 0.65f; LUG_COL_QUAD[1].z = 0.725f;
+		LUG_COL_QUAD[2].z = 0.725f; LUG_COL_QUAD[3].z = 0.65f;
+		
+		for (LuggageColor lc : (acceptColors == null ? EnumSet.allOf(LuggageColor.class) : acceptColors)) {
+			glColor4f(lc.getColor());
+			glBegin(GL_QUADS);
+			drawQuadAndNormals(LUG_COL_QUAD);
+			glEnd();
+			glColor4fReset();
+			
+			for (Vector3f v : LUG_COL_QUAD) {
+				v.z += 0.1f; // 0.075 height and 0.025 padding
+			}
+		}
+	}
+	
 	@Override
 	public Block clone() {
 		return new LeaveBlock(this);

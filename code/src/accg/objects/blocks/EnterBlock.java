@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 import javax.vecmath.Vector3f;
 
@@ -141,8 +142,18 @@ public class EnterBlock extends FlatConveyorBlock {
 		new Vector3f(0.375f, 0.5f, 0),
 		new Vector3f(0.375f, 0.5f, 0.625f)
 	};
+	/**
+	 * Quad that is used while drawing luggage colors.
+	 */
+	protected static final Vector3f[] LUG_COL_QUAD = new Vector3f[] {
+			new Vector3f(-0.475f, 0.375f + Z_DELTA, 0.65f),
+			new Vector3f(-0.475f, 0.375f + Z_DELTA, 0.725f),
+			new Vector3f(-0.4f, 0.375f + Z_DELTA, 0.725f),
+			new Vector3f(-0.4f, 0.375f + Z_DELTA, 0.65f)
+		};
 	static {
 		applyZFightingCorrection(HULL_POINTS);
+		applyZFightingCorrection(LUG_COL_QUAD);
 	}
 	/**
 	 * Time it takes, in seconds, to open the shutter completely.
@@ -239,6 +250,8 @@ public class EnterBlock extends FlatConveyorBlock {
 		glTranslated(x, y, z / 4.0);
 		glRotated(-orientation.angle, 0, 0, 1);
 		
+		drawLuggageColorQuads();
+		
 		float sof = getShutterOpenFactor(s);
 		glColor4f(Color.WHITE);
 		glEnable(GL_TEXTURE_2D);
@@ -262,6 +275,26 @@ public class EnterBlock extends FlatConveyorBlock {
 		glPopMatrix();
 	}
 
+	/**
+	 * Draw some quads that indicate which colors of luggage can be generated.
+	 */
+	protected void drawLuggageColorQuads() {
+		LUG_COL_QUAD[0].z = 0.65f; LUG_COL_QUAD[1].z = 0.725f;
+		LUG_COL_QUAD[2].z = 0.725f; LUG_COL_QUAD[3].z = 0.65f;
+		
+		for (LuggageColor lc : (luggageColors == null ? EnumSet.allOf(LuggageColor.class) : luggageColors)) {
+			glColor4f(lc.getColor());
+			glBegin(GL_QUADS);
+			drawQuadAndNormals(LUG_COL_QUAD);
+			glEnd();
+			glColor4fReset();
+			
+			for (Vector3f v : LUG_COL_QUAD) {
+				v.z += 0.1f; // 0.075 height and 0.025 padding
+			}
+		}
+	}
+	
 	@Override
 	public Block clone() {
 		return new EnterBlock(this);
