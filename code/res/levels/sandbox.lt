@@ -1,0 +1,29 @@
+Luggage Tycoon level file.
+"Sandbox" 0
+20x20x20
+This is the sandbox mode. Here you can build whatever you want, without limits. Have fun!
+blocks
+eb 0 4 0 r nd [-1 blue]
+eb 0 5 0 r nd [-1 green]
+eb 0 6 0 r nd [-1 orange]
+eb 0 7 0 r nd [-1 red]
+eb 0 8 0 r nd [-1 blue]
+eb 0 9 0 r nd [-1 green]
+eb 0 10 0 r nd [-1 orange]
+eb 0 11 0 r nd [-1 red]
+eb 0 12 0 r nd [-1 blue]
+eb 0 13 0 r nd [-1 green]
+eb 0 14 0 r nd [-1 orange]
+eb 0 15 0 r nd [-1 red]
+lb 19 4 0 r nd
+lb 19 5 0 r nd
+lb 19 6 0 r nd
+lb 19 7 0 r nd
+lb 19 8 0 r nd
+lb 19 9 0 r nd
+lb 19 10 0 r nd
+lb 19 11 0 r nd
+lb 19 12 0 r nd
+lb 19 13 0 r nd
+lb 19 14 0 r nd
+lb 19 15 0 r nd

@@ -134,7 +134,7 @@ public class Level {
 			String line = "";
 			int lineNum = 5;
 			Pattern blockPattern = Pattern.compile("([A-Za-z]{2,3})\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+([lurd])(?:\\s+(nd)?)?"
-					+ "(?:\\s+\\[(?:(\\d+)\\s+)?(\\w+[\\s+\\w+]*)?\\])?");
+					+ "(?:\\s+\\[(?:(-?\\d+)\\s+)?(\\w+[\\s+\\w+]*)?\\])?");
 			while (levelScanner.hasNextLine() && !(line = levelScanner.nextLine()).startsWith("blocklimit")) {
 				lineNum++;
 				

@@ -1,15 +1,25 @@
 package accg.gui;
 
+import org.newdawn.slick.util.ResourceLoader;
+
+import accg.ACCGProgram;
 import accg.State;
 import accg.State.ProgramMode;
 import accg.gui.toolkit.Event;
 import accg.gui.toolkit.Listener;
 import accg.gui.toolkit.components.Button;
+import accg.gui.toolkit.components.Label;
+import accg.gui.toolkit.components.List;
+import accg.gui.toolkit.containers.Dialog;
 import accg.gui.toolkit.containers.MenuBar;
 import accg.gui.toolkit.containers.MenuStack;
 import accg.gui.toolkit.event.MouseClickEvent;
 import accg.i18n.Messages;
+import accg.io.Level;
+import accg.io.SavedGameManager;
+import accg.objects.Orientation;
 import accg.objects.World;
+import accg.objects.blocks.EnterBlock;
 import accg.simulation.Simulation;
 
 /**
@@ -49,12 +59,23 @@ public class StartModeMenuBar extends MenuBar {
 			@Override
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
-					s.simulation = new Simulation(s);
-					s.world = new World(s);
-					s.world.setBlockLimit(-1);
+
+					// switch to normal mode
+					ProgramMode oldMode = s.programMode;
 					s.programMode = ProgramMode.NORMAL_MODE;
 					s.gui.updateItems();
-					s.loadedBuiltinLevel = false;
+					
+					try {
+						Level level = new Level(ResourceLoader.getResourceAsStream("/res/levels/sandbox.lt"));
+						level.loadInState(s);
+						s.loadedBuiltinLevel = false;
+						ACCGProgram.setLoadedLevel("sandbox.lt");
+					} catch (Exception e2) {
+						// something went wrong; go back to the old mode
+						s.programMode = oldMode;
+						s.gui.updateItems();
+						throw new RuntimeException("Something went severely wrong; I couldn't open the sandbox file", e2);
+					}
 				}
 			}
 		});
