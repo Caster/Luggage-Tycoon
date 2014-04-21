@@ -290,7 +290,7 @@ public class EnterBlock extends FlatConveyorBlock {
 			glColor4fReset();
 			
 			for (Vector3f v : LUG_COL_QUAD) {
-				v.z += 0.1f; // 0.075 height and 0.025 padding
+				v.z += 0.085f; // 0.075 height and some padding
 			}
 		}
 	}
