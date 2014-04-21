@@ -629,7 +629,7 @@ public class ACCGProgram {
 									!s.shadowBlock.isAlerted() &&
 									!s.shadowBlock.isTransparent()) {
 								s.world.addBlock(s,
-										(ConveyorBlock) s.shadowBlock.clone());
+										s.shadowBlock.clone());
 								MainGUI.updateStatusBarInfo();
 							}
 							
@@ -698,61 +698,26 @@ public class ACCGProgram {
 	 */
 	protected void handleRemoval(State s) {
 		
-		// TODO This is largely copied from updateShadowBlockPosition()
-		// find the intersection of the camera viewing ray with the scene AABB
-		findMouseViewVector(clickedPoint.getX(), clickedPoint.getY());		
-		double[] result = Utils.getIntersectWithBox(mousePos3DvectorNear,
-				mouseViewVector, -0.5, s.fieldLength - 0.5, -0.5, s.fieldWidth -
-				0.5, 0.0, s.fieldHeight);
-		// are we even hovering the scene?
-		if (result == null) {
-			s.shadowBlock.setVisible(false);
+		if (!s.world.bc.inBounds(
+				s.world.bc.getHighlightX(),
+				s.world.bc.getHighlightY(),
+				s.world.bc.getHighlightZ())) {
 			return;
 		}
 		
-		// we do not want to start behind the camera
-		result[0] = Math.max(0, result[0]);
-		Vector3f start = new Vector3f();
-		Vector3f end = new Vector3f();
-		start.scaleAdd((float) result[0], mouseViewVector, mousePos3DvectorNear);
-		start.add(offsetVector);
-		end.scaleAdd((float) result[1], mouseViewVector, mousePos3DvectorNear);
-		end.add(offsetVector);
-		// go a little further, to make sure we do not miss the cell on the ground
-		mouseViewVector.scale(0.5f);
-		end.add(mouseViewVector);
-		
-		// find interesting grid cells
-		ArrayList<Vector3f> interestingCells = Utils.bresenham3D(start, end);
-		// update end position to something that makes more sense
-		end.sub(mouseViewVector);
-		end.z = 0;
-		// check if the position for the block is in bounds, this may not be the case
-		// in some corner cases (particular view on edge of scene)
-		if (!s.world.bc.inBounds((int) end.x, (int) end.y, (int) end.z)) {
-			s.shadowBlock.setVisible(false);
-			return;
-		}
-		// position the shadowobject just before the first cell that contains a
-		// block, or hide it if the first block is taken already
-		int firstTakenIndex = s.world.getFirstTakenIndex(interestingCells);
-		
-		if (firstTakenIndex >= interestingCells.size()) {
-			return;
-		}
 		Block blockToRemove = s.world.bc.getBlock(
-				(int) (interestingCells.get(firstTakenIndex).x),
-				(int) (interestingCells.get(firstTakenIndex).y),
-				(int) (interestingCells.get(firstTakenIndex).z));
+				s.world.bc.getHighlightX(),
+				s.world.bc.getHighlightY(),
+				s.world.bc.getHighlightZ());
 		
-		if (!blockToRemove.isDeletable()) {
+		if (blockToRemove == null || !blockToRemove.isDeletable()) {
 			return;
 		}
 		
 		s.world.removeBlock(
-				(int) (interestingCells.get(firstTakenIndex).x),
-				(int) (interestingCells.get(firstTakenIndex).y),
-				(int) (interestingCells.get(firstTakenIndex).z));
+				s.world.bc.getHighlightX(),
+				s.world.bc.getHighlightY(),
+				s.world.bc.getHighlightZ());
 		
 		MainGUI.updateStatusBarInfo();
 	}

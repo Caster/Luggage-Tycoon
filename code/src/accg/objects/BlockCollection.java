@@ -280,6 +280,30 @@ public class BlockCollection extends DrawableObject implements Iterable<Block> {
 	}
 	
 	/**
+	 * Returns the x-coordinate of the highlighted block.
+	 * @return The x-coordinate.
+	 */
+	public int getHighlightX() {
+		return highlightX;
+	}
+	
+	/**
+	 * Returns the y-coordinate of the highlighted block.
+	 * @return The y-coordinate.
+	 */
+	public int getHighlightY() {
+		return highlightY;
+	}
+	
+	/**
+	 * Returns the z-coordinate of the highlighted block.
+	 * @return The z-coordinate.
+	 */
+	public int getHighlightZ() {
+		return highlightZ;
+	}
+	
+	/**
 	 * Sets the highlighted block position.
 	 * 
 	 * The highlighted block will be drawn in red.
