@@ -168,7 +168,7 @@ public class BuildingModeMenuBar extends MenuBar {
 		for (Block b : instance.state.world.bc) {
 			if (b.isDeletable()) {
 				b.onDestroy();
-				instance.state.world.bc.removeBlock(b.getX(), b.getY(), b.getZ());
+				instance.state.world.removeBlock(b.getX(), b.getY(), b.getZ());
 			}
 		}
 	}
