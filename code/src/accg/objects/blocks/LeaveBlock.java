@@ -171,6 +171,11 @@ public class LeaveBlock extends FlatConveyorBlock {
 		return HULL_POINTS;
 	}
 	
+	@Override
+	public Vector3f[] getHullRoofPoints() {
+		return null;
+	}
+	
 	/**
 	 * Increments the number of pieces of luggage that have arrived at this
 	 * block and have been accepted by one.

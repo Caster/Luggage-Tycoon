@@ -329,24 +329,41 @@ public abstract class ConveyorBlock extends Block {
 	private void drawScaffolding(State s) {
 		
 		int belowPos = s.world.bc.getFirstBlockBelowHeight(x, y, z);
+		Block belowBlock = null;
 		if (belowPos >= 0) {
-			belowPos += s.world.bc.getBlock(x, y, belowPos).getHeight();
+			belowPos += (belowBlock = s.world.bc.getBlock(x, y, belowPos)).getHeight();
 		} else {
 			belowPos += 1;
 		}
 		
+		// there are exceptions for the length of the scaffold in case this block
+		// is an ascending or descending one, the block below is ascending/descending
+		// and also if the block below is an enter or leave block...
+		boolean isAscDesc = (getConveyorBlockType() == ConveyorBlockType.ASCENDING ||
+				getConveyorBlockType() == ConveyorBlockType.DESCENDING);
+		boolean isBelowAscDesc = false;
+		boolean isBelowEnterLeave = false;
+		if (belowBlock instanceof ConveyorBlock) { // also checks if belowBlock != null
+			ConveyorBlockType cbt = ((ConveyorBlock) belowBlock).getConveyorBlockType();
+			isBelowAscDesc = (cbt == ConveyorBlockType.ASCENDING ||
+					cbt == ConveyorBlockType.DESCENDING);
+			isBelowEnterLeave = (cbt == ConveyorBlockType.ENTER ||
+					cbt == ConveyorBlockType.LEAVE);
+		}
+		
 		// check if we have something to draw
-		if (z - belowPos <= 0) {
+		if (z - belowPos < 0 || (z - belowPos == 0 && !(isAscDesc || isBelowAscDesc))) {
 			return;
 		}
 		
 		glPushMatrix();
-		glTranslated(0, 0, -(z - belowPos) / 4.0f + (belowPos > 0 ? 0.125f : 0));
+		glTranslatef(0, 0, -(z - belowPos) / 4.0f + (belowPos > 0 ? 0.125f : 0) -
+				(isBelowAscDesc ? 0.2f : 0) - (isBelowEnterLeave ? 0.125f : 0));
 
 		cylinder.draw(0.2f * scaleFactor, 0.2f * scaleFactor,
 				(z - belowPos) / 4.0f - (belowPos > 0 ? 0.125f : 0) +
-				(getConveyorBlockType() == ConveyorBlockType.ASCENDING ||
-				getConveyorBlockType() == ConveyorBlockType.DESCENDING ? 0.15f : 0), 16, 1);
+				(isAscDesc ? 0.2f : 0) + (isBelowAscDesc ? 0.2f : 0) +
+				(isBelowEnterLeave ? 0.125f : 0), 16, 1);
 		
 		glPopMatrix();
 	}

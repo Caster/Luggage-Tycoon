@@ -107,8 +107,16 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 		new Vector3f(0.375f, -0.5f, 0.125f),
 		new Vector3f(0.5f, -0.5f, 0.125f)
 	};
+	/**
+	 * Series of points that define the roof hull around this block.
+	 */
+	public static final Vector3f[] HULL_ROOF_POINTS = new Vector3f[FlatConveyorBlock.HULL_ROOF_POINTS.length];
 	static {
 		applyZFightingCorrection(HULL_POINTS);
+		for (int i = 0; i < FlatConveyorBlock.HULL_ROOF_POINTS.length; i++) {
+			HULL_ROOF_POINTS[i] = new Vector3f(FlatConveyorBlock.HULL_ROOF_POINTS[i]);
+			HULL_ROOF_POINTS[i].z += 0.25f * (HULL_ROOF_POINTS[i].y + 0.5f);
+		}
 	}
 	
 	/**
@@ -174,8 +182,7 @@ public class AscendingConveyorBlock extends ConveyorBlock {
 	
 	@Override
 	public Vector3f[] getHullRoofPoints() {
-		// TODO Auto-generated method stub
-		return null;
+		return HULL_ROOF_POINTS;
 	}
 	
 	@Override

@@ -101,7 +101,7 @@ public class FlatConveyorBlock extends ConveyorBlock {
 		new Vector3f(0.5f, -0.5f, 0.125f)
 	};
 	/**
-	 * Series of points that define the hull around this block.
+	 * Series of points that define the roof hull around this block.
 	 */
 	public static final Vector3f[] HULL_ROOF_POINTS = new Vector3f[] {
 		// ceiling, facing upwards

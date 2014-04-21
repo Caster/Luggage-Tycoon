@@ -295,6 +295,11 @@ public class EnterBlock extends FlatConveyorBlock {
 		return HULL_POINTS;
 	}
 	
+	@Override
+	public Vector3f[] getHullRoofPoints() {
+		return null;
+	}
+	
 	/**
 	 * Returns the list of colors from which can be chosen when generating
 	 * luggage at this block.
