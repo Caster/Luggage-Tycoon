@@ -1,0 +1,21 @@
+Luggage Tycoon level file.
+"Level 6: helping hand" 6
+16x9x16
+blocks
+eb 0 4 0 r nd [3]
+cf 0 2 2 r
+cf 1 2 2 r
+cf 2 2 2 r
+cf 3 2 2 r
+cf 4 2 2 r
+cf 5 2 2 r
+cf 6 2 2 r
+cf 7 2 2 r
+cf 8 2 2 r
+cf 9 2 2 r
+cf 10 2 2 r
+cf 11 2 2 r
+cf 12 2 2 r
+cf 13 2 2 r
+lb 15 4 0 r nd
+blocklimit 24

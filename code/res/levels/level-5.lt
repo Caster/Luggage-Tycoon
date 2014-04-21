@@ -1,0 +1,8 @@
+Luggage Tycoon level file.
+"Level 5: belt shortage" 5
+5x5x20
+You can only use three additional belts. Be creative!
+blocks
+eb  0 2 16 r nd [4]
+lb  4 2 0 r nd
+blocklimit 5

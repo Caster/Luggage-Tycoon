@@ -1,0 +1,6 @@
+Luggage Tycoon level file.
+"Level 4: higher and higher" 4
+5x5x20
+blocks
+eb  0 2 0 r nd [4]
+lb  4 2 16 r nd
