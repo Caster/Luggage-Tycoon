@@ -412,7 +412,8 @@ public class ACCGProgram {
 				// *R*otate a block in building mode
 				case Keyboard.KEY_R:
 					if (s.programMode == ProgramMode.BUILDING_MODE &&
-							s.shadowBlock.hasBlock() && s.shadowBlock.isVisible()) {
+							s.shadowBlock.hasBlock() && s.shadowBlock.isVisible()
+							&& s.shadowBlock.getOrientation() != null) {
 						if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ||
 								Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
 							s.shadowBlock.setOrientation(
