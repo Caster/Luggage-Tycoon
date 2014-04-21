@@ -9,6 +9,7 @@ import org.newdawn.slick.Font;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.util.ResourceLoader;
 
+import accg.ACCGProgram;
 import accg.State;
 import accg.State.ProgramMode;
 import accg.gui.toolkit.Component;
@@ -252,6 +253,7 @@ public class MainGUI extends LayeredPane {
 						Level nextLevel = SavedGameManager.getNextLevel(instance.state);
 						if (nextLevel != null) {
 							nextLevel.loadInState(instance.state);
+							ACCGProgram.setLoadedLevel(nextLevel.getLevelName());
 							instance.state.programMode = ProgramMode.NORMAL_MODE;
 							instance.updateItems();
 							instance.updateStatusBarMode(instance.state.programMode);
