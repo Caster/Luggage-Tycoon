@@ -166,11 +166,22 @@ public class Luggage extends DrawableObject {
 		fb.put(values);
 		fb.flip();
 		glMultMatrix(fb);
-		
-		glColor4f(color.getColor());
+
+		if (s.drawingInvisibleLuggage) {
+			glColor4f(color.getColor().getRed() / 256f,
+					color.getColor().getGreen() / 256f,
+					color.getColor().getBlue() / 256f, 
+					0.1f);
+		} else {
+			glColor4f(color.getColor());
+		}
 		caseModelColor.draw();
 		
-		glColor4f(0.1f, 0.1f, 0.1f, 1);
+		if (s.drawingInvisibleLuggage) {
+			glColor4f(0.1f, 0.1f, 0.1f, 0.1f);
+		} else {
+			glColor4f(0.1f, 0.1f, 0.1f, 1);
+		}
 		caseModelBlack.draw();
 		
 		glPopMatrix();

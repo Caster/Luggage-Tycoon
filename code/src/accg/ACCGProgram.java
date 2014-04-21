@@ -314,12 +314,31 @@ public class ACCGProgram {
 				s.drawingShadows = true;
 				s.floor.draw(s);
 				
-				// step 4: draw objects
-				s.world.draw(s);
+				// step 4: draw the world
+				s.world.bc.draw(s);
+				
+				// step 5: draw the shadow block
 				if (s.programMode == ProgramMode.BUILDING_MODE &&
 						s.shadowBlock.hasBlock()) {
 					s.shadowBlock.draw(s);
 				}
+				
+				// step 6: draw invisible luggage
+				s.drawingInvisibleLuggage = true;
+				glDepthMask(false);
+				glDepthFunc(GL_GREATER);
+				glEnable(GL_BLEND);
+				glDisable(GL_LIGHTING);
+				s.world.luggage.draw(s);
+				glEnable(GL_LIGHTING);
+				glDisable(GL_BLEND);
+				glDepthFunc(GL_LESS);
+				glDepthMask(true);
+				s.drawingInvisibleLuggage = false;
+				
+				// step 7: draw visible luggage
+				s.world.luggage.draw(s);
+				
 			} else {
 				// we are in the start screen, so draw it
 				StartScreenBackground.draw(s);

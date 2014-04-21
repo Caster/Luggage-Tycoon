@@ -182,6 +182,12 @@ public class State {
 	public boolean drawingShadows;
 	
 	/**
+	 * This boolean indicates whether we are in the invisible luggage drawing
+	 * pass or not.
+	 */
+	public boolean drawingInvisibleLuggage;
+	
+	/**
 	 * If not null, indicates that this object should be drawn where the mouse
 	 * hovers the scene (using ray projection/intersection et cetera).
 	 */
