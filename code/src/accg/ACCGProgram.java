@@ -478,6 +478,10 @@ public class ACCGProgram {
 					break;
 				case Keyboard.KEY_DELETE:
 					
+					if (s.programMode != ProgramMode.BUILDING_MODE) {
+						return;
+					}
+					
 					if (!Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) &&
 							!Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
 						// we are now going to remove blocks
