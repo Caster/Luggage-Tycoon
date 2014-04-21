@@ -1,21 +1,22 @@
 Luggage Tycoon level file.
 "Level 6: helping hand" 6
 16x9x16
+It's your lucky day: we already built a belt for you. Now use it wisely.
 blocks
 eb 0 4 0 r nd [3]
-cf 0 2 2 r
-cf 1 2 2 r
-cf 2 2 2 r
-cf 3 2 2 r
-cf 4 2 2 r
-cf 5 2 2 r
-cf 6 2 2 r
-cf 7 2 2 r
-cf 8 2 2 r
-cf 9 2 2 r
-cf 10 2 2 r
-cf 11 2 2 r
-cf 12 2 2 r
-cf 13 2 2 r
+cf 0 2 2 r nd
+cf 1 2 2 r nd
+cf 2 2 2 r nd
+cf 3 2 2 r nd
+cf 4 2 2 r nd
+cf 5 2 2 r nd
+cf 6 2 2 r nd
+cf 7 2 2 r nd
+cf 8 2 2 r nd
+cf 9 2 2 r nd
+cf 10 2 2 r nd
+cf 11 2 2 r nd
+cf 12 2 2 r nd
+cf 13 2 2 r nd
 lb 15 4 0 r nd
 blocklimit 24
