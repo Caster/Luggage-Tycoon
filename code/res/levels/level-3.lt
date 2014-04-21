@@ -1,0 +1,8 @@
+Luggage Tycoon level file.
+"Level 3: crossing" 3
+11x11x8
+blocks
+eb  0  5 0 r nd [3 red green]
+eb  5  0 0 u nd [4 blue orange]
+lb 10  5 0 r nd [red green]
+lb  5 10 0 u nd [blue orange]
