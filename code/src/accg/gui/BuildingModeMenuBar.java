@@ -67,7 +67,7 @@ public class BuildingModeMenuBar extends MenuBar {
 			public void event(Event e) {
 				if (e instanceof MouseClickEvent) {
 					if (s.programMode == ProgramMode.BUILDING_MODE &&
-							s.shadowBlock != null) {
+							s.shadowBlock != null && s.shadowBlock.getOrientation() != null) {
 						s.shadowBlock.setOrientation(
 								s.shadowBlock.getOrientation().rotateLeft());
 					}
