@@ -1,6 +1,7 @@
 Luggage Tycoon level file.
 "Level 3: crossing" 3
 11x11x8
+All luggage has to be transported to the other side of the room.
 blocks
 eb  0  5 0 r nd [3 red green]
 eb  5  0 0 u nd [4 blue orange]

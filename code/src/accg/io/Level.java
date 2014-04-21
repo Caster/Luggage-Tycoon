@@ -1,14 +1,6 @@
 package accg.io;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -17,10 +9,15 @@ import java.util.regex.Pattern;
 
 import accg.State;
 import accg.State.ProgramMode;
-import accg.objects.Block;
+import accg.gui.toolkit.Event;
+import accg.gui.toolkit.Listener;
+import accg.gui.toolkit.components.Button;
+import accg.gui.toolkit.components.Label;
+import accg.gui.toolkit.containers.Dialog;
+import accg.gui.toolkit.event.MouseClickEvent;
+import accg.i18n.Messages;
+import accg.objects.*;
 import accg.objects.Luggage.LuggageColor;
-import accg.objects.Orientation;
-import accg.objects.World;
 import accg.objects.blocks.EnterBlock;
 import accg.objects.blocks.LeaveBlock;
 import accg.simulation.Simulation;
@@ -74,6 +71,11 @@ public class Level {
 	 * value is {@code -1}, there is no limit.
 	 */
 	protected int blockLimit;
+	/**
+	 * A short text that is displayed when the level is started. This can be
+	 * <code>null</code> if no hint is to be displayed.
+	 */
+	protected String levelHint;
 	
 	/**
 	 * Load a level from the specified stream.
@@ -120,8 +122,13 @@ public class Level {
 			}
 			
 			// read blocks
-			if (!"blocks".equals(levelScanner.nextLine())) {
-				throw new InputMismatchException("Expected 'blocks' identifier at line 4.");
+			String hintOrBlocksline = levelScanner.nextLine();
+			if (!"blocks".equals(hintOrBlocksline)) {
+				this.levelHint = hintOrBlocksline;
+				hintOrBlocksline = levelScanner.nextLine();
+			}
+			if (!"blocks".equals(hintOrBlocksline)) {
+				throw new InputMismatchException("Expected 'blocks' identifier.");
 			}
 			this.blocks = new ArrayList<>();
 			String line = "";
@@ -242,6 +249,15 @@ public class Level {
 	}
 	
 	/**
+	 * Returns the level hint; a short text that is displayed when the level is
+	 * started. This can be <code>null</code> if no hint is to be displayed.
+	 * @return The level hint.
+	 */
+	public String getLevelHint() {
+		return levelHint;
+	}
+	
+	/**
 	 * Returns the name of this level. In case no name was given, but a number
 	 * was specified, "Level X" where {@code X == getLevelNumber()} will be
 	 * returned. If {@code X < 0} then {@code null} is returned.
@@ -295,6 +311,22 @@ public class Level {
 		for (Block b : blocks) {
 			s.world.addBlock(s, b);
 		}
+		
+		if (getLevelHint() != null) {
+			final Dialog levelHintDialog = new Dialog(getLevelName(), new Label(getLevelHint()));
+			Button okButton = new Button(Messages.get("LevelHintDialog.ok"), s.textures.iconOk);
+			okButton.addListener(new Listener() {
+				
+				@Override
+				public void event(Event e) {
+					if (e instanceof MouseClickEvent) {
+						levelHintDialog.setVisible(false);
+					}
+				}
+			});
+			levelHintDialog.addButton(okButton);
+			s.gui.add(levelHintDialog);
+		}
 	}
 	
 	/**
@@ -303,6 +335,16 @@ public class Level {
 	 */
 	public void setBlockLimit(int blockLimit) {
 		this.blockLimit = blockLimit;
+	}
+	
+	/**
+	 * Changes the level hint; a short text that is displayed when the level is
+	 * started.
+	 * @param levelHint The new level hint. This can be <code>null</code> if no
+	 * hint is to be displayed.
+	 */
+	public void setLevelHint(String levelHint) {
+		this.levelHint = levelHint;
 	}
 	
 	/**

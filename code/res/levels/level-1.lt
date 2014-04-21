@@ -1,6 +1,7 @@
 Luggage Tycoon level file.
 "Level 1: the basics" 1
 9x9x4
+Welcome to Luggage Tycoon! Let's start off easy.
 blocks
 eb 0 4 0 r nd [3]
 cf 1 4 0 r nd
