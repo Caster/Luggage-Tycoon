@@ -19,6 +19,10 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 	 * Series of points that define the hull around this block.
 	 */
 	public static final Vector3f[] HULL_POINTS = new Vector3f[BendLeftConveyorBlock.HULL_POINTS.length];
+	/**
+	 * Series of points that define the roof hull around this block.
+	 */
+	public static final Vector3f[] HULL_ROOF_POINTS = new Vector3f[BendLeftConveyorBlock.HULL_ROOF_POINTS.length];
 	static {
 		for (int i = 0; i < HULL_POINTS.length; i += 4) {
 			HULL_POINTS[i]     = new Vector3f(-BendLeftConveyorBlock.HULL_POINTS[i].x,
@@ -29,6 +33,16 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 					BendLeftConveyorBlock.HULL_POINTS[i + 2].y, BendLeftConveyorBlock.HULL_POINTS[i + 2].z);
 			HULL_POINTS[i + 3] = new Vector3f(-BendLeftConveyorBlock.HULL_POINTS[i + 1].x,
 					BendLeftConveyorBlock.HULL_POINTS[i + 1].y, BendLeftConveyorBlock.HULL_POINTS[i + 1].z);
+		}
+		for (int i = 0; i < HULL_ROOF_POINTS.length; i += 4) {
+			HULL_ROOF_POINTS[i]     = new Vector3f(-BendLeftConveyorBlock.HULL_ROOF_POINTS[i].x,
+					BendLeftConveyorBlock.HULL_ROOF_POINTS[i].y, BendLeftConveyorBlock.HULL_ROOF_POINTS[i].z);
+			HULL_ROOF_POINTS[i + 1] = new Vector3f(-BendLeftConveyorBlock.HULL_ROOF_POINTS[i + 3].x,
+					BendLeftConveyorBlock.HULL_ROOF_POINTS[i + 3].y, BendLeftConveyorBlock.HULL_ROOF_POINTS[i + 3].z);
+			HULL_ROOF_POINTS[i + 2] = new Vector3f(-BendLeftConveyorBlock.HULL_ROOF_POINTS[i + 2].x,
+					BendLeftConveyorBlock.HULL_ROOF_POINTS[i + 2].y, BendLeftConveyorBlock.HULL_ROOF_POINTS[i + 2].z);
+			HULL_ROOF_POINTS[i + 3] = new Vector3f(-BendLeftConveyorBlock.HULL_ROOF_POINTS[i + 1].x,
+					BendLeftConveyorBlock.HULL_ROOF_POINTS[i + 1].y, BendLeftConveyorBlock.HULL_ROOF_POINTS[i + 1].z);
 		}
 	}
 	
@@ -94,8 +108,7 @@ public class BendRightConveyorBlock extends ConveyorBlock {
 	
 	@Override
 	public Vector3f[] getHullRoofPoints() {
-		// TODO Auto-generated method stub
-		return null;
+		return HULL_ROOF_POINTS;
 	}
 	
 	@Override
