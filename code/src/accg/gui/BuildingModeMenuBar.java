@@ -129,7 +129,7 @@ public class BuildingModeMenuBar extends MenuBar {
 		add(removeItem);
 		
 		removeAllItem = new Button(Messages.get("BuildingModeMenuBar.removeAll"),
-				s.textures.iconBomb, ButtonType.CHECKABLE);
+				s.textures.iconBomb, ButtonType.NORMAL);
 		removeAllItem.setShortcutHint("Shift+Del");
 		removeAllItem.addListener(new Listener() {
 			
