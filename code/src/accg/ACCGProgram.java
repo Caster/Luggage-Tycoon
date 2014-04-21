@@ -32,7 +32,6 @@ import accg.i18n.Messages;
 import accg.objects.Block;
 import accg.objects.Floor;
 import accg.objects.ShadowBlock;
-import accg.objects.blocks.ConveyorBlock;
 import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
 import accg.utils.Utils;
 
@@ -351,6 +350,7 @@ public class ACCGProgram {
 					s.programMode = ProgramMode.NORMAL_MODE;
 					s.gui.updateItems();
 					s.gui.setStatusBarVisible(false);
+					s.removingBlocks = false;
 					break;
 				case NORMAL_MODE:
 					s.programMode = ProgramMode.START_MODE;

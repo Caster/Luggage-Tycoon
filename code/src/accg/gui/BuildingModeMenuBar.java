@@ -118,11 +118,13 @@ public class BuildingModeMenuBar extends MenuBar {
 					// de-select the selected block to build
 					stack.blockBar.setHighlightedItem(null);
 					
-					// we are now going to remove blocks
-					s.removingBlocks = true;
+					// we are now going to remove blocks, or stop doing so
+					s.removingBlocks = !s.removingBlocks;
 					
 					// hide the shadow block
-					s.shadowBlock.setConveyorBlockType(null);
+					if (s.removingBlocks) {
+						s.shadowBlock.setConveyorBlockType(null);
+					}
 				}
 			}
 		});
@@ -151,6 +153,7 @@ public class BuildingModeMenuBar extends MenuBar {
 					s.programMode = ProgramMode.NORMAL_MODE;
 					s.gui.updateItems();
 					s.gui.setStatusBarVisible(false);
+					s.removingBlocks = false;
 				}
 			}
 		});
