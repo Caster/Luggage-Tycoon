@@ -100,8 +100,145 @@ public class FlatConveyorBlock extends ConveyorBlock {
 		new Vector3f(0.375f, -0.5f, 0.125f),
 		new Vector3f(0.5f, -0.5f, 0.125f)
 	};
+	/**
+	 * Series of points that define the hull around this block.
+	 */
+	public static final Vector3f[] HULL_ROOF_POINTS = new Vector3f[] {
+		// ceiling, facing upwards
+		new Vector3f(-0.5f, -0.5f, 0.875f),
+		new Vector3f(0.5f, -0.5f, 0.875f),
+		new Vector3f(0.5f, 0.5f, 0.875f),
+		new Vector3f(-0.5f, 0.5f, 0.875f),
+		
+		// ceiling, facing downwards
+		new Vector3f(-0.5f, -0.5f, 0.75f),
+		new Vector3f(-0.5f, 0.5f, 0.75f),
+		new Vector3f(0.5f, 0.5f, 0.75f),
+		new Vector3f(0.5f, -0.5f, 0.75f),
+		
+		// quad in ceiling at back
+		new Vector3f(0.5f, -0.5f, 0.75f),
+		new Vector3f(0.5f, -0.5f, 0.875f),
+		new Vector3f(-0.5f, -0.5f, 0.875f),
+		new Vector3f(-0.5f, -0.5f, 0.75f),
+		
+		// quad in ceiling at front
+		new Vector3f(0.5f, 0.5f, 0.75f),
+		new Vector3f(-0.5f, 0.5f, 0.75f),
+		new Vector3f(-0.5f, 0.5f, 0.875f),
+		new Vector3f(0.5f, 0.5f, 0.875f),
+		
+		// left outer wall ceiling
+		new Vector3f(-0.5f, -0.5f, 0.75f),
+		new Vector3f(-0.5f, -0.5f, 0.875f),
+		new Vector3f(-0.5f, 0.5f, 0.875f),
+		new Vector3f(-0.5f, 0.5f, 0.75f),
+		
+		// left outer wall back
+		new Vector3f(-0.5f, -0.5f, 0.75f),
+		new Vector3f(-0.5f, -0.375f, 0.75f),
+		new Vector3f(-0.5f, -0.375f, 0.625f),
+		new Vector3f(-0.5f, -0.5f, 0.625f),
+		
+		// left outer wall front
+		new Vector3f(-0.5f, 0.375f, 0.75f),
+		new Vector3f(-0.5f, 0.5f, 0.75f),
+		new Vector3f(-0.5f, 0.5f, 0.625f),
+		new Vector3f(-0.5f, 0.375f, 0.625f),
+		
+		// left inner wall back
+		new Vector3f(-0.375f, -0.5f, 0.75f),
+		new Vector3f(-0.375f, -0.5f, 0.625f),
+		new Vector3f(-0.375f, -0.375f, 0.625f),
+		new Vector3f(-0.375f, -0.375f, 0.75f),
+		
+		// left inner wall front
+		new Vector3f(-0.375f, 0.375f, 0.75f),
+		new Vector3f(-0.375f, 0.375f, 0.625f),
+		new Vector3f(-0.375f, 0.5f, 0.625f),
+		new Vector3f(-0.375f, 0.5f, 0.75f),
+		
+		// left inner/outer wall back/back
+		new Vector3f(-0.375f, -0.5f, 0.625f),
+		new Vector3f(-0.375f, -0.5f, 0.75f),
+		new Vector3f(-0.5f, -0.5f, 0.75f),
+		new Vector3f(-0.5f, -0.5f, 0.625f),
+		
+		// left inner/outer wall back/front
+		new Vector3f(-0.375f, -0.375f, 0.625f),
+		new Vector3f(-0.5f, -0.375f, 0.625f),
+		new Vector3f(-0.5f, -0.375f, 0.75f),
+		new Vector3f(-0.375f, -0.375f, 0.75f),
+		
+		// left inner/outer wall front/back
+		new Vector3f(-0.375f, 0.375f, 0.625f),
+		new Vector3f(-0.375f, 0.375f, 0.75f),
+		new Vector3f(-0.5f, 0.375f, 0.75f),
+		new Vector3f(-0.5f, 0.375f, 0.625f),
+		
+		// left inner/outer wall front/front
+		new Vector3f(-0.375f, 0.5f, 0.625f),
+		new Vector3f(-0.5f, 0.5f, 0.625f),
+		new Vector3f(-0.5f, 0.5f, 0.75f),
+		new Vector3f(-0.375f, 0.5f, 0.75f),
+		
+		// right outer wall ceiling
+		new Vector3f(0.5f, -0.5f, 0.75f),
+		new Vector3f(0.5f, 0.5f, 0.75f),
+		new Vector3f(0.5f, 0.5f, 0.875f),
+		new Vector3f(0.5f, -0.5f, 0.875f),
+		
+		// right outer wall back
+		new Vector3f(0.5f, -0.5f, 0.75f),
+		new Vector3f(0.5f, -0.5f, 0.625f),
+		new Vector3f(0.5f, -0.375f, 0.625f),
+		new Vector3f(0.5f, -0.375f, 0.75f),
+		
+		// right outer wall front
+		new Vector3f(0.5f, 0.375f, 0.75f),
+		new Vector3f(0.5f, 0.375f, 0.625f),
+		new Vector3f(0.5f, 0.5f, 0.625f),
+		new Vector3f(0.5f, 0.5f, 0.75f),
+		
+		// right inner wall back
+		new Vector3f(0.375f, -0.5f, 0.75f),
+		new Vector3f(0.375f, -0.375f, 0.75f),
+		new Vector3f(0.375f, -0.375f, 0.625f),
+		new Vector3f(0.375f, -0.5f, 0.625f),
+		
+		// right inner wall front
+		new Vector3f(0.375f, 0.375f, 0.75f),
+		new Vector3f(0.375f, 0.5f, 0.75f),
+		new Vector3f(0.375f, 0.5f, 0.625f),
+		new Vector3f(0.375f, 0.375f, 0.625f),
+		
+		// right inner/outer wall back/back
+		new Vector3f(0.375f, -0.5f, 0.625f),
+		new Vector3f(0.5f, -0.5f, 0.625f),
+		new Vector3f(0.5f, -0.5f, 0.75f),
+		new Vector3f(0.375f, -0.5f, 0.75f),
+		
+		// right inner/outer wall back/front
+		new Vector3f(0.375f, -0.375f, 0.625f),
+		new Vector3f(0.375f, -0.375f, 0.75f),
+		new Vector3f(0.5f, -0.375f, 0.75f),
+		new Vector3f(0.5f, -0.375f, 0.625f),
+		
+		// right inner/outer wall front/back
+		new Vector3f(0.375f, 0.375f, 0.625f),
+		new Vector3f(0.5f, 0.375f, 0.625f),
+		new Vector3f(0.5f, 0.375f, 0.75f),
+		new Vector3f(0.375f, 0.375f, 0.75f),
+		
+		// right inner/outer wall front/front
+		new Vector3f(0.375f, 0.5f, 0.625f),
+		new Vector3f(0.375f, 0.5f, 0.75f),
+		new Vector3f(0.5f, 0.5f, 0.75f),
+		new Vector3f(0.5f, 0.5f, 0.625f),
+	};
 	static {
 		applyZFightingCorrection(HULL_POINTS);
+		applyZFightingCorrection(HULL_ROOF_POINTS);
 	}
 	
 	/**
@@ -144,6 +281,11 @@ public class FlatConveyorBlock extends ConveyorBlock {
 	@Override
 	public Vector3f[] getHullPoints() {
 		return HULL_POINTS;
+	}
+	
+	@Override
+	public Vector3f[] getHullRoofPoints() {
+		return HULL_ROOF_POINTS;
 	}
 	
 	@Override

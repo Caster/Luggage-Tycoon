@@ -88,6 +88,12 @@ public class DescendingConveyorBlock extends ConveyorBlock {
 	}
 	
 	@Override
+	public Vector3f[] getHullRoofPoints() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
 	public ArrayList<Vector3f> getTopCoordinatesLeft(
 			ConveyorBlock neighbor1, ConveyorBlock neighbor2) {
 		ArrayList<Vector3f> lefts = new ArrayList<>();

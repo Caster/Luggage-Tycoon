@@ -244,6 +244,15 @@ public abstract class ConveyorBlock extends Block {
 	 */
 	public abstract Vector3f[] getHullPoints();
 	
+	/**
+	 * Returns a list of points that form quads which in turn form a roof for the
+	 * hull around this conveyor block.
+	 * 
+	 * @return A list of points forming quads, forming a hull. List may be empty
+	 *         or {@code null} in case there is no hull.
+	 */
+	public abstract Vector3f[] getHullRoofPoints();
+	
 	@Override
 	public void draw(State s) {
 
@@ -257,6 +266,10 @@ public abstract class ConveyorBlock extends Block {
 			glBegin(GL_QUADS);
 			{
 				drawQuadsAndNormals(getHullPoints(), scaleFactor);
+				if (s.world.bc.getFirstBlockAboveHeight(x, y, z) >= 0 &&
+						getHullRoofPoints() != null && getHullRoofPoints().length > 0) {
+					drawQuadsAndNormals(getHullRoofPoints(), scaleFactor);
+				}
 			}
 			glEnd();
 			glColor4fReset();

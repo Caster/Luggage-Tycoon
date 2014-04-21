@@ -138,6 +138,12 @@ public class Simulation {
 			addBlockHull(cb, addedBodies, cb.getHullPoints());
 		}
 		
+		// possibly add a roof
+		if (s.world.bc.getFirstBlockAboveHeight(cb.getX(), cb.getY(), cb.getZ()) >= 0 &&
+				cb.getHullRoofPoints() != null && cb.getHullRoofPoints().length > 0) {
+			addBlockHull(cb, addedBodies, cb.getHullRoofPoints());
+		}
+		
 		// make sure the body is cleaned up when the conveyorblock is removed
 		cb.addListener(new DrawableObjectListener() {
 			@Override

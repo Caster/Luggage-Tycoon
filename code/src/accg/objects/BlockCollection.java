@@ -151,6 +151,29 @@ public class BlockCollection extends DrawableObject implements Iterable<Block> {
 	}
 	
 	/**
+	 * Return the height of the first block above the given position. The given
+	 * position is hence <i>not</i> considered, only (x, y, z + 1) and above.
+	 * 
+	 * @param x X-coordinate of query position.
+	 * @param y Y-coordinate of query position.
+	 * @param z Z-coordinate of query position.
+	 * @return A value between z + 1 and the height of this collection, boundaries inclusive,
+	 *         or -1 if z is outside of that boundary or there is no block above.
+	 *         At (x, y, \ret) a block is present in this BlockCollection if z >= 0.
+	 *         Otherwise, there is no block above the given position.
+	 */
+	public int getFirstBlockAboveHeight(int x, int y, int z) {
+		if (z < -1) {
+			z = -1;
+		}
+		
+		do {
+			z++;
+		} while (z < sizeZ && blocks[x][y][z] == null);
+		return (z < sizeZ ? z : -1);
+	}
+	
+	/**
 	 * Return the height of the first block below the given position. The given
 	 * position is hence <i>not</i> considered, only (x, y, z - 1) and below.
 	 * 
@@ -162,6 +185,10 @@ public class BlockCollection extends DrawableObject implements Iterable<Block> {
 	 *         Otherwise, there is no block below the given position.
 	 */
 	public int getFirstBlockBelowHeight(int x, int y, int z) {
+		if (z > sizeZ) {
+			z = sizeZ;
+		}
+		
 		do {
 			z--;
 		} while (z >= 0 && blocks[x][y][z] == null);

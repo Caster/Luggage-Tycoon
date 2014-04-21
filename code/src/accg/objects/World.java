@@ -175,6 +175,26 @@ public class World extends Container<DrawableObject> {
 				cbn.onDestroy();
 				state.simulation.addConveyorBlock(s, cbn);
 			}
+			
+			// update block below added block (may need a ceiling now)
+			int belowIndex = bc.getFirstBlockBelowHeight(toAdd.x, toAdd.y, toAdd.z);
+			if (belowIndex >= 0) {
+				Block belowBlock = bc.getBlock(toAdd.x, toAdd.y, belowIndex);
+				if (belowBlock instanceof ConveyorBlock) {
+					belowBlock.onDestroy();
+					state.simulation.addConveyorBlock(s, (ConveyorBlock) belowBlock);
+				}
+			}
+			
+			// update block above added block (may need to update scaffolding)
+			int aboveIndex = bc.getFirstBlockAboveHeight(toAdd.x, toAdd.y, toAdd.z);
+			if (aboveIndex >= 0) {
+				Block aboveBlock = bc.getBlock(toAdd.x, toAdd.y, aboveIndex);
+				if (aboveBlock instanceof ConveyorBlock) {
+					aboveBlock.onDestroy();
+					state.simulation.addConveyorBlock(s, (ConveyorBlock) aboveBlock);
+				}
+			}
 		}
 	}
 
