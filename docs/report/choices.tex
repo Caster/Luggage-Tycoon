@@ -3,6 +3,20 @@ During the implementation phase, we made some design decisions that we document 
 \subsection{Simulating luggage movement}
 We initially implemented a simulation module ourselves, that was able to move luggage over the conveyor belts, but it did not support rotations. This means that luggage did not for example rotate when climbing an ascending conveyor belt or when it dropped of a belt. Furthermore the system was not really realistic, since we only used a very simple physics model. This meant that there was no collision detection between luggage items at all, and one piece of luggage could be placed inside another one.
 
-After searching information about how to implement a more realistic physics system, we found out that it is extremely difficult to do so, and we decided to use an external library for the physics, named \emph{Bullet} (more accurately, a Java port of Bullet called \emph{JBullet}). Now we had to integrate JBullet in our application, which was not too difficult to do.
+After searching information about how to implement a more realistic physics system, we found out that it is extremely difficult to do so, and we decided to use an external library for the physics, named \emph{Bullet} (more accurately, a Java port of Bullet called \emph{JBullet}). Now we had to integrate JBullet in our application.
 
-Initially, we had a little problem with getting the conveyor belts to actually move in JBullet. The belts were animated, but luggage would not move when it would fall on a conveyor belt. We found ways of simulating conveyor belts in Bullet, but unfortunately we were not able to use this since JBullet, the Java port we were using, was a couple of versions behind on Bullet. Finally, we found a way that worked in JBullet as well. Bullet has a notion of static objects. These are objects without mass that cannot (and will not) move. It is however possible to give these objects a linear and angular velocity, which results in dynamic objects hitting that static object taking over those velocities. This is precisely what we could use to simulate conveyor belts. We even managed to simulate curved conveyor belts realistically using a combination of a diagonal linear velocity and a non-zero angular velocity.
+JBullet can handle several types of objects, however, we only used \emph{rigid bodies} and \emph{static objects}. Rigid bodies are objects that can move and rotate freely; furthermore they collide to each other. We use these for the luggage items. Static objects cannot move, but they do support collisions with rigid bodies. We use static objects for the floor and the conveyor belts.
+
+Furthermore, in JBullet every object has a \emph{collision shape}. This is the shape that JBullet calculates collisions with. It is possible to use a very sophisticated collision shape (namely, the \emph{triangle mesh} of the object); this is quite slow however. Therefore we mostly use other collision shapes.
+\begin{itemize}
+ \item For the luggage items, we use \emph{box shapes}, although luggage is not entirely box-shaped.
+ \item For the conveyor belts and their hulls, we use \emph{convex-hull shapes}. This shape is much faster than a full triangle mesh.
+ \item For the floor and walls, we use \emph{plane shapes}.
+\end{itemize}
+
+\subsection{Moving conveyor belts in JBullet}
+Initially, we had a problem with the conveyor belts in JBullet. The belts were animated by moving its texture, and not by actually moving the static object in the JBullet representation (since then the belt would move from its intended position). Therefore luggage would not move when it would fall on a conveyor belt.
+
+We found ways of simulating conveyor belts in Bullet, but unfortunately we were not able to use this since JBullet, the Java port we were using, was a couple of versions behind on Bullet. However, it is still possible to give static objects a linear and angular velocity, which results in dynamic objects hitting that static object behaving as if the static object were indeed moving with this velocity. This is precisely what we could use to simulate conveyor belts.
+
+There was a small issue here, that JBullet assumes that setting a velocity on a static object is a mistake, and throws an \texttt{AssertionError}. This is easily avoided by running the application with Java assertions switched of; however, this is a bit ugly since our own assertions will not be checked anymore as well. We did not find a way to do this better, without actually modifying JBullet itself.
