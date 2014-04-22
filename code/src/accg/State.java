@@ -4,6 +4,7 @@ import java.util.prefs.Preferences;
 
 import org.newdawn.slick.Font;
 
+import accg.camera.Camera;
 import accg.gui.MainGUI;
 import accg.objects.Floor;
 import accg.objects.ShadowBlock;
@@ -70,6 +71,11 @@ public class State {
 	 * mode, also see {@link State.ProgramMode}.
 	 */
 	public ProgramMode programMode = ProgramMode.START_MODE;
+	
+	/**
+	 * Camera used in the program.
+	 */
+	public Camera camera;
 	
 	/**
 	 * Whether the user is removing blocks at the moment. This only makes sense

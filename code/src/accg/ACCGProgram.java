@@ -63,9 +63,6 @@ public class ACCGProgram {
 	/** Possible {@link DisplayMode} which the program can use. */
 	private DisplayMode windowedMode, fullScreenMode;
 	
-	/** Camera that provides an easy-to-use API for changing viewpoint and such. */
-	private Camera camera;
-	
 	/**
 	 * Point where mouse was pressed. Is compared to point where mouse
 	 * is released to see if it was a click or not.
@@ -209,7 +206,7 @@ public class ACCGProgram {
 		s.floor.setBackgroundColor(BACKGROUND_COLOR);
 		s.shadowBlock = new ShadowBlock();
 		s.startTime = (float) Sys.getTime() / Sys.getTimerResolution();
-		camera = new Camera(s);
+		s.camera = new Camera(s);
 		clickedPoint = null;
 		
 		// intialise GUI stuff
@@ -272,7 +269,7 @@ public class ACCGProgram {
 			
 			// handle events
 			handleKeyEvents(s);
-			handlePressedKeys();
+			handlePressedKeys(s);
 			handleScrollEvents(s);
 			handleMouseEvents(s);
 
@@ -289,7 +286,7 @@ public class ACCGProgram {
 				
 				glMatrixMode(GL_MODELVIEW);
 				glLoadIdentity();
-				camera.setLookAt();
+				s.camera.setLookAt();
 				
 				updateHighlightedBlock(s);
 				
@@ -530,8 +527,10 @@ public class ACCGProgram {
 	
 	/**
 	 * Handles keys that are pressed.
+	 * 
+	 * @param s State of the program, used to access camera.
 	 */
-	public void handlePressedKeys() {
+	public void handlePressedKeys(State s) {
 		
 		// if the user is typing text in the GUI, we don't want to handle
 		// pressed keys ourselves
@@ -545,29 +544,29 @@ public class ACCGProgram {
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
 			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) || Keyboard.isKeyDown(Keyboard.KEY_A)) {
-				camera.turnRight();
+				s.camera.turnRight();
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) || Keyboard.isKeyDown(Keyboard.KEY_D)) {
-				camera.turnLeft();
+				s.camera.turnLeft();
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_UP) || Keyboard.isKeyDown(Keyboard.KEY_W)) {
-				camera.turnDown();
+				s.camera.turnDown();
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) || Keyboard.isKeyDown(Keyboard.KEY_S)) {
-				camera.turnUp();
+				s.camera.turnUp();
 			}
 		} else {
 			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT) || Keyboard.isKeyDown(Keyboard.KEY_A)) {
-				camera.moveLeft();
+				s.camera.moveLeft();
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT) || Keyboard.isKeyDown(Keyboard.KEY_D)) {
-				camera.moveRight();
+				s.camera.moveRight();
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_UP) || Keyboard.isKeyDown(Keyboard.KEY_W)) {
-				camera.moveForward();
+				s.camera.moveForward();
 			}
 			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) || Keyboard.isKeyDown(Keyboard.KEY_S)) {
-				camera.moveBackward();
+				s.camera.moveBackward();
 			}
 		}
 	}
@@ -590,9 +589,9 @@ public class ACCGProgram {
 		// otherwise, let the camera handle it
 		if (!handledByMenu) {
 			if (dWheel < 0) {
-				camera.moveUp();
+				s.camera.moveUp();
 			} else if (dWheel > 0) {
-				camera.moveDown();
+				s.camera.moveDown();
 			}
 		}
 	}
@@ -693,7 +692,7 @@ public class ACCGProgram {
 					if (s.programMode == ProgramMode.BUILDING_MODE && s.shadowBlock.hasBlock()) {
 						updateShadowBlockHeight(Mouse.getX(), Mouse.getY(), s);
 					} else {
-						camera.moveByMouse(dx, dy);
+						s.camera.moveByMouse(dx, dy);
 					}
 					
 					handledButton[0] = true;
@@ -701,7 +700,7 @@ public class ACCGProgram {
 				
 				// handle middle mouse button: mouse button 2
 				if (!handledButton[2] && !handledMouseMoveByMenu && Mouse.isButtonDown(2)) {					
-					camera.turnByMouse(dx, dy);
+					s.camera.turnByMouse(dx, dy);
 					
 					handledButton[2] = true;
 				}

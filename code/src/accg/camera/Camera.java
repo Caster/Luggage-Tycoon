@@ -90,6 +90,15 @@ public class Camera {
 	}
 	
 	/**
+	 * Reset the camera position to the initial position.
+	 */
+	public void resetCameraPosition() {
+		camSpherical.set(INITIAL_CAM_POS);
+		camLookPos.set(INITIAL_CAM_LOOK_POS);
+		camUpPos.set(INITIAL_CAM_UP);
+	}
+	
+	/**
 	 * Call lookAt method of glu so that camera is repositioned.
 	 */
 	public void setLookAt() {

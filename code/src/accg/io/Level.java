@@ -336,6 +336,8 @@ public class Level {
 			levelHintDialog.addButton(okButton);
 			s.gui.add(levelHintDialog);
 		}
+		
+		s.camera.resetCameraPosition();
 	}
 	
 	/**
