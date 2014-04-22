@@ -1,0 +1,85 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+
+\usepackage{booktabs}
+
+\usepackage{longtable}
+\usepackage{tabu}
+
+\usepackage{xspace}
+
+\usepackage[sc]{mathpazo}
+\linespread{1.05}
+
+\newcommand*{\accgtitle}{Building a conveyor belt system editor \& simulator\\Change report\xspace}
+\newcommand*{\accgversion}{Draft, v2 $\leftrightarrow$ Final\xspace}
+
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={2IV05: \accgtitle}, pdfauthor={Thom Castermans \& Willem Sonke}}
+\usepackage[format=hang]{caption}
+
+\usepackage{graphicx}
+\graphicspath{ {img/} }
+
+\usepackage{geometry}
+
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+
+\usepackage{changepage}
+
+\usepackage[nottoc,notlof,notlot]{tocbibind} 
+\tocotherhead{subsection}
+
+\renewcommand{\labelitemi}{$\bullet$}
+\newcommand{\eo}[2]{#1\,/\,#2}
+
+\begin{document}
+
+\definecolor{accgblue}{RGB}{97,147,207}
+\begin{adjustwidth}{0.05\textwidth}{0.05\textwidth}  
+  \textcolor{accgblue}{\rule{0.9\textwidth}{0.8pt}}
+  
+  \begin{center}
+    \large 2IV05 -- Additional component computer graphics\\
+    \Large\textbf{\accgtitle}\\[10pt]
+    \normalsize Thom Castermans \qquad Willem Sonke
+  \end{center}
+  
+  \vspace{10pt}\noindent\footnotesize~~Eindhoven University of Technology\hfill\accgversion\ -- \today~~
+  
+  \vspace{-6pt}\noindent\textcolor{accgblue}{\rule{0.9\textwidth}{0.8pt}}
+\end{adjustwidth}
+
+\begin{abstract}
+ This document details the changes between the second draft version of the report and the final version.
+\end{abstract}
+
+\section*{Change report}
+The changes are given in the table below.
+
+\begin{longtabu}{cX<{\strut}}
+  \toprule
+  \textbf{Section} & \textbf{Improvement} \\
+  \midrule
+  \endhead
+  \bottomrule
+  & \vspace*{-5pt}\hfill\textit{Continued on next page\ldots} \\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  1.1 & Determined $\rightarrow$ determine \\
+  1.1.1 & Improved wording in the last paragraph about the program being fault-preventing \\
+  2.1 & Added a new section (2.1.1) to explain the problem of texture mapping \\
+  2.1 & Added more explanation about the solution of the texture mapping problem \\
+  2.3 & Added a figure to explain Bresenham's algorithm \\
+  3.1 & Rewritten to better explain how JBullet is used \\
+  5 & Removed the section (previously 5.1) on things that were still to do \\
+  5 & Expanded the results section to the newly implemented features \\
+  6 & Added the conclusion \\
+  7 & Added the future work \\
+\end{longtabu}
+
+
+\end{document}
