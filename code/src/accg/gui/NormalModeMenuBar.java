@@ -85,6 +85,18 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(saveItem);
 		
+		Button settingsItem = new Button("StartModeMenuBar.settings", null, s.textures.iconConfigure); //$NON-NLS-1$
+		settingsItem.addListener(new Listener() {
+			
+			@Override
+			public void event(Event e) {
+				if (e instanceof MouseClickEvent) {
+					stack.addMenuBelowOrClose(NormalModeMenuBar.this, MainStack.SETTINGS_MENU);
+				}
+			}
+		});
+		add(settingsItem);
+		
 		Button backItem = new Button("NormalModeMenuBar.back", null, s.textures.iconExit); //$NON-NLS-1$
 		backItem.addListener(new Listener() {
 			
