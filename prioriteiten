@@ -4,14 +4,7 @@ Dingen die we nog moeten doen voor het ACCG-programma:
 +---------+------------------------------------------------------------------------------------------------+
      2    - Verslag
      3    - Scanners
-     4    - "Game" functionaliteit
-            * level-systeem, waarbij de gebruiker naar het volgende level gaat als een level uitgespeeld is
-            * detectie wanneer een level is uitgespeeld
-            * maximaal aantal objecten per level
-            * "sandbox" modus
-            * benodigde tijd bijhouden (en topscores of zoiets?)
-            * levels maken :P
-    5     - Noodzakelijke esthetiek
+     5    - Noodzakelijke esthetiek
             * betere textures, met name voor koffers (texture packs?)
     1e9   - Overbodige esthetiek :P
   ( :( )    * texture packs
@@ -35,6 +28,12 @@ Dingen die we nog moeten doen voor het ACCG-programma:
             * ...?
      2    - Ingang/uitgang voor loopbanden
      2    - Openen / opslaan
+     4    - "Game" functionaliteit
+            * level-systeem, waarbij de gebruiker naar het volgende level gaat als een level uitgespeeld is
+            * detectie wanneer een level is uitgespeeld
+            * maximaal aantal objecten per level
+            * "sandbox" modus
+            * levels maken :P
     1e9   - Overbodige esthetiek :P
             * animaties voor GUI (highlight met fade en zo)
 +---------+------------------------------------------------------------------------------------------------+
