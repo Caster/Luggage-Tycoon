@@ -1,5 +1,8 @@
 package accg.gui;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
 
 import org.newdawn.slick.opengl.Texture;
@@ -32,6 +35,14 @@ public class LocaleMenuBar extends MenuBar {
 	 * @param s State of program, used to look up icons.
 	 */
 	public LocaleMenuBar(State s) {
+		Collections.sort(Arrays.asList(SUPPORTED_LOCALES), new Comparator<Locale>() {
+
+			@Override
+			public int compare(Locale o1, Locale o2) {
+				return o1.getDisplayLanguage(o1).compareTo(o2.getDisplayLanguage(o2));
+			}
+		});
+		
 		for (Locale l : SUPPORTED_LOCALES) {
 			add(generateLocaleItem(l, s));
 		}
