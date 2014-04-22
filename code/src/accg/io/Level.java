@@ -1,6 +1,14 @@
 package accg.io;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -15,9 +23,10 @@ import accg.gui.toolkit.components.Button;
 import accg.gui.toolkit.components.Label;
 import accg.gui.toolkit.containers.Dialog;
 import accg.gui.toolkit.event.MouseClickEvent;
-import accg.i18n.Messages;
-import accg.objects.*;
+import accg.objects.Block;
 import accg.objects.Luggage.LuggageColor;
+import accg.objects.Orientation;
+import accg.objects.World;
 import accg.objects.blocks.EnterBlock;
 import accg.objects.blocks.LeaveBlock;
 import accg.simulation.Simulation;
@@ -314,7 +323,7 @@ public class Level {
 		
 		if (getLevelHint() != null) {
 			final Dialog levelHintDialog = new Dialog(getLevelName(), new Label(getLevelHint()));
-			Button okButton = new Button(Messages.get("LevelHintDialog.ok"), s.textures.iconOk);
+			Button okButton = new Button("LevelHintDialog.ok", null, s.textures.iconOk);
 			okButton.addListener(new Listener() {
 				
 				@Override

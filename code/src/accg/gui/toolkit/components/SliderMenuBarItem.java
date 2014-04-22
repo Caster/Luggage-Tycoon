@@ -42,7 +42,11 @@ public class SliderMenuBarItem extends Button {
 	 * from given minimal to given maximal value and will have the given
 	 * initial value.
 	 * 
-	 * @param text Text that is displayed next to the icon.
+	 * @param messageKey Key of the text to display in this button in the
+	 *            ResourceBundle from which text may be loaded using the
+	 *            Messages class.
+	 * @param defaultText Text that is displayed next to the icon in case
+	 *            loading a text through the given key fails.
 	 * @param icon Icon that is displayed.
 	 * @param min Minimal value of the slider.
 	 * @param max Maximal value of the slider.
@@ -52,9 +56,9 @@ public class SliderMenuBarItem extends Button {
 	 * @throws IllegalArgumentException when either {@code text} or
 	 *         {@code icon} is {@code null}.
 	 */
-	public SliderMenuBarItem(String text, Texture icon, float min, float max,
-			float value, float step) {
-		super(text, icon);
+	public SliderMenuBarItem(String messageKey, String defaultText, Texture icon,
+			float min, float max, float value, float step) {
+		super(messageKey, defaultText, icon);
 		
 		this.min = min;
 		this.max = max;
@@ -86,18 +90,22 @@ public class SliderMenuBarItem extends Button {
 	 * 
 	 * The step will be chosen as (max - min) / 10.
 	 * 
-	 * @param text Text that is displayed next to the icon.
+	 * @param messageKey Key of the text to display in this button in the
+	 *            ResourceBundle from which text may be loaded using the
+	 *            Messages class.
+	 * @param defaultText Text that is displayed next to the icon in case
+	 *            loading a text through the given key fails.
 	 * @param icon Icon that is displayed.
 	 * @param min Minimal value of the slider.
 	 * @param max Maximal value of the slider.
 	 * @param value Initial value of the slider.
 	 * @throws IllegalArgumentException when either {@code text} or
 	 *         {@code icon} is {@code null}.
-	 * @see #SliderMenuBarItem(String, Texture, float, float, float, float)
+	 * @see #SliderMenuBarItem(String, String, Texture, float, float, float, float)
 	 */
-	public SliderMenuBarItem(String text, Texture icon, float min, float max,
-			float value) {
-		this(text, icon, min, max, value, (max - min) / 10f);
+	public SliderMenuBarItem(String messageKey, String defaultText, Texture icon,
+			float min, float max, float value) {
+		this(messageKey, defaultText, icon, min, max, value, (max - min) / 10f);
 	}
 	
 	/**

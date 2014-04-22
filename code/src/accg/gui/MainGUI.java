@@ -152,6 +152,13 @@ public class MainGUI extends LayeredPane {
 	}
 	
 	/**
+	 * Handles a change in locale by updating the texts in all menu bars.
+	 */
+	public void handleLocaleChanged() {
+		stack.handleLocaleChanged();
+	}
+	
+	/**
 	 * Handles a key event by giving it to the GUI.
 	 * 
 	 * @param keyCode The LWJGL event key code.
@@ -239,7 +246,7 @@ public class MainGUI extends LayeredPane {
 	 * user and lets hem / her advance to the next level.
 	 */
 	public static void levelCompleted() {
-		Button nextButton = new Button(Messages.get("MainGUI.happyDialog.next"),
+		Button nextButton = new Button("MainGUI.happyDialog.next", null,
 				instance.state.textures.iconOk);
 		final Dialog happyDialog = new Dialog(Messages.get("MainGUI.happyDialog.caption"),
 				new Label(Messages.get("MainGUI.happyDialog.congrats")), nextButton);

@@ -12,6 +12,7 @@ import accg.gui.toolkit.containers.MenuBar;
 import accg.gui.toolkit.enums.ButtonType;
 import accg.gui.toolkit.enums.Presentation;
 import accg.gui.toolkit.event.MouseClickEvent;
+import accg.i18n.Messages;
 
 /**
  * A button is a clickable object containing a text and an icon.
@@ -40,32 +41,43 @@ public class Button extends Component implements Listener {
 	 * Construct a new {@link Button} with given text and icon.
 	 * The text and icon should not be {@code null}.
 	 * 
-	 * @param text Text that is displayed next to the icon.
+	 * @param messageKey Key of the text to display in this button in the
+	 *            ResourceBundle from which text may be loaded using the
+	 *            Messages class.
+	 * @param defaultText Text that is displayed next to the icon in case
+	 *            loading a text through the given key fails.
 	 * @param icon Icon that is displayed.
 	 * @throws IllegalArgumentException when either {@code text} or
 	 *         {@code icon} is {@code null}.
 	 */
-	public Button(String text, Texture icon) {
-		this(text, icon, ButtonType.NORMAL);
+	public Button(String messageKey, String defaultText, Texture icon) {
+		this(messageKey, defaultText, icon, ButtonType.NORMAL);
 	}
 	
 	/**
 	 * Construct a new {@link Button} with given text and icon.
 	 * The text and icon should not be {@code null}.
 	 * 
-	 * @param text Text that is displayed next to the icon.
+	 * @param messageKey Key of the text to display in this button in the
+	 *            ResourceBundle from which text may be loaded using the
+	 *            Messages class.
+	 * @param defaultText Text that is displayed next to the icon in case
+	 *            loading a text through the given key fails.
 	 * @param icon Icon that is displayed.
 	 * @param type {@link ButtonType} of the menu item.
 	 * @throws IllegalArgumentException when either {@code text} or
 	 *         {@code icon} is {@code null}.
 	 */
-	public Button(String text, Texture icon, ButtonType type) {
-		if (text == null || icon == null) {
+	public Button(String messageKey, String defaultText, Texture icon,
+			ButtonType type) {
+		if ((messageKey == null && defaultText == null) || icon == null) {
 			throw new IllegalArgumentException("Neither text nor icon "
 					+ "can be null for a MenuBarItem.");
 		}
 		
-		this.text = text;
+		this.text = Messages.get(messageKey, defaultText);
+		this.defaultText = defaultText;
+		this.messageKey = messageKey;
 		this.icon = icon;
 		this.type = type;
 		this.checked = false;
@@ -96,6 +108,13 @@ public class Button extends Component implements Listener {
 		case ICON_LEFT_TEXT:
 			return getFont().getLineHeight() + 2 * PADDING;
 		}
+	}
+	
+	/**
+	 * Handles a change in locale by updating the text.
+	 */
+	public void handleLocaleChanged() {
+		this.text = Messages.get(messageKey, this.defaultText);
 	}
 	
 	@Override
@@ -321,6 +340,10 @@ public class Button extends Component implements Listener {
 	
 	/** Describing text of this menu item. */
 	protected String text;
+	/** Text to display in case using the message key does not work. */
+	protected String defaultText;
+	/** Key in the resource bundle of the text of this button. */
+	protected String messageKey;
 	/** The shortcut hint of this menu item. */
 	protected String shortcutHint;
 	/** Icon of this menu item. */

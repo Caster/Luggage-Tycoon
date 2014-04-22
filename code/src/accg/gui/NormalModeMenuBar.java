@@ -29,7 +29,7 @@ public class NormalModeMenuBar extends MenuBar {
 	 */
 	public NormalModeMenuBar(final MenuStack stack, final State s) {
 		
-		Button simulateItem = new Button(Messages.get("NormalModeMenuBar.simulate"), s.textures.iconStart); //$NON-NLS-1$
+		Button simulateItem = new Button("NormalModeMenuBar.simulate", null, s.textures.iconStart); //$NON-NLS-1$
 		simulateItem.addListener(new Listener() {
 			
 			@Override
@@ -56,7 +56,7 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(simulateItem);
 		
-		Button buildItem = new Button(Messages.get("NormalModeMenuBar.build"), s.textures.iconZoomIn); //$NON-NLS-1$
+		Button buildItem = new Button("NormalModeMenuBar.build", null, s.textures.iconZoomIn); //$NON-NLS-1$
 		buildItem.addListener(new Listener() {
 			
 			@Override
@@ -73,7 +73,7 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(buildItem);
 		
-		Button saveItem = new Button(Messages.get("NormalModeMenuBar.save"), s.textures.iconSave); //$NON-NLS-1$
+		Button saveItem = new Button("NormalModeMenuBar.save", null, s.textures.iconSave); //$NON-NLS-1$
 		saveItem.addListener(new Listener() {
 			
 			@Override
@@ -85,7 +85,7 @@ public class NormalModeMenuBar extends MenuBar {
 		});
 		add(saveItem);
 		
-		Button backItem = new Button(Messages.get("NormalModeMenuBar.back"), s.textures.iconExit); //$NON-NLS-1$
+		Button backItem = new Button("NormalModeMenuBar.back", null, s.textures.iconExit); //$NON-NLS-1$
 		backItem.addListener(new Listener() {
 			
 			@Override

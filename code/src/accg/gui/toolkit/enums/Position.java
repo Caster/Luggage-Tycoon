@@ -28,7 +28,7 @@ public enum Position {
 	LEFT;
 	
 	private Position() {
-		this.name = name().charAt(0) + name().substring(1).toLowerCase();
+		this.name = "Position." + name().toLowerCase();
 	}
 	
 	private Position(String name) {

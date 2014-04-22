@@ -10,11 +10,11 @@ import accg.gui.toolkit.containers.MenuStack;
  */
 public enum Alignment {
 	/** Left or top. */
-	BEGIN("Left / top"),
+	BEGIN("Alignment.begin"),
 	/** Center. */
-	CENTER("Center"),
+	CENTER("Alignment.center"),
 	/** Right or bottom. */
-	END("Right / bottom");
+	END("Alignment.end");
 	
 	private Alignment(String name) {
 		this.name = name;

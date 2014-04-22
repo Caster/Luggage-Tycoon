@@ -8,19 +8,10 @@ import accg.State.ProgramMode;
 import accg.gui.toolkit.Event;
 import accg.gui.toolkit.Listener;
 import accg.gui.toolkit.components.Button;
-import accg.gui.toolkit.components.Label;
-import accg.gui.toolkit.components.List;
-import accg.gui.toolkit.containers.Dialog;
 import accg.gui.toolkit.containers.MenuBar;
 import accg.gui.toolkit.containers.MenuStack;
 import accg.gui.toolkit.event.MouseClickEvent;
-import accg.i18n.Messages;
 import accg.io.Level;
-import accg.io.SavedGameManager;
-import accg.objects.Orientation;
-import accg.objects.World;
-import accg.objects.blocks.EnterBlock;
-import accg.simulation.Simulation;
 
 /**
  * Menu bar for the start mode (that is, the main menu).
@@ -29,7 +20,7 @@ public class StartModeMenuBar extends MenuBar {
 	
 	public StartModeMenuBar(final MenuStack stack, final State s) {
 		
-		Button chooseLevelItem = new Button(Messages.get("StartModeMenuBar.chooseLevel"), s.textures.iconStart); //$NON-NLS-1$
+		Button chooseLevelItem = new Button("StartModeMenuBar.chooseLevel", null, s.textures.iconStart); //$NON-NLS-1$
 		chooseLevelItem.addListener(new Listener() {
 			
 			@Override
@@ -41,7 +32,7 @@ public class StartModeMenuBar extends MenuBar {
 		});
 		add(chooseLevelItem);
 		
-		Button openItem = new Button(Messages.get("StartModeMenuBar.open"), s.textures.iconOpen); //$NON-NLS-1$
+		Button openItem = new Button("StartModeMenuBar.open", null, s.textures.iconOpen); //$NON-NLS-1$
 		openItem.addListener(new Listener() {
 			
 			@Override
@@ -53,7 +44,7 @@ public class StartModeMenuBar extends MenuBar {
 		});
 		add(openItem);
 		
-		Button sandBoxItem = new Button(Messages.get("StartModeMenuBar.sandBox"), s.textures.iconOpen); //$NON-NLS-1$
+		Button sandBoxItem = new Button("StartModeMenuBar.sandBox", null, s.textures.iconOpen); //$NON-NLS-1$
 		sandBoxItem.addListener(new Listener() {
 			
 			@Override
@@ -81,7 +72,7 @@ public class StartModeMenuBar extends MenuBar {
 		});
 		add(sandBoxItem);
 		
-		Button settingsItem = new Button(Messages.get("StartModeMenuBar.settings"), s.textures.iconConfigure); //$NON-NLS-1$
+		Button settingsItem = new Button("StartModeMenuBar.settings", null, s.textures.iconConfigure); //$NON-NLS-1$
 		settingsItem.addListener(new Listener() {
 			
 			@Override
@@ -93,7 +84,7 @@ public class StartModeMenuBar extends MenuBar {
 		});
 		add(settingsItem);
 		
-		Button quitItem = new Button(Messages.get("StartModeMenuBar.quit"), s.textures.iconExit); //$NON-NLS-1$
+		Button quitItem = new Button("StartModeMenuBar.quit", null, s.textures.iconExit); //$NON-NLS-1$
 		quitItem.addListener(new Listener() {
 			
 			@Override

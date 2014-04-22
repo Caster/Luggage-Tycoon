@@ -2,6 +2,7 @@ package accg.gui;
 
 import accg.State;
 import accg.State.ProgramMode;
+import accg.gui.toolkit.containers.MenuBar;
 import accg.gui.toolkit.containers.MenuStack;
 import accg.gui.toolkit.enums.Alignment;
 import accg.gui.toolkit.enums.Position;
@@ -13,6 +14,7 @@ import accg.gui.toolkit.enums.Presentation;
 public class MainStack extends MenuStack {
 	
 	public static final String SETTINGS_MENU = "settings";
+	public static final String LOCALE_MENU = "locale";
 	public static final String POSITION_MENU = "position";
 	public static final String ALIGNMENT_MENU = "alignment";
 	public static final String PRESENTATION_MENU = "presentation";
@@ -38,6 +40,7 @@ public class MainStack extends MenuStack {
 		addToCollection(ProgramMode.BUILDING_MODE, buildBar = new BuildingModeMenuBar(this, state));
 		addToCollection(ProgramMode.SIMULATION_MODE, new SimulationModeMenuBar(this, state));
 		addToCollection(SETTINGS_MENU, new SettingsMenuBar(this, state));
+		addToCollection(LOCALE_MENU, new LocaleMenuBar(state));
 		addToCollection(POSITION_MENU, new PositionMenuBar(this, state));
 		addToCollection(ALIGNMENT_MENU, new AlignmentMenuBar(this, state));
 		addToCollection(PRESENTATION_MENU, new PresentationMenuBar(this, state));
@@ -53,6 +56,15 @@ public class MainStack extends MenuStack {
 		setPresentation(Presentation.values()[presentationId]);
 		
 		updateItems();
+	}
+	
+	/**
+	 * Handles a change in locale by updating the texts in all menu bars.
+	 */
+	public void handleLocaleChanged() {
+		for (MenuBar mb : menuBars.values()) {
+			mb.handleLocaleChanged();
+		}
 	}
 	
 	/**

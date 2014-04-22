@@ -16,6 +16,12 @@ import accg.gui.toolkit.event.MouseClickEvent;
  */
 public class PositionMenuBar extends MenuBar {
 	
+	/**
+	 * Construct a new PositionMenuBar.
+	 * 
+	 * @param stack Stack in which menubar will be put.
+	 * @param s State of program, used to look up icons in.
+	 */
 	public PositionMenuBar(final MenuStack stack, final State s) {
 		for (int i = 0; i < Position.values().length; i++) {
 			add(generatePositionItem(i, stack, s));
@@ -32,7 +38,7 @@ public class PositionMenuBar extends MenuBar {
 	private Button generatePositionItem(final int index, final MenuStack stack, final State s) {
 		final Position pos = Position.values()[index];
 		// create the item
-		Button mbi = new Button(pos.getName(),
+		Button mbi = new Button(pos.getName(), null,
 				getPositionIcon(index, s), ButtonType.CHECKABLE_UNIQUE);
 		mbi.addListener(new Listener() {
 			

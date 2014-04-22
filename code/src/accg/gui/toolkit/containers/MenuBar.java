@@ -59,6 +59,15 @@ public class MenuBar extends Container {
 	}
 	
 	/**
+	 * Handles a change in locale by updating the texts in all menu items.
+	 */
+	public void handleLocaleChanged() {
+		for (Button b : items) {
+			b.handleLocaleChanged();
+		}
+	}
+	
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * This makes sure that all items fit in the menu bar,

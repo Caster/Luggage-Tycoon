@@ -58,7 +58,7 @@ public class BuildingModeMenuBar extends MenuBar {
 		
 		this.state = s;
 		
-		rotateLeftItem = new Button(Messages.get("BuildingModeMenuBar.rotateLeft"),
+		rotateLeftItem = new Button("BuildingModeMenuBar.rotateLeft", null,
 				s.textures.iconLeft);
 		rotateLeftItem.setShortcutHint("Shift+R");
 		rotateLeftItem.addListener(new Listener() {
@@ -76,7 +76,7 @@ public class BuildingModeMenuBar extends MenuBar {
 		});
 		add(rotateLeftItem);
 		
-		rotateRightItem = new Button(Messages.get("BuildingModeMenuBar.rotateRight"),
+		rotateRightItem = new Button("BuildingModeMenuBar.rotateRight", null,
 				s.textures.iconRight);
 		rotateRightItem.setShortcutHint("R");
 		rotateRightItem.addListener(new Listener() {
@@ -94,7 +94,7 @@ public class BuildingModeMenuBar extends MenuBar {
 		});
 		add(rotateRightItem);
 		
-		Button chooseBlockItem = new Button(Messages.get("BuildingModeMenuBar.chooseBlock"), s.textures.iconConfigure); //$NON-NLS-1$
+		Button chooseBlockItem = new Button("BuildingModeMenuBar.chooseBlock", null, s.textures.iconConfigure); //$NON-NLS-1$
 		chooseBlockItem.addListener(new Listener() {
 			
 			@Override
@@ -106,7 +106,7 @@ public class BuildingModeMenuBar extends MenuBar {
 		});
 		add(chooseBlockItem);
 		
-		removeItem = new Button(Messages.get("BuildingModeMenuBar.remove"),
+		removeItem = new Button("BuildingModeMenuBar.remove", null,
 				s.textures.iconBomb, ButtonType.CHECKABLE);
 		removeItem.setShortcutHint("Del");
 		removeItem.addListener(new Listener() {
@@ -130,7 +130,7 @@ public class BuildingModeMenuBar extends MenuBar {
 		});
 		add(removeItem);
 		
-		removeAllItem = new Button(Messages.get("BuildingModeMenuBar.removeAll"),
+		removeAllItem = new Button("BuildingModeMenuBar.removeAll", null,
 				s.textures.iconBomb, ButtonType.NORMAL);
 		removeAllItem.setShortcutHint("Shift+Del");
 		removeAllItem.addListener(new Listener() {
@@ -144,7 +144,7 @@ public class BuildingModeMenuBar extends MenuBar {
 		});
 		add(removeAllItem);
 		
-		Button backItem = new Button(Messages.get("BuildingModeMenuBar.back"), s.textures.iconExit); //$NON-NLS-1$
+		Button backItem = new Button("BuildingModeMenuBar.back", null, s.textures.iconExit); //$NON-NLS-1$
 		backItem.addListener(new Listener() {
 			
 			@Override

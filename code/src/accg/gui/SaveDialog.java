@@ -24,7 +24,7 @@ public class SaveDialog extends Dialog {
 		tf.requestFocus();
 		setBody(tf);
 		
-		Button okButton = new Button(Messages.get("SaveDialog.save"), s.textures.iconOk); //$NON-NLS-1$
+		Button okButton = new Button("SaveDialog.save", null, s.textures.iconOk); //$NON-NLS-1$
 		okButton.addListener(new Listener() {
 			@Override
 			public void event(Event event) {
@@ -35,7 +35,7 @@ public class SaveDialog extends Dialog {
 					} catch (IOException levelException) {
 						// show the error message
 						levelException.printStackTrace();
-						Button closeButton = new Button(Messages.get("SaveDialog.close"), s.textures.iconExit); //$NON-NLS-1$
+						Button closeButton = new Button("SaveDialog.close", null, s.textures.iconExit); //$NON-NLS-1$
 						final Dialog errorDialog = new Dialog(Messages.get("SaveDialog.error"), //$NON-NLS-1$
 								new Label(Messages.get("SaveDialog.couldNotSaveFile") //$NON-NLS-1$
 								 + levelException.getMessage()), //$NON-NLS-1$
@@ -55,7 +55,7 @@ public class SaveDialog extends Dialog {
 		});
 		addButton(okButton);
 		
-		Button cancelButton = new Button(Messages.get("SaveDialog.cancel"), s.textures.iconExit); //$NON-NLS-1$
+		Button cancelButton = new Button("SaveDialog.cancel", null, s.textures.iconExit); //$NON-NLS-1$
 		cancelButton.addListener(new Listener() {
 			@Override
 			public void event(Event event) {

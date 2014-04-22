@@ -33,6 +33,11 @@ public class Textures {
 	public Texture iconLeft;
 	public Texture iconRight;
 	public Texture iconBomb;
+	public Texture iconLocale;
+	
+	// icon flag textures
+	public Texture iconFlagNL;
+	public Texture iconFlagUK;
 	
 	// belts
 	public Texture iconBeltFlat;
@@ -97,6 +102,14 @@ public class Textures {
 					ResourceLoader.getResourceAsStream("res/icons/object-rotate-right.png"));
 			iconBomb = TextureLoader.getTexture("PNG",
 					ResourceLoader.getResourceAsStream("res/icons/edit-bomb.png"));
+			iconLocale = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/flags/preferences-desktop-locale.png"));
+			
+			// icon flag textures
+			iconFlagNL = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/flags/nl.png"));
+			iconFlagUK = TextureLoader.getTexture("PNG",
+					ResourceLoader.getResourceAsStream("res/icons/flags/uk.png"));
 			
 			// belts
 			iconBeltFlat = TextureLoader.getTexture("PNG",

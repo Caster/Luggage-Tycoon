@@ -18,34 +18,56 @@ public class ToggleMenuBarItem extends Button {
 	 * Construct a new {@link ToggleMenuBarItem} with given texts and icons.
 	 * The texts and icons should not be {@code null}.
 	 * 
-	 * @param text1 Text that is displayed next to the icon.
+	 * @param messageKey1 Key of the text to display in this button in the
+	 *            ResourceBundle from which text may be loaded using the
+	 *            Messages class.
+	 * @param defaultText1 Text that is displayed next to the icon in case
+	 *            loading a text through the given key fails.
 	 * @param icon1 Icon that is displayed.
-	 * @param text2 Text that is displayed in alternate state.
+	 * @param messageKey2 Key of the text to display in this button in the
+	 *              ResourceBundle from which text may be loaded using the
+	 *              Messages class. This is for the alternate state.
+	 * @param defaultText2 Text that is displayed next to the icon in case
+	 *              loading a text through the given key fails. This is for
+	 *              the alternate state.
 	 *              In case this is {@code null}, {@code text1} is used.
 	 * @param icon2 Icon that is displayed in alternate state.
 	 *              In case this is {@code null}, {@code icon1} is used.
 	 */
-	public ToggleMenuBarItem(String text1, Texture icon1, String text2,
-			Texture icon2) {
-		this(text1, icon1, text2, icon2, ButtonType.NORMAL);
+	public ToggleMenuBarItem(String messageKey1, String defaultText1,
+			Texture icon1, String messageKey2, String defaultText2, Texture icon2) {
+		this(messageKey1, defaultText1, icon1, messageKey2, defaultText2, icon2,
+				ButtonType.NORMAL);
 	}
 	
 	/**
 	 * Construct a new {@link ToggleMenuBarItem} with given texts and icons.
 	 * The texts and icons should not be {@code null}.
 	 * 
-	 * @param text1 Text that is displayed next to the icon.
+	 * @param messageKey1 Key of the text to display in this button in the
+	 *            ResourceBundle from which text may be loaded using the
+	 *            Messages class.
+	 * @param defaultText1 Text that is displayed next to the icon in case
+	 *            loading a text through the given key fails.
 	 * @param icon1 Icon that is displayed.
-	 * @param text2 Text that is displayed in alternate state.
+	 * @param messageKey2 Key of the text to display in this button in the
+	 *              ResourceBundle from which text may be loaded using the
+	 *              Messages class. This is for the alternate state.
+	 * @param defaultText2 Text that is displayed next to the icon in case
+	 *              loading a text through the given key fails. This is for
+	 *              the alternate state.
 	 *              In case this is {@code null}, {@code text1} is used.
 	 * @param icon2 Icon that is displayed in alternate state.
 	 *              In case this is {@code null}, {@code icon1} is used.
 	 * @param type {@link ButtonType} of the menu item.
 	 */
-	public ToggleMenuBarItem(String text1, Texture icon1, String text2,
+	public ToggleMenuBarItem(String messageKey1, String defaultText1,
+			Texture icon1, String messageKey2, String defaultText2,
 			Texture icon2, ButtonType type) {
-		super(text1, icon1, type);
-		this.text2 = (text2 == null ? text1 : text2);
+		super(messageKey1, defaultText1, icon1, type);
+		this.text2 = (text2 == null ? text : text2);
+		this.messageKey2 = messageKey2;
+		this.defaultText2 = defaultText2;
 		this.icon2 = (icon2 == null ? icon1 : icon2);
 		
 		// add a listener for calling onClick() when appropriate
@@ -110,10 +132,22 @@ public class ToggleMenuBarItem extends Button {
 		String tmpText = this.text;
 		this.text = this.text2;
 		this.text2 = tmpText;
+		
+		tmpText = this.messageKey;
+		this.messageKey = this.messageKey2;
+		this.messageKey2 = tmpText;
+		
+		tmpText = this.defaultText;
+		this.defaultText = this.defaultText2;
+		this.defaultText2 = tmpText;
 	}
 	
 	/** Describing text of this menu item. */
 	protected String text2;
+	/** Alternate default text. */
+	protected String defaultText2;
+	/** Alternate message key. */
+	protected String messageKey2;
 	/** Icon of this menu item. */
 	protected Texture icon2;
 }

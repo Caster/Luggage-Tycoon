@@ -1,16 +1,13 @@
 package accg.gui;
 
 import accg.State;
-import accg.State.ProgramMode;
 import accg.gui.toolkit.Component;
 import accg.gui.toolkit.Event;
 import accg.gui.toolkit.Listener;
 import accg.gui.toolkit.components.Button;
 import accg.gui.toolkit.containers.MenuBar;
-import accg.gui.toolkit.containers.MenuStack;
 import accg.gui.toolkit.enums.ButtonType;
 import accg.gui.toolkit.event.MouseClickEvent;
-import accg.i18n.Messages;
 import accg.objects.blocks.ConveyorBlock.ConveyorBlockType;
 
 /**
@@ -26,7 +23,7 @@ public class BlockMenuBar extends MenuBar {
 	
 	public BlockMenuBar(final MainStack stack, final State s) {
 		
-		straightButton = new Button(Messages.get("BuildingModeMenuBar.straight"),
+		straightButton = new Button("BuildingModeMenuBar.straight", null,
 				s.textures.iconBeltFlat,
 				ButtonType.CHECKABLE_UNIQUE);
 		straightButton.setShortcutHint("C+F");
@@ -44,7 +41,7 @@ public class BlockMenuBar extends MenuBar {
 		});
 		add(straightButton);
 		
-		ascendingButton = new Button(Messages.get("BuildingModeMenuBar.up"),
+		ascendingButton = new Button("BuildingModeMenuBar.up", null,
 				s.textures.iconBeltAscending,
 				ButtonType.CHECKABLE_UNIQUE);
 		ascendingButton.setShortcutHint("C+A");
@@ -61,7 +58,7 @@ public class BlockMenuBar extends MenuBar {
 		});
 		add(ascendingButton);
 		
-		descendingButton = new Button(Messages.get("BuildingModeMenuBar.down"),
+		descendingButton = new Button("BuildingModeMenuBar.down", null,
 				s.textures.iconBeltDescending,
 				ButtonType.CHECKABLE_UNIQUE);
 		descendingButton.setShortcutHint("C+D");
@@ -78,7 +75,7 @@ public class BlockMenuBar extends MenuBar {
 		});
 		add(descendingButton);
 		
-		leftButton = new Button(Messages.get("BuildingModeMenuBar.left"),
+		leftButton = new Button("BuildingModeMenuBar.left", null,
 				s.textures.iconBeltLeft,
 				ButtonType.CHECKABLE_UNIQUE);
 		leftButton.setShortcutHint("C+B");
@@ -95,7 +92,7 @@ public class BlockMenuBar extends MenuBar {
 		});
 		add(leftButton);
 		
-		rightButton = new Button(Messages.get("BuildingModeMenuBar.right"),
+		rightButton = new Button("BuildingModeMenuBar.right", null,
 				s.textures.iconBeltRight,
 				ButtonType.CHECKABLE_UNIQUE);
 		rightButton.setShortcutHint("C+B,B");

@@ -32,7 +32,7 @@ public class PresentationMenuBar extends MenuBar {
 	private Button generatePresentationItem(final int index, final MenuStack stack, final State s) {
 		final Presentation pres = Presentation.values()[index];
 		// create the item
-		Button mbi = new Button(pres.getName(),
+		Button mbi = new Button(pres.getName(), null,
 				getPresentationIcon(index, s), ButtonType.CHECKABLE_UNIQUE);
 		mbi.addListener(new Listener() {
 			

@@ -35,7 +35,7 @@ public class ChooseLevelDialog extends Dialog {
 		setBody(body);
 		
 		// OK button
-		Button okButton = new Button(Messages.get("ChooseLevelDialog.ok"), s.textures.iconOk); //$NON-NLS-1$
+		Button okButton = new Button("ChooseLevelDialog.ok", null, s.textures.iconOk); //$NON-NLS-1$
 		okButton.addListener(new Listener() {
 			@Override
 			public void event(Event e) {
@@ -63,7 +63,7 @@ public class ChooseLevelDialog extends Dialog {
 							
 							// show the error message
 							levelException.printStackTrace();
-							Button closeButton = new Button(Messages.get("ChooseLevelDialog.close"), s.textures.iconExit); //$NON-NLS-1$
+							Button closeButton = new Button("ChooseLevelDialog.close", null, s.textures.iconExit); //$NON-NLS-1$
 							final Dialog errorDialog = new Dialog(Messages.get("ChooseLevelDialog.error"),
 									new Label(Messages.get("ChooseLevelDialog.couldNotOpenFile") //$NON-NLS-1$ //$NON-NLS-2$
 									 + levelException.getMessage()), //$NON-NLS-1$
@@ -85,7 +85,7 @@ public class ChooseLevelDialog extends Dialog {
 		addButton(okButton);
 		
 		// cancel button
-		Button cancelButton = new Button(Messages.get("ChooseLevelDialog.cancel"), //$NON-NLS-1$
+		Button cancelButton = new Button("ChooseLevelDialog.cancel", null, //$NON-NLS-1$
 				s.textures.iconExit);
 		addButton(cancelButton);
 		cancelButton.addListener(new Listener() {

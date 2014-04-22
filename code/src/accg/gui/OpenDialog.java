@@ -3,7 +3,9 @@ package accg.gui;
 import accg.ACCGProgram;
 import accg.State;
 import accg.State.ProgramMode;
-import accg.gui.toolkit.*;
+import accg.gui.toolkit.Component;
+import accg.gui.toolkit.Event;
+import accg.gui.toolkit.Listener;
 import accg.gui.toolkit.components.Button;
 import accg.gui.toolkit.components.EmptyComponent;
 import accg.gui.toolkit.components.Label;
@@ -34,13 +36,13 @@ public class OpenDialog extends Dialog {
 		
 		// Remove button
 		if (body == savedGamesList) {
-			final Button removeButton = new Button(Messages.get("OpenDialog.remove"), s.textures.iconBomb); //$NON-NLS-1$
+			final Button removeButton = new Button("OpenDialog.remove", null, s.textures.iconBomb); //$NON-NLS-1$
 			removeButton.addListener(new Listener() {
 				@Override
 				public void event(Event event) {
 					if (event instanceof MouseClickEvent) {
-						Button yesButton = new Button(Messages.get("OpenDialog.yes"), s.textures.iconOk); //$NON-NLS-1$
-						Button noButton = new Button(Messages.get("OpenDialog.no"), s.textures.iconExit); //$NON-NLS-1$
+						Button yesButton = new Button("OpenDialog.yes", null, s.textures.iconOk); //$NON-NLS-1$
+						Button noButton = new Button("OpenDialog.no", null, s.textures.iconExit); //$NON-NLS-1$
 						final Dialog confirmDialog = new Dialog(Messages.get("OpenDialog.confirm"),
 								new Label(String.format(Messages.get("OpenDialog.removeConfirm"),
 										savedGamesList.getSelectedElement())),
@@ -79,7 +81,7 @@ public class OpenDialog extends Dialog {
 		}
 		
 		// OK button
-		Button okButton = new Button(Messages.get("OpenDialog.ok"), s.textures.iconOk); //$NON-NLS-1$
+		Button okButton = new Button("OpenDialog.ok", null, s.textures.iconOk); //$NON-NLS-1$
 		okButton.addListener(new Listener() {
 			@Override
 			public void event(Event e) {
@@ -107,7 +109,7 @@ public class OpenDialog extends Dialog {
 							
 							// show the error message
 							levelException.printStackTrace();
-							Button closeButton = new Button(Messages.get("OpenDialog.close"), s.textures.iconExit); //$NON-NLS-1$
+							Button closeButton = new Button("OpenDialog.close", null, s.textures.iconExit); //$NON-NLS-1$
 							final Dialog errorDialog = new Dialog(Messages.get("OpenDialog.error"),
 									new Label(Messages.get("OpenDialog.couldNotOpenFile") //$NON-NLS-1$ //$NON-NLS-2$
 									 + levelException.getMessage()), //$NON-NLS-1$
@@ -129,7 +131,7 @@ public class OpenDialog extends Dialog {
 		addButton(okButton);
 		
 		// cancel button
-		Button cancelButton = new Button(Messages.get("OpenDialog.cancel"), //$NON-NLS-1$
+		Button cancelButton = new Button("OpenDialog.cancel", null, //$NON-NLS-1$
 				s.textures.iconExit);
 		addButton(cancelButton);
 		cancelButton.addListener(new Listener() {

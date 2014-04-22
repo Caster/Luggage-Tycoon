@@ -33,7 +33,7 @@ public class AlignmentMenuBar extends MenuBar {
 	private Button generateAlignmentItem(final int index, final MenuStack stack, final State s) {
 		final Alignment alignment = Alignment.values()[index];
 		// create the item
-		Button mbi = new Button(alignment.getName(),
+		Button mbi = new Button(alignment.getName(), null,
 				getAlignmentIcon(index, s), ButtonType.CHECKABLE_UNIQUE);
 
 		mbi.addListener(new Listener() {

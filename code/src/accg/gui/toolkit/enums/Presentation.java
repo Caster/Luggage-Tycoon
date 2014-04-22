@@ -11,12 +11,12 @@ public enum Presentation {
 	/**
 	 * A small icon is shown on the left of the text.
 	 */
-	ICON_LEFT_TEXT("(small) Icon left of text"),
+	ICON_LEFT_TEXT("Presentation.iconLeft"),
 	
 	/**
 	 * A large icon is shown on top of the text.
 	 */
-	ICON_ABOVE_TEXT("(large) Icon above text");
+	ICON_ABOVE_TEXT("Presentation.iconLarge");
 	
 	private Presentation(String name) {
 		this.name = name;
