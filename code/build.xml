@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<project default="jar" name="ACCG">
+<project default="dist" name="Luggage Tycoon">
     <target name="clean">
         <delete dir="build"/>
+        <delete dir="dist"/>
     </target>
 
     <target name="compile">
@@ -9,18 +10,33 @@
         <javac srcdir="src" destdir="build/classes">
             <classpath>
                 <pathelement path="lib/lwjgl-2.9.1/jar/lwjgl.jar"/>
+                <pathelement path="lib/lwjgl-2.9.1/jar/lwjgl_util.jar"/>
+                <pathelement path="lib/jbullet-20101010/dist/jbullet.jar"/>
+                <pathelement path="lib/jbullet-20101010/lib/vecmath/vecmath.jar"/>
+                <pathelement path="lib/slick-util.jar"/>
             </classpath>
         </javac>
     </target>
 
-    <target name="jar" depends="compile">
-        <jar destfile="accg.jar">
+    <target name="dist" depends="compile">
+        <mkdir dir="dist"/>
+        <jar destfile="dist/luggage-tycoon.jar">
             <manifest>
                 <attribute name="Main-Class" value="accg.ACCGProgram"/>
-                <attribute name="Class-Path" value="lib/lwjgl-2.9.1/jar/lwjgl.jar"/>
+                <attribute name="Class-Path" value="lib/lwjgl-2.9.1/jar/lwjgl.jar lib/lwjgl-2.9.1/jar/lwjgl_util.jar lib/jbullet-20101010/dist/jbullet.jar lib/jbullet-20101010/lib/vecmath/vecmath.jar lib/slick-util.jar"/>
             </manifest>
             <fileset dir="build/classes"/>
-            <fileset dir="lib"/>
+            <fileset dir="src" includes="accg/i18n/*.properties"/>
         </jar>
+        <copy todir="dist/lib/">
+            <fileset dir="lib"/>
+        </copy>
+        <copy todir="dist/res/">
+            <fileset dir="res"/>
+        </copy>
+        <copy tofile="dist/luggage-tycoon.bat" file="scripts/luggage-tycoon.bat"/>
+        <copy tofile="dist/luggage-tycoon.sh" file="scripts/luggage-tycoon.sh"/>
+        <chmod file="dist/luggage-tycoon.sh" perm="+x"/>
+        <zip destfile="dist/luggage-tycoon.zip" basedir="dist" excludes="luggage-tycoon.zip"/>
     </target>
 </project>
