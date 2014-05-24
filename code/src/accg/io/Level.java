@@ -404,6 +404,8 @@ public class Level {
 						pw.print(" [");
 						if (eb.getLuggageNum() >= 0) {
 							pw.print(eb.getLuggageNum());
+						} else {
+						    pw.print(-1);
 						}
 						
 						if (eb.getLuggageColors() != null) {
