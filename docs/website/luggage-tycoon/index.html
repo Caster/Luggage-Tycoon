@@ -6,26 +6,40 @@
 <body>
 <div margin="10px">
 
-<h1 class="header">YOUR TITLE</h1>
-Name of first student<br>
-Name of second student<br>
-<p>
-Some introductory text. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+<h1 class="header">Luggage Tycoon</h1>
+Thom Castermans<br>
+Willem Sonke<br>
+<p>We created a program to simulate a system of conveyor belts that transport luggage items.</p>
+<p>The system could potentially be used as a tool for modelling for example a luggage system at an airport. However, we have decided to make our application more like a game, in which the player has to transport luggage from one place to another.</p>
+<p>The main focus in our program lies on user interaction and good visualisation. Hence, the program should be easy to use, it should not be hard to get to know the program and it should look good.</p>
 
-<h2 class="item-header">Results</h2>
+<h2 class="item-header">Download</h2>
+<p>You can download the resulting game <a href="">here (TO DO)</a>. You will need Java 7 to run the program.</p>
+<p>You can also get the source code from <a href="">Github (TO DO)</a>.</p>
+
+<h2 class="item-header">The game</h2>
+<p><i>Click on the images below to get a larger version.</i></p>
 <div class="block">
-<div class="media">a visual result goes here.</div>
-Some explanatory text/formulas/etcetera goes here. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+<div class="media"><a href="simulation.png"><img src="simulation-small.png"></img></a></div>
+<p>This is what a luggage simulation looks like. Luggage has to be transported from the <i>enter blocks</i> to the <i>leave blocks</i> on the opposite sides of the room.</p>
 </div>
 <div class="block">
-<div class="media">a visual result goes here.</div>
-Some explanatory text/formulas/etcetera goes here. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+<div class="media"><a href="large-system.png"><img src="large-system-small.png"></img></a></div>
+<p>The game has several levels. In this level the player has to build a quite complicated conveyor belt to get the luggage to the right place.</p>
+</div>
+<div class="block">
+<div class="media"><a href="menu.png"><img src="menu-small.png"></img></a></div>
+<p>We have created a menu system, in which the player can customize the game (for example the language can be set to Dutch or English and the mouse sensitivity can be changed).</p>
 </div>
 
-<h2 class="item-header">More results</h2>
+<h2 class="item-header">Problems and solutions</h2>
 <div class="block">
-<div class="media">a visual result goes here.</div>
-You can create and fill more sections, if you want to. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+<div class="media"><a href="physics.png"><img src="physics-small.png"></img></a></div>
+<p>Of course, to create a luggage simulation that looks realistic, the luggage should behave in a physically accurate way. For example, if one piece of luggage drops onto another one, they should form a stack. We have implemented physics using the <a href="http://jbullet.advel.cz/">JBullet</a> physics library.</p>
+</div>
+<div class="block">
+<div class="media"><a href="selection.png"><img src="selection-small.png"></img></a></div>
+<p>The player can click on the 3D view to place and edit conveyor belts. To find out where the user clicked in the 3D space, we implemented a variant of <a href="http://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm">Bresenham's algorithm</a>.</p>
 </div>
 </div>
 </body>
