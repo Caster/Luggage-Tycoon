@@ -2,6 +2,14 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <link rel="stylesheet" type="text/css" href="../style.css">
+  
+  <!-- Some JavaScript for fancy image boxes -->
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <link rel="stylesheet" href="fancybox/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+  <link rel="stylesheet" href="fancybox/jquery.fancybox-buttons.css?v=1.0.5" type="text/css" media="screen" />
+  <script type="text/javascript" src="fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+  <script type="text/javascript" src="fancybox/jquery.fancybox-buttons.js?v=1.0.5"></script>
+  <script type="text/javascript" src="fancybox/fancybox.js"></script>
 </head>
 <body>
 <div margin="10px">
@@ -20,25 +28,25 @@ Willem Sonke<br>
 <h2 class="item-header">The game</h2>
 <p><i>Click on the images below to get a larger version.</i></p>
 <div class="block">
-<div class="media"><a href="simulation.png"><img src="simulation-small.png"></img></a></div>
+<div class="media"><a class="fancybox" href="simulation.png" rel="group"><img src="simulation-small.png" alt="A screenshot of the program while a simulation is running."></img></a></div>
 <p>This is what a luggage simulation looks like. Luggage has to be transported from the <i>enter blocks</i> to the <i>leave blocks</i> on the opposite sides of the room.</p>
 </div>
 <div class="block">
-<div class="media"><a href="large-system.png"><img src="large-system-small.png"></img></a></div>
+<div class="media"><a class="fancybox" href="large-system.png" rel="group"><img src="large-system-small.png" alt="In one level, a rather large system must be built."></img></a></div>
 <p>The game has several levels. In this level the player has to build a quite complicated conveyor belt to get the luggage to the right place.</p>
 </div>
 <div class="block">
-<div class="media"><a href="menu.png"><img src="menu-small.png"></img></a></div>
+<div class="media"><a class="fancybox" href="menu.png" rel="group"><img src="menu-small.png" alt="The program features quite a few settings that are accessible through the menu."></img></a></div>
 <p>We have created a menu system, in which the player can customize the game (for example the language can be set to Dutch or English and the mouse sensitivity can be changed).</p>
 </div>
 
 <h2 class="item-header">Problems and solutions</h2>
 <div class="block">
-<div class="media"><a href="physics.png"><img src="physics-small.png"></img></a></div>
+<div class="media"><a class="fancybox" href="physics.png" rel="group"><img src="physics-small.png" alt="The JBullet library is used for realistic physics simulation."></img></a></div>
 <p>Of course, to create a luggage simulation that looks realistic, the luggage should behave in a physically accurate way. For example, if one piece of luggage drops onto another one, they should form a stack. We have implemented physics using the <a href="http://jbullet.advel.cz/">JBullet</a> physics library.</p>
 </div>
 <div class="block">
-<div class="media"><a href="selection.png"><img src="selection-small.png"></img></a></div>
+<div class="media"><a class="fancybox" href="selection.png" rel="group"><img src="selection-small.png" alt="Conveyor belt blocks can be placed in 3D using a point-and-click mechanism that is meant to be easy to use."></img></a></div>
 <p>The player can click on the 3D view to place and edit conveyor belts. To find out where the user clicked in the 3D space, we implemented a variant of <a href="http://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm">Bresenham's algorithm</a>.</p>
 </div>
 </div>
