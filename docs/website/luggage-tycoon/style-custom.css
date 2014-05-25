@@ -22,7 +22,7 @@ a:visited {
 }
 
 @media (min-width: 1400px) {
-    .blocks .block:nth-child(2) {
+    .blocks .block:nth-child(2n) {
         border-left: 2px solid rgb(225, 205, 174);
         margin-left: 8px;
         padding-left: 12px;
