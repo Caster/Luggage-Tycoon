@@ -34,3 +34,25 @@ a:visited {
         margin-right: 22px;
     }
 }
+
+/* FANCYBOX STUFF */
+.fancybox-outer-nav .fancybox-nav {
+    width: 60px;       
+}
+
+.fancybox-outer-nav .fancybox-nav span {
+    visibility: visible;
+    opacity: 0.5;
+}
+
+.fancybox-outer-nav .fancybox-nav:hover span {
+    opacity: 1;
+}
+
+.fancybox-outer-nav .fancybox-next {
+    right: -60px;
+}
+
+.fancybox-outer-nav .fancybox-prev {
+    left: -60px;
+}

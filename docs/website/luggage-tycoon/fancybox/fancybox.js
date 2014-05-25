@@ -6,12 +6,15 @@ function onYouTubePlayerAPIReady() {
             afterShow: function() {
                 var $element = $(this.element);
                 
-                if (typeof($element.attr('data-youtube-url')) !== 'undefined') {
+                if (typeof($element.attr('data-youtube-url')) === 'undefined') {
+                    $.fancybox.outer.removeClass('fancybox-outer-nav');
+                } else {
+                    $.fancybox.outer.addClass('fancybox-outer-nav');
+                    
                     var playerId = 'youtube-player-frame',
-                    $playerFrame = $.fancybox.inner.wrapInner('<div id="' + playerId + '" />');
+                        $playerFrame = $.fancybox.inner.wrapInner('<div id="' + playerId + '" />');
                     
                     // Create video player object and add event listeners
-                    console.log($.fancybox.inner.innerWidth(), $.fancybox.inner.innerHeight());
                     var playbackQuality = 'hd1080',
                         player = new YT.Player(playerId, {
                             events: {
@@ -30,6 +33,8 @@ function onYouTubePlayerAPIReady() {
                                     if (event.data === YT.PlayerState.BUFFERING) {
                                         // http://stackoverflow.com/a/10757854/962603
                                         event.target.setPlaybackQuality(playbackQuality);
+                                    } else if (event.data === YT.PlayerState.ENDED) {
+                                        $.fancybox.next();
                                     }
                                 }
                             },
@@ -40,7 +45,6 @@ function onYouTubePlayerAPIReady() {
                 }
             },
             beforeShow: function() {
-                
                 this.title = $(this.element).find('img').attr('alt');
             },
             helpers: {
